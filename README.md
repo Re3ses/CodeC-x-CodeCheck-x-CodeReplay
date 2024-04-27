@@ -29,4 +29,9 @@
     <li><code>npm i && npm run dev</code></li>
 </ol>
 
+<h3>For Judge0</h3>
+<ol>
+    <li>cd into judge0 folder in server folder</li>
+    <li><code>docker compose up</code></li>
+</ol>
 
