@@ -1,0 +1,3 @@
+{
+  "extends": ["react/babel", "next/core-web-vitals"]
+}
