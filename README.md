@@ -13,13 +13,15 @@
 <ol>
     <li><code>git clone <a>https://github.com/mosnamarco/CodeC.git</a></code></li>
     <li><code>cd \<into cloned repo\><code/></li>
-<ol>
+</ol>
+
 <h3>For server</h3>
 <ol>
     <li><code>cd server</code></li>
     <li><code>nvm use 16.20.2</code></li>
     <li><code>npm i && npm run devt</code></li>
 </ol>
+
 <h3>For client</h3>
 <ol>
     <li><code>cd client</code></li>
