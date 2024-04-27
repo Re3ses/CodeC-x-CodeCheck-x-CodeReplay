@@ -12,7 +12,7 @@
 <h2>Quick start: How to run</h2>
 <ol>
     <li><code>git clone <a>https://github.com/mosnamarco/CodeC.git</a></code></li>
-    <li><code>cd \<into cloned repo\><code/></li>
+    <li>cd into cloned repo</li>
 </ol>
 
 <h3>For server</h3>
