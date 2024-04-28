@@ -1,37 +1,74 @@
-<h1>CodeC getting started guide</h1>
-<p>CodeC currently uses multiple node versions, so nvm is a must. Node verion
-    16.20.2 and Node version 21.7.1. The former is used for the backend api and
-    the latter for the client side that uses NextJS as the framework
+## CodeC Getting Started Guide
 
-<h2>Prerequisites</h2>
-<ol>
-    <li><code>docker</code> should be installed in your machine</li>
-    <li><code>nvm</code> should be used for node version control</li>
-</ol>
+CodeC currently uses multiple Node.js versions, so having `nvm` installed is essential. You'll need Node version 16.20.2 for the backend API and Node version 21.7.1 for the client-side which utilizes Next.js as the framework.
 
-<h2>Quick start: How to run</h2>
-<ol>
-    <li><code>git clone <a>https://github.com/mosnamarco/CodeC.git</a></code></li>
-    <li>cd into cloned repo</li>
-</ol>
+For a more in-depth guide and information, refer to our CodeC Wiki: [https://github.com/mosnamarco/CodeC/wiki](https://github.com/mosnamarco/CodeC/wiki).
 
-<h3>For server</h3>
-<ol>
-    <li><code>cd server</code></li>
-    <li><code>nvm use 16.20.2</code></li>
-    <li><code>npm i && npm run devt</code></li>
-</ol>
+## Prerequisites
 
-<h3>For client</h3>
-<ol>
-    <li><code>cd client</code></li>
-    <li><code>nvm use 21.7.1</code></li>
-    <li><code>npm i && npm run dev</code></li>
-</ol>
+* `docker` must be installed on your machine.
+* `nvm` should be used to manage Node.js versions.
 
-<h3>For Judge0</h3>
-<ol>
-    <li>cd into judge0 folder in server folder</li>
-    <li><code>docker compose up</code></li>
-</ol>
+## Quick Start: How to Run
 
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/mosnamarco/CodeC.git
+   ```
+
+2. Navigate into the cloned directory:
+
+   ```bash
+   cd CodeC
+   ```
+
+### Server
+
+1. Change directory to the server folder:
+
+   ```bash
+   cd server
+   ```
+
+2. Switch to Node version 16.20.2 using nvm:
+
+   ```bash
+   nvm use 16.20.2
+   ```
+
+3. Install dependencies and start the development server:
+
+   ```bash
+   npm install && npm run devt
+   ```
+
+### Client
+
+1. Change directory to the client folder:
+
+   ```bash
+   cd client
+   ```
+
+2. Switch to Node version 21.7.1 using nvm:
+
+   ```bash
+   nvm use 21.7.1
+   ```
+
+3. Install dependencies and start the development server:
+
+   ```bash
+   npm install && npm run dev
+   ```
+
+### Judge0
+
+1. Navigate to the `judge0` folder inside the `server` directory.
+
+2. Start Judge0 using Docker Compose:
+
+   ```bash
+   docker-compose up
+   ```
