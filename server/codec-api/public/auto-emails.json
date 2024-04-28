@@ -1,0 +1,23 @@
+{
+    "learner-signup": {
+        "subject": "Codec Signup Successful",
+        "text": "Welcome to Codec, <Name>!\n\nYou've accomplished your first step to exploring the fun and challenging learning experience as a coder. It doesn't matter if you are a newbie or a pro, we look forward to collaborating and learning with each other in this space.\n\nThank you,\nYour Codec Team"
+    },
+    "mentor-signup": {
+        "subject": "Codec Mentor Signup Successful",
+        "text": "Welcome to Codec, <Name>!\n\nThank you for joining our Mentor Community. In learning to program, half the brains are in crafting problems. We encourage you to collaborate with the community by sharing your knowledge in our classrooms. Please remember to follow basic online etiquette to keep the community safe and enjoyable.\n\nThank you,\nYour Codec Team"
+    },
+    "change-password": {
+        "subject": "Password Updated Successfully",
+        "text": "Hi, <Name>,\n\nWe have received your request to update your password. Your password has been updated successfully.\n\nIf this action was not done by you, please contact the team.\n\nThank you,\nYour Codec Team"
+    },
+    "forgot-password": {
+        "subject": "Password Change Request",
+        "text": "Hi <Name>,\n\nWe have received a password change request for your Codec account. To update your password, click the temporary link below:\n\n<Link>\n\nThis link will expire after <Number> hours. If you did not request for a password change, please ignore this email, no changes will be made. Another person may have accidentally entered your details by accident.\n\nWe are happy to help,\n\nYour Codec Team."
+    },
+    "new-problem": {
+        "subject": "New Programming Problem: <Problem-Title>",
+        "text": "Hi, <Name>,\n\n<Mentor> posted a new programming problem in <Room-Name>.\nLet's code our way through this. http://157.230.42.82/authentication/login \n\nThank you,\nYour Codec Team"
+    }
+}
+
