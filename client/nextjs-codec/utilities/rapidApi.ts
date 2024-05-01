@@ -105,6 +105,7 @@ export async function getLanguages() {
 
   try {
     const response = await axios.request(options);
+    console.log(response.data)
     return response.data;
   } catch (error) {
     console.error(error);

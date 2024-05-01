@@ -10,6 +10,8 @@ import {
 import { Editor } from "@monaco-editor/react";
 import { useEffect, useState } from "react";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
+import languageCodes from './languages_code.json' 
+
 
 export default function Page() {
     const [selectedLang, setSelectedLang] = useState<string>();
@@ -17,6 +19,7 @@ export default function Page() {
     const [editorValue, setEditorValue] = useState<any>();
     const [stdin, setStdin] = useState<any>();
     const [submissionResult, setSubmissionResult] = useState<any>();
+    const langCodes : LanguageCodes = languageCodes;
 
     useEffect(() => {
         const res: () => Promise<any> = async () => {
@@ -76,6 +79,7 @@ export default function Page() {
                     <Editor
                         theme="vs-dark"
                         defaultLanguage="plaintext"
+                        language={langCodes[String(selectedLang)]}
                         value={editorValue}
                         onChange={(val) => {
                             setEditorValue(val);
