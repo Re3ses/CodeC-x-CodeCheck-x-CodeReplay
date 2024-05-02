@@ -31,6 +31,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import { LightningBoltIcon } from "@radix-ui/react-icons";
 import { getUser } from "@/lib/auth";
+import languagesCode from '@/utilities/languages_code.json'
 
 type languageData = {
     id: number;
@@ -52,6 +53,7 @@ export default function Page() {
     const [batchResult, setBatchResult] = useState<any>();
     const [learner, setLearner] = useState<string>();
     const [hasSubmittedRequest, setHasSubmittedRequest] = useState<boolean>(false);
+    const langCodes : LanguageCodes = languagesCode
 
     useEffect(() => {
         const res: () => Promise<ProblemSchemaInferredType> = async () => {
@@ -377,6 +379,7 @@ export default function Page() {
                             <Editor
                                 theme="vs-dark"
                                 defaultLanguage="plaintext"
+                                language={langCodes[String(selectedLang)]}
                                 onMount={handleEditorDidMount}
                                 onChange={setEditorValue}
                             />

@@ -10,7 +10,7 @@ import {
 import { Editor } from "@monaco-editor/react";
 import { useEffect, useState } from "react";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
-import languageCodes from './languages_code.json' 
+import languageCodes from '@/utilities/languages_code.json' 
 
 
 export default function Page() {
