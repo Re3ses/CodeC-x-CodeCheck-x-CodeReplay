@@ -1,0 +1,215 @@
+import { FormSchema } from "@/lib/interface/signupForm"
+import { useForm } from "react-hook-form"
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage
+} from "@/components/ui/form"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from "@/components/ui/select"
+import { Input } from "@/components/ui/input"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { Button, buttonVariants } from "../button"
+import { RegisterUser } from "@/utilities/apiService"
+import { redirect } from "next/navigation"
+import { useState } from "react"
+import { toast } from "../use-toast"
+import Link from "next/link"
+
+export default function RegisterForm() {
+  const [success, setSuccess] = useState(false)
+
+  const form = useForm({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      emailAddress: "",
+      username: "",
+      firstName: "",
+      lastName: "",
+      password: "",
+      passwordConfirm: ""
+    }
+  })
+
+  const onSubmit = async data => {
+    const payload = {
+      email: data.emailAddress,
+      first_name: data.firstName,
+      last_name: data.lastName,
+      username: data.username,
+      type: data.userType,
+      password: data.password
+    }
+    const res = await RegisterUser(payload)
+
+    if (res.emailExists || res.usernameExists) {
+      if (res.emailExists) {
+        form.setError("emailAddress", {
+          message: "Email exist, please choose another one"
+        })
+      }
+
+      if (res.usernameExists) {
+        form.setError("username", {
+          message: "Username taken, please choose another one"
+        })
+      }
+
+      toast({
+        title: "Error signing up",
+        description: "Please check your credentials"
+      })
+    }
+
+    if (res.accountCreated) {
+      setSuccess(true)
+      toast({
+        title: "Account successfully created!",
+        description: `You can now log in with this account with the username ${payload.username}`
+      })
+    }
+  }
+
+  if (success) {
+    redirect("/login")
+  }
+
+  return (
+    <div className="flex flex-col gap-4">
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="flex flex-col gap-5"
+        >
+          <FormField
+            control={form.control}
+            name="emailAddress"
+            render={({ field }) => {
+              return (
+                <FormItem>
+                  <FormControl>
+                    <Input placeholder="youremail@here.sample" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )
+            }}
+          />
+
+          <FormField
+            control={form.control}
+            name="firstName"
+            render={({ field }) => {
+              return (
+                <FormItem>
+                  <FormControl>
+                    <Input placeholder="firstname" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )
+            }}
+          />
+
+          <FormField
+            control={form.control}
+            name="lastName"
+            render={({ field }) => {
+              return (
+                <FormItem>
+                  <FormControl>
+                    <Input placeholder="lastname" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )
+            }}
+          />
+
+          <FormField
+            control={form.control}
+            name="username"
+            render={({ field }) => {
+              return (
+                <FormItem>
+                  <FormControl>
+                    <Input placeholder="username" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )
+            }}
+          />
+
+          <FormField
+            control={form.control}
+            name="userType"
+            render={({ field }) => {
+              return (
+                <FormItem>
+                  <Select onValueChange={field.onChange}>
+                    <SelectTrigger className="w-[180px]">
+                      <SelectValue placeholder="Select account type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Learner">Learner</SelectItem>
+                      <SelectItem value="Mentor">Mentor</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )
+            }}
+          />
+
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => {
+              return (
+                <FormItem>
+                  <FormControl>
+                    <Input placeholder="password" type="password" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )
+            }}
+          />
+
+          <FormField
+            control={form.control}
+            name="passwordConfirm"
+            render={({ field }) => {
+              return (
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      placeholder="confirm password"
+                      type="password"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )
+            }}
+          />
+          <Button type="submit" disabled={!form.formState.isValid}>
+            Create an account
+          </Button>
+        </form>
+      </Form>
+      <Link href="/login" className={buttonVariants({ variant: "outline" })}>
+        Login instead
+      </Link>
+    </div>
+  )
+}
