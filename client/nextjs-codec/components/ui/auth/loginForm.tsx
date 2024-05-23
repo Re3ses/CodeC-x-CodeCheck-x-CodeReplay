@@ -58,7 +58,7 @@ export default function LoginForm() {
     return (
         <div className="flex flex-col gap-4">
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-5 w-[40dvw]">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-5">
                     <FormField
                         control={form.control}
                         name="username"
@@ -91,7 +91,7 @@ export default function LoginForm() {
                     <Button type="submit" disabled={!form.formState.isValid}>Login</Button>
                 </form>
             </Form>
-            <Link href="/sign-up" className={buttonVariants({ variant: "outline" })}>Create an account</Link>
+            <Link href="/sign-up" className="underline text-xl text-center">Create an account</Link>
         </div>
     )
 }

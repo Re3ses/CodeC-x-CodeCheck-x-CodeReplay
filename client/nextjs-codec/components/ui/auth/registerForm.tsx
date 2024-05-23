@@ -56,7 +56,7 @@ export default function RegisterForm() {
           message: "Email exist, please choose another one"
         })
       }
-  
+
       if (res.usernameExists) {
         form.setError("username", {
           message: "Username taken, please choose another one"
@@ -77,13 +77,13 @@ export default function RegisterForm() {
       })
     }
   }
-  
+
   if (success) {
     redirect('/login')
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col w-[25em] gap-4">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-5">
           <FormField
@@ -92,6 +92,7 @@ export default function RegisterForm() {
             render={({ field }) => {
               return (
                 <FormItem>
+                  <FormLabel>Email</FormLabel>
                   <FormControl>
                     <Input placeholder="youremail@here.sample" {...field} />
                   </FormControl>
@@ -106,6 +107,7 @@ export default function RegisterForm() {
             render={({ field }) => {
               return (
                 <FormItem>
+                  <FormLabel>Firstname</FormLabel>
                   <FormControl>
                     <Input placeholder="firstname" {...field} />
                   </FormControl>
@@ -120,6 +122,7 @@ export default function RegisterForm() {
             render={({ field }) => {
               return (
                 <FormItem>
+                  <FormLabel>Lastname</FormLabel>
                   <FormControl>
                     <Input placeholder="lastname" {...field} />
                   </FormControl>
@@ -134,6 +137,7 @@ export default function RegisterForm() {
             render={({ field }) => {
               return (
                 <FormItem>
+                  <FormLabel>Username</FormLabel>
                   <FormControl>
                     <Input placeholder="username" {...field} />
                   </FormControl>
@@ -148,6 +152,7 @@ export default function RegisterForm() {
             render={({ field }) => {
               return (
                 <FormItem>
+                  <FormLabel>Account type</FormLabel>
                   <Select onValueChange={field.onChange}>
                     <SelectTrigger className="w-[180px]">
                       <SelectValue placeholder="Select account type" />
@@ -169,6 +174,7 @@ export default function RegisterForm() {
             render={({ field }) => {
               return (
                 <FormItem>
+                  <FormLabel>Password</FormLabel>
                   <FormControl>
                     <Input placeholder="password" type="password" {...field} />
                   </FormControl>
@@ -193,7 +199,7 @@ export default function RegisterForm() {
           <Button type="submit" disabled={!form.formState.isValid} >Create an account</Button>
         </form>
       </Form>
-      <Link href="/login" className={buttonVariants({variant: "outline"})}>Login instead</Link>
+      <Link href="/login" className="underline text-center">Login instead</Link>
     </div>
   )
 }
