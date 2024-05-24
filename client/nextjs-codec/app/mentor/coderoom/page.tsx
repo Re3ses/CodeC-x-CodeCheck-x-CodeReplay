@@ -50,7 +50,7 @@ export default function Page() {
                                     Enter room
                                 </Link>
                             </div>
-                            <div className="p-5 flex flex-col gap-2 max-h-[10rem] overflow-scroll">
+                            <div className="p-5 flex flex-col gap-2 max-h-[7rem] overflow-y-scroll">
                                 <p className="text-sm text-zinc-300">
                                     {item.description}
                                 </p>

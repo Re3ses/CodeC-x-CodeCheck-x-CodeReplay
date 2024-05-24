@@ -5,7 +5,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
     const user = await getUser();
     return (
         <div className="flex h-screen flex-col">
-            <Nav variant="Compact" name={user?.auth.username} />
+            <Nav name={user?.auth.username} />
             {children}
         </div>
     );
