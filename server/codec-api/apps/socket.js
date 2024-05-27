@@ -1,3 +1,8 @@
+// TODO: 
+// * handle room events []
+// * autmatically register username and room id []
+// * figure out how those 2 previous task work []
+
 const { SOCKET_PORT } = require('../config')
 
 const { UserService, LiveCodingService } = require('../services')
@@ -17,9 +22,11 @@ const listen = () => {
         console.log(`Socket Server listening at port ${io.httpServer.address().port}...`)
     })
 
+    // NOTE: hanlde connections
     io.on('connection', socket => {
         console.log(`${socket.id} connected to Socket Server!`)
 
+        // NOTE: log active users on a liveroom and add to connectedLearners
         socket.on('active', (username, liveroom_id) => {
             connectedLearners[socket.id] = {
                 username: username,
@@ -29,6 +36,7 @@ const listen = () => {
             Logger.file(`live-coding/${liveroom_id}.log`, 'liveroom-active').info(`[${username}] is active`)
         })
 
+        // NOTE: Learner: join a liveroom
         socket.on('join', async () => {
             const { username, liveroom_id } = connectedLearners[socket.id]
             const learner = await UserService.profile(username)
@@ -36,12 +44,12 @@ const listen = () => {
 
             if (!learner || !liveroom)
                 return
-            
-            liveroom = await LiveCodingService.addToSession(liveroom_id, username)  
+
+            liveroom = await LiveCodingService.addToSession(liveroom_id, username)
 
             socket.join(liveroom_id)
             socket.to(liveroom_id).emit('joined', username)
-            
+
             if (io.sockets.adapter.rooms.get(liveroom_id).size === 1) {
                 await LiveCodingService.liveUpdate({
                     id: liveroom_id,
@@ -56,6 +64,7 @@ const listen = () => {
             Logger.file(`live-coding/${liveroom_id}.log`, 'liveroom-joined').info(`[${username}] joined`)
         })
 
+        // NOTE: remove learner from liveroom session
         socket.on('disconnect', async (reason) => {
             const { username, liveroom_id } = connectedLearners[socket.id]
             const liveroom = await LiveCodingService.removeFromSession(liveroom_id, username)
@@ -80,6 +89,7 @@ const listen = () => {
             delete connectedLearners[socket.id]
         })
 
+        // NOTE: Update on type and emit updated type
         socket.on('update-on-type', async (code) => {
             const { liveroom_id } = connectedLearners[socket.id]
             const liveroom = await LiveCodingService.serial(liveroom_id)
@@ -101,6 +111,7 @@ const listen = () => {
             socket.to(liveroom_id).emit('updated-type', code)
         })
 
+        // NOTE: update editor with updated type 
         socket.on('update-editor', async (username) => {
             const { liveroom_id } = connectedLearners[socket.id]
             const liveroom = await LiveCodingService.serial(liveroom_id)
@@ -124,6 +135,7 @@ const listen = () => {
             socket.to(liveroom_id).emit('updated-editor', newEditor)
         })
 
+        // NOTE: update language used
         socket.on('update-language', async (language_used) => {
             const { liveroom_id } = connectedLearners[socket.id]
             const liveroom = await LiveCodingService.serial(liveroom_id)
@@ -145,6 +157,7 @@ const listen = () => {
             socket.to(liveroom_id).emit('updated-language', language_used)
         })
 
+        // NOTE: Update testcase
         socket.on('update-test-case', async (test_case) => {
             const { liveroom_id } = connectedLearners[socket.id]
             const liveroom = await LiveCodingService.serial(liveroom_id)
@@ -166,6 +179,7 @@ const listen = () => {
             socket.to(liveroom_id).emit('updated-test-case', test_case)
         })
 
+        // NOTE: Accept compile and emit output
         socket.on('compiled', async (output) => {
             const { liveroom_id } = connectedLearners[socket.id]
             const liveroom = await LiveCodingService.serial(liveroom_id)
@@ -175,6 +189,7 @@ const listen = () => {
             socket.to(liveroom_id).emit('pass-output', output)
         })
 
+        // NOTE: Accept start-call signal
         socket.on('start-call', async (call_link) => {
             const { liveroom_id } = connectedLearners[socket.id]
             const liveroom = await LiveCodingService.serial(liveroom_id)

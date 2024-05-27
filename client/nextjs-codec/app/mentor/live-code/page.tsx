@@ -14,113 +14,64 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
+import { Input } from "@/components/ui/input";
 
-const socket = io("http://localhost:4000/");
+// TODO: change to server url (in env)
+// const socket = io("http://localhost:8800/");
 
 export default function Page() {
     const { isPending, isError, error } = useQuery({
         queryKey: ["user"],
         queryFn: async () => await getUser(),
     });
-    const [code, setCode] = useState<string>();
+    const [code, setCode] = useState<any>();
 
-    const liveCodeQuery = useQuery({
-        queryKey: ["liveCodeRequests"],
-        queryFn: async () => {
-            const response = await fetch("/api/liveCode/");
-
-            if (!response.ok) {
-                throw new Error("Failed to fetch liveCode request data");
-            }
-
-            return await response.json();
-        }
-    });
-
-    useEffect(() => {
-        socket.on("response", (data: string) => {
-            setCode(data);
-        });
-
-        return () => {
-            socket.off("response");
-        };
-    }, []);
-
-    function handleChange(value: any) {
-        socket.emit("code-content", value);
-    }
-
-    if (isError) {
-        return <div>Error {error.message}</div>;
-    }
-
-    if (isPending) {
-        return <div>Waiting for important bits...</div>;
+    function handleChange(value: string | undefined, _event: any | null) {
+        console.log(value);
     }
 
     return (
         <div className="h-screen">
-            <PanelGroup autoSaveId="livecodepanels" direction="horizontal">
-                <Panel defaultSize={40} minSize={20} className="border-zinc-700 border-r-4">
-                    <div className="bg-zinc-900 p-5 flex flex-col gap-4 justify-center">
-                        <AdminSettingsDrawer />
-                        <div className="flex flex-col gap-3">
-                            {liveCodeQuery.data?.liveCode_requests.map((request: any) => (
-                                <div className="p-3 bg-zinc-700 rounded-lg" key={request._id}>
-                                    <p>Request Reason: {request.request_reason}</p>
-                                    <p>Room Slug: {request.room_slug}</p>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </Panel>
-                <PanelResizeHandle />
-                <Panel className="">
-                    <PanelGroup direction="vertical">
-                        <Panel minSize={20} className="border-zinc-700 border-b-4">
+            <div className="p-4">
+                options
+            </div>
+            <PanelGroup autoSaveId="example" direction="horizontal">
+                <Panel defaultSize={50}>
+                    <PanelGroup autoSaveId="example" direction="vertical">
+                        <Panel defaultSize={60}>
                             <Editor
                                 theme="vs-dark"
-                                height="90vh"
                                 defaultValue="content here"
                                 value={code}
-                                onChange={handleChange}
+                                onChange={(value, event) => handleChange(value, event)}
                             />
                         </Panel>
-                        <PanelResizeHandle />
-                        <Panel minSize={20} className="">
-                            <div className="flex">
-                                <div className="flex gap-2 border-r-4 border-zinc-800 my-auto px-4">
-                                    <p className="border whitespace-nowrap h-fit rounded-lg px-4 py-2 hover:bg-rose-900">Search</p>
-                                    <p className="border whitespace-nowrap h-fit rounded-lg px-4 py-2 hover:bg-rose-900">Blind</p>
-                                    <p className="border whitespace-nowrap h-fit rounded-lg px-4 py-2 hover:bg-rose-900">Freeze</p>
-                                </div>
-                                <div className="p-3 flex gap-2 overflow-scroll">
-                                    <p className="border whitespace-nowrap h-fit rounded-lg px-4 py-2 hover:bg-rose-900">Student E. Button</p>
-                                    <p className="border whitespace-nowrap h-fit rounded-lg px-4 py-2 hover:bg-rose-900">Student E. Button</p>
-                                    <p className="border whitespace-nowrap h-fit rounded-lg px-4 py-2 hover:bg-rose-900">Student E. Button</p>
-                                    <p className="border whitespace-nowrap h-fit rounded-lg px-4 py-2 hover:bg-rose-900">Student E. Button</p>
-                                    <p className="border whitespace-nowrap h-fit rounded-lg px-4 py-2 hover:bg-rose-900">Student E. Button</p>
-                                    <p className="border whitespace-nowrap h-fit rounded-lg px-4 py-2 hover:bg-rose-900">Student E. Button</p>
-                                    <p className="border whitespace-nowrap h-fit rounded-lg px-4 py-2 hover:bg-rose-900">Student E. Button</p>
-                                    <p className="border whitespace-nowrap h-fit rounded-lg px-4 py-2 hover:bg-rose-900">Student E. Button</p>
-                                    <p className="border whitespace-nowrap h-fit rounded-lg px-4 py-2 hover:bg-rose-900">Student E. Button</p>
-                                    <p className="border whitespace-nowrap h-fit rounded-lg px-4 py-2 hover:bg-rose-900">Student E. Button</p>
-                                    <p className="border whitespace-nowrap h-fit rounded-lg px-4 py-2 hover:bg-rose-900">Student E. Button</p>
-                                </div>
+                        <PanelResizeHandle className="h-1 bg-zinc-500" />
+                        <Panel defaultSize={25}>
+                            <div>
+                                panel 0
+                                edit problem here
                             </div>
-                            <Editor
-                                theme="vs-dark"
-                                height="90vh"
-                                defaultValue="content here"
-                                value={code}
-                                onChange={handleChange}
-                            />
                         </Panel>
                     </PanelGroup>
                 </Panel>
-            </PanelGroup>
-
+                <PanelResizeHandle className="w-1 bg-zinc-500" />
+                <Panel>
+                    <PanelGroup autoSaveId="example" direction="vertical">
+                        <Panel defaultSize={25}>
+                            <div>
+                                panel 1
+                            </div>
+                        </Panel>
+                        <PanelResizeHandle className="h-1 bg-zinc-500" />
+                        <Panel>
+                            <div>
+                                panel 2
+                            </div>
+                        </Panel>
+                    </PanelGroup>
+                </Panel>
+            </PanelGroup>;
         </div>
     );
 }
