@@ -15,70 +15,141 @@ const io = require('socket.io')(SOCKET_PORT, {
     }
 })
 
-var mentor
+var mentor_id = ""
 var users = []
+
+class SessionData {
+    constructor(freeze_all, hide_to_all, google_meet_link, editor_value) {
+        this._freeze_all = freeze_all;
+        this._hide_to_all = hide_to_all;
+        this._google_meet_link = google_meet_link;
+        this._editor_value = editor_value;
+    }
+
+    // Getters
+    get freeze_all() {
+        return this._freeze_all;
+    }
+    get hide_to_all() {
+        return this._hide_to_all;
+    }
+    get google_meet_link() {
+        return this._google_meet_link;
+    }
+    get editor_value() {
+        return this._editor_value;
+    }
+
+    // Setters
+    set freeze_all(value) {
+        this._freeze_all = value;
+    }
+    set hide_to_all(value) {
+        this._hide_to_all = value;
+    }
+    set google_meet_link(value) {
+        this._google_meet_link = value;
+    }
+    set editor_value(value) {
+        this._editor_value = value;
+    }
+}
+
+// one step cache: this stores latest info so that it can be reeimitted
+// if a user/learner connects
+// TODO: make this mentor specific, hint: classes?edwditor_value
 
 const listen = () => {
     io.httpServer.on('listening', () => {
         console.log(`Socket Server listening at port ${io.httpServer.address().port}...`)
     })
 
+    const current_sesh = new SessionData(false, false, "", "");
+
     // TODO:
     // format user and mentor better for client side usage []
-    // handle command send from mentor []
-    // handle google meet link send and recieve []
+    // handle command send from mentor [/] - 50%
+    // handle google meet link send and recieve [/]
     // handle real time messaging []
+    // On join, re-emit things [/]
+    // Make it so that data is not shared across instances of mentor [/] - created "SessionData" class
     io.on('connection', socket => {
         console.log(`${socket.id} connected to Socket Server!`)
-
-        socket.on('init-server', async (room_name) => {
-            socket.join(room_name);
-            mentor = socket.id;
-            room = room_name;
-        })
-
-        socket.on('join-room', async (username, room_name) => {
-            if (!users.includes(username)) {
-                socket.join(room_name);
-
-                io.to(room_name).emit('join-success', true);
-
-                users.push(username);
-
-                io.to(mentor).emit('joined-users', users);
-
-                console.log(`joined room: ${room_name}`)
-            }
-        })
-
-        socket.on('update-editor', async (editor_value, room_name) => {
-            io.to(room_name).emit('updated-editor', editor_value);
-            console.log(`updated room (${room_name})'s editor value: ${editor_value}`)
-            console.log(mentor, users)
-        })
 
         socket.on('disconnecting', async (reason) => {
             for (const room of socket.rooms) {
                 if (room !== socket.id) {
                     socket.to(room).emit("user has left", socket.id);
-                    mentor = "";
-                    users = [];
+                    users = users.filter(user => user.socket_id !== socket.id);
+                    io.to(room).emit('users-list', users);
                     console.log(reason);
                 }
             }
 
         })
 
+        socket.on('init-server', async (room_name) => {
+            socket.join(room_name);
+            mentor_id = socket.id;
+            room = room_name;
+        })
+
+        socket.on('update-meet-link', async (room_name, link) => {
+            io.to(room_name).emit('updated-meet-link', link);
+
+            current_sesh.google_meet_link = link;
+        })
+
+        socket.on('join-room', async (username, room_name = "") => {
+            if (!users.find(user => user.socket_id === socket.id)) {
+                console.log(current_sesh);
+                socket.join(room_name);
+
+                payload = {
+                    username: username,
+                    socket_id: socket.id,
+                }
+                users.push(payload);
+
+                io.to(room_name).emit('join-success', true);
+                io.to(room_name).emit('users-list', users);
+
+                // reemit prev_data to all
+                io.to(room_name).emit('updated-meet-link', current_sesh.google_meet_link);
+                io.to(room_name).emit('updated-editor', current_sesh.editor_value);
+                io.to(room_name).emit('freeze', current_sesh.freeze_all);
+                io.to(room_name).emit('hide-editor', current_sesh.hide_to_all);
+
+                console.log(`joined room: ${room_name}`)
+                console.log(`mentor id: ${mentor_id}`)
+            } else {
+                console.log(`cannot join twice in room: ${room_name}`);
+            }
+        })
+
+        socket.on('update-editor', async (editor_value, room_name) => {
+            io.to(room_name).emit('updated-editor', editor_value);
+
+            console.log(`updated room (${room_name})'s editor value: ${editor_value}`)
+            console.log(`connected users ${users}`)
+
+            current_sesh.editor_value = editor_value;
+        })
+
         // NOTE:
         // value: boolean
         socket.on('freeze-all', async (value, room_name) => {
             io.to(room_name).emit('freeze', value);
+
+            current_sesh.freeze_all = value;
         })
         socket.on('freeze-one', async (value, student_id) => {
             io.to(student_id).emit('freeze', value);
         })
         socket.on('hide-to-all', async (value, room_name) => {
             io.to(room_name).emit('hide-editor', value);
+
+            current_sesh.hide_to_all = value;
         })
         socket.on('hide-to-one', async (value, student_id) => {
             io.to(student_id).emit('hide-editor', value);

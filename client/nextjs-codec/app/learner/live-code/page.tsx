@@ -10,6 +10,7 @@ export default function Page() {
     const [isMentorEditorHidden, setIsMentorEditorHidden] = useState<boolean>(false);
     const [isFrozen, setIsFrozen] = useState<boolean>(false);
     const [isRoomJoined, setIsRoomJoined] = useState<any>(false);
+    const [updatedMeetLink, setUpdatedMeetLink] = useState<string>("");
 
     useEffect(() => {
         function updatedEditorEvent(editor_value: any) {
@@ -25,12 +26,17 @@ export default function Page() {
         function mentorEditorHiddenEvent(value: boolean) {
             setIsMentorEditorHidden(value);
         }
+        function updatedMeetLinkEvent(value: string) {
+            setUpdatedMeetLink(value);
+        }
 
-        socket.emit("join-room", "test_username", "test_room_id");
+        // TODO: Change socket.id to username
+        socket.emit("join-room", socket.id, "test_room_id");
         socket.on("join-success", roomJoinedEvent);
         socket.on("updated-editor", updatedEditorEvent);
         socket.on("freeze", freezeEvent);
         socket.on("hide-editor", mentorEditorHiddenEvent);
+        socket.on("updated-meet-link", updatedMeetLinkEvent);
 
         return () => {
             socket.off("updated-editor", updatedEditorEvent);
@@ -41,11 +47,15 @@ export default function Page() {
 
 
     return (
-        <div>
+        <div className="p-5 space-y-5">
             <div className="bg-zinc-900 p-5 rounded-lg">
                 {mentorEditorValue}
             </div>
+            <div className="bg-zinc-900 p-5 rounded-lg">
+                {updatedMeetLink}
+            </div>
             <div className="flex flex-col gap-5">
+
                 {isRoomJoined ? <span>Room successfully joined</span> : <span>No joined rooms yet</span>}
                 {isFrozen ? <span>Frozen by mentor</span> : <span>Not frozen</span>}
                 {isMentorEditorHidden ? <span>Mentor Editor is hidden from view</span> : <span>Mentor editor is visible</span>}
