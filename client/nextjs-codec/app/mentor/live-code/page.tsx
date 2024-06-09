@@ -17,22 +17,31 @@ import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ChangeHandler } from "react-hook-form";
+import { useSearchParams } from "next/navigation";
 
 interface s_User {
     username: String,
     socket_id: String,
 }
 
-// TODO: change to server url (in env)
-const socket = io("http://localhost:8800/");
+// TODO:
+// change to server url (in env) [/]
+// generate room ID that is associated with roomname e.g., roomname-ACeg13 []
+// handle problem selection [] 
+// handle private messages []
+// handle kick a/all learner []
+// kick all learners if mentor leaves []
+const socket = io(`${process.env.NEXT_PUBLIC_SERVER_URL}${process.env.NEXT_PUBLIC_SOCKET_PORT}`);
 
 export default function Page() {
+    const searchParams = useSearchParams()
+
     const { isPending, isError, error, data } = useQuery({
         queryKey: ["user"],
         queryFn: async () => await getUser(),
     });
 
-    const [roomId, setRoomId] = useState<string>("test_room_id");
+    const [roomId, setRoomId] = useState<string>("");
     const [code, setCode] = useState<any>();
     const [users, setUsers] = useState<s_User[]>([]);
     const [isHidden, setIsHidden] = useState<boolean>(false);
@@ -42,6 +51,8 @@ export default function Page() {
         socket.emit("init-server", roomId);
         socket.on("users-list", value => { setUsers(value) });
 
+        setRoomId(searchParams.get('room_id')!);
+
         return () => {
             socket.off("init-server");
         }
@@ -49,7 +60,7 @@ export default function Page() {
 
     function handleChange(value: string | undefined, _event: any | null) {
         console.log(value);
-        socket.emit("update-editor", value, "test_room_id");
+        socket.emit("update-editor", value, roomId);
     }
     function changeEditorVisibility() {
         socket.emit('hide-to-all', !isHidden, roomId);
@@ -91,7 +102,10 @@ export default function Page() {
                     <PanelGroup autoSaveId="example" direction="vertical">
                         <Panel defaultSize={25}>
                             <div className="flex flex-col gap-5">
+                                <span>Session code: {roomId}</span>
+
                                 <Input onChange={updateMeetLink} />
+
                                 <span>Editor status {isHidden ? "Hidden" : "Visible"}</span>
                                 <span>Connected learners</span>
                                 {users.map(value => {

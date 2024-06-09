@@ -1,6 +1,6 @@
 "use client"
 
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import CreateClassroomForm from "@/components/ui/classroom/createClassroomForm";
 import BorderedContainer from "@/components/ui/wrappers/BorderedContainer";
 import Modal from "@/components/ui/wrappers/Modal";
@@ -23,10 +23,32 @@ export default function Page() {
         },
     });
 
+    function makeid(length: number) {
+        let result = '';
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        const charactersLength = characters.length;
+        let counter = 0;
+        while (counter < length) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+            counter += 1;
+        }
+        return result;
+    }
+
     return (
         <div className="flex flex-col">
             <div className="bg-zinc-900 p-5 flex justify-between">
                 <p className="text-lg my-auto">Created rooms</p>
+                <Modal
+                    label="Host live session"
+                    title="Host session"
+                    description="Host live session for demoing a problem created in a room. Learners and Mentors can code along as well as perform collaborative code writing"
+                >
+                    <Link href={{
+                        pathname: '/mentor/live-code',
+                        query: { room_id: makeid(5) },
+                    }}>Host live session</Link>
+                </Modal>
                 <Modal
                     label="Create classroom"
                     title="Create rooms"

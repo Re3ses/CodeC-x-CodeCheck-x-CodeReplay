@@ -89,9 +89,11 @@ const listen = () => {
         })
 
         socket.on('init-server', async (room_name) => {
-            socket.join(room_name);
-            mentor_id = socket.id;
-            room = room_name;
+            if (room_name !== "") {
+                socket.join(room_name);
+                mentor_id = socket.id;
+                room = room_name;
+            }
         })
 
         socket.on('update-meet-link', async (room_name, link) => {
@@ -100,9 +102,11 @@ const listen = () => {
             current_sesh.google_meet_link = link;
         })
 
-        socket.on('join-room', async (username, room_name = "") => {
-            if (!users.find(user => user.socket_id === socket.id)) {
+        socket.on('join-room', async (username, room_name) => {
+            if (!users.find(user => user.socket_id === socket.id) && room_name !== "") {
                 console.log(current_sesh);
+                console.log(users.socket_id)
+                console.log(room_name)
                 socket.join(room_name);
 
                 payload = {
