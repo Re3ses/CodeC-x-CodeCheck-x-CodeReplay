@@ -25,11 +25,6 @@ export default function Nav(props: { variant?: string, name?: string, type?: str
                             label: "Code box",
                             href: `/codebox`
                         },
-                        {
-                            id: "live-code",
-                            label: "Live code",
-                            href: `/${path}/live-code`
-                        },
                     ].map(({ label, href, id }) => (
                         <Link
                             className={pathname.endsWith(id) ? "underline" : ""}

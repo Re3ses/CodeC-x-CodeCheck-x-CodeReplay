@@ -7,7 +7,8 @@
 
 "use client";
 
-import AdminSettingsDrawer from "@/components/AdminSettingsDrawer";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { getUser } from "@/lib/auth";
 import { Editor } from "@monaco-editor/react";
 import { useQuery } from "@tanstack/react-query";
@@ -18,6 +19,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ChangeHandler } from "react-hook-form";
 import { useSearchParams } from "next/navigation";
+import Image from 'next/image';
 
 interface s_User {
     username: String,
@@ -26,7 +28,8 @@ interface s_User {
 
 // TODO:
 // change to server url (in env) [/]
-// generate room ID that is associated with roomname e.g., roomname-ACeg13 []
+// generate room ID that is associated with roomname e.g., roomname-ACeg13 [/]
+// student search functionality [/]
 // handle problem selection [] 
 // handle private messages []
 // handle kick a/all learner []
@@ -42,21 +45,26 @@ export default function Page() {
     });
 
     const [roomId, setRoomId] = useState<string>("");
-    const [code, setCode] = useState<any>();
     const [users, setUsers] = useState<s_User[]>([]);
     const [isHidden, setIsHidden] = useState<boolean>(false);
     const [isFrozen, setIsFrozen] = useState<boolean>(false);
 
+    socket.emit("init-server", roomId);
+
     useEffect(() => {
-        socket.emit("init-server", roomId);
-        socket.on("users-list", value => { setUsers(value) });
+        function userListEvent(value: s_User[]) {
+            console.log(value);
+            setUsers(value);
+        }
+
+        socket.on("users-list", userListEvent);
 
         setRoomId(searchParams.get('room_id')!);
 
         return () => {
-            socket.off("init-server");
+            socket.off("users-list", userListEvent);
         }
-    }, [users])
+    }, [])
 
     function handleChange(value: string | undefined, _event: any | null) {
         console.log(value);
@@ -83,16 +91,58 @@ export default function Page() {
                             <Editor
                                 theme="vs-dark"
                                 defaultValue="content here"
-                                value={code}
                                 onChange={(value, event) => handleChange(value, event)}
                             />
                         </Panel>
                         <PanelResizeHandle className="h-1 bg-zinc-500" />
-                        <Panel defaultSize={25} className="p-4 bg-red-200">
-                            {/*button group*/}
-                            <div className="flex gap-4">
-                                <Button variant={"outline"} onClick={() => changeEditorVisibility()}>Hide editor</Button>
-                                <Button variant={"outline"} onClick={() => changeFrozenStateOfAll()}>Freeze all</Button>
+                        <Panel defaultSize={25} className="p-4 space-y-5">
+                            <div className="flex justify-between">
+                                <div className="space-y-2">
+                                    <h6 className="text-sm">
+                                        Google meet link
+                                    </h6>
+                                    <Input className="w-[235px] p-4 bg-zinc-900 text-sm" placeholder="Google meet link" onChange={updateMeetLink} />
+                                </div>
+                                <div className="space-y-2">
+                                    <h6 className="text-sm">
+                                        Room code
+                                    </h6>
+                                    <div className="w-[160px] px-4 py-2 bg-zinc-900 text-sm font-bold text-white/50 rounded-lg">
+                                        {roomId}
+                                    </div>
+                                </div>
+                                <div className="space-y-2">
+                                    <h6 className="text-sm">
+                                        Current editor status
+                                    </h6>
+                                    <div className="w-[160px] px-4 py-2 bg-zinc-900 text-sm font-bold text-white/50 rounded-lg">
+                                        <span>{isHidden ? "Hidden" : "Visible"}</span>
+                                    </div>
+                                </div>
+                                <div className="space-y-2">
+                                    <h6 className="text-sm">
+                                        Students editor status
+                                    </h6>
+                                    <div className="w-[160px] px-4 py-2 bg-zinc-900 text-sm font-bold text-white/50 rounded-lg">
+                                        <span>{isFrozen ? "Frozen" : "Un-frozen"}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="border border-white/25 rounded-lg">
+                                <div className="border-b border-white/25 p-4">
+                                    <h6 className="text-sm text-white/50">Mentor options</h6>
+                                </div>
+                                <div className="p-4">
+                                    <div className="space-y-2">
+                                        <div>
+                                            <h6 className="text-sm text-white/50">Commands</h6>
+                                        </div>
+                                        <div className="flex gap-4 px-4">
+                                            <Button variant={"default"} onClick={() => changeEditorVisibility()}>Hide editor</Button>
+                                            <Button variant={"default"} onClick={() => changeFrozenStateOfAll()}>Freeze all</Button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </Panel>
                     </PanelGroup>
@@ -100,22 +150,28 @@ export default function Page() {
                 <PanelResizeHandle className="w-1 bg-zinc-500" />
                 <Panel>
                     <PanelGroup autoSaveId="example" direction="vertical">
-                        <Panel defaultSize={25}>
-                            <div className="flex flex-col gap-5">
-                                <span>Session code: {roomId}</span>
-
-                                <Input onChange={updateMeetLink} />
-
-                                <span>Editor status {isHidden ? "Hidden" : "Visible"}</span>
-                                <span>Connected learners</span>
-                                {users.map(value => {
-                                    return (
-                                        <>
-                                            <span>Username: {value.username}</span>
-                                            <span>Socket ID: {value.socket_id}</span>
-                                        </>
-                                    )
-                                })}
+                        <Panel defaultSize={25} className="p-4">
+                            <div className="border border-white/25 rounded-lg">
+                                <div className="border-b border-white/25 p-4 flex justify-between">
+                                    <h6 className="text-sm text-white/50 self-center">Connected learners</h6>
+                                    <div className="flex gap-2">
+                                        <FontAwesomeIcon className='self-center' icon={faMagnifyingGlass} />
+                                        <input className="p-2 bg-transparent border-b border-white/25 text-sm" placeholder="student name" />
+                                    </div>
+                                </div>
+                                <div className="p-4 grid grid-cols-2 gap-2">
+                                    {users.map(value => {
+                                        return (
+                                            <div className='flex gap-4'>
+                                                <Image className='rounded-full' src="https://randomuser.me/api/portraits/men/30.jpg" alt="profile image" width={32} height={32} />
+                                                <div className='self-center flex flex-col'>
+                                                    <span className='text-sm font-bold'>{value.username}</span>
+                                                    <span className='text-sm text-white/50'>{value.socket_id}</span>
+                                                </div>
+                                            </div>
+                                        )
+                                    })}
+                                </div>
                             </div>
                         </Panel>
                         <PanelResizeHandle className="h-1 bg-zinc-500" />

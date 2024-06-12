@@ -33,7 +33,8 @@ export default function Page() {
             setUpdatedMeetLink(value);
         }
 
-        // TODO: Change socket.id to username
+        // TODO: Change socket.id to username []
+        // Add email to packet
         socket.on("join-success", roomJoinedEvent);
         socket.on("updated-editor", updatedEditorEvent);
         socket.on("freeze", freezeEvent);
@@ -44,6 +45,8 @@ export default function Page() {
             socket.off("updated-editor", updatedEditorEvent);
             socket.off("freeze", freezeEvent);
             socket.off("hide-editor", mentorEditorHiddenEvent);
+            socket.off("join-success", roomJoinedEvent);
+            socket.off("updated-meet-iink", updatedMeetLinkEvent);
         }
     }, [mentorEditorValue])
 
