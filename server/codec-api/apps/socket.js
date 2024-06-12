@@ -82,7 +82,7 @@ const listen = () => {
                     socket.to(room).emit("user has left", socket.id);
                     users = users.filter(user => user.socket_id !== socket.id);
                     io.to(room).emit('users-list', users);
-                    console.log(reason);
+                    console.log(reason, socket.id);
                 }
             }
 
@@ -105,7 +105,7 @@ const listen = () => {
         socket.on('join-room', async (username, room_name) => {
             if (!users.find(user => user.socket_id === socket.id) && room_name !== "") {
                 console.log(current_sesh);
-                console.log(users.socket_id)
+                console.log(users);
                 console.log(room_name)
                 socket.join(room_name);
 
