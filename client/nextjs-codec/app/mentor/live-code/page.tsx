@@ -83,106 +83,142 @@ export default function Page() {
     }
 
     return (
-        <div className="h-screen">
-            <PanelGroup autoSaveId="example" direction="horizontal">
-                <Panel defaultSize={50}>
-                    <PanelGroup autoSaveId="example" direction="vertical">
-                        <Panel defaultSize={60}>
-                            <Editor
-                                theme="vs-dark"
-                                defaultValue="content here"
-                                onChange={(value, event) => handleChange(value, event)}
-                            />
-                        </Panel>
-                        <PanelResizeHandle className="h-1 bg-zinc-500" />
-                        <Panel defaultSize={25} className="p-4 space-y-5">
-                            <div className="flex justify-between">
-                                <div className="space-y-2">
-                                    <h6 className="text-sm">
-                                        Google meet link
-                                    </h6>
-                                    <Input className="w-[235px] p-4 bg-zinc-900 text-sm" placeholder="Google meet link" onChange={updateMeetLink} />
-                                </div>
-                                <div className="space-y-2">
-                                    <h6 className="text-sm">
-                                        Room code
-                                    </h6>
-                                    <div className="w-[160px] px-4 py-2 bg-zinc-900 text-sm font-bold text-white/50 rounded-lg">
-                                        {roomId}
-                                    </div>
-                                </div>
-                                <div className="space-y-2">
-                                    <h6 className="text-sm">
-                                        Current editor status
-                                    </h6>
-                                    <div className="w-[160px] px-4 py-2 bg-zinc-900 text-sm font-bold text-white/50 rounded-lg">
-                                        <span>{isHidden ? "Hidden" : "Visible"}</span>
-                                    </div>
-                                </div>
-                                <div className="space-y-2">
-                                    <h6 className="text-sm">
-                                        Students editor status
-                                    </h6>
-                                    <div className="w-[160px] px-4 py-2 bg-zinc-900 text-sm font-bold text-white/50 rounded-lg">
-                                        <span>{isFrozen ? "Frozen" : "Un-frozen"}</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="border border-white/25 rounded-lg">
-                                <div className="border-b border-white/25 p-4">
-                                    <h6 className="text-sm text-white/50">Mentor options</h6>
-                                </div>
-                                <div className="p-4">
-                                    <div className="space-y-2">
-                                        <div>
-                                            <h6 className="text-sm text-white/50">Commands</h6>
-                                        </div>
-                                        <div className="flex gap-4 px-4">
-                                            <Button variant={"default"} onClick={() => changeEditorVisibility()}>Hide editor</Button>
-                                            <Button variant={"default"} onClick={() => changeFrozenStateOfAll()}>Freeze all</Button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </Panel>
-                    </PanelGroup>
-                </Panel>
-                <PanelResizeHandle className="w-1 bg-zinc-500" />
-                <Panel>
-                    <PanelGroup autoSaveId="example" direction="vertical">
-                        <Panel defaultSize={25} className="p-4">
-                            <div className="border border-white/25 rounded-lg">
-                                <div className="border-b border-white/25 p-4 flex justify-between">
-                                    <h6 className="text-sm text-white/50 self-center">Connected learners</h6>
-                                    <div className="flex gap-2">
-                                        <FontAwesomeIcon className='self-center' icon={faMagnifyingGlass} />
-                                        <input className="p-2 bg-transparent border-b border-white/25 text-sm" placeholder="student name" />
-                                    </div>
-                                </div>
-                                <div className="p-4 grid grid-cols-2 gap-2">
-                                    {users.map(value => {
-                                        return (
-                                            <div className='flex gap-4'>
-                                                <Image className='rounded-full' src="https://randomuser.me/api/portraits/men/30.jpg" alt="profile image" width={32} height={32} />
-                                                <div className='self-center flex flex-col'>
-                                                    <span className='text-sm font-bold'>{value.username}</span>
-                                                    <span className='text-sm text-white/50'>{value.socket_id}</span>
-                                                </div>
-                                            </div>
-                                        )
-                                    })}
-                                </div>
-                            </div>
-                        </Panel>
-                        <PanelResizeHandle className="h-1 bg-zinc-500" />
-                        <Panel>
-                            <div>
-                                Mentor ID: {socket.id}
-                            </div>
-                        </Panel>
-                    </PanelGroup>
-                </Panel>
-            </PanelGroup>;
-        </div>
+      <div className="h-screen">
+        <PanelGroup autoSaveId="example" direction="horizontal">
+          <Panel defaultSize={50}>
+            <PanelGroup autoSaveId="example" direction="vertical">
+              <Panel defaultSize={60}>
+                <Editor
+                  theme="vs-dark"
+                  defaultValue="content here"
+                  onChange={(value, event) => handleChange(value, event)}
+                />
+              </Panel>
+              <PanelResizeHandle className="h-1 bg-zinc-500" />
+              <Panel defaultSize={25} className="p-4 space-y-5">
+                <div className="flex justify-between">
+                  <div className="space-y-2">
+                    <h6 className="text-sm">Google meet link</h6>
+                    <Input
+                      className="w-[235px] p-4 bg-zinc-900 text-sm"
+                      placeholder="Google meet link"
+                      onChange={updateMeetLink}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <h6 className="text-sm">Room code</h6>
+                    <div className="w-[160px] px-4 py-2 bg-zinc-900 text-sm font-bold text-white/50 rounded-lg">
+                      {roomId}
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <h6 className="text-sm">Current editor status</h6>
+                    <div className="w-[160px] px-4 py-2 bg-zinc-900 text-sm font-bold text-white/50 rounded-lg">
+                      <span>{isHidden ? "Hidden" : "Visible"}</span>
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <h6 className="text-sm">Students editor status</h6>
+                    <div className="w-[160px] px-4 py-2 bg-zinc-900 text-sm font-bold text-white/50 rounded-lg">
+                      <span>{isFrozen ? "Frozen" : "Un-frozen"}</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="border border-white/25 rounded-lg">
+                  <div className="border-b border-white/25 p-4">
+                    <h6 className="text-sm text-white/50">Mentor options</h6>
+                  </div>
+                  <div className="p-4">
+                    <div className="space-y-2">
+                      <div>
+                        <h6 className="text-sm text-white/50">Commands</h6>
+                      </div>
+                      <div className="flex gap-4 px-4">
+                        <Button
+                          variant={"default"}
+                          onClick={() => changeEditorVisibility()}
+                        >
+                          Hide editor
+                        </Button>
+                        <Button
+                          variant={"default"}
+                          onClick={() => changeFrozenStateOfAll()}
+                        >
+                          Freeze all
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Panel>
+            </PanelGroup>
+          </Panel>
+          <PanelResizeHandle className="w-1 bg-zinc-500" />
+          <Panel>
+            <PanelGroup autoSaveId="example" direction="vertical">
+              <Panel defaultSize={25} className="p-4">
+                <div className="border border-white/25 rounded-lg">
+                  <div className="border-b border-white/25 p-4 flex justify-between">
+                    <h6 className="text-sm text-white/50 self-center">
+                      Connected learners
+                    </h6>
+                    <div className="flex gap-2">
+                      <FontAwesomeIcon
+                        className="self-center"
+                        icon={faMagnifyingGlass}
+                      />
+                      <input
+                        className="p-2 bg-transparent border-b border-white/25 text-sm"
+                        placeholder="student name"
+                      />
+                    </div>
+                  </div>
+                  <div className="p-4 grid grid-cols-2 gap-2">
+                    {users.map((value) => {
+                      return (
+                        <div className="flex gap-4">
+                          <Image
+                            className="rounded-full"
+                            src="https://randomuser.me/api/portraits/men/30.jpg"
+                            alt="profile image"
+                            width={32}
+                            height={32}
+                          />
+                          <div className="self-center flex flex-col">
+                            <span className="text-sm font-bold">
+                              {value.username}
+                            </span>
+                            <span className="text-sm text-white/50">
+                              {value.socket_id}
+                            </span>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </Panel>
+              <PanelResizeHandle className="h-1 bg-zinc-500" />
+              <Panel>
+                <div className="border border-white/25 rounded-lg h-full flex flex-col">
+                  <div className="border-b border-white/25 p-4 flex justify-between">
+                    <h6 className="text-sm text-white/50 self-center">
+                      Now viewing
+                    </h6>
+                  </div>
+                  <div className="flex-1 p-2 overflow-hidden">
+                    <Editor
+                      theme="vs-dark"
+                      options={{ readOnly: true }}
+                      className="h-full w-full"
+                    />
+                  </div>
+                </div>
+              </Panel>
+            </PanelGroup>
+          </Panel>
+        </PanelGroup>
+        ;
+      </div>
     );
 }
