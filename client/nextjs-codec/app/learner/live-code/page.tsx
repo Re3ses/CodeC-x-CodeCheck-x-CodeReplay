@@ -7,6 +7,8 @@ import Image from "next/image";
 import { ChangeEvent, useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import { Editor } from "@monaco-editor/react";
+import { TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Tooltip } from "@radix-ui/react-tooltip";
 
 const socket = io(`${process.env.NEXT_PUBLIC_SERVER_URL}${process.env.NEXT_PUBLIC_SOCKET_PORT}`);
 
@@ -61,9 +63,9 @@ export default function Page() {
     }
 
     return (
-      <div className="p-5 space-y-5">
-        <div className="grid grid-cols-5">
-          <div className="flex flex-col justify-center align-middle gap-1">
+      <div className="p-5 space-y-5 h-screen flex flex-col">
+        <div className="grid grid-cols-5 flex-none gap-4">
+          <div className="flex flex-col justify-center items-center gap-1">
             {isRoomJoined ? (
               <>
                 <span className="text-sm text-white/50 text-center">
@@ -85,21 +87,21 @@ export default function Page() {
               <span>No joined rooms yet</span>
             )}
           </div>
-          <div className="flex flex-col justify-center align-middle gap-1">
+          <div className="flex flex-col justify-center items-center gap-1">
             <span className="text-sm text-white/50 text-center">
               Google meet link
             </span>
-            <div className="bg-zinc-900 h-[42px] w-[13rem] overflow-auto flex items-center justify-center self-center">
+            <div className="bg-zinc-900 h-[42px] w-[13rem] overflow-auto flex items-center justify-center">
               <span className="text-sm font-bold text-white/50">
                 {updatedMeetLink}
               </span>
             </div>
           </div>
-          <div className="flex flex-col justify-center align-middle gap-1">
+          <div className="flex flex-col justify-center items-center gap-1">
             <span className="text-sm text-white/50 text-center">
               Room invite code
             </span>
-            <div className="bg-zinc-900 h-[36px] w-[10rem] flex items-center justify-between self-center">
+            <div className="bg-zinc-900 h-[36px] w-[10rem] flex items-center justify-between">
               <Input
                 type="text"
                 className="text-sm pl-2 font-bold text-white/50 rounded-none h-fit border-none bg-zinc-900 focus-visible:ring-inset focus-visible:ring-1"
@@ -120,11 +122,11 @@ export default function Page() {
               </Button>
             </div>
           </div>
-          <div className="flex flex-col justify-center align-middle gap-1">
+          <div className="flex flex-col justify-center items-center gap-1">
             <span className="text-sm text-white/50 text-center">
               Current editor status
             </span>
-            <div className="bg-zinc-900 h-[36px] w-[10rem] flex items-center justify-center self-center">
+            <div className="bg-zinc-900 h-[36px] w-[10rem] flex items-center justify-center">
               {isFrozen ? (
                 <span className="text-sm font-bold text-white/50">Frozen</span>
               ) : (
@@ -134,11 +136,11 @@ export default function Page() {
               )}
             </div>
           </div>
-          <div className="flex flex-col justify-center align-middle gap-1">
+          <div className="flex flex-col justify-center items-center gap-1">
             <span className="text-sm text-white/50 text-center">
               Mentor editor status
             </span>
-            <div className="bg-zinc-900 h-[36px] w-[10rem] flex items-center justify-center self-center">
+            <div className="bg-zinc-900 h-[36px] w-[10rem] flex items-center justify-center">
               {isMentorEditorHidden ? (
                 <span className="text-sm font-bold text-white/50">Hidden</span>
               ) : (
@@ -147,10 +149,18 @@ export default function Page() {
             </div>
           </div>
         </div>
-        <div className="h-screen">
-          <PanelGroup autoSaveId="learnerpanel" direction="horizontal">
+        <div className="flex-1 overflow-auto">
+          <PanelGroup
+            autoSaveId="learnerpanel"
+            direction="horizontal"
+            className="h-full"
+          >
             <Panel defaultSize={50}>
-              <PanelGroup autoSaveId="learnerinnerpanel" direction="vertical">
+              <PanelGroup
+                autoSaveId="learnerinnerpanel"
+                direction="vertical"
+                className="h-full"
+              >
                 <Panel className="p-4">
                   <div className="border border-white/25 rounded-lg h-full flex flex-col">
                     <div className="border-b border-white/25 p-4 flex justify-between">
@@ -158,7 +168,7 @@ export default function Page() {
                         Now viewing mentor
                       </h6>
                     </div>
-                    <div className="flex-1 p-2 overflow-hidden">
+                    <div className="flex-1 p-2 overflow-auto">
                       <Editor
                         theme="vs-dark"
                         value={mentorEditorValue}
@@ -168,28 +178,60 @@ export default function Page() {
                     </div>
                   </div>
                 </Panel>
-                <PanelResizeHandle className="h-1 bg-zinc-500" />
+                <PanelResizeHandle className="p-1 bg-zinc-500" />
                 <Panel defaultSize={50}>
-                  <Editor theme="vs-dark" defaultValue="content here" />
+                  <Editor
+                    theme="vs-dark"
+                    defaultValue="content here"
+                    className="h-full w-full"
+                  />
                 </Panel>
               </PanelGroup>
             </Panel>
-            <PanelResizeHandle />
-            <Panel defaultSize={50} className="p-4">
-              <div className="border border-white/25 rounded-lg h-full flex flex-col">
-                <div className="border-b border-white/25 p-4 flex justify-between">
-                  <h6 className="text-sm text-white/50 self-center">
-                    Problem description
-                  </h6>
-                </div>
-                <div className="flex-1 p-2 overflow-hidden">
-                  <Editor
-                    theme="vs-dark"
-                    options={{ readOnly: true }}
-                    className="h-full w-full"
-                  />
-                </div>
-              </div>
+            <PanelResizeHandle className="p-1 bg-zinc-500" />
+            <Panel>
+              <PanelGroup direction="vertical">
+                <Panel defaultSize={50} className="p-4">
+                  <div className="border border-white/25 rounded-lg h-full flex flex-col">
+                    <div className="border-b border-white/25 p-4 flex justify-between">
+                      <h6 className="text-sm text-white/50 self-center">
+                        Problem description
+                      </h6>
+                    </div>
+                    <div className="flex-1 p-2 overflow-auto">
+                      {/* Problem description here */}
+                    </div>
+                  </div>
+                </Panel>
+                <PanelResizeHandle className="p-1 bg-zinc-500" />
+                <Panel defaultSize={50} className="p-4">
+                  <div className="border border-white/25 rounded-lg h-full flex flex-col">
+                    <div className="border-b border-white/25 p-4 flex justify-between">
+                      <h6 className="text-sm text-white/50 self-center">
+                        Compiled results
+                      </h6>
+                      <div className="flex gap-2">
+                        <Button className="rounded-none">Run code</Button>
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Button className="rounded-none">
+                                Compare output
+                              </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>Run code and compare output to problem testcase</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      </div>
+                    </div>
+                    <div className="flex-1 p-2 overflow-auto">
+                      {/* Problem description here */}
+                    </div>
+                  </div>
+                </Panel>
+              </PanelGroup>
             </Panel>
           </PanelGroup>
         </div>

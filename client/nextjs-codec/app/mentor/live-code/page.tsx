@@ -95,7 +95,10 @@ export default function Page() {
                 />
               </Panel>
               <PanelResizeHandle className="h-1 bg-zinc-500" />
-              <Panel defaultSize={25} className="p-4 space-y-5">
+              <Panel
+                defaultSize={25}
+                className="p-4 space-y-5 flex flex-col h-full"
+              >
                 <div className="flex justify-between">
                   <div className="space-y-2">
                     <h6 className="text-sm">Google meet link</h6>
@@ -124,28 +127,38 @@ export default function Page() {
                     </div>
                   </div>
                 </div>
-                <div className="border border-white/25 rounded-lg">
-                  <div className="border-b border-white/25 p-4">
-                    <h6 className="text-sm text-white/50">Mentor options</h6>
+                <div className="flex-1 border border-white/25 rounded-lg flex flex-col overflow-hidden">
+                  <div className="flex justify-between border-b border-white/25 p-4">
+                    <h6 className="text-sm text-white/50 self-center">
+                      Mentor options
+                    </h6>
+                    <div className="flex gap-4">
+                      <Button
+                        className="rounded-none"
+                        variant={"default"}
+                        onClick={() => changeEditorVisibility()}
+                      >
+                        Hide editor
+                      </Button>
+                      <Button
+                        className="rounded-none"
+                        variant={"default"}
+                        onClick={() => changeFrozenStateOfAll()}
+                      >
+                        Freeze all
+                      </Button>
+                    </div>
                   </div>
-                  <div className="p-4">
-                    <div className="space-y-2">
-                      <div>
-                        <h6 className="text-sm text-white/50">Commands</h6>
+                  <div className="flex-1 p-4 overflow-auto">
+                    <div className="border border-white/25 rounded-lg h-full flex flex-col">
+                      <div className="flex justify-between border-b border-white/25 p-2">
+                        <h5 className="text-xs text-white/50">
+                          Problem description
+                        </h5>
                       </div>
-                      <div className="flex gap-4 px-4">
-                        <Button
-                          variant={"default"}
-                          onClick={() => changeEditorVisibility()}
-                        >
-                          Hide editor
-                        </Button>
-                        <Button
-                          variant={"default"}
-                          onClick={() => changeFrozenStateOfAll()}
-                        >
-                          Freeze all
-                        </Button>
+                      <div className="p-3 flex-1 overflow-auto">
+                        {/* template */}
+                        <div className="min-h-screen bg-red-300">h</div>
                       </div>
                     </div>
                   </div>
@@ -199,7 +212,7 @@ export default function Page() {
                 </div>
               </Panel>
               <PanelResizeHandle className="h-1 bg-zinc-500" />
-              <Panel className='p-4'>
+              <Panel className="p-4">
                 <div className="border border-white/25 rounded-lg h-full flex flex-col">
                   <div className="border-b border-white/25 p-4 flex justify-between">
                     <h6 className="text-sm text-white/50 self-center">
@@ -218,7 +231,6 @@ export default function Page() {
             </PanelGroup>
           </Panel>
         </PanelGroup>
-        ;
       </div>
     );
 }
