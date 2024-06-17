@@ -64,7 +64,7 @@ export default function Page() {
         return () => {
             socket.off("users-list", userListEvent);
         }
-    }, [])
+    }, [searchParams])
 
     function handleChange(value: string | undefined, _event: any | null) {
         console.log(value);
@@ -174,9 +174,9 @@ export default function Page() {
                     </div>
                   </div>
                   <div className="p-4 grid grid-cols-2 gap-2">
-                    {users.map((value) => {
+                    {users.map((value, index) => {
                       return (
-                        <div className="flex gap-4">
+                        <div className="flex gap-4" key={index}>
                           <Image
                             className="rounded-full"
                             src="https://randomuser.me/api/portraits/men/30.jpg"
@@ -199,7 +199,7 @@ export default function Page() {
                 </div>
               </Panel>
               <PanelResizeHandle className="h-1 bg-zinc-500" />
-              <Panel>
+              <Panel className='p-4'>
                 <div className="border border-white/25 rounded-lg h-full flex flex-col">
                   <div className="border-b border-white/25 p-4 flex justify-between">
                     <h6 className="text-sm text-white/50 self-center">

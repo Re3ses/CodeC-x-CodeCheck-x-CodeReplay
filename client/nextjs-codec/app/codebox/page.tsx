@@ -63,7 +63,7 @@ export default function Page() {
                             <option value="">None</option>
                             {languages?.map((val: any) => {
                                 return (
-                                    <option value={val.id}>{val.name}</option>
+                                    <option value={val.id} key={val.id}>{val.name}</option>
                                 );
                             })}
                         </select>

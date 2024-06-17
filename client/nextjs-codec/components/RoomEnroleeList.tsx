@@ -24,7 +24,7 @@ export default function RoomEnroleeList({
             <div className="p-5">
                 {roomQuery.data?.enrollees.map((enrollees) => {
                     return (
-                        <p className="truncate">
+                        <p className="truncate" key={enrollees._id}>
                             {enrollees.learner.first_name}{" "}
                             {enrollees.learner.last_name}
                         </p>

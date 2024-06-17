@@ -70,7 +70,7 @@ export default function Page() {
             return await getUser();
         };
         user().then((result) => setLearner(result.id));
-    }, []);
+    }, [params.problemId]);
 
     function handleEditorDidMount(editor: any) {
         editorRef.current = editor;
@@ -250,174 +250,196 @@ export default function Page() {
     }
 
     return (
-        <PanelGroup direction="horizontal">
-            <Panel className="min-w-[20em] overflow-scroll flex flex-col gap-2">
-                <div className="p-3 bg-zinc-900">
-                    <p>Problem description</p>
+      <PanelGroup direction="horizontal">
+        <Panel className="min-w-[20em] overflow-scroll flex flex-col gap-2">
+          <div className="p-3 bg-zinc-900">
+            <p>Problem description</p>
+          </div>
+          <div className="mx-auto">
+            <Dialog>
+              <DialogTrigger className="p-3 flex gap-2 justify-center w-fit hover:text-yellow-400">
+                <LightningBoltIcon />
+                Ask for help
+                <LightningBoltIcon />
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Request live session</DialogTitle>
+                  <DialogDescription>
+                    {
+                      'Notify the creator of this problem for a live coding session, you will recieve a "Join" button should they accept.'
+                    }
+                  </DialogDescription>
+                </DialogHeader>
+                <form onSubmit={sendLiveCodeRequest}>
+                  <Textarea
+                    name="request_reason"
+                    placeholder="optional: reason (i.e., 'How to use callback funtions?')"
+                  />
+                  <Button type="submit">Submit request</Button>
+                </form>
+              </DialogContent>
+            </Dialog>
+          </div>
+          <div className="p-3">
+            <div
+              dangerouslySetInnerHTML={{
+                __html: problem?.description!,
+              }}
+            ></div>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: problem?.constraints!,
+              }}
+            ></div>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: problem?.input_format!,
+              }}
+            ></div>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: problem?.output_format!,
+              }}
+            ></div>
+          </div>
+          <div className="p-3">
+            <p className="bg-zinc-900 p-3 rounded-t-lg">Sample cases</p>
+            <table className="w-full">
+              <tr>
+                <th>Sample input</th>
+                <th>Sample output</th>
+              </tr>
+              {problem?.test_cases.map((val: any, index: number) => {
+                if (val.is_sample) {
+                  return (
+                    <tr
+                      className={index % 2 == 0 ? "" : "bg-zinc-900"}
+                      key={index}
+                    >
+                      <td>{val.input}</td>
+                      <td>{val.output}</td>
+                    </tr>
+                  );
+                }
+              })}
+            </table>
+          </div>
+          <div className="flex flex-col p-3">
+            <div className="flex gap-2 bg-zinc-900 p-3 rounded-t-lg">
+              <p>Custom input</p>
+              <Switch
+                checked={showCustomInput}
+                onCheckedChange={setShowCustomInput}
+              />
+            </div>
+            <textarea
+              className={`${
+                showCustomInput ? "block" : "hidden"
+              } p-3 bg-zinc-800`}
+              rows={8}
+              name="custom-input"
+              id="custom-input"
+              placeholder="Custom input here"
+              value={inputVal}
+              onChange={(e) => setInputVal(e.currentTarget.value)}
+            />
+          </div>
+        </Panel>
+        <PanelResizeHandle className="bg-zinc-700 w-[2px]" />
+        <Panel>
+          <PanelGroup direction="vertical" className="flex flex-col flex-1">
+            <Panel className="flex-1 flex flex-col min-h-[10em]">
+              <div className="flex justify-between bg-zinc-900 p-3">
+                <div className="flex gap-2 my-auto">
+                  <div>
+                    <select
+                      className="p-2 rounded-md"
+                      name="languages"
+                      form="submit-form"
+                      onChange={(e) => {
+                        setSelectedLang(e.currentTarget.value);
+                      }}
+                      required
+                    >
+                      <option value="">None</option>
+                      {languages?.map((val) => {
+                        return (
+                          <option value={val.id} key={val.id}>
+                            {val.name}
+                          </option>
+                        );
+                      })}
+                    </select>
+                  </div>
                 </div>
-                <div className="mx-auto">
-                    <Dialog>
-                        <DialogTrigger className="p-3 flex gap-2 justify-center w-fit hover:text-yellow-400"><LightningBoltIcon />Ask for help<LightningBoltIcon /></DialogTrigger>
-                        <DialogContent>
-                            <DialogHeader>
-                                <DialogTitle>Request live session</DialogTitle>
-                                <DialogDescription>
-                                    Notify the creator of this problem for a live coding session, you will recieve a "Join" button should they accept.
-                                </DialogDescription>
-                            </DialogHeader>
-                            <form onSubmit={sendLiveCodeRequest}>
-                                <Textarea name="request_reason" placeholder="optional: reason (i.e., 'How to use callback funtions?')" />
-                                <Button type="submit">Submit request</Button>
-                            </form>
-                        </DialogContent>
-                    </Dialog>
+                <div className="flex gap-2">
+                  <Button onClick={() => handleTry()}>Try</Button>
+                  <Button
+                    onClick={() => {
+                      handleSubmit(false);
+                      setShowCustomInput(false);
+                    }}
+                  >
+                    Submit
+                  </Button>
                 </div>
-                <div className="p-3">
-                    <div
-                        dangerouslySetInnerHTML={{
-                            __html: problem?.description!,
-                        }}
-                    ></div>
-                    <div
-                        dangerouslySetInnerHTML={{
-                            __html: problem?.constraints!,
-                        }}
-                    ></div>
-                    <div
-                        dangerouslySetInnerHTML={{
-                            __html: problem?.input_format!,
-                        }}
-                    ></div>
-                    <div
-                        dangerouslySetInnerHTML={{
-                            __html: problem?.output_format!,
-                        }}
-                    ></div>
-                </div>
-                <div className="p-3">
-                    <p className="bg-zinc-900 p-3 rounded-t-lg">Sample cases</p>
-                    <table className="w-full">
-                        <tr>
-                            <th>Sample input</th>
-                            <th>Sample output</th>
-                        </tr>
-                        {problem?.test_cases.map((val: any, index: number) => {
-                            if (val.is_sample) {
-                                return (
-                                    <tr
-                                        className={
-                                            index % 2 == 0 ? "" : "bg-zinc-900"
-                                        }
-                                    >
-                                        <td>{val.input}</td>
-                                        <td>{val.output}</td>
-                                    </tr>
-                                );
-                            }
-                        })}
-                    </table>
-                </div>
-                <div className="flex flex-col p-3">
-                    <div className="flex gap-2 bg-zinc-900 p-3 rounded-t-lg">
-                        <p>Custom input</p>
-                        <Switch
-                            checked={showCustomInput}
-                            onCheckedChange={setShowCustomInput}
-                        />
+              </div>
+              <div className="h-full">
+                <Editor
+                  theme="vs-dark"
+                  defaultLanguage="plaintext"
+                  language={langCodes[String(selectedLang)]}
+                  onMount={handleEditorDidMount}
+                  onChange={setEditorValue}
+                />
+              </div>
+            </Panel>
+            <PanelResizeHandle className="bg-zinc-700 h-[2px]" />
+            <Panel className="h-[20em] overflow-scroll flex min-h-[10em]">
+              <div className="flex-1 overflow-scroll whitespace-pre-wrap">
+                {showCustomInput ? (
+                  compileResult?.status.id != 3 ? (
+                    <>{compileResult?.stderr}</>
+                  ) : (
+                    <>
+                      <div>
+                        <p className="bg-zinc-900/70 p-3 sticky top-0 backdrop-blur-sm">
+                          Output
+                        </p>
+                        <p className="p-3">{atob(compileResult?.stdout)}</p>
+                      </div>
+                    </>
+                  )
+                ) : (
+                  <>
+                    <p className="bg-zinc-900 p-3">
+                      Result | Accepted: {score?.accepted_count}/
+                      {score?.overall_count}
+                    </p>
+                    <div className="p-3">
+                      {batchResult?.map((val: any, index: number) => {
+                        return (
+                          <p
+                            className={`${index % 2 ? "bg-zinc-700" : ""} ${
+                              val.status.description !== "Accepted"
+                                ? "text-[red]"
+                                : ""
+                            }`}
+
+                            key={index}
+                          >
+                            Case: {index} - {val.status.description}
+                          </p>
+                        );
+                      })}
                     </div>
-                    <textarea
-                        className={`${showCustomInput ? "block" : "hidden"} p-3 bg-zinc-800`}
-                        rows={8}
-                        name="custom-input"
-                        id="custom-input"
-                        placeholder="Custom input here"
-                        value={inputVal}
-                        onChange={(e) => setInputVal(e.currentTarget.value)}
-                    />
-                </div>
+                  </>
+                )}
+              </div>
             </Panel>
-            <PanelResizeHandle className="bg-zinc-700 w-[2px]" />
-            <Panel>
-                <PanelGroup direction="vertical" className="flex flex-col flex-1">
-                    <Panel className="flex-1 flex flex-col min-h-[10em]">
-                        <div className="flex justify-between bg-zinc-900 p-3">
-                            <div className="flex gap-2 my-auto">
-                                <div>
-                                    <select
-                                        className="p-2 rounded-md"
-                                        name="languages"
-                                        form="submit-form"
-                                        onChange={(e) => {
-                                            setSelectedLang(e.currentTarget.value);
-                                        }}
-                                        required
-                                    >
-                                        <option value="">None</option>
-                                        {languages?.map((val) => {
-                                            return (
-                                                <option value={val.id}>
-                                                    {val.name}
-                                                </option>
-                                            );
-                                        })}
-                                    </select>
-                                </div>
-                            </div>
-                            <div className="flex gap-2">
-                                <Button onClick={() => handleTry()}>Try</Button>
-                                <Button
-                                    onClick={() => {
-                                        handleSubmit(false);
-                                        setShowCustomInput(false);
-                                    }}
-                                >
-                                    Submit
-                                </Button>
-                            </div>
-                        </div>
-                        <div className="h-full">
-                            <Editor
-                                theme="vs-dark"
-                                defaultLanguage="plaintext"
-                                language={langCodes[String(selectedLang)]}
-                                onMount={handleEditorDidMount}
-                                onChange={setEditorValue}
-                            />
-                        </div>
-                    </Panel>
-                    <PanelResizeHandle className="bg-zinc-700 h-[2px]" />
-                    <Panel className="h-[20em] overflow-scroll flex min-h-[10em]">
-                        <div className="flex-1 overflow-scroll whitespace-pre-wrap">
-                            {showCustomInput ? (
-                                compileResult?.status.id != 3 ? (
-                                    <>{compileResult?.stderr}</>
-                                ) : (
-                                    <>
-                                        <div>
-                                            <p className="bg-zinc-900/70 p-3 sticky top-0 backdrop-blur-sm">Output</p>
-                                            <p className="p-3">
-                                                {atob(compileResult?.stdout)}
-                                            </p>
-                                        </div>
-                                    </>
-                                )
-                            ) : (
-                                <>
-                                    <p className="bg-zinc-900 p-3">
-                                        Result | Accepted: {score?.accepted_count}/
-                                        {score?.overall_count}
-                                    </p>
-                                    <div className="p-3">
-                                        {batchResult?.map((val: any, index: number) => {
-                                            return <p className={`${(index % 2) ? "bg-zinc-700" : ""} ${(val.status.description !== "Accepted") ? "text-[red]" : ""}`}>Case: {index} - {val.status.description}</p>;
-                                        })}
-                                    </div>
-                                </>
-                            )}
-                        </div>
-                    </Panel>
-                </PanelGroup>
-            </Panel>
-        </PanelGroup>
+          </PanelGroup>
+        </Panel>
+      </PanelGroup>
     );
 }

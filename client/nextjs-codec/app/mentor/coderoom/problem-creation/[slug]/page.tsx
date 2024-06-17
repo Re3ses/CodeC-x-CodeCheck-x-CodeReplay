@@ -38,7 +38,7 @@ type TestCases = {
     strength: number;
 };
 
-export default function page({ params }: { params: { slug: string } }) {
+export default function Page({ params }: { params: { slug: string } }) {
     const [description, setDescription] = useState<string>();
     const [codeSnippet, setCodeSnippet] = useState<any>();
     const [selectedLang, setSelectedLang] = useState<string>();
@@ -184,7 +184,7 @@ export default function page({ params }: { params: { slug: string } }) {
                                 <SelectContent>
                                     {languages.data?.map((val: any) => {
                                         return (
-                                            <SelectItem value={val.name}>
+                                            <SelectItem value={val.name} key={val.name}>
                                                 {val.name}
                                             </SelectItem>
                                         );
@@ -296,9 +296,9 @@ export default function page({ params }: { params: { slug: string } }) {
                                 <th>Input</th>
                                 <th>Expected output</th>
                             </tr>
-                            {testCases.map((val: TestCases) => {
+                            {testCases.map((val: TestCases, index: number) => {
                                 return (
-                                    <tr>
+                                    <tr key={index}>
                                         <td>{val.input}</td>
                                         <td>{val.output}</td>
                                     </tr>

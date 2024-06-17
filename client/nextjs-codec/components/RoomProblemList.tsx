@@ -31,9 +31,9 @@ export default function RoomProblemList({
 
     return (
         <div className="h-fit lg:grid sm:w-full sm:flex sm:flex-col grid-cols-4 gap-2">
-            {roomQuery.data?.problems.map((item: ProblemSchemaInferredType) => {
+            {roomQuery.data?.problems.map((item: ProblemSchemaInferredType, index) => {
                 return (
-                    <BorderedContainer customStyle="h-fit">
+                    <BorderedContainer customStyle="h-fit" key={index}>
                         <p className="text-md bg-zinc-900 p-5">{item.name}</p>
                         <div className="p-5 w-full">
                             {userQuery.data?.type === "Mentor" ? (

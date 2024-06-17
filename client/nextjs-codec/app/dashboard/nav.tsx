@@ -6,7 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 export default function Nav(props: { variant?: string, name?: string, type?: string }) {
-    function links() {
+    function Links() {
         const pathname = usePathname();
 
         const path = pathname.startsWith("/dashboard") ? props.type?.toLowerCase() : pathname.startsWith("/mentor") ? "mentor" : "learner"
@@ -73,7 +73,7 @@ export default function Nav(props: { variant?: string, name?: string, type?: str
                     height={30}
                     alt="Picture of the author"
                 />
-                {links()}
+                {Links()}
             </div>
             <div className="flex gap-4">
                 <Avatar>
