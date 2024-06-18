@@ -20,6 +20,9 @@ import { Button } from "@/components/ui/button";
 import { ChangeHandler } from "react-hook-form";
 import { useSearchParams } from "next/navigation";
 import Image from 'next/image';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { ProblemSchemaInferredType } from '@/lib/interface/problem';
+import { GetProblemsMentor } from '@/utilities/apiService';
 
 interface s_User {
     username: String,
@@ -39,7 +42,7 @@ const socket = io(`${process.env.NEXT_PUBLIC_SERVER_URL}${process.env.NEXT_PUBLI
 export default function Page() {
     const searchParams = useSearchParams()
 
-    const { isPending, isError, error, data } = useQuery({
+    const { data } = useQuery({
         queryKey: ["user"],
         queryFn: async () => await getUser(),
     });
@@ -48,23 +51,35 @@ export default function Page() {
     const [users, setUsers] = useState<s_User[]>([]);
     const [isHidden, setIsHidden] = useState<boolean>(false);
     const [isFrozen, setIsFrozen] = useState<boolean>(false);
+    const [problems, setProblems] = useState<ProblemSchemaInferredType[] | any>([]);
+    const [selectedProblem, setSelectedProblem] = useState<ProblemSchemaInferredType>();
 
     socket.emit("init-server", roomId);
 
     useEffect(() => {
-        function userListEvent(value: s_User[]) {
-            console.log(value);
-            setUsers(value);
+      function userListEvent(value: s_User[]) {
+        console.log(value);
+        setUsers(value);
+      }
+
+      const fetchProblems = async () => {
+        try {
+            const res = await GetProblemsMentor();
+            setProblems(res);
+        } catch (e) {
+            console.warn(`no problems found: ${e}`)
         }
+      }
+      fetchProblems();
 
-        socket.on("users-list", userListEvent);
+      socket.on("users-list", userListEvent);
 
-        setRoomId(searchParams.get('room_id')!);
+      setRoomId(searchParams.get("room_id")!);
 
-        return () => {
-            socket.off("users-list", userListEvent);
-        }
-    }, [searchParams])
+      return () => {
+        socket.off("users-list", userListEvent);
+      };
+    }, [searchParams]);
 
     function handleChange(value: string | undefined, _event: any | null) {
         console.log(value);
@@ -81,6 +96,16 @@ export default function Page() {
     function updateMeetLink(event: ChangeEvent<HTMLInputElement>) {
         socket.emit('update-meet-link', roomId, event.currentTarget.value);
     }
+    function test() {
+        console.log(problems)
+    }
+    function handleProblemSelect(value: string) {
+        console.log("Problem select changed: ", value)
+        const foundObject = problems.find((obj: ProblemSchemaInferredType) => obj.slug === value);
+        console.log(foundObject);
+        setSelectedProblem(foundObject);
+    }
+
 
     return (
       <div className="h-screen">
@@ -88,6 +113,7 @@ export default function Page() {
           <Panel defaultSize={50}>
             <PanelGroup autoSaveId="example" direction="vertical">
               <Panel defaultSize={60}>
+                <button onClick={() => test()}>test</button>
                 <Editor
                   theme="vs-dark"
                   defaultValue="content here"
@@ -133,16 +159,33 @@ export default function Page() {
                       Mentor options
                     </h6>
                     <div className="flex gap-4">
+                      <Select onValueChange={handleProblemSelect}>
+                        <SelectTrigger className="w-[180px]">
+                          <SelectValue placeholder="Select problem" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            {
+                                problems.map((value: ProblemSchemaInferredType) => {
+                                    return (<>
+                                        <SelectItem value={value.slug}>{value.name}</SelectItem> 
+                                    </>);
+
+                                })
+                            }
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
                       <Button
                         className="rounded-none"
-                        variant={"default"}
+                        variant={"outline"}
                         onClick={() => changeEditorVisibility()}
                       >
                         Hide editor
                       </Button>
                       <Button
                         className="rounded-none"
-                        variant={"default"}
+                        variant={"outline"}
                         onClick={() => changeFrozenStateOfAll()}
                       >
                         Freeze all
