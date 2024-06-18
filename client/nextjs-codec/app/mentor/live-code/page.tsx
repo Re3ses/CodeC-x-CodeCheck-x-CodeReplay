@@ -23,6 +23,7 @@ import Image from 'next/image';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ProblemSchemaInferredType } from '@/lib/interface/problem';
 import { GetProblemsMentor } from '@/utilities/apiService';
+import SafeHtml from '@/components/SafeHtml';
 
 interface s_User {
     username: String,
@@ -165,14 +166,17 @@ export default function Page() {
                         </SelectTrigger>
                         <SelectContent>
                           <SelectGroup>
-                            {
-                                problems.map((value: ProblemSchemaInferredType) => {
-                                    return (<>
-                                        <SelectItem value={value.slug}>{value.name}</SelectItem> 
-                                    </>);
-
-                                })
-                            }
+                            {problems.map(
+                              (value: ProblemSchemaInferredType) => {
+                                return (
+                                  <>
+                                    <SelectItem value={value.slug}>
+                                      {value.name}
+                                    </SelectItem>
+                                  </>
+                                );
+                              }
+                            )}
                           </SelectGroup>
                         </SelectContent>
                       </Select>
@@ -200,8 +204,36 @@ export default function Page() {
                         </h5>
                       </div>
                       <div className="p-3 flex-1 overflow-auto">
-                        {/* template */}
-                        <div className="min-h-screen bg-red-300">h</div>
+                        <div
+                          className="text-sm 
+                          [&_li]:list-decimal
+                          [&_li]:ml-8
+                          [&_li]:py-2
+                          [&_code]:bg-[#1E1E1E]
+                          [&_code]:p-1
+                          [&_h4]:font-bold"
+                        >
+                          <SafeHtml
+                            className="text-center font-bold pb-2"
+                            html={selectedProblem?.name!}
+                          />
+                          <SafeHtml
+                            className="pb-2"
+                            html={selectedProblem?.description!}
+                          />
+                          <SafeHtml
+                            className="pb-2"
+                            html={selectedProblem?.constraints!}
+                          />
+                          <SafeHtml
+                            className="pb-2"
+                            html={selectedProblem?.input_format!}
+                          />
+                          <SafeHtml
+                            className="pb-2"
+                            html={selectedProblem?.output_format!}
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>

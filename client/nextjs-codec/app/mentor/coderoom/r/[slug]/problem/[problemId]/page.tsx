@@ -31,6 +31,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import { LightningBoltIcon } from "@radix-ui/react-icons";
 import { getUser } from "@/lib/auth";
+import SafeHtml from "@/components/SafeHtml";
 
 type languageData = {
     id: number;
@@ -251,27 +252,25 @@ export default function Page() {
               </DialogContent>
             </Dialog>
           </div>
-          <div className="p-3">
+          <div className="p-3 flex-1 overflow-auto">
             <div
-              dangerouslySetInnerHTML={{
-                __html: problem?.description!,
-              }}
-            ></div>
-            <div
-              dangerouslySetInnerHTML={{
-                __html: problem?.constraints!,
-              }}
-            ></div>
-            <div
-              dangerouslySetInnerHTML={{
-                __html: problem?.input_format!,
-              }}
-            ></div>
-            <div
-              dangerouslySetInnerHTML={{
-                __html: problem?.output_format!,
-              }}
-            ></div>
+              className=" 
+                          [&_li]:list-decimal
+                          [&_li]:ml-8
+                          [&_li]:py-2
+                          [&_code]:bg-[#1E1E1E]
+                          [&_code]:p-1
+                          [&_h4]:font-bold"
+            >
+              <SafeHtml
+                className="text-center font-bold pb-2"
+                html={problem?.name!}
+              />
+              <SafeHtml className="pb-2" html={problem?.description!} />
+              <SafeHtml className="pb-2" html={problem?.constraints!} />
+              <SafeHtml className="pb-2" html={problem?.input_format!} />
+              <SafeHtml className="pb-2" html={problem?.output_format!} />
+            </div>
           </div>
           <div className="p-3">
             <p className="bg-zinc-900 p-3 rounded-t-lg">Sample cases</p>
