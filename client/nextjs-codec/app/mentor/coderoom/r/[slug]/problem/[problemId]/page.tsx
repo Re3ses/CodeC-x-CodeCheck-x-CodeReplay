@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useEffect, useState, useRef } from "react";
-import { GetProblems } from "@/utilities/apiService";
+import { GetProblems, SilentLogin } from "@/utilities/apiService";
 import {
     getBatchSubmisisons,
     getLanguage,
@@ -54,20 +54,25 @@ export default function Page() {
     const [learner, setLearner] = useState<string>();
 
     useEffect(() => {
-        const res: () => Promise<ProblemSchemaInferredType> = async () => {
-            return await GetProblems(params.problemId);
-        };
-        res().then((result) => setProblem(result));
+      const silentLogin = async () => {
+        await SilentLogin();
+      };
+      silentLogin();
 
-        const lang: () => Promise<languageData[]> = async () => {
-            return await getLanguages();
-        };
-        lang().then((result) => setLanguages(result));
+      const res: () => Promise<ProblemSchemaInferredType> = async () => {
+        return await GetProblems(params.problemId);
+      };
+      res().then((result) => setProblem(result));
 
-        const user: () => Promise<any> = async () => {
-            return await getUser();
-        };
-        user().then((result) => setLearner(result.id));
+      const lang: () => Promise<languageData[]> = async () => {
+        return await getLanguages();
+      };
+      lang().then((result) => setLanguages(result));
+
+      const user: () => Promise<any> = async () => {
+        return await getUser();
+      };
+      user().then((result) => setLearner(result.id));
     }, [params.problemId]);
 
     function handleEditorDidMount(editor: any) {

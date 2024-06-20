@@ -14,11 +14,13 @@ const socket = io(`${process.env.NEXT_PUBLIC_SERVER_URL}${process.env.NEXT_PUBLI
 
 export default function Page() {
     const [mentorEditorValue, setMentorEditorValue] = useState<any>();
+    const [editorValue, setEditorValue] = useState<any>();
     const [isMentorEditorHidden, setIsMentorEditorHidden] = useState<boolean>(false);
     const [isFrozen, setIsFrozen] = useState<boolean>(false);
     const [isRoomJoined, setIsRoomJoined] = useState<any>(false);
     const [updatedMeetLink, setUpdatedMeetLink] = useState<string>("");
     const [roomId, setRoomId] = useState<string>("");
+    const [mentorId, setMentorId] = useState<string>("");
 
     useEffect(() => {
         function updatedEditorEvent(editor_value: any) {
@@ -37,14 +39,19 @@ export default function Page() {
         function updatedMeetLinkEvent(value: string) {
             setUpdatedMeetLink(value);
         }
+        function mentorIdEvent(value: string) {
+            setMentorId(value);
+        }
 
         // TODO: Change socket.id to username []
-        // Add email to packet
+        // recv mentor id for one-on-one communication []
+        // send profile to socket []
         socket.on("join-success", roomJoinedEvent);
         socket.on("updated-editor", updatedEditorEvent);
         socket.on("freeze", freezeEvent);
         socket.on("hide-editor", mentorEditorHiddenEvent);
         socket.on("updated-meet-link", updatedMeetLinkEvent);
+        socket.on("mentor-id", mentorIdEvent);
 
         return () => {
             socket.off("updated-editor", updatedEditorEvent);
@@ -60,6 +67,9 @@ export default function Page() {
     }
     function joinLiveSession() {
         socket.emit("join-room", socket.id, roomId);
+    }
+    function updateLearnerEditorValue(value: string | undefined) {
+        socket.emit("update-learner-editor", value, mentorId); // TODO
     }
 
     return (
@@ -182,8 +192,9 @@ export default function Page() {
                 <Panel defaultSize={50}>
                   <Editor
                     theme="vs-dark"
-                    defaultValue="content here"
+                    defaultValue="your code here"
                     className="h-full w-full"
+                    onChange={(value: string | undefined) => {updateLearnerEditorValue(value)}}
                   />
                 </Panel>
               </PanelGroup>
@@ -200,6 +211,7 @@ export default function Page() {
                     </div>
                     <div className="flex-1 p-2 overflow-auto">
                       {/* Problem description here */}
+                      problem description here
                     </div>
                   </div>
                 </Panel>
@@ -227,7 +239,7 @@ export default function Page() {
                       </div>
                     </div>
                     <div className="flex-1 p-2 overflow-auto">
-                      {/* Problem description here */}
+                      compiled results here
                     </div>
                   </div>
                 </Panel>

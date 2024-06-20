@@ -34,10 +34,12 @@ interface s_User {
 // change to server url (in env) [/]
 // generate room ID that is associated with roomname e.g., roomname-ACeg13 [/]
 // student search functionality [/]
-// handle problem selection [] 
+// handle problem selection [/] 
 // handle private messages []
+// send id for one-on-one communcation with learner (related with private messages) [/]
 // handle kick a/all learner []
 // kick all learners if mentor leaves []
+// fix display logic on learner editor and other stuff []
 const socket = io(`${process.env.NEXT_PUBLIC_SERVER_URL}${process.env.NEXT_PUBLIC_SOCKET_PORT}`);
 
 export default function Page() {
@@ -54,15 +56,11 @@ export default function Page() {
     const [isFrozen, setIsFrozen] = useState<boolean>(false);
     const [problems, setProblems] = useState<ProblemSchemaInferredType[] | any>([]);
     const [selectedProblem, setSelectedProblem] = useState<ProblemSchemaInferredType>();
+    const [learnerEditorValue, setLearnerEditorValue] = useState<any>();
 
     socket.emit("init-server", roomId);
 
     useEffect(() => {
-      function userListEvent(value: s_User[]) {
-        console.log(value);
-        setUsers(value);
-      }
-
       const fetchProblems = async () => {
         try {
             const res = await GetProblemsMentor();
@@ -73,16 +71,27 @@ export default function Page() {
       }
       fetchProblems();
 
+      function userListEvent(value: s_User[]) {
+        console.log(value);
+        setUsers(value);
+      }
+      function learnerEditorValueEvent(value: string) {
+        setLearnerEditorValue(value);
+      }
+
+
       socket.on("users-list", userListEvent);
+      socket.on("updated-learner-editor", learnerEditorValueEvent);
 
       setRoomId(searchParams.get("room_id")!);
 
       return () => {
         socket.off("users-list", userListEvent);
+        socket.off("updated-learner-editor", learnerEditorValueEvent);
       };
     }, [searchParams]);
 
-    function handleChange(value: string | undefined, _event: any | null) {
+    function handleChange(value: string | undefined) {
         console.log(value);
         socket.emit("update-editor", value, roomId);
     }
@@ -118,7 +127,7 @@ export default function Page() {
                 <Editor
                   theme="vs-dark"
                   defaultValue="content here"
-                  onChange={(value, event) => handleChange(value, event)}
+                  onChange={(value) => handleChange(value)}
                 />
               </Panel>
               <PanelResizeHandle className="h-1 bg-zinc-500" />
@@ -298,6 +307,7 @@ export default function Page() {
                     <Editor
                       theme="vs-dark"
                       options={{ readOnly: true }}
+                      value={learnerEditorValue}
                       className="h-full w-full"
                     />
                   </div>

@@ -123,6 +123,7 @@ const listen = () => {
                 io.to(room_name).emit('updated-editor', current_sesh.editor_value);
                 io.to(room_name).emit('freeze', current_sesh.freeze_all);
                 io.to(room_name).emit('hide-editor', current_sesh.hide_to_all);
+                io.to(room_name).emit('mentor-id', mentor_id);
 
                 console.log(`joined room: ${room_name}`)
                 console.log(`mentor id: ${mentor_id}`)
@@ -131,6 +132,7 @@ const listen = () => {
             }
         })
 
+        // Mentor
         socket.on('update-editor', async (editor_value, room_name) => {
             io.to(room_name).emit('updated-editor', editor_value);
 
@@ -138,6 +140,11 @@ const listen = () => {
             console.log(`connected users ${users}`)
 
             current_sesh.editor_value = editor_value;
+        })
+
+        // From learner to mentor 
+        socket.on('update-learner-editor', async (editor_value, mentor_id) => {
+            io.to(mentor_id).emit('updated-learner-editor', editor_value);
         })
 
         // NOTE:
