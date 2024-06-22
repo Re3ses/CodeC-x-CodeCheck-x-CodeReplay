@@ -8,6 +8,10 @@ export async function middleware(request: NextRequest) {
     const session = await getSession();
     const user = await getUser();
 
+    if (request.nextUrl.pathname === '/') {
+        return NextResponse.redirect(new URL('/login', request.url));
+    }
+
     if (session) {
         if (request.nextUrl.pathname.startsWith('/pogi/secret/marco/handshake') || request.nextUrl.pathname.startsWith('/sign-up')) {
             return NextResponse.redirect('https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley')
@@ -31,6 +35,7 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
     matcher: [
+        '/',
         '/mentor/:path*',
         '/learner/:path*',
         '/pogi/:path*',

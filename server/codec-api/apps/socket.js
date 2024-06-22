@@ -144,7 +144,7 @@ const listen = () => {
 
         // From learner to mentor 
         socket.on('update-learner-editor', async (editor_value, mentor_id) => {
-            io.to(mentor_id).emit('updated-learner-editor', editor_value);
+            io.to(mentor_id).emit(socket.id, editor_value);
         })
 
         // NOTE:

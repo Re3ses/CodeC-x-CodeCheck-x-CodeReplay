@@ -57,6 +57,7 @@ export default function Page() {
     const [problems, setProblems] = useState<ProblemSchemaInferredType[] | any>([]);
     const [selectedProblem, setSelectedProblem] = useState<ProblemSchemaInferredType>();
     const [learnerEditorValue, setLearnerEditorValue] = useState<any>();
+    const [listeningOn, setListeningOn] = useState<any>("abc123");
 
     socket.emit("init-server", roomId);
 
@@ -81,15 +82,15 @@ export default function Page() {
 
 
       socket.on("users-list", userListEvent);
-      socket.on("updated-learner-editor", learnerEditorValueEvent);
+      socket.on(listeningOn, learnerEditorValueEvent);
 
       setRoomId(searchParams.get("room_id")!);
 
       return () => {
         socket.off("users-list", userListEvent);
-        socket.off("updated-learner-editor", learnerEditorValueEvent);
+        socket.off(listeningOn, learnerEditorValueEvent);
       };
-    }, [searchParams]);
+    }, [searchParams, listeningOn]);
 
     function handleChange(value: string | undefined) {
         console.log(value);
@@ -106,9 +107,6 @@ export default function Page() {
     function updateMeetLink(event: ChangeEvent<HTMLInputElement>) {
         socket.emit('update-meet-link', roomId, event.currentTarget.value);
     }
-    function test() {
-        console.log(problems)
-    }
     function handleProblemSelect(value: string) {
         console.log("Problem select changed: ", value)
         const foundObject = problems.find((obj: ProblemSchemaInferredType) => obj.slug === value);
@@ -120,10 +118,9 @@ export default function Page() {
     return (
       <div className="h-screen">
         <PanelGroup autoSaveId="example" direction="horizontal">
-          <Panel defaultSize={50}>
+          <Panel defaultSize={50} minSize={40}>
             <PanelGroup autoSaveId="example" direction="vertical">
               <Panel defaultSize={60}>
-                <button onClick={() => test()}>test</button>
                 <Editor
                   theme="vs-dark"
                   defaultValue="content here"
@@ -132,7 +129,8 @@ export default function Page() {
               </Panel>
               <PanelResizeHandle className="h-1 bg-zinc-500" />
               <Panel
-                defaultSize={25}
+                defaultSize={40}
+                minSize={40}
                 className="p-4 space-y-5 flex flex-col h-full"
               >
                 <div className="flex justify-between">
@@ -253,7 +251,7 @@ export default function Page() {
           <PanelResizeHandle className="w-1 bg-zinc-500" />
           <Panel>
             <PanelGroup autoSaveId="example" direction="vertical">
-              <Panel defaultSize={25} className="p-4">
+              <Panel defaultSize={25} className="p-4" minSize={30}>
                 <div className="border border-white/25 rounded-lg">
                   <div className="border-b border-white/25 p-4 flex justify-between">
                     <h6 className="text-sm text-white/50 self-center">
@@ -288,6 +286,7 @@ export default function Page() {
                             <span className="text-sm text-white/50">
                               {value.socket_id}
                             </span>
+                            <Button onClick={() => {setListeningOn(value.socket_id)}}>Watch me</Button>
                           </div>
                         </div>
                       );

@@ -188,7 +188,7 @@ export default function Page() {
                     </div>
                   </div>
                 </Panel>
-                <PanelResizeHandle className="p-1 bg-zinc-500" />
+                <PanelResizeHandle className="h-1 bg-zinc-500" />
                 <Panel defaultSize={50}>
                   <Editor
                     theme="vs-dark"
@@ -199,7 +199,7 @@ export default function Page() {
                 </Panel>
               </PanelGroup>
             </Panel>
-            <PanelResizeHandle className="p-1 bg-zinc-500" />
+            <PanelResizeHandle className="w-1 bg-zinc-500" />
             <Panel>
               <PanelGroup direction="vertical">
                 <Panel defaultSize={50} className="p-4">
@@ -215,7 +215,7 @@ export default function Page() {
                     </div>
                   </div>
                 </Panel>
-                <PanelResizeHandle className="p-1 bg-zinc-500" />
+                <PanelResizeHandle className="h-1 bg-zinc-500" />
                 <Panel defaultSize={50} className="p-4">
                   <div className="border border-white/25 rounded-lg h-full flex flex-col">
                     <div className="border-b border-white/25 p-4 flex justify-between">
