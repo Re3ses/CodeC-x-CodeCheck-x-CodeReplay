@@ -141,6 +141,9 @@ const listen = () => {
 
             current_sesh.editor_value = editor_value;
         })
+        socket.on('problem-selected', async (problem, room_name) => {
+            io.to(room_name).emit('selected-problem', problem);
+        })
 
         // From learner to mentor 
         socket.on('update-learner-editor', async (editor_value, mentor_id) => {

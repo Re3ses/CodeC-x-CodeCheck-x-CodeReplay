@@ -127,6 +127,8 @@ export default function Page() {
     );
     console.log(foundObject);
     setSelectedProblem(foundObject);
+
+    socket.emit("problem-selected", foundObject, roomId);
   }
   function watchLearner(value: String) {
     if (value === listeningOn) {
