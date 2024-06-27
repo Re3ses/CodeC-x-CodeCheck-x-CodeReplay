@@ -27,7 +27,7 @@ export default function RoomBanner({
     });
     return (
         <BorderedContainer>
-            <div className="flex p-5 gap-2 bg-zinc-900 justify-between">
+            <div className="flex p-5 gap-2 bg-card justify-between">
                 <div className="my-auto flex gap-2">
                     <p className="my-auto">{username}</p>
                     <span className="bg-[gold] text-[black] text-sm px-4 h-fit my-auto w-fit rounded-lg">
@@ -36,7 +36,7 @@ export default function RoomBanner({
                 </div>
                 <p className="text-2xl">{room?.name}</p>
             </div>
-            <div className="flex flex-col text-center p-2">
+            <div className="flex flex-col text-center p-2 pt-4">
                 <p>{room?.description}</p>
                 <p className="text-sm text-zinc-500">{room?.type}</p>
             </div>

@@ -301,23 +301,27 @@ export default function Page() {
                           className="rounded-full"
                           src="https://randomuser.me/api/portraits/men/30.jpg"
                           alt="profile image"
-                          width={32}
-                          height={32}
+                          height={64}
+                          width={64}
                         />
-                        <div className="self-center flex flex-col">
-                          <span className="text-sm font-bold">
-                            {value.username}
-                          </span>
-                          <span className="text-sm text-white/50">
-                            {value.socket_id}
-                          </span>
-                          <Button
-                            onClick={() => {
-                              watchLearner(value.socket_id);
-                            }}
-                          >
-                            Watch me
-                          </Button>
+                        <div className="flex justify-between items-center w-full">
+                          <div className="flex flex-col">
+                            <span className="text-sm font-bold">
+                              {value.username}
+                            </span>
+                            <span className="text-sm text-white/50">
+                              {value.socket_id}
+                            </span>
+                          </div>
+                          <div>
+                            <Button
+                              onClick={() => {
+                                watchLearner(value.socket_id);
+                              }}
+                            >
+                              Watch me
+                            </Button>
+                          </div>
                         </div>
                       </div>
                     );
