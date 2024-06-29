@@ -1,31 +1,78 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## CodeC Getting Started Guide
 
-## Getting started
+CodeC currently uses multiple Node.js versions, so having `nvm` installed is essential. You'll need Node version 16.20.2 for the backend API and Node version 21.7.1 for the client-side which utilizes Next.js as the framework.
 
-This project requires two other components to properly run, both of these has their own ReadMe.md to guide you
-1. [CodeC API](https://github.com/mosnamarco/codec-api-vanilla.git)
-2. [Judge0 Api](https://github.com/mosnamarco/Judge0-docker.git)
+For a more in-depth guide and information, refer to our CodeC Wiki: [https://github.com/mosnamarco/CodeC/wiki](https://github.com/mosnamarco/CodeC/wiki).
 
-## Using npm
+## Prerequisites
 
-First, run the development server:
+* `docker` must be installed on your machine.
+* `nvm` should be used to manage Node.js versions.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Quick Start: How to Run
 
-## Using Docker compose
+1. Clone the repository:
 
-Run the dockerized app:
+   ```bash
+   git clone https://github.com/mosnamarco/CodeC.git
+   ```
 
-```bash
-sudo docker compose up
-```
+2. Navigate into the cloned directory:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+   ```bash
+   cd CodeC
+   ```
+
+### Server
+
+1. Change directory to the server folder:
+
+   ```bash
+   cd server
+   ```
+
+2. Switch to Node version 16.20.2 using nvm:
+
+   ```bash
+   nvm use 16.20.2
+   ```
+
+3. Install dependencies and start the development server:
+
+   ```bash
+   npm install && npm run devt
+   ```
+
+### Client
+
+1. Change directory to the client folder:
+
+   ```bash
+   cd client
+   ```
+
+2. Switch to Node version 21.7.1 using nvm:
+
+   ```bash
+   nvm use 21.7.1
+   ```
+
+3. Install dependencies and start the development server:
+
+   ```bash
+   npm install && npm run dev
+   ```
+
+### Judge0
+
+#### Prerequisite
+If you are in a linux environment make sure that you are using cgroups v1.
+For more information regarding docker and cgroups, [See this]('https://docs.docker.com/config/containers/runmetrics/')
+
+1. Navigate to the `judge0` folder inside the `server` directory.
+
+2. Start Judge0 using Docker Compose:
+
+   ```bash
+   docker-compose up
+   ```
