@@ -1,28 +1,29 @@
-"use client"
+"use client";
 
-import LoginForm from "@/components/ui/auth/loginForm"
-import Image from "next/image"
+import LoginForm from "@/components/ui/auth/loginForm";
+import Image from "next/image";
 
 export default function Page() {
   return (
-    <div className="flex justify-between items-center h-screen">
-      <div className="hidden md:flex justify-center items-center bg-slate-300 w-full h-screen">
-        <Image
-          src={"https://mir-s3-cdn-cf.behance.net/project_modules/hd/e4c02d32431337.5605bf79cdb42.jpg"}
-          alt="something"
-          width={500}
-          height={500}
-        />
+    <div className="h-screen flex">
+      <div className="bg-card flex flex-col gap-5 rounded-sm w-[350px] m-auto p-4">
+        <div className="w-full flex flex-col justify-center align-middle p-10 text-center">
+          <span className="text-white/50 text-sm">welcome to</span>
+          <Image
+            className="m-auto"
+            src="images/CodeC.svg"
+            alt="codec logo"
+            width={120}
+            height={120}
+          />
+        </div>
+        <LoginForm />
       </div>
-      <div className="flex flex-col gap-10 justify-center items-center w-full h-screen">
-        <div className="flex flex-col text-center gap-4">
-          <span className="text-3xl">CodeC Account Login</span>
-          <span className="text-xl">Welcome back!</span>
-        </div>
-        <div className="border border-solid rounded-lg shadow-lg p-4">
-          <LoginForm />
-        </div>
+      <div className="bg-card h-8 flex flex-col justify-center align-middle absolute bottom-0 w-full">
+        <span className="m-auto text-sm text-white/50">
+          © 2024 CodeC. All rights reserved. | AdNU
+        </span>
       </div>
     </div>
-  )
+  );
 }

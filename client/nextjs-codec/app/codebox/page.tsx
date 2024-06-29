@@ -10,7 +10,7 @@ import {
 import { Editor } from "@monaco-editor/react";
 import { useEffect, useState } from "react";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
-import languageCodes from '@/utilities/languages_code.json' 
+import languageCodes from '@/utilities/languages_code.json'
 
 
 export default function Page() {
@@ -19,7 +19,7 @@ export default function Page() {
     const [editorValue, setEditorValue] = useState<any>();
     const [stdin, setStdin] = useState<any>();
     const [submissionResult, setSubmissionResult] = useState<any>();
-    const langCodes : LanguageCodes = languageCodes;
+    const langCodes: LanguageCodes = languageCodes;
 
     useEffect(() => {
         const res: () => Promise<any> = async () => {
@@ -42,6 +42,7 @@ export default function Page() {
         setTimeout(async () => {
             const submission = await getSubmission(submissionToken.token);
             setSubmissionResult(submission);
+            console.log(atob(submission.message));
             toast({ title: "Code testing complete!" });
         }, 3000);
     }
@@ -63,7 +64,7 @@ export default function Page() {
                             <option value="">None</option>
                             {languages?.map((val: any) => {
                                 return (
-                                    <option value={val.id}>{val.name}</option>
+                                    <option value={val.id} key={val.id}>{val.name}</option>
                                 );
                             })}
                         </select>

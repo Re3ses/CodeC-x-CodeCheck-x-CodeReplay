@@ -26,7 +26,7 @@ export default function Modal({
     <div className={buttonVariants({ variant: "default" })}>
       <Dialog>
         <DialogTrigger>{label}</DialogTrigger>
-        <DialogContent>
+        <DialogContent className="bg-card text-card-foreground">
           <DialogHeader>
             <DialogTitle>{title}</DialogTitle>
             <DialogDescription>

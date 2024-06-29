@@ -23,7 +23,7 @@ export default function Joined() {
             <div className="grid grid-cols-4 gap-2 p-5">
                 {roomsQuery.data?.map((item: RoomSchemaInferredType) => {
                     return (
-                        <BorderedContainer>
+                        <BorderedContainer key={item._id}>
                             <div className="flex flex-wrap justify-between p-5 bg-zinc-900 gap-2 m-auto">
                                 <p className="text-lg my-auto">
                                     {item.name}

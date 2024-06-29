@@ -7,120 +7,349 @@
 
 "use client";
 
-import AdminSettingsDrawer from "@/components/AdminSettingsDrawer";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { getUser } from "@/lib/auth";
 import { Editor } from "@monaco-editor/react";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { ChangeHandler } from "react-hook-form";
+import { useSearchParams } from "next/navigation";
+import Image from "next/image";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { ProblemSchemaInferredType } from "@/lib/interface/problem";
+import { GetProblemsMentor } from "@/utilities/apiService";
+import SafeHtml from "@/components/SafeHtml";
+import { toast } from "@/components/ui/use-toast";
 
-const socket = io("http://localhost:4000/");
+interface s_User {
+  username: String;
+  socket_id: String;
+}
+
+// TODO:
+// change to server url (in env) [/]
+// generate room ID that is associated with roomname e.g., roomname-ACeg13 [/]
+// student search functionality [/]
+// handle problem selection [/]
+// handle private messages []
+// send id for one-on-one communcation with learner (related with private messages) [/]
+// handle kick a/all learner []
+// kick all learners if mentor leaves []
+// fix display logic on learner editor and other stuff []
+const socket = io(
+  `${process.env.NEXT_PUBLIC_SERVER_URL}${process.env.NEXT_PUBLIC_SOCKET_PORT}`
+);
 
 export default function Page() {
-    const { isPending, isError, error } = useQuery({
-        queryKey: ["user"],
-        queryFn: async () => await getUser(),
-    });
-    const [code, setCode] = useState<string>();
+  const searchParams = useSearchParams();
 
-    const liveCodeQuery = useQuery({
-        queryKey: ["liveCodeRequests"],
-        queryFn: async () => {
-            const response = await fetch("/api/liveCode/");
+  const { data } = useQuery({
+    queryKey: ["user"],
+    queryFn: async () => await getUser(),
+  });
 
-            if (!response.ok) {
-                throw new Error("Failed to fetch liveCode request data");
-            }
+  const [roomId, setRoomId] = useState<string>("");
+  const [users, setUsers] = useState<s_User[]>([]);
+  const [isHidden, setIsHidden] = useState<boolean>(false);
+  const [isFrozen, setIsFrozen] = useState<boolean>(false);
+  const [problems, setProblems] = useState<ProblemSchemaInferredType[] | any>(
+    []
+  );
+  const [selectedProblem, setSelectedProblem] =
+    useState<ProblemSchemaInferredType>();
+  const [learnerEditorValue, setLearnerEditorValue] = useState<any>();
+  const [listeningOn, setListeningOn] = useState<any>("abc123");
 
-            return await response.json();
-        }
-    });
+  socket.emit("init-server", roomId);
 
-    useEffect(() => {
-        socket.on("response", (data: string) => {
-            setCode(data);
-        });
+  useEffect(() => {
+    const fetchProblems = async () => {
+      try {
+        const res = await GetProblemsMentor();
+        setProblems(res);
+      } catch (e) {
+        console.warn(`no problems found: ${e}`);
+      }
+    };
+    fetchProblems();
 
-        return () => {
-            socket.off("response");
-        };
-    }, []);
-
-    function handleChange(value: any) {
-        socket.emit("code-content", value);
+    function userListEvent(value: s_User[]) {
+      console.log(value);
+      setUsers(value);
+    }
+    function learnerEditorValueEvent(value: string) {
+      setLearnerEditorValue(value);
     }
 
-    if (isError) {
-        return <div>Error {error.message}</div>;
-    }
+    socket.on("users-list", userListEvent);
+    socket.on(listeningOn, learnerEditorValueEvent);
 
-    if (isPending) {
-        return <div>Waiting for important bits...</div>;
-    }
+    setRoomId(searchParams.get("room_id")!);
 
-    return (
-        <div className="h-screen">
-            <PanelGroup autoSaveId="livecodepanels" direction="horizontal">
-                <Panel defaultSize={40} minSize={20} className="border-zinc-700 border-r-4">
-                    <div className="bg-zinc-900 p-5 flex flex-col gap-4 justify-center">
-                        <AdminSettingsDrawer />
-                        <div className="flex flex-col gap-3">
-                            {liveCodeQuery.data?.liveCode_requests.map((request: any) => (
-                                <div className="p-3 bg-zinc-700 rounded-lg" key={request._id}>
-                                    <p>Request Reason: {request.request_reason}</p>
-                                    <p>Room Slug: {request.room_slug}</p>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </Panel>
-                <PanelResizeHandle />
-                <Panel className="">
-                    <PanelGroup direction="vertical">
-                        <Panel minSize={20} className="border-zinc-700 border-b-4">
-                            <Editor
-                                theme="vs-dark"
-                                height="90vh"
-                                defaultValue="content here"
-                                value={code}
-                                onChange={handleChange}
-                            />
-                        </Panel>
-                        <PanelResizeHandle />
-                        <Panel minSize={20} className="">
-                            <div className="flex">
-                                <div className="flex gap-2 border-r-4 border-zinc-800 my-auto px-4">
-                                    <p className="border whitespace-nowrap h-fit rounded-lg px-4 py-2 hover:bg-rose-900">Search</p>
-                                    <p className="border whitespace-nowrap h-fit rounded-lg px-4 py-2 hover:bg-rose-900">Blind</p>
-                                    <p className="border whitespace-nowrap h-fit rounded-lg px-4 py-2 hover:bg-rose-900">Freeze</p>
-                                </div>
-                                <div className="p-3 flex gap-2 overflow-scroll">
-                                    <p className="border whitespace-nowrap h-fit rounded-lg px-4 py-2 hover:bg-rose-900">Student E. Button</p>
-                                    <p className="border whitespace-nowrap h-fit rounded-lg px-4 py-2 hover:bg-rose-900">Student E. Button</p>
-                                    <p className="border whitespace-nowrap h-fit rounded-lg px-4 py-2 hover:bg-rose-900">Student E. Button</p>
-                                    <p className="border whitespace-nowrap h-fit rounded-lg px-4 py-2 hover:bg-rose-900">Student E. Button</p>
-                                    <p className="border whitespace-nowrap h-fit rounded-lg px-4 py-2 hover:bg-rose-900">Student E. Button</p>
-                                    <p className="border whitespace-nowrap h-fit rounded-lg px-4 py-2 hover:bg-rose-900">Student E. Button</p>
-                                    <p className="border whitespace-nowrap h-fit rounded-lg px-4 py-2 hover:bg-rose-900">Student E. Button</p>
-                                    <p className="border whitespace-nowrap h-fit rounded-lg px-4 py-2 hover:bg-rose-900">Student E. Button</p>
-                                    <p className="border whitespace-nowrap h-fit rounded-lg px-4 py-2 hover:bg-rose-900">Student E. Button</p>
-                                    <p className="border whitespace-nowrap h-fit rounded-lg px-4 py-2 hover:bg-rose-900">Student E. Button</p>
-                                    <p className="border whitespace-nowrap h-fit rounded-lg px-4 py-2 hover:bg-rose-900">Student E. Button</p>
-                                </div>
-                            </div>
-                            <Editor
-                                theme="vs-dark"
-                                height="90vh"
-                                defaultValue="content here"
-                                value={code}
-                                onChange={handleChange}
-                            />
-                        </Panel>
-                    </PanelGroup>
-                </Panel>
-            </PanelGroup>
+    return () => {
+      socket.off("users-list", userListEvent);
+      socket.off(listeningOn, learnerEditorValueEvent);
+    };
+  }, [searchParams, listeningOn]);
 
-        </div>
+  function handleChange(value: string | undefined) {
+    console.log(value);
+    socket.emit("update-editor", value, roomId);
+  }
+  function changeEditorVisibility() {
+    socket.emit("hide-to-all", !isHidden, roomId);
+    setIsHidden(!isHidden);
+  }
+  function changeFrozenStateOfAll() {
+    socket.emit("freeze-all", !isFrozen, roomId);
+    setIsFrozen(!isFrozen);
+  }
+  function updateMeetLink(event: ChangeEvent<HTMLInputElement>) {
+    socket.emit("update-meet-link", roomId, event.currentTarget.value);
+  }
+  function handleProblemSelect(value: string) {
+    console.log("Problem select changed: ", value);
+    const foundObject = problems.find(
+      (obj: ProblemSchemaInferredType) => obj.slug === value
     );
+    console.log(foundObject);
+    setSelectedProblem(foundObject);
+
+    socket.emit("problem-selected", foundObject, roomId);
+  }
+  function watchLearner(value: String) {
+    if (value === listeningOn) {
+      toast({
+        title: `Already watching learner: ${value}`,
+        variant: "destructive",
+      });
+      return;
+    }
+    setListeningOn(value);
+    toast({ title: `Now watching learner: ${value}` });
+  }
+
+  return (
+    <div className="h-screen">
+      <PanelGroup autoSaveId="example" direction="horizontal">
+        <Panel defaultSize={50} minSize={40}>
+          <PanelGroup autoSaveId="example" direction="vertical">
+            <Panel defaultSize={60}>
+              <Editor
+                theme="vs-dark"
+                defaultValue="content here"
+                onChange={(value) => handleChange(value)}
+              />
+            </Panel>
+            <PanelResizeHandle className="h-1 bg-zinc-500" />
+            <Panel
+              defaultSize={40}
+              minSize={40}
+              className="p-4 space-y-5 flex flex-col h-full"
+            >
+              <div className="flex justify-between">
+                <div className="space-y-2">
+                  <h6 className="text-sm">Google meet link</h6>
+                  <Input
+                    className="w-[235px] p-4 bg-zinc-900 text-sm"
+                    placeholder="Google meet link"
+                    onChange={updateMeetLink}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <h6 className="text-sm">Room code</h6>
+                  <div className="w-[160px] px-4 py-2 bg-zinc-900 text-sm font-bold text-white/50 rounded-lg">
+                    {roomId}
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <h6 className="text-sm">Current editor status</h6>
+                  <div className="w-[160px] px-4 py-2 bg-zinc-900 text-sm font-bold text-white/50 rounded-lg">
+                    <span>{isHidden ? "Hidden" : "Visible"}</span>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <h6 className="text-sm">Students editor status</h6>
+                  <div className="w-[160px] px-4 py-2 bg-zinc-900 text-sm font-bold text-white/50 rounded-lg">
+                    <span>{isFrozen ? "Frozen" : "Un-frozen"}</span>
+                  </div>
+                </div>
+              </div>
+              <div className="flex-1 border border-white/25 rounded-lg flex flex-col overflow-hidden">
+                <div className="flex justify-between border-b border-white/25 p-4">
+                  <h6 className="text-sm text-white/50 self-center">
+                    Mentor options
+                  </h6>
+                  <div className="flex gap-4">
+                    <Select onValueChange={handleProblemSelect}>
+                      <SelectTrigger className="w-[180px]">
+                        <SelectValue placeholder="Select problem" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          {problems.map((value: ProblemSchemaInferredType) => {
+                            return (
+                              <>
+                                <SelectItem value={value.slug}>
+                                  {value.name}
+                                </SelectItem>
+                              </>
+                            );
+                          })}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                    <Button
+                      className="rounded-none"
+                      variant={"outline"}
+                      onClick={() => changeEditorVisibility()}
+                    >
+                      Hide editor
+                    </Button>
+                    <Button
+                      className="rounded-none"
+                      variant={"outline"}
+                      onClick={() => changeFrozenStateOfAll()}
+                    >
+                      Freeze all
+                    </Button>
+                  </div>
+                </div>
+                <div className="flex-1 p-4 overflow-auto">
+                  <div className="border border-white/25 rounded-lg h-full flex flex-col">
+                    <div className="flex justify-between border-b border-white/25 p-2">
+                      <h5 className="text-xs text-white/50">
+                        Problem description
+                      </h5>
+                    </div>
+                    <div className="p-3 flex-1 overflow-auto">
+                      <div
+                        className="text-sm 
+                          [&_li]:list-decimal
+                          [&_li]:ml-8
+                          [&_li]:py-2
+                          [&_code]:bg-[#1E1E1E]
+                          [&_code]:p-1
+                          [&_h4]:font-bold"
+                      >
+                        <SafeHtml
+                          className="text-center font-bold pb-2"
+                          html={selectedProblem?.name!}
+                        />
+                        <SafeHtml
+                          className="pb-2"
+                          html={selectedProblem?.description!}
+                        />
+                        <SafeHtml
+                          className="pb-2"
+                          html={selectedProblem?.constraints!}
+                        />
+                        <SafeHtml
+                          className="pb-2"
+                          html={selectedProblem?.input_format!}
+                        />
+                        <SafeHtml
+                          className="pb-2"
+                          html={selectedProblem?.output_format!}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Panel>
+          </PanelGroup>
+        </Panel>
+        <PanelResizeHandle className="w-1 bg-zinc-500" />
+        <Panel>
+          <PanelGroup autoSaveId="example" direction="vertical">
+            <Panel defaultSize={25} className="p-4" minSize={30}>
+              <div className="border border-white/25 rounded-lg">
+                <div className="border-b border-white/25 p-4 flex justify-between">
+                  <h6 className="text-sm text-white/50 self-center">
+                    Connected learners
+                  </h6>
+                  <div className="flex gap-2">
+                    <FontAwesomeIcon
+                      className="self-center"
+                      icon={faMagnifyingGlass}
+                    />
+                    <input
+                      className="p-2 bg-transparent border-b border-white/25 text-sm"
+                      placeholder="student name"
+                    />
+                  </div>
+                </div>
+                <div className="p-4 grid grid-cols-2 gap-2">
+                  {users.map((value, index) => {
+                    return (
+                      <div className="flex gap-4" key={index}>
+                        <Image
+                          className="rounded-full"
+                          src="https://randomuser.me/api/portraits/men/30.jpg"
+                          alt="profile image"
+                          height={64}
+                          width={64}
+                        />
+                        <div className="flex justify-between items-center w-full">
+                          <div className="flex flex-col">
+                            <span className="text-sm font-bold">
+                              {value.username}
+                            </span>
+                            <span className="text-sm text-white/50">
+                              {value.socket_id}
+                            </span>
+                          </div>
+                          <div>
+                            <Button
+                              onClick={() => {
+                                watchLearner(value.socket_id);
+                              }}
+                            >
+                              Watch me
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </Panel>
+            <PanelResizeHandle className="h-1 bg-zinc-500" />
+            <Panel className="p-4">
+              <div className="border border-white/25 rounded-lg h-full flex flex-col">
+                <div className="border-b border-white/25 p-4 flex justify-between">
+                  <h6 className="text-sm text-white/50 self-center">
+                    Now viewing
+                  </h6>
+                </div>
+                <div className="flex-1 p-2 overflow-hidden">
+                  <Editor
+                    theme="vs-dark"
+                    options={{ readOnly: true }}
+                    value={learnerEditorValue}
+                    className="h-full w-full"
+                  />
+                </div>
+              </div>
+            </Panel>
+          </PanelGroup>
+        </Panel>
+      </PanelGroup>
+    </div>
+  );
 }

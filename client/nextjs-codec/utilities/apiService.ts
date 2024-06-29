@@ -282,10 +282,10 @@ export async function CreateProblem(data: any) {
 
 // Params not implimented
 export async function GetProblemsMentor() {
-    const username: string = await getUser().then((value) => {
-        return value?.username;
-    });
-    const url = `${URL}${PORT.api}/api/problems/mentor/${username}`;
+    const user = await getUser();
+    console.log(user)
+    const url = `${URL}${PORT.api}/api/problems/mentor/${user.auth.username}`;
+    console.log(url)
     const access_token = cookies().get("access_token")?.value;
     const options = {
         headers: {
@@ -297,7 +297,7 @@ export async function GetProblemsMentor() {
         const res = await axios.get(url, options);
         return res.data;
     } catch (e) {
-        throw new Error(`Failed to get problems by mentor: ${username}`);
+        throw new Error(`Failed to get problems by mentor: ${user.auth.username}`);
     }
 }
 
