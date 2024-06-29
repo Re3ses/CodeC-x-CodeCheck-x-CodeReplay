@@ -42,6 +42,7 @@ export default function Page() {
         setTimeout(async () => {
             const submission = await getSubmission(submissionToken.token);
             setSubmissionResult(submission);
+            console.log(atob(submission.message));
             toast({ title: "Code testing complete!" });
         }, 3000);
     }
