@@ -260,12 +260,12 @@ export default function Page({ params }: { params: { slug: string } }) {
                 <div className="flex items-center space-x-2">
                   <Switch
                     id="sample"
-                    onCheckedChange={(val) => setIsSample(val)}
+                    onCheckedChange={(val: boolean) => setIsSample(val)}
                   />
                   <label htmlFor="sample">Is sample</label>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <Switch id="eval" onCheckedChange={(val) => setIsEval(val)} />
+                  <Switch id="eval" onCheckedChange={(val: boolean) => setIsEval(val)} />
                   <label htmlFor="eval">Is eval</label>
                 </div>
               </div>
