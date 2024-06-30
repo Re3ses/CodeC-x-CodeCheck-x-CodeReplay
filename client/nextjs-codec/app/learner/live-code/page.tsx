@@ -29,6 +29,7 @@ export default function Page() {
   const [updatedMeetLink, setUpdatedMeetLink] = useState<string>("");
   const [roomId, setRoomId] = useState<string>("");
   const [mentorId, setMentorId] = useState<string>("");
+  const [mentorCreds, setMentorCreds] = useState<any>("");
   const [problem, setProblem] = useState<any>();
 
   useEffect(() => {
@@ -55,6 +56,10 @@ export default function Page() {
       setProblem(value);
       console.log(value);
     }
+    function mentorCredsEvent(value: any) {
+      setMentorCreds(value);
+      console.log("Mentor creds: ",value);
+    }
 
     // TODO: Change socket.id to username []
     // recv mentor id for one-on-one communication []
@@ -66,6 +71,7 @@ export default function Page() {
     socket.on("updated-meet-link", updatedMeetLinkEvent);
     socket.on("mentor-id", mentorIdEvent);
     socket.on("selected-problem", selectedProblemEvent);
+    socket.on("mentor-creds", mentorCredsEvent);
 
     return () => {
       socket.off("updated-editor", updatedEditorEvent);
@@ -93,10 +99,7 @@ export default function Page() {
         <div className="flex flex-col justify-center items-center gap-1">
           {isRoomJoined ? (
             <>
-              <span className="text-sm text-white/50 text-center">
-                Hosted by
-              </span>
-              <div className="flex gap-3 justify-center">
+              <div className="flex flex-col gap-3 justify-center">
                 <div className="self-center">
                   <Image
                     className="rounded-full"
@@ -106,6 +109,9 @@ export default function Page() {
                     height={42}
                   />
                 </div>
+              <span className="text-sm text-white/50 text-center">
+                Hosted by: {mentorCreds.first_name} {mentorCreds.last_name}
+              </span>
               </div>
             </>
           ) : (
@@ -190,7 +196,7 @@ export default function Page() {
                 <div className="border border-white/25 rounded-lg h-full flex flex-col">
                   <div className="border-b border-white/25 p-4 flex justify-between">
                     <h6 className="text-sm text-white/50 self-center">
-                      Now viewing mentor
+                      Now viewing: {mentorCreds.username} 
                     </h6>
                   </div>
                   <div className="flex-1 p-2 overflow-auto">
@@ -258,7 +264,7 @@ export default function Page() {
                           html={problem?.output_format!}
                         />
                       </div>
-                      </div>
+                    </div>
                   </div>
                 </div>
               </Panel>
