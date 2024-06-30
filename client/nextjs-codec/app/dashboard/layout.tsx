@@ -24,7 +24,7 @@ export default function Layout({ children }: {
     });
 
     return (
-        <div className="flex flex-col gap-4 ">
+        <div className="h-screen flex flex-col gap-4 ">
             <Nav name={userQuery.data?.auth?.username} type={userQuery.data?.type} />
             {children}
         </div>
