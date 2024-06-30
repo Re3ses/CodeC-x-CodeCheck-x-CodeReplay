@@ -105,8 +105,21 @@ export async function RefreshToken() {
     };
 
     try {
-        const res = await axios.post(url, payload);
-        const { access_token, refresh_token } = res.data;
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload),
+        });
+        
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        
+        const data = await response.json();
+        const { access_token, refresh_token } = data;
+
         setSecureCookie(
             "access_token",
             access_token,
@@ -118,7 +131,8 @@ export async function RefreshToken() {
             Date.now() + TimeToMS(12, 0, 0)
         );
     } catch (e) {
-        throw new Error("Failed to refresh token");
+        console.error(e);
+        throw new Error("Failed to refresh token: ");
     }
 }
 
