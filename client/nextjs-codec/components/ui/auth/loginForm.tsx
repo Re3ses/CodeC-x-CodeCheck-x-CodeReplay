@@ -52,7 +52,7 @@ export default function LoginForm() {
   };
 
   if (status === 200) {
-    redirect("/dashboard");
+    redirect("/");
   }
 
   return (

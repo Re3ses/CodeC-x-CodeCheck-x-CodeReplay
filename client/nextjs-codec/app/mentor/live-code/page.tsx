@@ -73,11 +73,7 @@ export default function Page() {
   const [learnerEditorValue, setLearnerEditorValue] = useState<any>();
   const [listeningOn, setListeningOn] = useState<any>("abc123");
 
-  if (data !== null) {
-    socket.emit("init-server", roomId, data);
-  } else {
-    alert('Cannot get user data')
-  }
+  socket.emit("init-server", roomId);
 
   useEffect(() => {
     const fetchProblems = async () => {
@@ -116,7 +112,6 @@ export default function Page() {
   function changeEditorVisibility() {
     socket.emit("hide-to-all", !isHidden, roomId);
     setIsHidden(!isHidden);
-    console.log(data)
   }
   function changeFrozenStateOfAll() {
     socket.emit("freeze-all", !isFrozen, roomId);
@@ -165,7 +160,7 @@ export default function Page() {
               minSize={40}
               className="p-4 space-y-5 flex flex-col h-full"
             >
-              <div className="flex flex-wrap gap-2 justify-between">
+              <div className="flex justify-between">
                 <div className="space-y-2">
                   <h6 className="text-sm">Google meet link</h6>
                   <Input
@@ -194,7 +189,7 @@ export default function Page() {
                 </div>
               </div>
               <div className="flex-1 border border-white/25 rounded-lg flex flex-col overflow-hidden">
-                <div className="flex flex-col sm:flex-row justify-between border-b border-white/25 p-4">
+                <div className="flex justify-between border-b border-white/25 p-4">
                   <h6 className="text-sm text-white/50 self-center">
                     Mentor options
                   </h6>
@@ -279,11 +274,11 @@ export default function Page() {
           </PanelGroup>
         </Panel>
         <PanelResizeHandle className="w-1 bg-zinc-500" />
-        <Panel minSize={30}>
+        <Panel>
           <PanelGroup autoSaveId="example" direction="vertical">
             <Panel defaultSize={25} className="p-4" minSize={30}>
               <div className="border border-white/25 rounded-lg">
-                <div className="border-b border-white/25 p-4 flex flex-wrap gap-2 justify-between">
+                <div className="border-b border-white/25 p-4 flex justify-between">
                   <h6 className="text-sm text-white/50 self-center">
                     Connected learners
                   </h6>

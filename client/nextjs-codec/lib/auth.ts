@@ -1,6 +1,6 @@
 "use server"
 
-import { setSecureCookie, SilentLogin } from "@/utilities/apiService";
+import { setSecureCookie } from "@/utilities/apiService";
 import TimeToMS from "@/utilities/timeToMS";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
@@ -53,7 +53,6 @@ export async function getSession() {
 }
 
 export async function getUser() {
-  await SilentLogin();
   const user = await getSession();
   const url = `${process.env.SERVER_URL}${process.env.API_PORT}/api/users/${user?.username}`;
 
