@@ -53,6 +53,7 @@ export async function getSession() {
 }
 
 export async function getUser() {
+  // bug at middleware
   await SilentLogin();
   const user = await getSession();
   const url = `${process.env.SERVER_URL}${process.env.API_PORT}/api/users/${user?.username}`;
@@ -91,6 +92,7 @@ export async function login(payload: LoginShemaInferredType) {
     }
 
     const { access_token, refresh_token } = await res.json();
+    console.log(access_token)
 
     setSecureCookie(
       "access_token",
@@ -116,5 +118,10 @@ export async function refresh() {
 export async function logoutUser() {
   cookies().delete("access_token");
   cookies().delete("refresh_token");
-  redirect("/");
+  redirect("/login");
+}
+
+export async function deleteCookies() {
+  cookies().delete("access_token");
+  cookies().delete("refresh_token");
 }

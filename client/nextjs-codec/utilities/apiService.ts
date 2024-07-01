@@ -46,7 +46,7 @@ export async function SilentLogin() {
             }
         }
     } else {
-        redirect("/");
+        redirect("/login");
     }
 }
 
