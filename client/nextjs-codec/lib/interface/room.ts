@@ -1,8 +1,8 @@
-import { EnrolleeSchema } from './enrollee'
-import { z } from 'zod'
-import { ProblemSchema } from './problem'
+import { EnrolleeSchema } from './enrollee';
+import { z } from 'zod';
+import { ProblemSchema } from './problem';
 
-export const RoomSchema = z.object ({
+export const RoomSchema = z.object({
   _id: z.string(),
   name: z.string(),
   description: z.string(),
@@ -18,7 +18,7 @@ export const RoomSchema = z.object ({
   code: z.string(),
   date_created: z.string(),
   slug: z.string(),
-  id: z.string()
-})
+  id: z.string(),
+});
 
-export type RoomSchemaInferredType = z.infer<typeof RoomSchema>
+export type RoomSchemaInferredType = z.infer<typeof RoomSchema>;

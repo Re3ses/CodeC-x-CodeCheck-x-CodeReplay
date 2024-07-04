@@ -1,33 +1,33 @@
-"use client";
+'use client';
 
-import { Button, buttonVariants } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import CreateClassroomForm from "@/components/ui/classroom/createClassroomForm";
-import BorderedContainer from "@/components/ui/wrappers/BorderedContainer";
-import Modal from "@/components/ui/wrappers/Modal";
-import { RoomSchemaInferredType } from "@/lib/interface/room";
-import { GetMentorRooms } from "@/utilities/apiService";
-import { useQuery } from "@tanstack/react-query";
-import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { Button, buttonVariants } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import CreateClassroomForm from '@/components/ui/classroom/createClassroomForm';
+import BorderedContainer from '@/components/ui/wrappers/BorderedContainer';
+import Modal from '@/components/ui/wrappers/Modal';
+import { RoomSchemaInferredType } from '@/lib/interface/room';
+import { GetMentorRooms } from '@/utilities/apiService';
+import { useQuery } from '@tanstack/react-query';
+import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 
 export default function Page() {
   const searchParams = useSearchParams();
   const roomsQuery = useQuery({
-    queryKey: ["rooms", 1],
+    queryKey: ['rooms', 1],
     queryFn: async () => {
       const data = GetMentorRooms();
       if (!data) {
-        throw new Error("failed to get room data");
+        throw new Error('failed to get room data');
       }
       return data;
     },
   });
 
   function makeid(length: number) {
-    let result = "";
+    let result = '';
     const characters =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     const charactersLength = characters.length;
     let counter = 0;
     while (counter < length) {
@@ -52,10 +52,10 @@ export default function Page() {
           >
             <Link
               href={{
-                pathname: "/mentor/live-code",
+                pathname: '/mentor/live-code',
                 query: { room_id: makeid(5) },
               }}
-              className={buttonVariants({ variant: "default" })}
+              className={buttonVariants({ variant: 'default' })}
             >
               Host live session
             </Link>
@@ -86,7 +86,7 @@ export default function Page() {
               </div>
               <Link
                 href={`/mentor/coderoom/r/${item.slug}?${searchParams}`}
-                className={`${buttonVariants({ variant: "default" })} w-full`}
+                className={`${buttonVariants({ variant: 'default' })} w-full`}
               >
                 Enter
               </Link>

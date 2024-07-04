@@ -1,5 +1,5 @@
-import { LearnerShema } from "./learner"
-import { z } from 'zod'
+import { LearnerShema } from './learner';
+import { z } from 'zod';
 
 export const EnrolleeSchema = z.object({
   // badges: z.array(), // array of badges object
@@ -8,9 +8,9 @@ export const EnrolleeSchema = z.object({
   points: z.number(),
   streak: z.object({
     current: z.number(),
-    highest: z.number()
+    highest: z.number(),
   }),
-  _id: z.string()
-})
+  _id: z.string(),
+});
 
-export type EnrolleeSchemaInferredType = z.infer<typeof EnrolleeSchema>
+export type EnrolleeSchemaInferredType = z.infer<typeof EnrolleeSchema>;

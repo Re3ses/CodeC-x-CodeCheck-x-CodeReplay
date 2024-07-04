@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Breadcrumb,
@@ -7,9 +7,9 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import { getUser } from "@/lib/auth";
-import { useQuery } from "@tanstack/react-query";
+} from '@/components/ui/breadcrumb';
+import { getUser } from '@/lib/auth';
+import { useQuery } from '@tanstack/react-query';
 
 export default function Layout({
   children,
@@ -19,21 +19,19 @@ export default function Layout({
   params: { slug: string };
 }) {
   const user = useQuery({
-    queryKey: ["user"],
+    queryKey: ['user'],
     queryFn: async () => await getUser(),
   });
   console.log(user.data, params?.slug);
-  
-  const url = `${user.data?.type.toLowerCase()}/coderoom/problem-creation/${params?.slug}`
+
+  const url = `${user.data?.type.toLowerCase()}/coderoom/problem-creation/${params?.slug}`;
 
   return (
     <div className="flex h-screen flex-col mx-[270px] my-5">
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink
-              href={`/${url}/testpag`}
-            >
+            <BreadcrumbLink href={`/${url}/testpag`}>
               Problem creation
             </BreadcrumbLink>
           </BreadcrumbItem>

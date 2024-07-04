@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import RegisterForm from "@/components/ui/auth/registerForm";
-import Image from "next/image";
+import RegisterForm from '@/components/ui/auth/registerForm';
+import Image from 'next/image';
 
 export default function Page() {
   return (

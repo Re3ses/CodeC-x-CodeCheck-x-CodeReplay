@@ -1,12 +1,12 @@
-"use client"
+'use client';
 
-import { useFormStatus } from "react-dom"
+import { useFormStatus } from 'react-dom';
 
-export function SubmitButton({message}: {message: string}) {
-  const {pending} = useFormStatus()
+export function SubmitButton({ message }: { message: string }) {
+  const { pending } = useFormStatus();
   return (
     <button className="border" type="submit" disabled={pending}>
-      {pending? 'Processing...': `${message}`}
+      {pending ? 'Processing...' : `${message}`}
     </button>
-  )
+  );
 }

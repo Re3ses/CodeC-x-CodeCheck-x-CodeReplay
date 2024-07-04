@@ -1,19 +1,19 @@
-"use client";
+'use client';
 
-import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import Image from "next/image";
-import { ChangeEvent, useEffect, useState } from "react";
-import { io } from "socket.io-client";
-import { Editor } from "@monaco-editor/react";
+import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import Image from 'next/image';
+import { ChangeEvent, useEffect, useState } from 'react';
+import { io } from 'socket.io-client';
+import { Editor } from '@monaco-editor/react';
 import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { Tooltip } from "@radix-ui/react-tooltip";
-import SafeHtml from "@/components/SafeHtml";
+} from '@/components/ui/tooltip';
+import { Tooltip } from '@radix-ui/react-tooltip';
+import SafeHtml from '@/components/SafeHtml';
 
 const socket = io(
   `${process.env.NEXT_PUBLIC_SERVER_URL}${process.env.NEXT_PUBLIC_SOCKET_PORT}`
@@ -26,10 +26,10 @@ export default function Page() {
     useState<boolean>(false);
   const [isFrozen, setIsFrozen] = useState<boolean>(false);
   const [isRoomJoined, setIsRoomJoined] = useState<any>(false);
-  const [updatedMeetLink, setUpdatedMeetLink] = useState<string>("");
-  const [roomId, setRoomId] = useState<string>("");
-  const [mentorId, setMentorId] = useState<string>("");
-  const [mentorCreds, setMentorCreds] = useState<any>("");
+  const [updatedMeetLink, setUpdatedMeetLink] = useState<string>('');
+  const [roomId, setRoomId] = useState<string>('');
+  const [mentorId, setMentorId] = useState<string>('');
+  const [mentorCreds, setMentorCreds] = useState<any>('');
   const [problem, setProblem] = useState<any>();
 
   useEffect(() => {
@@ -58,28 +58,28 @@ export default function Page() {
     }
     function mentorCredsEvent(value: any) {
       setMentorCreds(value);
-      console.log("Mentor creds: ",value);
+      console.log('Mentor creds: ', value);
     }
 
     // TODO: Change socket.id to username []
     // recv mentor id for one-on-one communication []
     // send profile to socket []
-    socket.on("join-success", roomJoinedEvent);
-    socket.on("updated-editor", updatedEditorEvent);
-    socket.on("freeze", freezeEvent);
-    socket.on("hide-editor", mentorEditorHiddenEvent);
-    socket.on("updated-meet-link", updatedMeetLinkEvent);
-    socket.on("mentor-id", mentorIdEvent);
-    socket.on("selected-problem", selectedProblemEvent);
-    socket.on("mentor-creds", mentorCredsEvent);
+    socket.on('join-success', roomJoinedEvent);
+    socket.on('updated-editor', updatedEditorEvent);
+    socket.on('freeze', freezeEvent);
+    socket.on('hide-editor', mentorEditorHiddenEvent);
+    socket.on('updated-meet-link', updatedMeetLinkEvent);
+    socket.on('mentor-id', mentorIdEvent);
+    socket.on('selected-problem', selectedProblemEvent);
+    socket.on('mentor-creds', mentorCredsEvent);
 
     return () => {
-      socket.off("updated-editor", updatedEditorEvent);
-      socket.off("freeze", freezeEvent);
-      socket.off("hide-editor", mentorEditorHiddenEvent);
-      socket.off("join-success", roomJoinedEvent);
-      socket.off("updated-meet-iink", updatedMeetLinkEvent);
-      socket.off("selected-problem", selectedProblemEvent);
+      socket.off('updated-editor', updatedEditorEvent);
+      socket.off('freeze', freezeEvent);
+      socket.off('hide-editor', mentorEditorHiddenEvent);
+      socket.off('join-success', roomJoinedEvent);
+      socket.off('updated-meet-iink', updatedMeetLinkEvent);
+      socket.off('selected-problem', selectedProblemEvent);
     };
   }, [mentorEditorValue]);
 
@@ -87,10 +87,10 @@ export default function Page() {
     setRoomId(event.currentTarget.value);
   }
   function joinLiveSession() {
-    socket.emit("join-room", socket.id, roomId);
+    socket.emit('join-room', socket.id, roomId);
   }
   function updateLearnerEditorValue(value: string | undefined) {
-    socket.emit("update-learner-editor", value, mentorId); // TODO
+    socket.emit('update-learner-editor', value, mentorId); // TODO
   }
 
   return (
@@ -109,9 +109,9 @@ export default function Page() {
                     height={42}
                   />
                 </div>
-              <span className="text-sm text-white/50 text-center">
-                Hosted by: {mentorCreds.first_name} {mentorCreds.last_name}
-              </span>
+                <span className="text-sm text-white/50 text-center">
+                  Hosted by: {mentorCreds.first_name} {mentorCreds.last_name}
+                </span>
               </div>
             </>
           ) : (
@@ -196,7 +196,7 @@ export default function Page() {
                 <div className="border border-white/25 rounded-lg h-full flex flex-col">
                   <div className="border-b border-white/25 p-4 flex justify-between">
                     <h6 className="text-sm text-white/50 self-center">
-                      Now viewing: {mentorCreds.username} 
+                      Now viewing: {mentorCreds.username}
                     </h6>
                   </div>
                   <div className="flex-1 p-2 overflow-auto">

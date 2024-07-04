@@ -5,21 +5,21 @@
 // problem description
 // chat box
 
-"use client";
+'use client';
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import { getUser } from "@/lib/auth";
-import { Editor } from "@monaco-editor/react";
-import { useQuery } from "@tanstack/react-query";
-import { ChangeEvent, useEffect, useState } from "react";
-import { io } from "socket.io-client";
-import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { ChangeHandler } from "react-hook-form";
-import { useSearchParams } from "next/navigation";
-import Image from "next/image";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { getUser } from '@/lib/auth';
+import { Editor } from '@monaco-editor/react';
+import { useQuery } from '@tanstack/react-query';
+import { ChangeEvent, useEffect, useState } from 'react';
+import { io } from 'socket.io-client';
+import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { ChangeHandler } from 'react-hook-form';
+import { useSearchParams } from 'next/navigation';
+import Image from 'next/image';
 import {
   Select,
   SelectContent,
@@ -28,11 +28,11 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { ProblemSchemaInferredType } from "@/lib/interface/problem";
-import { GetProblemsMentor } from "@/utilities/apiService";
-import SafeHtml from "@/components/SafeHtml";
-import { toast } from "@/components/ui/use-toast";
+} from '@/components/ui/select';
+import { ProblemSchemaInferredType } from '@/lib/interface/problem';
+import { GetProblemsMentor } from '@/utilities/apiService';
+import SafeHtml from '@/components/SafeHtml';
+import { toast } from '@/components/ui/use-toast';
 
 interface s_User {
   username: String;
@@ -57,11 +57,11 @@ export default function Page() {
   const searchParams = useSearchParams();
 
   const { data } = useQuery({
-    queryKey: ["user"],
+    queryKey: ['user'],
     queryFn: async () => await getUser(),
   });
 
-  const [roomId, setRoomId] = useState<string>("");
+  const [roomId, setRoomId] = useState<string>('');
   const [users, setUsers] = useState<s_User[]>([]);
   const [isHidden, setIsHidden] = useState<boolean>(false);
   const [isFrozen, setIsFrozen] = useState<boolean>(false);
@@ -71,12 +71,12 @@ export default function Page() {
   const [selectedProblem, setSelectedProblem] =
     useState<ProblemSchemaInferredType>();
   const [learnerEditorValue, setLearnerEditorValue] = useState<any>();
-  const [listeningOn, setListeningOn] = useState<any>("abc123");
+  const [listeningOn, setListeningOn] = useState<any>('abc123');
 
   if (data !== null) {
-    socket.emit("init-server", roomId, data);
+    socket.emit('init-server', roomId, data);
   } else {
-    alert('Cannot get user data')
+    alert('Cannot get user data');
   }
 
   useEffect(() => {
@@ -98,48 +98,48 @@ export default function Page() {
       setLearnerEditorValue(value);
     }
 
-    socket.on("users-list", userListEvent);
+    socket.on('users-list', userListEvent);
     socket.on(listeningOn, learnerEditorValueEvent);
 
-    setRoomId(searchParams.get("room_id")!);
+    setRoomId(searchParams.get('room_id')!);
 
     return () => {
-      socket.off("users-list", userListEvent);
+      socket.off('users-list', userListEvent);
       socket.off(listeningOn, learnerEditorValueEvent);
     };
   }, [searchParams, listeningOn]);
 
   function handleChange(value: string | undefined) {
     console.log(value);
-    socket.emit("update-editor", value, roomId);
+    socket.emit('update-editor', value, roomId);
   }
   function changeEditorVisibility() {
-    socket.emit("hide-to-all", !isHidden, roomId);
+    socket.emit('hide-to-all', !isHidden, roomId);
     setIsHidden(!isHidden);
-    console.log(data)
+    console.log(data);
   }
   function changeFrozenStateOfAll() {
-    socket.emit("freeze-all", !isFrozen, roomId);
+    socket.emit('freeze-all', !isFrozen, roomId);
     setIsFrozen(!isFrozen);
   }
   function updateMeetLink(event: ChangeEvent<HTMLInputElement>) {
-    socket.emit("update-meet-link", roomId, event.currentTarget.value);
+    socket.emit('update-meet-link', roomId, event.currentTarget.value);
   }
   function handleProblemSelect(value: string) {
-    console.log("Problem select changed: ", value);
+    console.log('Problem select changed: ', value);
     const foundObject = problems.find(
       (obj: ProblemSchemaInferredType) => obj.slug === value
     );
     console.log(foundObject);
     setSelectedProblem(foundObject);
 
-    socket.emit("problem-selected", foundObject, roomId);
+    socket.emit('problem-selected', foundObject, roomId);
   }
   function watchLearner(value: String) {
     if (value === listeningOn) {
       toast({
         title: `Already watching learner: ${value}`,
-        variant: "destructive",
+        variant: 'destructive',
       });
       return;
     }
@@ -183,13 +183,13 @@ export default function Page() {
                 <div className="space-y-2">
                   <h6 className="text-sm">Current editor status</h6>
                   <div className="w-[160px] px-4 py-2 bg-zinc-900 text-sm font-bold text-white/50 rounded-lg">
-                    <span>{isHidden ? "Hidden" : "Visible"}</span>
+                    <span>{isHidden ? 'Hidden' : 'Visible'}</span>
                   </div>
                 </div>
                 <div className="space-y-2">
                   <h6 className="text-sm">Students editor status</h6>
                   <div className="w-[160px] px-4 py-2 bg-zinc-900 text-sm font-bold text-white/50 rounded-lg">
-                    <span>{isFrozen ? "Frozen" : "Un-frozen"}</span>
+                    <span>{isFrozen ? 'Frozen' : 'Un-frozen'}</span>
                   </div>
                 </div>
               </div>
@@ -219,14 +219,14 @@ export default function Page() {
                     </Select>
                     <Button
                       className="rounded-none"
-                      variant={"outline"}
+                      variant={'outline'}
                       onClick={() => changeEditorVisibility()}
                     >
                       Hide editor
                     </Button>
                     <Button
                       className="rounded-none"
-                      variant={"outline"}
+                      variant={'outline'}
                       onClick={() => changeFrozenStateOfAll()}
                     >
                       Freeze all

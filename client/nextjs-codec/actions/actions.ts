@@ -1,7 +1,7 @@
-"use server"
+'use server';
 
-import { RefreshToken } from "@/utilities/apiService"
+import { RefreshToken } from '@/utilities/apiService';
 
 export async function TokenRefresh() {
-  await RefreshToken()
+  await RefreshToken();
 }

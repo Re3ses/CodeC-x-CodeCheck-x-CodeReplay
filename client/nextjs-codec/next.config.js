@@ -3,14 +3,14 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "mir-s3-cdn-cf.behance.net",
-        port: "",
+        protocol: 'https',
+        hostname: 'mir-s3-cdn-cf.behance.net',
+        port: '',
       },
       {
-        protocol: "https",
-        hostname: "randomuser.me",
-        port: "",
+        protocol: 'https',
+        hostname: 'randomuser.me',
+        port: '',
       },
     ],
   },
