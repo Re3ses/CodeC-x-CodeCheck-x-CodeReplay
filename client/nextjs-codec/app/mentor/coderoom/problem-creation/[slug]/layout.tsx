@@ -27,14 +27,6 @@ export default function Layout({
 
   const url = `${user.data?.type.toLowerCase()}/coderoom/problem-creation/${params?.slug}`;
 
-  function handleSubmit(event: HTMLFormElement) {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const name = formData.get('name');
-    const description = formData.get('description');
-    console.log('submitted');
-  }
-
   return (
     <div className="flex h-screen flex-col mx-[270px] my-5 gap-5">
       {children}
