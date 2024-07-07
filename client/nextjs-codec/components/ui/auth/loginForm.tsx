@@ -62,27 +62,38 @@ export default function LoginForm() {
           onSubmit={form.handleSubmit(onSubmit)}
           className="flex flex-col gap-5"
         >
-          {['username', 'password'].map((fieldName, index) => (
-            <FormField
-              key={index}
-              control={form.control}
-              name={fieldName}
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <div className="relative w-full min-w-[200px] h-10">
-                      <Input
-                        type={fieldName === 'password' ? 'password' : 'text'}
-                        {...field}
-                        placeholder={fieldName}
-                      />
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          ))}
+          <FormField
+            control={form.control}
+            name="username"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <div className="relative w-full min-w-[200px] h-10">
+                    <Input type="text" {...field} placeholder="username" />
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <div className="relative w-full min-w-[200px] h-10">
+                    <Input
+                      type="password"
+                      {...field}
+                      placeholder={'password'}
+                    />
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
           <Button type="submit" disabled={!form.formState.isValid}>
             Login

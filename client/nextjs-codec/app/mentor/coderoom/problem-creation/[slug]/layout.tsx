@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/breadcrumb';
 import { getUser } from '@/lib/auth';
 import { useQuery } from '@tanstack/react-query';
+import { FormEventHandler } from 'react';
 
 export default function Layout({
   children,
@@ -26,38 +27,16 @@ export default function Layout({
 
   const url = `${user.data?.type.toLowerCase()}/coderoom/problem-creation/${params?.slug}`;
 
-  return (
-    <div className="flex h-screen flex-col mx-[270px] my-5">
-      <Breadcrumb>
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink href={`/${url}/testpag`}>
-              Problem creation
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink href={`/${url}`}>Code snippets</BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink href={`/${url}`}>Constraints</BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink href={`/${url}`}>Format</BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink href={`/${url}`}>Test cases</BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink href={`/${url}`}>Preview</BreadcrumbLink>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
+  function handleSubmit(event: HTMLFormElement) {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const name = formData.get('name');
+    const description = formData.get('description');
+    console.log('submitted');
+  }
 
+  return (
+    <div className="flex h-screen flex-col mx-[270px] my-5 gap-5">
       {children}
     </div>
   );
