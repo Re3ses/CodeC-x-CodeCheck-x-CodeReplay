@@ -2,7 +2,7 @@
 
 import axios, { AxiosError } from 'axios';
 import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
+import { notFound, permanentRedirect, redirect } from 'next/navigation';
 import TimeToMS from './timeToMS';
 import jwt from 'jsonwebtoken';
 import { RegisterSchemaInferredType } from '@/lib/interface/register';
@@ -49,8 +49,6 @@ export async function SilentLogin() {
         throw new Error('Failed to do silent login');
       }
     }
-  } else {
-    redirect('/login');
   }
 }
 

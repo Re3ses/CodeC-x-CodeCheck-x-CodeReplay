@@ -23,6 +23,11 @@ export default function Nav(props: {
       <div className="flex gap-4 jusify-center self-center">
         {[
           {
+            id: 'dashboard',
+            label: 'Dashboard',
+            href: `/dashboard`,
+          },
+          {
             id: 'coderoom',
             label: 'Code room',
             href: `/${path}/coderoom`,
@@ -32,6 +37,11 @@ export default function Nav(props: {
             label: 'Code box',
             href: `/codebox`,
           },
+          {
+            id: 'leaderboards',
+            label: 'Leaderboards',
+            href: '/leaderboards'
+          }
         ].map(({ label, href, id }) => (
           <Link
             className={pathname.endsWith(id) ? 'underline' : ''}

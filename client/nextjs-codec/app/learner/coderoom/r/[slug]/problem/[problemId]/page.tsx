@@ -55,6 +55,8 @@ export default function Page() {
   const [learner, setLearner] = useState<string>();
   const [hasSubmittedRequest, setHasSubmittedRequest] =
     useState<boolean>(false);
+  const [attemptCount, setAttemptCount] = useState<number>(0);
+  const [completionTime, setCompletionTime] = useState<number>(0);
   const langCodes: LanguageCodes = languagesCode;
 
   useEffect(() => {
@@ -112,6 +114,7 @@ export default function Page() {
     var eval_problems;
     if (isTest == false) {
       eval_problems = problem?.test_cases.filter((item) => item.is_eval);
+      setAttemptCount(attemptCount + 1);
     } else {
       // evals should not be empty
       eval_problems = problem?.test_cases.filter((item) => item.is_sample);
@@ -170,6 +173,12 @@ export default function Page() {
 
         const language_used = await getLanguage(+selectedLang);
 
+        if (score.accepted_count == score.overall_count) {
+          toast({ title: 'Congrats! All test case passed!' });
+          // TODO: Set completion time
+        }
+
+        // post to db
         if (!isTest) {
           const data = {
             language_used: language_used.name,
@@ -183,14 +192,12 @@ export default function Page() {
             learner: learner,
             problem: params.problemId,
             room: params.slug,
+            attempt_count: attemptCount,
+            completion_time: completionTime,
           };
 
           const url = `${process.env.NEXT_PUBLIC_SERVER_URL}${process.env.NEXT_PUBLIC_SERVER_PORT}/api/userSubmissions/`;
           await axios.postForm(url, data);
-        }
-
-        if (score.accepted_count == score.overall_count) {
-          toast({ title: 'Congrats! All test case passed!' });
         }
       } catch (e) {}
     }, 3000);
@@ -253,7 +260,7 @@ export default function Page() {
         <div className="p-3 bg-zinc-900">
           <p>Problem description</p>
         </div>
-        <div className="mx-auto">
+        {/* <div className="mx-auto">
           <Dialog>
             <DialogTrigger className="p-3 flex gap-2 justify-center w-fit hover:text-yellow-400">
               <LightningBoltIcon />
@@ -278,10 +285,12 @@ export default function Page() {
               </form>
             </DialogContent>
           </Dialog>
-        </div>
+        </div> */}
+
+        {/* TODO: Make problem preview into component */}
         <div className="p-3 flex-1 overflow-auto">
           <div
-            className="text-sm 
+            className="text-sm
                           [&_li]:list-decimal
                           [&_li]:ml-8
                           [&_li]:py-2

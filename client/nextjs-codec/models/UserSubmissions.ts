@@ -10,6 +10,8 @@ export interface UserSubmissions extends mongoose.Document {
   problem: string;
   room: string;
   submission_date: Date;
+  attempt_count: number;
+  completion_time: number;
 }
 
 const UserSubmissionsSchema = new mongoose.Schema<UserSubmissions>({
@@ -51,6 +53,14 @@ const UserSubmissionsSchema = new mongoose.Schema<UserSubmissions>({
   submission_date: {
     type: Date,
     default: Date.now,
+  },
+  attempt_count: {
+    type: Number,
+    default: 0,
+  },
+  completion_time: {
+    type: Number, // in ms
+    default: 0,
   },
 });
 
