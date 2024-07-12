@@ -1,5 +1,5 @@
-import { LoginSchema, LoginShemaInferredType } from "@/lib/interface/login";
-import { useForm } from "react-hook-form";
+import { LoginSchema, LoginShemaInferredType } from '@/lib/interface/login';
+import { useForm } from 'react-hook-form';
 import {
   Form,
   FormControl,
@@ -7,15 +7,15 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, buttonVariants } from "../button";
-import { redirect } from "next/navigation";
-import { useState } from "react";
-import { toast } from "../use-toast";
-import Link from "next/link";
-import { login } from "@/lib/auth";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Button, buttonVariants } from '../button';
+import { redirect } from 'next/navigation';
+import { useState } from 'react';
+import { toast } from '../use-toast';
+import Link from 'next/link';
+import { login } from '@/lib/auth';
 
 export default function LoginForm() {
   const [status, setStatus] = useState<number>();
@@ -23,8 +23,8 @@ export default function LoginForm() {
   const form = useForm<LoginShemaInferredType>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
-      username: "",
-      password: "",
+      username: '',
+      password: '',
     },
   });
 
@@ -33,26 +33,26 @@ export default function LoginForm() {
       const res = await login(data);
       setStatus(res);
       toast({
-        title: "Successfully logged in!",
-        description: "You can now access your account",
+        title: 'Successfully logged in!',
+        description: 'You can now access your account',
       });
     } catch {
-      form.setError("username", {
-        message: "Either username is taken or user does not exist",
+      form.setError('username', {
+        message: 'Either username is taken or user does not exist',
       });
-      form.setError("password", {
-        message: "Either password is wrong or user does not exist",
+      form.setError('password', {
+        message: 'Either password is wrong or user does not exist',
       });
       toast({
-        variant: "destructive",
-        title: "Error logging in",
-        description: "Please check your credentials",
+        variant: 'destructive',
+        title: 'Error logging in',
+        description: 'Please check your credentials',
       });
     }
   };
 
   if (status === 200) {
-    redirect("/dashboard");
+    redirect('/dashboard');
   }
 
   return (
@@ -62,23 +62,38 @@ export default function LoginForm() {
           onSubmit={form.handleSubmit(onSubmit)}
           className="flex flex-col gap-5"
         >
-          {["username", "password"].map((fieldName, index) => (
-            <FormField
-              key={index}
-              control={form.control}
-              name={fieldName}
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <div className="relative w-full min-w-[200px] h-10">
-                      <Input type={fieldName === "password" ? "password" : "text"} {...field} placeholder={fieldName} />
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          ))}
+          <FormField
+            control={form.control}
+            name="username"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <div className="relative w-full min-w-[200px] h-10">
+                    <Input type="text" {...field} placeholder="username" />
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <div className="relative w-full min-w-[200px] h-10">
+                    <Input
+                      type="password"
+                      {...field}
+                      placeholder={'password'}
+                    />
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
           <Button type="submit" disabled={!form.formState.isValid}>
             Login

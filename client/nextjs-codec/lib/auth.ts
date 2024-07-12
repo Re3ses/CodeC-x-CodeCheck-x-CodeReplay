@@ -1,14 +1,14 @@
-"use server"
+'use server';
 
-import { setSecureCookie, SilentLogin } from "@/utilities/apiService";
-import TimeToMS from "@/utilities/timeToMS";
-import jwt from "jsonwebtoken";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
-import { LoginShemaInferredType } from "./interface/login";
+import { setSecureCookie, SilentLogin } from '@/utilities/apiService';
+import TimeToMS from '@/utilities/timeToMS';
+import jwt from 'jsonwebtoken';
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
+import { LoginShemaInferredType } from './interface/login';
 
 export async function refreshToken() {
-  let refresh_token = cookies().get("refresh_token")?.value;
+  let refresh_token = cookies().get('refresh_token')?.value;
 
   const url = `${process.env.SERVER_URL}${process.env.AUTH_PORT}/auth/refresh/`;
   const payload = {
@@ -17,26 +17,26 @@ export async function refreshToken() {
 
   try {
     const res = await fetch(url, {
-      method: "POST",
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(payload)
-    })
+      body: JSON.stringify(payload),
+    });
 
     if (!res.ok) {
-      throw new Error("Failed to refresh token");
+      throw new Error('Failed to refresh token');
     }
 
     const { access_token, refresh_token } = await res.json();
 
     setSecureCookie(
-      "access_token",
+      'access_token',
       access_token,
       Date.now() + TimeToMS(0, 24, 0)
     );
     setSecureCookie(
-      "refresh_token",
+      'refresh_token',
       refresh_token,
       Date.now() + TimeToMS(12, 0, 0)
     );
@@ -48,29 +48,30 @@ export async function refreshToken() {
 }
 
 export async function getSession() {
-  const res = jwt.decode(cookies().get("refresh_token")?.value!);
+  const res = jwt.decode(cookies().get('refresh_token')?.value!);
   return res ? JSON.parse(JSON.stringify(res)) : null;
 }
 
 export async function getUser() {
+  // bug at middleware
   await SilentLogin();
   const user = await getSession();
   const url = `${process.env.SERVER_URL}${process.env.API_PORT}/api/users/${user?.username}`;
 
-  const access_token = cookies().get("access_token")?.value; // token expires in vanilla server: just a hunch
+  const access_token = cookies().get('access_token')?.value; // token expires in vanilla server: just a hunch
   const headers = {
     Authorization: `Bearer ${access_token}`,
   };
 
   try {
     const res = await fetch(url, {
-      method: "GET",
+      method: 'GET',
       headers: headers,
     });
     const data = await res.json();
     return data;
   } catch (e) {
-    throw new Error("Error getting user info");
+    throw new Error('Error getting user info');
   }
 }
 
@@ -79,42 +80,46 @@ export async function login(payload: LoginShemaInferredType) {
     const url = `${process.env.SERVER_URL}${process.env.AUTH_PORT}/auth/login/`;
 
     const res = await fetch(url, {
-      method: "POST",
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(payload)
-    })
+      body: JSON.stringify(payload),
+    });
 
     if (!res.ok) {
-      throw new Error("Failed to login");
+      throw new Error('Failed to login');
     }
 
     const { access_token, refresh_token } = await res.json();
+    console.log(access_token);
 
     setSecureCookie(
-      "access_token",
+      'access_token',
       access_token,
       Date.now() + TimeToMS(0, 24, 0)
     );
     setSecureCookie(
-      "refresh_token",
+      'refresh_token',
       refresh_token,
       Date.now() + TimeToMS(12, 0, 0)
     );
 
     return res.status;
   } catch {
-    throw new Error("Failed to get learner rooms");
+    throw new Error('Failed to get learner rooms');
   }
 }
 
-export async function refresh() {
-
-}
+export async function refresh() {}
 
 export async function logoutUser() {
-  cookies().delete("access_token");
-  cookies().delete("refresh_token");
-  redirect("/");
+  cookies().delete('access_token');
+  cookies().delete('refresh_token');
+  redirect('/login');
+}
+
+export async function deleteCookies() {
+  cookies().delete('access_token');
+  cookies().delete('refresh_token');
 }

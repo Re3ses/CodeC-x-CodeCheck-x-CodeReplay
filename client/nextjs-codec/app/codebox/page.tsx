@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
-import { toast } from "@/components/ui/use-toast";
+import { Button } from '@/components/ui/button';
+import { toast } from '@/components/ui/use-toast';
 import {
   getLanguages,
   getSubmission,
   postSubmission,
-} from "@/utilities/rapidApi";
-import { Editor } from "@monaco-editor/react";
-import { useEffect, useState } from "react";
-import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
-import languageCodes from "@/utilities/languages_code.json";
+} from '@/utilities/rapidApi';
+import { Editor } from '@monaco-editor/react';
+import { useEffect, useState } from 'react';
+import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
+import languageCodes from '@/utilities/languages_code.json';
 
 export default function Page() {
   const [runDisabled, setRunDisabled] = useState<boolean>(false);
@@ -35,7 +35,7 @@ export default function Page() {
       stdin: btoa(stdin) || null,
     };
 
-    toast({ title: "Testing code..." });
+    toast({ title: 'Testing code...' });
 
     const submissionToken = await postSubmission(data);
 
@@ -48,7 +48,7 @@ export default function Page() {
       const submission = await getSubmission(submissionToken.token);
       setSubmissionResult(submission);
       console.log(atob(submission.message));
-      toast({ title: "Code testing complete!" });
+      toast({ title: 'Code testing complete!' });
     }, 3000);
   }
 
@@ -122,7 +122,7 @@ export default function Page() {
             <div className="p-2 rounded-md overflow-scroll whitespace-pre-wrap">
               {submissionResult?.stdout != null
                 ? atob(submissionResult?.stdout)
-                : ""}
+                : ''}
             </div>
           </Panel>
         </PanelGroup>

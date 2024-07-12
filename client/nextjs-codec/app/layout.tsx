@@ -1,16 +1,16 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
-import ReactQueryProvider from "@/components/providers/ReactQueryProvider";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { Toaster } from "@/components/ui/toaster";
-import { cn } from "@/lib/utils";
-import { ThemeProvider } from "@/components/providers/ThemeProvider";
-const inter = Inter({ subsets: ["latin"] });
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import './globals.css';
+import ReactQueryProvider from '@/components/providers/ReactQueryProvider';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { Toaster } from '@/components/ui/toaster';
+import { cn } from '@/lib/utils';
+import { ThemeProvider } from '@/components/providers/ThemeProvider';
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: "CodeC",
-  description: "The place where you can code",
+  title: 'CodeC',
+  description: 'The place where you can code',
 };
 
 export default function RootLayout({
@@ -23,7 +23,7 @@ export default function RootLayout({
       <ReactQueryProvider>
         <body
           className={cn(
-            "min-h-screen bg-background font-sans antialiased",
+            'min-h-screen bg-background font-sans antialiased',
             inter
           )}
         >

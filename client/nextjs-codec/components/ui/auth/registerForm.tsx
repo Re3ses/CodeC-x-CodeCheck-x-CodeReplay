@@ -1,5 +1,5 @@
-import { FormSchemaInferredType, FormSchema } from "@/lib/interface/signupForm";
-import { useForm } from "react-hook-form";
+import { FormSchemaInferredType, FormSchema } from '@/lib/interface/signupForm';
+import { useForm } from 'react-hook-form';
 import {
   Form,
   FormControl,
@@ -7,23 +7,23 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
+} from '@/components/ui/form';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, buttonVariants } from "../button";
-import { RegisterUser } from "@/utilities/apiService";
-import { redirect } from "next/navigation";
-import { useState } from "react";
-import { toast } from "../use-toast";
-import Link from "next/link";
-import Image from "next/image";
+} from '@/components/ui/select';
+import { Input } from '@/components/ui/input';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Button, buttonVariants } from '../button';
+import { RegisterUser } from '@/utilities/apiService';
+import { redirect } from 'next/navigation';
+import { useState } from 'react';
+import { toast } from '../use-toast';
+import Link from 'next/link';
+import Image from 'next/image';
 
 export default function RegisterForm() {
   const [success, setSuccess] = useState(false);
@@ -31,12 +31,12 @@ export default function RegisterForm() {
   const form = useForm<FormSchemaInferredType>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      emailAddress: "",
-      username: "",
-      firstName: "",
-      lastName: "",
-      password: "",
-      passwordConfirm: "",
+      emailAddress: '',
+      username: '',
+      firstName: '',
+      lastName: '',
+      password: '',
+      passwordConfirm: '',
     },
   });
 
@@ -53,34 +53,34 @@ export default function RegisterForm() {
 
     if (res.emailExists || res.usernameExists) {
       if (res.emailExists) {
-        form.setError("emailAddress", {
-          message: "Email exist, please choose another one",
+        form.setError('emailAddress', {
+          message: 'Email exist, please choose another one',
         });
       }
 
       if (res.usernameExists) {
-        form.setError("username", {
-          message: "Username taken, please choose another one",
+        form.setError('username', {
+          message: 'Username taken, please choose another one',
         });
       }
 
       toast({
-        title: "Error signing up",
-        description: "Please check your credentials",
+        title: 'Error signing up',
+        description: 'Please check your credentials',
       });
     }
 
     if (res.accountCreated) {
       setSuccess(true);
       toast({
-        title: "Account successfully created!",
+        title: 'Account successfully created!',
         description: `You can now log in with this account with the username ${payload.username}`,
       });
     }
   };
 
   if (success) {
-    redirect("/login");
+    redirect('/login');
   }
 
   return (

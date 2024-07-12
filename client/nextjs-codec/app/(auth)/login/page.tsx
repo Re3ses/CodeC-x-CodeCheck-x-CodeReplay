@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import LoginForm from "@/components/ui/auth/loginForm";
-import Image from "next/image";
+import LoginForm from '@/components/ui/auth/loginForm';
+import Image from 'next/image';
 
 export default function Page() {
   return (

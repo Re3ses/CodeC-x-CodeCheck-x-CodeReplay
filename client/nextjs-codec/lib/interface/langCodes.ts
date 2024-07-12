@@ -1,3 +1,3 @@
 interface LanguageCodes {
-    [key: string]: string;
+  [key: string]: string;
 }

@@ -1,44 +1,61 @@
-"use client"
+'use client';
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import Image from "next/image";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import Image from 'next/image';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
-export default function Nav(props: { variant?: string, name?: string, type?: string }) {
+export default function Nav(props: {
+  variant?: string;
+  name?: string;
+  type?: string;
+}) {
   function Links() {
     const pathname = usePathname();
 
-    const path = pathname.startsWith("/dashboard") ? props.type?.toLowerCase() : pathname.startsWith("/mentor") ? "mentor" : "learner"
+    const path = pathname.startsWith('/dashboard')
+      ? props.type?.toLowerCase()
+      : pathname.startsWith('/mentor')
+        ? 'mentor'
+        : 'learner';
 
     return (
       <div className="flex gap-4 jusify-center self-center">
-        {
-          [
-            {
-              id: "coderoom",
-              label: "Code room",
-              href: `/${path}/coderoom`
-            },
-            {
-              id: "codebox",
-              label: "Code box",
-              href: `/codebox`
-            },
-          ].map(({ label, href, id }) => (
-            <Link
-              className={pathname.endsWith(id) ? "underline" : ""}
-              key={label}
-              href={href}
-            >{label}</Link>
-          ))
-        }
+        {[
+          {
+            id: 'dashboard',
+            label: 'Dashboard',
+            href: `/dashboard`,
+          },
+          {
+            id: 'coderoom',
+            label: 'Code room',
+            href: `/${path}/coderoom`,
+          },
+          {
+            id: 'codebox',
+            label: 'Code box',
+            href: `/codebox`,
+          },
+          {
+            id: 'leaderboards',
+            label: 'Leaderboards',
+            href: '/leaderboards'
+          }
+        ].map(({ label, href, id }) => (
+          <Link
+            className={pathname.endsWith(id) ? 'underline' : ''}
+            key={label}
+            href={href}
+          >
+            {label}
+          </Link>
+        ))}
       </div>
-
     );
   }
 
-  if (props.variant == "Compact") {
+  if (props.variant == 'Compact') {
     return (
       <div className="flex px-2 justify-between bg-card">
         <Link href="/dashboard" className="my-auto">

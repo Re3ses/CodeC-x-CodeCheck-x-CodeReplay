@@ -6,8 +6,8 @@ For a more in-depth guide and information, refer to our CodeC Wiki: [https://git
 
 ## Prerequisites
 
-* `docker` must be installed on your machine.
-* `nvm` should be used to manage Node.js versions.
+- `docker` must be installed on your machine.
+- `nvm` should be used to manage Node.js versions.
 
 ## Quick Start: How to Run
 
@@ -66,6 +66,7 @@ For a more in-depth guide and information, refer to our CodeC Wiki: [https://git
 ### Judge0
 
 #### Prerequisite
+
 If you are in a linux environment make sure that you are using cgroups v1.
 For more information regarding docker and cgroups, [See this]('https://docs.docker.com/config/containers/runmetrics/')
 

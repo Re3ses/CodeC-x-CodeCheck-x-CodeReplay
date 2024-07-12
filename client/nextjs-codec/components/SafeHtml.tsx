@@ -15,7 +15,9 @@ const SafeHtml: React.FC<SafeHtmlProps> = ({ html, className }) => {
     return { __html: html };
   };
 
-  return <div className={className} dangerouslySetInnerHTML={createMarkup(html)} />;
+  return (
+    <div className={className} dangerouslySetInnerHTML={createMarkup(html)} />
+  );
 };
 
 export default SafeHtml;
