@@ -1,3 +1,5 @@
+# TODO: config mongodb to point to proper uri and port number 
+
 FROM node:lts-iron
 
 WORKDIR /usr/src/app
@@ -16,6 +18,7 @@ RUN npm install
 RUN npm install -g concurrently
 
 # Expose port 3000
+EXPOSE 3000
 
 # Start both client and server
 CMD ["concurrently", "--kill-others-on-fail", "npm:start --prefix /usr/src/app/client/nextjs-codec", "npm:prod --prefix /usr/src/app/server/codec-api"]
