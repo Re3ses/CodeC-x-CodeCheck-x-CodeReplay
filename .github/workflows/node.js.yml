@@ -62,7 +62,7 @@ jobs:
         echo "AUTH_PORT=${{secrets.AUTH_PORT}}" >> .env
         echo "API_PORT=${{secrets.API_PORT}}" >> .env
         echo "SOCKET_PORT=${{secrets.SOCKET_PORT}}" >> .env
-        echo "MONGODB_URI='${{secrets.MONGODB_URI}}'" >> .env
+        echo "MONGODB_URI=${{secrets.MONGODB_URI}}" >> .env
         echo "ACCESS_TOKEN=${{secrets.ACCESS_TOKEN}}" >> .env
         echo "REFRESH_TOKEN=${{secrets.REFRESH_TOKEN}}" >> .env
         echo "MAILER_USERNAME=${{secrets.MAILER_USERNAME}}" >> .env
