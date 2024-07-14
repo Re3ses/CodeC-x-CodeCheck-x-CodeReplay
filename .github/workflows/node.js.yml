@@ -28,11 +28,25 @@ jobs:
         cache: 'npm'
         cache-dependency-path: './client/nextjs-codec'
         
-    - name: Install dependencies
+    - name: Install client dependencies
       run: npm ci
       working-directory: ./client/nextjs-codec
 
     - name: Build client
       run: npm run build
       working-directory: ./client/nextjs-codec
+
+    - name: Restart codec-client pm2 process
+      run: pm2 restart codec-client
+      working-directory: ./client/nextjs-codec
+
+    - name: Install codec api dependencies
+      run: npm ci
+      working-directory: ./server/codec-api
+
+    - name: Restart codec-api pm2 process
+      run: pm2 restart codec-api
+
+    
+
     
