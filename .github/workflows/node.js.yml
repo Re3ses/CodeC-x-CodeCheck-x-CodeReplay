@@ -46,6 +46,7 @@ jobs:
 
     - name: Restart codec-api pm2 process
       run: pm2 restart codec-api
+      working-directory: ./server/codec-api
 
     
 
