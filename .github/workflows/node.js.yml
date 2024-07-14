@@ -33,6 +33,6 @@ jobs:
       working-directory: ./client/nextjs-codec
 
     - name: Build client
-      run: num run build
+      run: npm run build
       working-directory: ./client/nextjs-codec
     
