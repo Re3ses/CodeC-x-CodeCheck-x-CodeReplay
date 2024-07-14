@@ -18,6 +18,15 @@ jobs:
 
     steps:
 
+    - uses: actions/checkout@v4
+    
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        cache-dependency-path: './client/nextjs-codec'
+
     - name: Set cache
       uses: actions/cache@v4
       with:
@@ -29,15 +38,6 @@ jobs:
           # If source files changed but packages didn't, rebuild from a prior cache.
         restore-keys: |
             ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
-
-    - uses: actions/checkout@v4
-    
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-        cache-dependency-path: './client/nextjs-codec'
 
     - name: Set client environment variables
       run: |
@@ -73,7 +73,7 @@ jobs:
       working-directory: ./client/nextjs-codec
 
     - name: Restart codec-client pm2 process
-      run: pm2 restart codec-client
+      run: pm2 restart codec-client --update-env
       working-directory: ./client/nextjs-codec
 
     - name: Install codec api dependencies
@@ -81,7 +81,7 @@ jobs:
       working-directory: ./server/codec-api
 
     - name: Restart codec-api pm2 process
-      run: pm2 restart codec-api
+      run: pm2 restart codec-api --update-env
       working-directory: ./server/codec-api
 
     
