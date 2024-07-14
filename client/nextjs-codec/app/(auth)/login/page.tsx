@@ -8,7 +8,6 @@ export default function Page() {
     <div className="h-screen flex">
       <div className="bg-card flex flex-col gap-5 rounded-sm w-[350px] m-auto p-4">
         <div className="w-full flex flex-col justify-center align-middle p-10 text-center">
-          <span className="text-white/50 text-sm">welcome to</span>
           <Image
             className="m-auto"
             src="images/CodeC.svg"
