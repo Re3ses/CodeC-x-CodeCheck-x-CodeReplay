@@ -30,7 +30,8 @@ jobs:
 
     - name: Set client environtment variables
       run: |
-        echo "test api ${codec-api.VARS.test}"
+        echo "test api ${codec-api.VARS.TEST}"
+        echo "client ${codec-client.VARS.TEST}"
     
     - name: Install client dependencies
       run: npm ci
