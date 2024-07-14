@@ -15,18 +15,24 @@ jobs:
     strategy:
       matrix:
         node-version: [20.15.1]
-        directory: ['./client/nextjs-codec/']
 
     # env:
     #   <VARIABLE_NAME>: ${{<secrets.VARIABLE_NAME}}
     steps:
     - uses: actions/checkout@v4
+    
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+        cache-dependency-path: './client/nextjs-codec'
+        
+    - name: Install dependencies
+      run: npm ci
+      working-directory: ./client/nextjs-codec
+
     - name: Build client
-      run: npm ci && npm run build --if-present
-      working-directory: ./client/nextjs-codec/
+      run: num run build
+      working-directory: ./client/nextjs-codec
     
