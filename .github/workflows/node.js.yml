@@ -41,7 +41,9 @@ jobs:
 
     - name: Set client environment variables
       run: |
-        rm .env.production
+        if [ -f ".env.production" ]; then
+          rm .env.production
+        fi
         echo "SERVER_URL=${{secrets.SERVER_URL}}" >> .env.production
         echo "AUTH_PORT=${{secrets.AUTH_PORT}}" >> .env.production
         echo "API_PORT=${{secrets.API_PORT}}" >> .env.production
@@ -54,7 +56,9 @@ jobs:
 
     - name: Set api environment variables
       run: |
-        rm .env
+        if [ -f ".env" ]; then
+          rm .env
+        fi
         echo "AUTH_PORT=${{secrets.AUTH_PORT}}" >> .env
         echo "API_PORT=${{secrets.API_PORT}}" >> .env
         echo "SOCKET_PORT=${{secrets.SOCKET_PORT}}" >> .env
