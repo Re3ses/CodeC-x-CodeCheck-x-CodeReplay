@@ -200,9 +200,9 @@ export default function Page() {
 
           try {
             if (localStorage.getItem(params.problemId + '_started') !== null) {
-              start_time = parseInt(localStorage.getItem(
-                params.problemId + '_started'
-              )!);
+              start_time = parseInt(
+                localStorage.getItem(params.problemId + '_started')!
+              );
               setStartTime(start_time);
 
               // == debug ==
@@ -211,7 +211,9 @@ export default function Page() {
             }
 
             if (localStorage.getItem(params.problemId + '_ended') !== null) {
-              end_time = parseInt(localStorage.getItem(params.problemId + '_ended')!);
+              end_time = parseInt(
+                localStorage.getItem(params.problemId + '_ended')!
+              );
               setEndTime(end_time);
 
               // == debug ==
@@ -220,7 +222,7 @@ export default function Page() {
             }
           } catch (e) {
             console.error('local storage problem', e);
-            alert("Local storage not supported, contact support for help...");
+            alert('Local storage not supported, contact support for help...');
             return;
           }
 
@@ -249,7 +251,7 @@ export default function Page() {
           // === end debug ===
 
           const url = `${process.env.NEXT_PUBLIC_SERVER_URL}${process.env.NEXT_PUBLIC_SERVER_PORT}/api/userSubmissions/`;
-          console.log("url", url)
+          console.log('url', url);
           await axios.postForm(url, data);
         }
       } catch (e) {

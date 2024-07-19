@@ -8,9 +8,9 @@ export default async function LeaderboardsLayout({
   children: React.ReactNode;
 }) {
   const user = await getUser();
-	if (user.auth === undefined) {
-		redirect('/login');
-	}
+  if (user.auth === undefined) {
+    redirect('/login');
+  }
   return (
     <div>
       <Nav name={user?.auth.username} />
