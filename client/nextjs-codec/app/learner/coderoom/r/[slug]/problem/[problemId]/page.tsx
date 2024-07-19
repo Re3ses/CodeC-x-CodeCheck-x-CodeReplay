@@ -57,9 +57,19 @@ export default function Page() {
     useState<boolean>(false);
   const [attemptCount, setAttemptCount] = useState<number>(0);
   const [completionTime, setCompletionTime] = useState<number>(0);
+  const [startTime, setStartTime] = useState<number>(0);
+  const [endTime, setEndTime] = useState<number>(0);
   const langCodes: LanguageCodes = languagesCode;
 
   useEffect(() => {
+    // set start time on mount
+    if (!localStorage.getItem(params.problemId + '_started')) {
+      localStorage.setItem(
+        params.problemId + '_started',
+        Date.now().toString()
+      );
+    }
+
     const res: () => Promise<ProblemSchemaInferredType> = async () => {
       return await GetProblems(params.problemId);
     };
@@ -98,10 +108,8 @@ export default function Page() {
     return token;
   }
 
-  /**
-   * Todo: Make sure cannot be spammed
-   * @param isTest - boolean
-   */
+  // TODO: Prevent spam
+  // Submits to db, checks for isTest flag
   async function handleSubmit(isTest: boolean = true) {
     if (editorValue == '' || selectedLang == undefined) {
       toast({
@@ -114,7 +122,6 @@ export default function Page() {
     var eval_problems;
     if (isTest == false) {
       eval_problems = problem?.test_cases.filter((item) => item.is_eval);
-      setAttemptCount(attemptCount + 1);
     } else {
       // evals should not be empty
       eval_problems = problem?.test_cases.filter((item) => item.is_sample);
@@ -152,14 +159,19 @@ export default function Page() {
       return token.token;
     });
 
+    // Submits to judge0 for eval
     setTimeout(async () => {
       try {
+        setAttemptCount(attemptCount + 1);
+        // Set completion time here, mark as valid if problem is completed
+
         const batchSubmissions = await getBatchSubmisisons(tokens.join());
         setBatchResult(batchSubmissions.submissions);
 
         const accepted = batchSubmissions.submissions.filter(
           (obj: any) => obj.status.description === 'Accepted'
         );
+
         const score = {
           accepted_count: accepted.length,
           overall_count: batchSubmissions.submissions.length,
@@ -175,11 +187,45 @@ export default function Page() {
 
         if (score.accepted_count == score.overall_count) {
           toast({ title: 'Congrats! All test case passed!' });
-          // TODO: Set completion time
+          localStorage.setItem(
+            params.problemId + '_ended',
+            Date.now().toString()
+          );
         }
 
-        // post to db
+        // if not test, submit and post attempt to db
         if (!isTest) {
+          let start_time: number = 0;
+          let end_time: number = 0;
+
+          try {
+            if (localStorage.getItem(params.problemId + '_started') !== null) {
+              start_time = parseInt(localStorage.getItem(
+                params.problemId + '_started'
+              )!);
+              setStartTime(start_time);
+
+              // == debug ==
+              console.log('start_time', start_time);
+              // == end debug ==
+            }
+
+            if (localStorage.getItem(params.problemId + '_ended') !== null) {
+              end_time = parseInt(localStorage.getItem(params.problemId + '_ended')!);
+              setEndTime(end_time);
+
+              // == debug ==
+              console.log('end_time', end_time);
+              // == end debug ==
+            }
+          } catch (e) {
+            console.error('local storage problem', e);
+            alert("Local storage not supported, contact support for help...");
+            return;
+          }
+
+          console.log('hello');
+
           const data = {
             language_used: language_used.name,
             code: editorValue,
@@ -193,13 +239,22 @@ export default function Page() {
             problem: params.problemId,
             room: params.slug,
             attempt_count: attemptCount,
-            completion_time: completionTime,
+            start_time: start_time,
+            end_time: end_time,
+            completion_time: end_time - start_time,
           };
 
+          // === debug ===
+          console.log(data);
+          // === end debug ===
+
           const url = `${process.env.NEXT_PUBLIC_SERVER_URL}${process.env.NEXT_PUBLIC_SERVER_PORT}/api/userSubmissions/`;
+          console.log("url", url)
           await axios.postForm(url, data);
         }
-      } catch (e) {}
+      } catch (e) {
+        console.error('error occured posting to db', e);
+      }
     }, 3000);
   }
 
@@ -227,65 +282,12 @@ export default function Page() {
     }
   }
 
-  async function sendLiveCodeRequest(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
-    if (hasSubmittedRequest) {
-      toast({
-        title: 'Oops, can only submit one request',
-        variant: 'destructive',
-      });
-      return;
-    }
-
-    const formdata = new FormData(event.currentTarget);
-    formdata.append('room_slug', params.slug);
-    formdata.append('problem_slug', params.problemId);
-
-    const response = await fetch('/api/liveCode', {
-      method: 'POST',
-      body: formdata,
-    });
-
-    const data = await response.json();
-    if (data.message == 'Request created') {
-      toast({ title: "Request sent to this room's mentor" });
-      setHasSubmittedRequest(true); // this is only effective if user does not refresh page
-    }
-  }
-
   return (
     <PanelGroup direction="horizontal">
       <Panel className="min-w-[20em] overflow-scroll flex flex-col gap-2">
         <div className="p-3 bg-zinc-900">
           <p>Problem description</p>
         </div>
-        {/* <div className="mx-auto">
-          <Dialog>
-            <DialogTrigger className="p-3 flex gap-2 justify-center w-fit hover:text-yellow-400">
-              <LightningBoltIcon />
-              Ask for help
-              <LightningBoltIcon />
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Request live session</DialogTitle>
-                <DialogDescription>
-                  {
-                    'Notify the creator of this problem for a live coding session, you will recieve a "Join" button should they accept.'
-                  }
-                </DialogDescription>
-              </DialogHeader>
-              <form onSubmit={sendLiveCodeRequest}>
-                <Textarea
-                  name="request_reason"
-                  placeholder="optional: reason (i.e., 'How to use callback funtions?')"
-                />
-                <Button type="submit">Submit request</Button>
-              </form>
-            </DialogContent>
-          </Dialog>
-        </div> */}
 
         {/* TODO: Make problem preview into component */}
         <div className="p-3 flex-1 overflow-auto">

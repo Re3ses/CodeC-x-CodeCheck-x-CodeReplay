@@ -32,6 +32,10 @@ export async function POST(request: Request) {
       learner: formData.get('learner'),
       problem: formData.get('problem'),
       room: formData.get('room'),
+      attempt_count: formData.get('attempt_count'),
+      start_time: formData.get('start_time'),
+      end_time: formData.get('end_time'),
+      completion_time: formData.get('completion_time'), // in ms
     });
 
     await userSubmission.save();
