@@ -6,7 +6,8 @@ export interface UserSubmissions extends mongoose.Document {
   score: number;
   score_overall_count: number;
   verdict: string;
-  learner: mongoose.ObjectId;
+  learner: string;
+  learner_id: mongoose.ObjectId;
   problem: string;
   room: string;
   submission_date: Date;
@@ -40,9 +41,13 @@ const UserSubmissionsSchema = new mongoose.Schema<UserSubmissions>({
     default: 'REJECTED',
   },
   learner: {
+    type: String,
+    required: [true, 'Enter learner username'],
+  },
+  learner_id: {
     type: mongoose.Types.ObjectId,
     ref: 'User',
-    required: [true, 'Enter learner username'],
+    required: [true, 'Enter learner user id'],
   },
   problem: {
     type: String,

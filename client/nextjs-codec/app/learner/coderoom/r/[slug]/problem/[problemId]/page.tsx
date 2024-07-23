@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState, useRef, FormEvent } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { GetProblems } from '@/utilities/apiService';
 import {
   getBatchSubmisisons,
@@ -18,18 +18,7 @@ import 'react-quill/dist/quill.core.css';
 import { Switch } from '@/components/ui/switch';
 import axios from 'axios';
 import { useParams } from 'next/navigation';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
-import { Textarea } from '@/components/ui/textarea';
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
-import { LightningBoltIcon } from '@radix-ui/react-icons';
 import { getUser } from '@/lib/auth';
 import languagesCode from '@/utilities/languages_code.json';
 import SafeHtml from '@/components/SafeHtml';
@@ -38,6 +27,22 @@ type languageData = {
   id: number;
   name: string;
 };
+
+interface Data {
+  language_used: string;
+  code: string;
+  score: number;
+  score_overall_count: number;
+  verdict: string;
+  learner: string;
+  learner_id: string;
+  problem: string;
+  room: string;
+  attempt_count: number;
+  start_time: number;
+  end_time: number;
+  completion_time: number;
+}
 
 export default function Page() {
   const editorRef = useRef(null);
@@ -53,12 +58,8 @@ export default function Page() {
   const [score, setScore] = useState<any>();
   const [batchResult, setBatchResult] = useState<any>();
   const [learner, setLearner] = useState<string>();
-  const [hasSubmittedRequest, setHasSubmittedRequest] =
-    useState<boolean>(false);
+  const [learner_id, setLearnerId] = useState<string>();
   const [attemptCount, setAttemptCount] = useState<number>(0);
-  const [completionTime, setCompletionTime] = useState<number>(0);
-  const [startTime, setStartTime] = useState<number>(0);
-  const [endTime, setEndTime] = useState<number>(0);
   const langCodes: LanguageCodes = languagesCode;
 
   useEffect(() => {
@@ -83,7 +84,10 @@ export default function Page() {
     const user: () => Promise<any> = async () => {
       return await getUser();
     };
-    user().then((result) => setLearner(result.id));
+    user().then((result) => {
+      setLearner(result.auth.username);
+      setLearnerId(result.id);
+    });
   }, [params.problemId]);
 
   function handleEditorDidMount(editor: any) {
@@ -203,7 +207,6 @@ export default function Page() {
               start_time = parseInt(
                 localStorage.getItem(params.problemId + '_started')!
               );
-              setStartTime(start_time);
 
               // == debug ==
               console.log('start_time', start_time);
@@ -214,7 +217,6 @@ export default function Page() {
               end_time = parseInt(
                 localStorage.getItem(params.problemId + '_ended')!
               );
-              setEndTime(end_time);
 
               // == debug ==
               console.log('end_time', end_time);
@@ -238,13 +240,20 @@ export default function Page() {
                 ? 'ACCEPTED'
                 : 'REJECTED',
             learner: learner,
+            learner_id: learner_id,
             problem: params.problemId,
             room: params.slug,
-            attempt_count: attemptCount,
+            attempt_count: attemptCount + 1,
             start_time: start_time,
             end_time: end_time,
-            completion_time: end_time - start_time,
+            completion_time: end_time > 0 ? end_time - start_time : 0,
           };
+
+          const formData = new FormData();
+
+          Object.keys(data).forEach((key) => {
+            formData.append(key, data[key as keyof Data] as string | Blob);
+          });
 
           // === debug ===
           console.log(data);
@@ -252,7 +261,11 @@ export default function Page() {
 
           const url = `${process.env.NEXT_PUBLIC_SERVER_URL}${process.env.NEXT_PUBLIC_SERVER_PORT}/api/userSubmissions/`;
           console.log('url', url);
-          await axios.postForm(url, data);
+
+          await fetch(url, {
+            method: 'POST',
+            body: formData,
+          });
         }
       } catch (e) {
         console.error('error occured posting to db', e);

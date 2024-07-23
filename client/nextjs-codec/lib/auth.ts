@@ -69,6 +69,9 @@ export async function getUser() {
       headers: headers,
     });
     const data = await res.json();
+
+    console.log('user data: ', data);
+
     return data;
   } catch (e) {
     throw new Error('Error getting user info');
