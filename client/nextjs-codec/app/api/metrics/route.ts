@@ -36,6 +36,6 @@ export async function GET(request: Request) {
       created_problems_count: problemsCount.length,
     });
   } catch (e) {
-    console.error('Error in [Metrics] connecting to mongodb client: ', e);
-  }
+		return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+	}
 }
