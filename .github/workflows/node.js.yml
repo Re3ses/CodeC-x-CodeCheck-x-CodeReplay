@@ -52,7 +52,7 @@ jobs:
           echo "NEXT_PUBLIC_AUTH_PORT=${{secrets.AUTH_PORT}}" >> .env.production
           echo "NEXT_PUBLIC_API_PORT=${{secrets.API_PORT}}" >> .env.production
           echo "NEXT_PUBLIC_SOCKET_PORT=${{secrets.SOCKET_PORT}}" >> .env.production
-          echo "NEXT_PUBLIC_MONGODB_URI=${{sectrets.MONGODB_URI}}" >> .env.production
+          echo "NEXT_PUBLIC_MONGODB_URI=${{secrets.MONGODB_URI}}" >> .env.production
         working-directory: ./client/nextjs-codec
 
       - name: Set api environment variables
