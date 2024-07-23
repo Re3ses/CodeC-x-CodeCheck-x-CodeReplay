@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
   Select,
@@ -19,16 +19,24 @@ import 'react-quill/dist/quill.snow.css';
 import { Switch } from '@/components/ui/switch';
 import { useQuery } from '@tanstack/react-query';
 import { getUser } from '@/lib/auth';
+import SafeHtml from '@/components/SafeHtml';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
-// todo: consider using a types ts file for obvious reasons.
-type LangArray = {
+interface LangArray {
   name: string;
   code_snippet: any;
   time_complexity: number;
   space_complexity: number;
-};
+}
 
 type TestCases = {
   input: string;
@@ -96,26 +104,27 @@ export default function Page({ params }: { params: { slug: string } }) {
     if (
       selectedLang === undefined ||
       codeSnippet === undefined ||
-      timeComplexity === undefined ||
       selectedLang === '' ||
       codeSnippet === ''
     ) {
       toast({
-        title:
-          'Make sure that you selected a language, added a code snippet, or added complexities.',
+        title: 'Make sure that you selected a language, added a code snippet.',
         variant: 'destructive',
       });
-      return 1;
+      return;
     }
 
-    const languages = {
+    const languages: LangArray = {
       name: selectedLang!,
       code_snippet: codeSnippet,
-      time_complexity: timeComplexity!,
-      space_complexity: 1000,
+      time_complexity: 500,
+      space_complexity: 500,
     };
 
+    // add to language snippets array
     setLangArray([...langArray, languages]);
+
+    // reset state
     setSelectedLang('');
     setCodeSnippet('');
 
@@ -136,8 +145,11 @@ export default function Page({ params }: { params: { slug: string } }) {
     setTestCases([...testCases, newTestCases]);
   }
 
+  function handleRemoveLangArrayItem(code_snippet: string) {
+    setLangArray((prevItems) => prevItems.filter(item => item.code_snippet !== code_snippet))
+  }
+
   return (
-    // todo: make this carousel/paginated
     <div className="container p-4">
       <form onSubmit={onSubmit} className="flex flex-col justify-start gap-4">
         <div>
@@ -155,21 +167,8 @@ export default function Page({ params }: { params: { slug: string } }) {
         </div>
 
         <div className="grid grid-cols-2 divide-x mt-4">
-          <div className="flex flex-col gap-4 mr-4 justify-center">
-            <div>
-              <label htmlFor="time-complexity">
-                Time complexity (In milliseconds)
-              </label>
-              <Input
-                type="number"
-                name="time-complexity"
-                placeholder="(e.g., 500)"
-                onChange={(e) => setTimeComplexity(+e.target.value)}
-                required
-              />
-            </div>
-          </div>
-          <div>
+          <div className='p-2'>
+            {/* Code snippet */}
             <div className="flex flex-col gap-4 ml-4">
               <Select
                 name="prog-language"
@@ -209,7 +208,35 @@ export default function Page({ params }: { params: { slug: string } }) {
                 Add code snippet
               </Button>
             </div>
+            {/* == end code snippet == */}
           </div>
+          {/* Code snippet preview */}
+          <div className='flex flex-col gap-2 p-2'>
+            <small>Click item to preview</small>
+            <div className="flex gap-2 flex-wrap align-top justify-start h-fit">
+              {langArray.map((element: LangArray) => {
+                return (
+                  <Dialog key={element.name}>
+                    <DialogTrigger
+                      className={buttonVariants({ variant: 'default' })}
+                    >
+                      {element.name}
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogDescription className='p-2'>
+                          <small>{element.name} Code snippet</small>
+                          <SafeHtml html={element.code_snippet} className='mb-2 p-2 rounded-md border border-slate-500' />
+                          <Button variant={"destructive"} className='float-right' onClick={() => handleRemoveLangArrayItem(element.code_snippet)}>Remove</Button>
+                        </DialogDescription>
+                      </DialogHeader>
+                    </DialogContent>
+                  </Dialog>
+                );
+              })}
+            </div>
+          </div>
+          {/* == end code snippet preview == */}
         </div>
 
         <div className="grid grid-cols-2 gap-4">
