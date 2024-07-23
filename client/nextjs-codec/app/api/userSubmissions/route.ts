@@ -37,7 +37,7 @@ export async function GET(request: Request) {
 
     const userSubmissionsCount = await UserSubmissions.countDocuments();
 
-    if ((perPage * page) > userSubmissionsCount) {
+    if (perPage * page > userSubmissionsCount) {
       perPage = userSubmissionsCount % perPage;
     }
 

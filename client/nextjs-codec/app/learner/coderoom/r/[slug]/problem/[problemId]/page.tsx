@@ -246,7 +246,7 @@ export default function Page() {
             attempt_count: attemptCount + 1,
             start_time: start_time,
             end_time: end_time,
-            completion_time: end_time > 0 ? (end_time - start_time) : 0,
+            completion_time: end_time > 0 ? end_time - start_time : 0,
           };
 
           const formData = new FormData();

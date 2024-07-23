@@ -49,7 +49,7 @@ export default function Nav(props: {
             key={label}
             href={href}
             onClick={() => {
-              revalidatePath(`${href}`)
+              revalidatePath(`${href}`);
             }}
           >
             {label}
