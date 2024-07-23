@@ -1,6 +1,7 @@
 'use client';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { revalidatePath } from 'next/cache';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -40,13 +41,16 @@ export default function Nav(props: {
           {
             id: 'leaderboards',
             label: 'Leaderboards',
-            href: '/leaderboards',
+            href: '/leaderboards?page=1&perPage=10',
           },
         ].map(({ label, href, id }) => (
           <Link
             className={pathname.endsWith(id) ? 'underline' : ''}
             key={label}
             href={href}
+            onClick={() => {
+              revalidatePath(`${href}`)
+            }}
           >
             {label}
           </Link>
