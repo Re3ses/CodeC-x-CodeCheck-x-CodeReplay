@@ -1,18 +1,16 @@
-import mongoose, { ConnectOptions } from 'mongoose';
+import mongoose from 'mongoose';
 import { ObjectId } from 'mongodb';
 import { NextResponse } from 'next/server';
+import dbConnect from '../../../lib/dbConnect';
 
 export async function GET(request: Request) {
-  await mongoose.connect(process.env.MONGODB_URI!, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  } as ConnectOptions);
-
-  const db = mongoose.connection;
-  const coderoomsCollection = db.collection('coderooms');
-  const problemsCollection = db.collection('problems');
-
   try {
+    await dbConnect();
+
+    const db = mongoose.connection;
+    const coderoomsCollection = db.collection('coderooms');
+    const problemsCollection = db.collection('problems');
+
     const coderoomsCount = await coderoomsCollection
       .aggregate([
         {
