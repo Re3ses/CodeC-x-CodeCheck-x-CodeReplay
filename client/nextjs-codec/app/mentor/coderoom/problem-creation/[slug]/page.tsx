@@ -172,7 +172,7 @@ export default function Page({ params }: { params: { slug: string } }) {
             <div className="flex flex-col gap-4 ml-4">
               <Select
                 name="prog-language"
-                onValueChange={(val) => setSelectedLang(val)}
+                onValueChange={(val: any) => setSelectedLang(val)}
                 value={selectedLang}
               >
                 <SelectTrigger className="w-[180px]">
@@ -194,7 +194,7 @@ export default function Page({ params }: { params: { slug: string } }) {
                 defaultLanguage="plaintext"
                 defaultValue={`code snippet here`}
                 value={codeSnippet}
-                onChange={(val) => setCodeSnippet(val)}
+                onChange={(val: any) => setCodeSnippet(val)}
                 options={{
                   automaticLayout: true,
                   lineNumbers: 'on',
