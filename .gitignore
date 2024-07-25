@@ -67,3 +67,4 @@ $RECYCLE.BIN/
 
 # Codec Api Files
 codec-client/.eslintcache
+server/codec-api/.env
