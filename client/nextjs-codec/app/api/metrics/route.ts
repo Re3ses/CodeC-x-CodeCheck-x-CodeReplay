@@ -36,6 +36,9 @@ export async function GET(request: Request) {
       created_problems_count: problemsCount.length,
     });
   } catch (e) {
-		return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
-	}
+    return NextResponse.json(
+      { error: 'Internal Server Error' },
+      { status: 500 }
+    );
+  }
 }
