@@ -227,32 +227,9 @@ export default function Page() {
         <div className="p-3 bg-zinc-900">
           <p>Problem description</p>
         </div>
-        <div className="mx-auto">
-          <Dialog>
-            <DialogTrigger className="p-3 flex gap-2 justify-center w-fit hover:text-yellow-400">
-              <LightningBoltIcon />
-              Ask for help
-              <LightningBoltIcon />
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Request live session</DialogTitle>
-                <DialogDescription>
-                  {
-                    'Notify the creator of this problem for a live coding session, you will recieve a "Join" button should they accept.'
-                  }
-                </DialogDescription>
-              </DialogHeader>
-              <Textarea placeholder="optional: reason (i.e., 'How to use callback funtions?')" />
-              <DialogFooter>
-                <Button>Send request</Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
-        </div>
         <div className="p-3 flex-1 overflow-auto">
           <div
-            className=" 
+            className="
                           [&_li]:list-decimal
                           [&_li]:ml-8
                           [&_li]:py-2
