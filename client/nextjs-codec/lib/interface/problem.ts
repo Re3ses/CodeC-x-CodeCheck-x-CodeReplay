@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 export const ProblemSchema = z.object({
+  _id: z.string().optional(),
   name: z.string().min(8),
   description: z.string().min(8),
   input_format: z.string(),
