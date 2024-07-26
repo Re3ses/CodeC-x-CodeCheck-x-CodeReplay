@@ -45,7 +45,7 @@ export default function Page() {
           <p className="text-muted-foreground">List of created classrooms</p>
         </div>
         <div className="space-x-2">
-          <Modal
+          {/* <Modal
             label="Host live session"
             title="Host session"
             description="Host live session for demoing a problem created in a room. Learners and Mentors can code along as well as perform collaborative code writing"
@@ -59,7 +59,7 @@ export default function Page() {
             >
               Host live session
             </Link>
-          </Modal>
+          </Modal> */}
           <Modal
             label="Create classroom"
             title="Create rooms"

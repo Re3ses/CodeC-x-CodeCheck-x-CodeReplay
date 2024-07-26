@@ -22,8 +22,10 @@ import { getUser } from '@/lib/auth';
 import SafeHtml from '@/components/SafeHtml';
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -146,7 +148,14 @@ export default function Page({ params }: { params: { slug: string } }) {
   }
 
   function handleRemoveLangArrayItem(code_snippet: string) {
-    setLangArray((prevItems) => prevItems.filter(item => item.code_snippet !== code_snippet))
+    setLangArray((prevItems) =>
+      prevItems.filter((item) => item.code_snippet !== code_snippet)
+    );
+  }
+
+  function handleDeleteTestCase(item: any) {
+    const newTestCases = testCases.filter((value) => value !== item);
+    setTestCases(newTestCases);
   }
 
   return (
@@ -167,7 +176,7 @@ export default function Page({ params }: { params: { slug: string } }) {
         </div>
 
         <div className="grid grid-cols-2 divide-x mt-4">
-          <div className='p-2'>
+          <div className="p-2">
             {/* Code snippet */}
             <div className="flex flex-col gap-4 ml-4">
               <Select
@@ -211,7 +220,7 @@ export default function Page({ params }: { params: { slug: string } }) {
             {/* == end code snippet == */}
           </div>
           {/* Code snippet preview */}
-          <div className='flex flex-col gap-2 p-2'>
+          <div className="flex flex-col gap-2 p-2">
             <small>Click item to preview</small>
             <div className="flex gap-2 flex-wrap align-top justify-start h-fit">
               {langArray.map((element: LangArray) => {
@@ -224,10 +233,21 @@ export default function Page({ params }: { params: { slug: string } }) {
                     </DialogTrigger>
                     <DialogContent>
                       <DialogHeader>
-                        <DialogDescription className='p-2'>
+                        <DialogDescription className="p-2">
                           <small>{element.name} Code snippet</small>
-                          <SafeHtml html={element.code_snippet} className='mb-2 p-2 rounded-md border border-slate-500' />
-                          <Button variant={"destructive"} className='float-right' onClick={() => handleRemoveLangArrayItem(element.code_snippet)}>Remove</Button>
+                          <SafeHtml
+                            html={element.code_snippet}
+                            className="mb-2 p-2 rounded-md border border-slate-500"
+                          />
+                          <Button
+                            variant={'destructive'}
+                            className="float-right"
+                            onClick={() =>
+                              handleRemoveLangArrayItem(element.code_snippet)
+                            }
+                          >
+                            Remove
+                          </Button>
                         </DialogDescription>
                       </DialogHeader>
                     </DialogContent>
@@ -311,21 +331,43 @@ export default function Page({ params }: { params: { slug: string } }) {
               </Button>
             </div>
           </div>
-          <div className="overflow-y-scroll overflow-x-scroll text-center max-h-[250px] border-2 border-[white] rounded-md">
-            <table className="w-full">
-              <tr>
-                <th>Input</th>
-                <th>Expected output</th>
-              </tr>
-              {testCases.map((val: TestCases, index: number) => {
-                return (
-                  <tr key={index}>
-                    <td>{val.input}</td>
-                    <td>{val.output}</td>
-                  </tr>
-                );
-              })}
-            </table>
+          <div className="overflow-y-scroll p-2 max-h-[500px] flex flex-wrap gap-2 border-2 border-[white] rounded-md">
+            {testCases.map((val: TestCases, index: number) => {
+              return (
+                <Dialog key={index}>
+                  <DialogTrigger
+                    className={buttonVariants({ variant: 'default' })}
+                  >
+                    <span className="truncate max-w-[100px]">{val.input}</span>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogDescription className="p-2 flex flex-col gap-2">
+                        <div className="p-2 rounded-md border border-zinc-500">
+                          <small>Expected input</small>
+                          <SafeHtml html={val.input} />
+                        </div>
+                        <div className="p-2 rounded-md border border-zinc-500">
+                          <small>Expected output</small>
+                          <SafeHtml html={val.output} />
+                        </div>
+                      </DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter>
+                      <DialogClose>
+                        <Button
+                          variant={'destructive'}
+                          className="float-right"
+                          onClick={() => handleDeleteTestCase(val)}
+                        >
+                          Remove
+                        </Button>
+                      </DialogClose>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
+              );
+            })}
           </div>
         </div>
 
