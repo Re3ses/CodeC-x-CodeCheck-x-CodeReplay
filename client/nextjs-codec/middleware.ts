@@ -27,8 +27,7 @@ export async function middleware(request: NextRequest) {
 
   if (session) {
     if (
-      request.nextUrl.pathname.startsWith('/pogi/secret/marco/handshake') ||
-      request.nextUrl.pathname.startsWith('/sign-up')
+      request.nextUrl.pathname.startsWith('/pogi/secret/marco/handshake')
     ) {
       return NextResponse.redirect(
         'https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley'

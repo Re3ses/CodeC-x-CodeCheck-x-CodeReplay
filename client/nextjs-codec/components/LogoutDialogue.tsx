@@ -13,10 +13,11 @@ export default function LogoutDialogue() {
   async function LogOut() {
     await logoutUser().then(() => {
       toast({
-        title: 'Hello',
+        title: 'Successfully logged out.',
       });
     });
   }
+
   return (
     <Dialog>
       <DialogTrigger
