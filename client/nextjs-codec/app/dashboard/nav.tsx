@@ -14,11 +14,13 @@ export default function Nav(props: {
   function Links() {
     const pathname = usePathname();
 
-    const path = pathname.startsWith('/dashboard')
-      ? props.type?.toLowerCase()
-      : pathname.startsWith('/mentor')
-        ? 'mentor'
-        : 'learner';
+    // const path = pathname.startsWith('/dashboard')
+    //   ? props.type?.toLowerCase()
+    //   : pathname.startsWith('/mentor')
+    //     ? 'mentor'
+    //     : 'learner';
+
+    const path = props.type?.toLowerCase();
 
     return (
       <div className="flex gap-4 jusify-center self-center">

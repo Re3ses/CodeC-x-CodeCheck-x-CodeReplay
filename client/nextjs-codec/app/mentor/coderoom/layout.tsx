@@ -9,7 +9,7 @@ export default async function Layout({
   const user = await getUser();
   return (
     <div className="flex h-screen flex-col">
-      <Nav name={user?.auth.username} />
+      <Nav name={user?.auth.username} type={user?.type} />
       {children}
     </div>
   );

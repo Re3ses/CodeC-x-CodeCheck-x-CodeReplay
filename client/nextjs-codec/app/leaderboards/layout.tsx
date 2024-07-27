@@ -13,7 +13,7 @@ export default async function LeaderboardsLayout({
   }
   return (
     <div>
-      <Nav name={user?.auth.username} />
+      <Nav name={user?.auth.username} type={user?.type} />
       {children}
     </div>
   );
