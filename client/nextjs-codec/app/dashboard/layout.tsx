@@ -1,9 +1,9 @@
 'use client';
-
 import Nav from './nav';
 import { useQuery } from '@tanstack/react-query';
 import { getUser, refreshToken } from '@/lib/auth';
-import { useEffect } from 'react';
+import { createContext, useEffect } from 'react';
+import { UserContext } from './contexts';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   useEffect(() => {
@@ -24,7 +24,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="h-screen flex flex-col gap-4 ">
       <Nav name={userQuery.data?.auth?.username} type={userQuery.data?.type} />
-      {children}
+      <UserContext.Provider value={userQuery.data}>
+        {children}
+      </UserContext.Provider>
     </div>
   );
 }

@@ -1,8 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { UserContext } from './contexts';
+import { UserSchemaInferredType } from '../../lib/interface/user';
 
-export default function Page() {
+export default function Page(props: { props: any }) {
+  const user: UserSchemaInferredType = useContext(UserContext)!;
+
   const [studentCount, setStudentCount] = useState<number>();
   const [coderoomsCount, setCoderoomsCount] = useState<number>();
   const [problemCount, setProblemCount] = useState<number>();
@@ -18,7 +22,9 @@ export default function Page() {
     };
 
     res();
-  }, []);
+
+    console.log('from user context: ', user);
+  }, [user]);
 
   return (
     <div className="m-4 flex gap-4">
@@ -26,7 +32,7 @@ export default function Page() {
       <div className="w-fit rounded-xl border border-[gray]/50 bg-card text-card-foreground shadow">
         <div className="p-6 flex flex-row items-center justify-between space-y-0 pb-2">
           <h3 className="tracking-tight text-sm font-medium">
-            Coderooms created
+            {user.type === 'Learner' ? 'Coderooms Joined' : 'Coderooms Created'}
           </h3>
         </div>
         <div className="p-6 pt-0">
