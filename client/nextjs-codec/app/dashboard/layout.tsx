@@ -24,9 +24,17 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="h-screen flex flex-col gap-4 ">
       <Nav name={userQuery.data?.auth?.username} type={userQuery.data?.type} />
-      <UserContext.Provider value={userQuery.data}>
-        {children}
-      </UserContext.Provider>
+
+      {/* Data is undefined while fetching, if no data is loaded, it will stuck to waiting state */}
+      {userQuery.data !== undefined ? (
+        <>
+          <UserContext.Provider value={userQuery.data}>
+            {children}
+          </UserContext.Provider>
+        </>
+      ) : (
+        <small>Waiting for data, please be patient...</small>
+      )}
     </div>
   );
 }

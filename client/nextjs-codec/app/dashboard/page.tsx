@@ -5,26 +5,35 @@ import { UserContext } from './contexts';
 import { UserSchemaInferredType } from '../../lib/interface/user';
 
 export default function Page(props: { props: any }) {
-  const user: UserSchemaInferredType = useContext(UserContext)!;
+  const user: any = useContext(UserContext)!;
 
   const [studentCount, setStudentCount] = useState<number>();
   const [coderoomsCount, setCoderoomsCount] = useState<number>();
   const [problemCount, setProblemCount] = useState<number>();
+  const [solvedProblemsCount, setSolvedProblemsCount] = useState<number>();
+  const [joinedRooms, setJoinedRoomsCount] = useState<number>();
 
   useEffect(() => {
     const res = async () => {
-      const res = await fetch(`/api/metrics`).then(async (value) => {
-        const { created_coderooms_count, created_problems_count } =
-          await value.json();
-        setCoderoomsCount(created_coderooms_count);
-        setProblemCount(created_problems_count);
+      await fetch(`/api/metrics?user_id=${user._id}`).then(async (value) => {
+        if (user.type === 'Mentor') {
+          const { created_coderooms_count, created_problems_count } =
+            await value.json();
+          setCoderoomsCount(created_coderooms_count);
+          setProblemCount(created_problems_count);
+        }
+
+        if (user.type === 'Learner') {
+          const { joined_rooms_count, solved_problems_count } =
+            await value.json();
+          setJoinedRoomsCount(joined_rooms_count);
+          setSolvedProblemsCount(solved_problems_count);
+        }
       });
     };
 
     res();
-
-    console.log('from user context: ', user);
-  }, [user]);
+  });
 
   return (
     <div className="m-4 flex gap-4">
@@ -36,7 +45,7 @@ export default function Page(props: { props: any }) {
           </h3>
         </div>
         <div className="p-6 pt-0">
-          <div className="text-2xl font-bold">{coderoomsCount}</div>
+          {user.type === 'Learner' ? joinedRooms : coderoomsCount}
         </div>
       </div>
 
@@ -57,11 +66,11 @@ export default function Page(props: { props: any }) {
       <div className="w-fit rounded-xl border border-[gray]/50 bg-card text-card-foreground shadow">
         <div className="p-6 flex flex-row items-center justify-between space-y-0 pb-2">
           <h3 className="tracking-tight text-sm font-medium">
-            Problems created
+            {user.type === 'Learner' ? 'Problems Solved' : 'Problems Created'}
           </h3>
         </div>
         <div className="p-6 pt-0">
-          <div className="text-2xl font-bold">{problemCount}</div>
+          {user.type === 'Learner' ? solvedProblemsCount : problemCount}
         </div>
       </div>
     </div>
