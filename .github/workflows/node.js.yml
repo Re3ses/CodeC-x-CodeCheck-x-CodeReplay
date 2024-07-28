@@ -44,11 +44,13 @@ jobs:
             rm .env.production
           fi
           echo "SERVER_URL=${{secrets.SERVER_URL}}" >> .env.production
+          echo "SERVER_PORT=${{secrets.SERVER_PORT}}" >> .env.production
           echo "AUTH_PORT=${{secrets.AUTH_PORT}}" >> .env.production
           echo "API_PORT=${{secrets.API_PORT}}" >> .env.production
           echo "SOCKET_PORT=${{secrets.SOCKET_PORT}}" >> .env.production
           echo "MONGODB_URI=${{secrets.MONGODB_URI}}" >> .env.production
           echo "NEXT_PUBLIC_SERVER_URL=${{secrets.SERVER_URL}}" >> .env.production
+          echo "NEXT_PUBLIC_SERVER_PORT=${{secrets.SERVER_PORT}}" >> .env.production
           echo "NEXT_PUBLIC_AUTH_PORT=${{secrets.AUTH_PORT}}" >> .env.production
           echo "NEXT_PUBLIC_API_PORT=${{secrets.API_PORT}}" >> .env.production
           echo "NEXT_PUBLIC_SOCKET_PORT=${{secrets.SOCKET_PORT}}" >> .env.production
