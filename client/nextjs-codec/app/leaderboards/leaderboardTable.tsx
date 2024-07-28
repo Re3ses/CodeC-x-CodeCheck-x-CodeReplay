@@ -18,7 +18,7 @@ async function fetchUserSubmissions(searchParams: ReadonlyURLSearchParams) {
   const perPage = parseInt(searchParams.get('perPage') || '5', 10);
 
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_SERVER_URL}${process.env.NEXT_PUBLIC_SERVER_PORT}/api/userSubmissions?page=${page}&perPage=${perPage}`
+    `/api/userSubmissions?page=${page}&perPage=${perPage}`
   );
   return response.json();
 }
