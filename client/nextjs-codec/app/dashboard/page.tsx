@@ -4,7 +4,7 @@ import { useContext, useEffect, useState } from 'react';
 import { UserContext } from './contexts';
 import { UserSchemaInferredType } from '../../lib/interface/user';
 
-export default function Page(props: { props: any }) {
+export default function Page() {
   const user: any = useContext(UserContext)!;
 
   const [studentCount, setStudentCount] = useState<number>();
