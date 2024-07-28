@@ -53,7 +53,7 @@ export default function Page() {
     const deleteRoom = async () => {
       try {
         await fetch(
-          `${process.env.NEXT_PUBLIC_SERVER_URL}${process.env.NEXT_PUBLIC_SERVER_PORT}/api/rooms?room_id=${id}`,
+          `/api/rooms?room_id=${id}`,
           { method: 'DELETE' }
         ).then(() => {
           toast({ title: `Room with id of: ${id} successfully deleted` });
