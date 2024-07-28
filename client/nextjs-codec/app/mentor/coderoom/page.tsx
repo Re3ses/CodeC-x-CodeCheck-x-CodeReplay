@@ -56,7 +56,7 @@ export default function Page() {
           `${process.env.NEXT_PUBLIC_SERVER_URL}${process.env.NEXT_PUBLIC_SERVER_PORT}/api/rooms?room_id=${id}`,
           { method: 'DELETE' }
         ).then(() => {
-          toast({title: `Room with id of: ${id} successfully deleted`});
+          toast({ title: `Room with id of: ${id} successfully deleted` });
         });
       } catch (e) {
         console.error('Failed to delete problem: ', e);
