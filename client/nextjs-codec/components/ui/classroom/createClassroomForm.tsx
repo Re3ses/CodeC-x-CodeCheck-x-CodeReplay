@@ -28,16 +28,20 @@ import { CreateRoom } from '@/utilities/apiService';
 import { useToast } from '@/components/ui/use-toast';
 import { useQueryClient } from '@tanstack/react-query';
 import { getSession } from '@/lib/auth';
+import { Textarea } from '../textarea';
 
 export default function CreateClassroomForm() {
   const queryClient = useQueryClient();
 
-  const [sucess, setSuccess] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   const { toast } = useToast();
 
   const form = useForm<ClassroomShemaInferredType>({
     resolver: zodResolver(ClassroomSchema),
+    defaultValues: {
+      type: 'Competitive',
+    },
   });
 
   const onSubmit = async (data: ClassroomShemaInferredType) => {
@@ -47,7 +51,7 @@ export default function CreateClassroomForm() {
       const payload = {
         name: data.name,
         description: data.description,
-        type: data.type,
+        type: 'Cooperative' as 'Competitive' | 'Cooperative',
         mentor: username,
       };
       const res = await CreateRoom(payload);
@@ -96,35 +100,17 @@ export default function CreateClassroomForm() {
               <FormItem>
                 <FormLabel>Description</FormLabel>
                 <FormControl>
-                  <Input placeholder="Chomsky's room is about..." {...field} />
+                  <Textarea
+                    placeholder="Chomsky's room is about..."
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             );
           }}
         />
-        <FormField
-          control={form.control}
-          name="type"
-          render={({ field }) => {
-            return (
-              <FormItem>
-                <FormLabel>Room type</FormLabel>
-                <Select onValueChange={field.onChange}>
-                  <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="Room type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Cooperative">Cooperative</SelectItem>
-                    <SelectItem value="Competitive">Competitive</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            );
-          }}
-        />
-        <Button type="submit" disabled={sucess}>
+        <Button type="submit" disabled={success}>
           Create room
         </Button>
       </form>
