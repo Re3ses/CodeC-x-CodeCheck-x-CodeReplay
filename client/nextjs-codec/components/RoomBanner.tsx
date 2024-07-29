@@ -6,6 +6,8 @@ import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
 import { GetRoom } from '@/utilities/apiService';
 import { buttonVariants } from './ui/button';
+import { toast } from './ui/use-toast';
+import { CopyIcon } from '@radix-ui/react-icons';
 
 export default function RoomBanner({
   room,
@@ -34,7 +36,23 @@ export default function RoomBanner({
             {usertype}
           </span>
         </div>
-        <p className="text-2xl">{room?.name}</p>
+        <div className="text-right">
+          <p className="text-2xl mb-2 text-zinc-500">{room?.name}</p>
+          <div className="my-auto font-bold cursor-pointer hover:text-green-400 flex gap-2">
+            <small className="text-zinc-500 font-normal">Invite Code: </small>
+            <small
+              onClick={() => {
+                navigator.clipboard.writeText(room?.slug);
+                toast({
+                  title: `Room slug: ${room?.slug} copied to clipboard`,
+                });
+              }}
+            >
+              {room?.slug}
+            </small>
+            <CopyIcon />
+          </div>
+        </div>
       </div>
       <div className="flex flex-col text-center p-2 pt-4">
         <p>{room?.description}</p>
@@ -42,7 +60,6 @@ export default function RoomBanner({
       </div>
       {usertype == 'Mentor' && (
         <div className="flex justify-between p-5">
-          <p className="my-auto">{room?.slug}</p>
           <Link
             href={`/mentor/coderoom/problem-creation/${roomQuery.data?.slug}`}
             className={buttonVariants({ variant: 'default' })}
