@@ -52,12 +52,11 @@ export default function Page() {
   function handleRoomDeletion(id: string) {
     const deleteRoom = async () => {
       try {
-        await fetch(
-          `/api/rooms?room_id=${id}`,
-          { method: 'DELETE' }
-        ).then(() => {
-          toast({ title: `Room with id of: ${id} successfully deleted` });
-        });
+        await fetch(`/api/rooms?room_id=${id}`, { method: 'DELETE' }).then(
+          () => {
+            toast({ title: `Room with id of: ${id} successfully deleted` });
+          }
+        );
       } catch (e) {
         console.error('Failed to delete problem: ', e);
         return;

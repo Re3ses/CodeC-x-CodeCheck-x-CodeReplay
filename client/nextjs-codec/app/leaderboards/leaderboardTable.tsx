@@ -18,7 +18,8 @@ async function fetchUserSubmissions(searchParams: ReadonlyURLSearchParams) {
   const perPage = parseInt(searchParams.get('perPage') || '5', 10);
 
   const response = await fetch(
-    `/api/userSubmissions?page=${page}&perPage=${perPage}`
+    // Temp fix, fetch all
+    `/api/userSubmissions?all=true`
   );
   return response.json();
 }
@@ -75,7 +76,9 @@ export default function LeaderboardTable() {
 
   return (
     <>
-      {/* Table pagination */}
+      {/* TODO: Add filters */}
+
+      {/* Table pagination
       <Pagination className="justify-end">
         <PaginationContent>
           <PaginationItem>
@@ -98,15 +101,12 @@ export default function LeaderboardTable() {
             <PaginationNext onClick={() => handlePageChange(currentPage + 1)} />
           </PaginationItem>
         </PaginationContent>
-      </Pagination>
+      </Pagination> */}
 
       {/* Leaderboard table */}
       <table className="card border border-slate-700/50 table-auto w-full text-sm">
         <thead>
           <tr className="bg-card">
-            <th className="p-3 text-start hover:cursor-pointer hover:bg-slate-800/50">
-              Submission ID
-            </th>
             <th className="p-3 text-start hover:cursor-pointer hover:bg-slate-800/50">
               Name
             </th>
@@ -138,15 +138,22 @@ export default function LeaderboardTable() {
         </thead>
         <tbody>
           <Suspense fallback={<div>Loading table...</div>}>
-            {submissions.map((element: any) => (
+            {submissions?.map((element: any) => (
               <tr
                 className="border-slate-700/50 border-b [&_td]:p-2"
                 key={element._id}
               >
-                <td>{element._id}</td>
                 <td>{element.learner}</td>
                 <td>{element.language_used}</td>
-                <td>{element.score}</td>
+                <td
+                  className={
+                    element.score === element.score_overall_count
+                      ? 'text-[green] font-bold'
+                      : 'text-[red]'
+                  }
+                >
+                  {element.score} / {element.score_overall_count}
+                </td>
                 <td>{element.problem}</td>
                 <td>{element.attempt_count}</td>
                 <td>{formatTimestamp(element.start_time)}</td>

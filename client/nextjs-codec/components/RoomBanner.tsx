@@ -5,9 +5,18 @@ import { RoomSchemaInferredType } from '@/lib/interface/room';
 import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
 import { GetRoom } from '@/utilities/apiService';
-import { buttonVariants } from './ui/button';
+import { Button, buttonVariants } from './ui/button';
 import { toast } from './ui/use-toast';
 import { CopyIcon } from '@radix-ui/react-icons';
+import LeaderboardTable from '../app/leaderboards/leaderboardTable';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from './ui/dialog';
 
 export default function RoomBanner({
   room,
@@ -58,16 +67,24 @@ export default function RoomBanner({
         <p>{room?.description}</p>
         <p className="text-sm text-zinc-500">{room?.type}</p>
       </div>
-      {usertype == 'Mentor' && (
-        <div className="flex justify-between p-5">
+      <div className="flex justify-between p-5">
+        {usertype == 'Mentor' && (
           <Link
             href={`/mentor/coderoom/problem-creation/${roomQuery.data?.slug}`}
             className={buttonVariants({ variant: 'default' })}
           >
             Create problem
           </Link>
-        </div>
-      )}
+        )}
+        <Link
+          href={`/submissions/${roomQuery.data?.slug}`}
+          className={
+            buttonVariants({ variant: 'ghost' }) + 'border border-zinc-700'
+          }
+        >
+          Show room submissions
+        </Link>
+      </div>
     </BorderedContainer>
   );
 }

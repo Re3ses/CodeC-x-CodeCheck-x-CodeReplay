@@ -1,55 +1,60 @@
 import { NextResponse } from 'next/server';
 import dbConnect from '../../../lib/dbConnect';
 import UserSubmissions from '@/models/UserSubmissions';
+import mongoose from 'mongoose';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
 
-  const learner = searchParams.get('learner');
-  const learner_id = searchParams.get('learner_id');
-  const problem = searchParams.get('problem');
-  const room = searchParams.get('room');
-  const verdict = searchParams.get('verdict');
-
-  let perPage = parseInt(searchParams.get('perPage')!);
-  let page = parseInt(searchParams.get('page')!);
+  const room_id = searchParams.get('room_id');
+  const problem_slug = searchParams.get('problem_slug');
+  const all = searchParams.get('all') === 'true';
 
   try {
     await dbConnect();
 
-    const query: any = {};
+    const db = mongoose.connection;
 
-    if (learner) {
-      query['learner'] = { $regex: new RegExp(`^${learner}$`, 'i') };
-    }
-    if (learner) {
-      query['learner_id'] = { $regex: new RegExp(`^${learner_id}$`, 'i') };
-    }
-    if (problem) {
-      query['problem'] = { $regex: new RegExp(`^${problem}$`, 'i') };
-    }
-    if (room) {
-      query['room'] = { $regex: new RegExp(`^${room}$`, 'i') };
-    }
-    if (verdict) {
-      query['verdict'] = { $regex: new RegExp(`^${verdict}$`, 'i') };
+    const userSubmissionCollection = db.collection('usersubmissions');
+
+    // All - ...?all=true
+    if (all) {
+      const allSubmissions = await userSubmissionCollection.find({}).toArray();
+
+      return NextResponse.json({
+        message: 'Fetch all Success!',
+        slug: problem_slug,
+        submissions: allSubmissions,
+      });
     }
 
-    const userSubmissionsCount = await UserSubmissions.countDocuments();
+    // All via room_id - ..?room_id=example_room_id_123
+    if (room_id !== null) {
+      const submission = await userSubmissionCollection
+        .find({
+          room: room_id,
+        })
+        .toArray();
 
-    if (perPage * page > userSubmissionsCount) {
-      perPage = userSubmissionsCount % perPage;
+      return NextResponse.json({
+        message: 'Success!',
+        room_slug: room_id,
+        submission: submission,
+      });
     }
 
-    const userSubmissions = await UserSubmissions.find(query)
-      .skip(perPage * (page - 1))
-      .limit(perPage);
+    // Individual via problem_slug - ...?problem_slug=example_slug_123
+    if (problem_slug !== null) {
+      const submission = await userSubmissionCollection.findOne({
+        problem: problem_slug,
+      });
 
-    return NextResponse.json({
-      message: 'Connected!',
-      count: userSubmissionsCount,
-      submissions: userSubmissions,
-    });
+      return NextResponse.json({
+        message: 'Success!',
+        problem_slug: problem_slug,
+        submission: submission,
+      });
+    }
   } catch (e) {
     return NextResponse.json(e, { status: 500 });
   }
