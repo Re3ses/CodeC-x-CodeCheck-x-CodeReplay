@@ -17,6 +17,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { getUser } from '@/lib/auth';
 import Nav from '@/app/dashboard/nav';
+import moment from 'moment';
 
 interface User {
   _id: number;
@@ -25,7 +26,7 @@ interface User {
   type: string;
   auth: {
     username: string;
-  }
+  };
 }
 
 export default function Page() {
@@ -93,7 +94,9 @@ export default function Page() {
                     <TableCell className="font-medium">
                       {submission?.learner}
                     </TableCell>
-                    <TableCell>{submission?.completion_time}</TableCell>
+                    <TableCell>
+                      {moment.duration(submission?.completion_time).humanize()}
+                    </TableCell>
                     <TableCell>
                       {submission?.score} / {submission?.score_overall_count}
                     </TableCell>

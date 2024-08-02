@@ -10,6 +10,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination';
+import moment from 'moment';
 import { ReadonlyURLSearchParams, useSearchParams } from 'next/navigation';
 import React, { Suspense, useEffect, useState } from 'react';
 
@@ -23,22 +24,6 @@ async function fetchUserSubmissions(searchParams: ReadonlyURLSearchParams) {
   );
   return response.json();
 }
-
-const formatTimestamp = (timestamp: number) => {
-  const date = new Date(timestamp);
-  return date.toLocaleString();
-};
-
-const formatDuration = (milliseconds: number) => {
-  const hours = Math.floor(milliseconds / 3600000);
-  const minutes = Math.floor((milliseconds % 3600000) / 60000);
-  const seconds = Math.floor((milliseconds % 60000) / 1000);
-  return `${hours}h ${minutes}m ${seconds}s`;
-};
-
-const formattedSubmissionDate = (submission_date: string) => {
-  return new Date(submission_date).toLocaleString();
-};
 
 export default function LeaderboardTable() {
   const searchParams = useSearchParams();
@@ -156,11 +141,15 @@ export default function LeaderboardTable() {
                 </td>
                 <td>{element.problem}</td>
                 <td>{element.attempt_count}</td>
-                <td>{formatTimestamp(element.start_time)}</td>
+                <td>
+                  {moment(element.start_time).format('MMMM Do YYYY, h:mm:ss a')}
+                </td>
                 <td>
                   {element.end_time > 0 ? (
                     <span className="text-[green]">
-                      {formatTimestamp(element.end_time)}
+                      {moment(element.end_time).format(
+                        'MMMM Do YYYY, h:mm:ss a'
+                      )}
                     </span>
                   ) : (
                     <span className="text-[red]">Unsolved</span>
@@ -169,13 +158,13 @@ export default function LeaderboardTable() {
                 <td>
                   {element.completion_time > 0 ? (
                     <span className="text-[green]">
-                      {formatDuration(element.completion_time)}
+                      {moment.duration(element.completion_time).humanize()}
                     </span>
                   ) : (
                     <span className="text-[red]">Unsolved</span>
                   )}
                 </td>
-                <td>{formattedSubmissionDate(element.submission_date)}</td>
+                <td>{moment(element.submission_date).fromNow()}</td>
               </tr>
             ))}
           </Suspense>

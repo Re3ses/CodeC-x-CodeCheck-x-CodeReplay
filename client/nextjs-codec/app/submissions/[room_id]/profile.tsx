@@ -16,16 +16,14 @@ export default function Profile({ type }: { type: string }) {
     <BorderedContainer customStyle="w-full p-2 flex flex-col gap-2">
       <div className="flex justify-between">
         <div>
-          <small className='text-secondary'>Submittee</small>
+          <small className="text-secondary">Submittee</small>
           <p>{userData?.learner}</p>
         </div>
 
         <div className="text-right">
-          <small className='text-secondary'>Submission Date</small>
+          <small className="text-secondary">Submission Date</small>
           <div className="flex gap-2">
-            <span>
-              {moment(userData?.submission_date).format('YYYY-MM-DD HH:mm:ss')}
-            </span>
+            <span>{moment(userData?.submission_date).fromNow()}</span>
             <Badge
               variant={
                 userData?.verdict === 'ACCEPTED' ? 'default' : 'destructive'
@@ -66,7 +64,11 @@ export default function Profile({ type }: { type: string }) {
             }}
             value={userData?.code}
           />
-        ) : (<div className="w-full text-center bg-zinc-700 rounded-lg p-5"><small className='text-zinc-400'>Solution hidden</small></div>)}
+        ) : (
+          <div className="w-full text-center bg-zinc-700 rounded-lg p-5">
+            <small className="text-zinc-400">Solution hidden</small>
+          </div>
+        )}
       </div>
     </BorderedContainer>
   );
