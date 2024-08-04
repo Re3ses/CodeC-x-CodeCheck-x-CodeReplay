@@ -62,6 +62,9 @@ export default function Page() {
   const [attemptCount, setAttemptCount] = useState<number>(0);
   const langCodes: LanguageCodes = languagesCode;
 
+  // for submission button
+  const [disabled, setDisabled] = useState(false);
+
   useEffect(() => {
     // set start time on mount
     if (!localStorage.getItem(params.problemId + '_started')) {
@@ -297,6 +300,13 @@ export default function Page() {
     }
   }
 
+  function disableSubmissionButtonTemporarily() {
+    setDisabled(true);
+    setTimeout(() => {
+      setDisabled(false);
+    }, 5000);
+  }
+
   return (
     <PanelGroup direction="horizontal">
       <Panel className="min-w-[20em] overflow-scroll flex flex-col gap-2">
@@ -398,7 +408,9 @@ export default function Page() {
               <div className="flex gap-2">
                 <Button onClick={() => handleTry()}>Try</Button>
                 <Button
+                  disabled={disabled}
                   onClick={() => {
+                    disableSubmissionButtonTemporarily();
                     handleSubmit(false);
                     setShowCustomInput(false);
                   }}
