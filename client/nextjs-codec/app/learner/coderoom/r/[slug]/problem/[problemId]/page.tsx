@@ -262,7 +262,7 @@ export default function Page() {
           console.log(data);
           // === end debug ===
 
-          const url = `${process.env.NEXT_PUBLIC_SERVER_URL}${process.env.NEXT_PUBLIC_SERVER_PORT}/api/userSubmissions/`;
+          const url = `/api/userSubmissions/`;
           console.log('url', url);
 
           await fetch(url, {
