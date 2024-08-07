@@ -4,10 +4,11 @@ CodeC currently uses multiple Node.js versions, so having `nvm` installed is ess
 
 For a more in-depth guide and information, refer to our CodeC Wiki: [https://github.com/mosnamarco/CodeC/wiki](https://github.com/mosnamarco/CodeC/wiki).
 
-## Prerequisites
+## Development Prerequisites
 
 * `docker` must be installed on your machine.
 * `nvm` should be used to manage Node.js versions.
+* `mongodb` to manage database instances
 
 ## Quick Start: How to Run
 
@@ -72,3 +73,9 @@ For a more in-depth guide and information, refer to our CodeC Wiki: [https://git
    ```bash
    docker-compose up
    ```
+   or
+   ```bash
+   docker compose up
+   ```
+
+   Note: If you are using a GNU/Linux system, make sure to [set cgroups to v1](https://docs.docker.com/config/containers/runmetrics/#:~:text=Changing%20cgroup%20version,-Changing%20cgroup%20version&text=On%20systemd%2Dbased%20systems%2C%20cgroup,unified_cgroup_hierarchy%3D0%20instead.) to make Judge0 work properly. 
