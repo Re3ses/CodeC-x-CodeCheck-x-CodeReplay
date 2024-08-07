@@ -9,8 +9,15 @@ For a more in-depth guide and information, refer to our CodeC Wiki: [https://git
 * `docker` must be installed on your machine.
 * `nvm` should be used to manage Node.js versions.
 * `mongodb` to manage database instances
+* `mongodb compass` database insteraction GUI
 
-## Quick Start: How to Run
+## Quick Start: How to Run the development server
+
+This quick start guide assumes that you already have the prerequisites installed on your machine. If not. Refer to these installation guides
+* [Docker](https://docs.docker.com/engine/install/)
+* [NVM](https://github.com/nvm-sh/nvm)
+* [MongoDB](https://www.mongodb.com/docs/manual/installation/)
+* [MongoDB Compass](https://www.mongodb.com/docs/compass/current/install/)
 
 1. Clone the repository:
 
