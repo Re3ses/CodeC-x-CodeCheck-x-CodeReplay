@@ -55,15 +55,18 @@ export default function Page() {
     }
   };
 
+  const handleCompare = () => {
+    // Compare files
+    // Implement file comparison logic here
+    alert("Files compared!");
+  }
+
   return (
-    <div className="flex flex-row items-center justify-around">
-      <div>
-        <h1>Submissions Check</h1>
+    <div className="flex flex-row  justify-around">
+      <div className="flex flex-col items-start">
+        <h1 className="font-bold">Submissions Check</h1>
         <p>Upload java files for similarity detection.</p>
-        <div className="flex flex-col items-center justify-evenly">
-          <Button variant="default" color="primary">
-            Compare Files
-          </Button>
+        <div className="flex flex-col items-start justify-evenly gap-2 m-3">
           <div>
             <label htmlFor="file-upload">Upload Files:</label>
             <input
@@ -73,15 +76,17 @@ export default function Page() {
               accept="*"
               multiple
             />
-
-            <Button variant="default" color="secondary" onClick={handleUploadClick}>
+            <Button variant="default" color="primary" onClick={handleUploadClick}>
               Upload files
             </Button>
           </div>
+          <Button variant="default" color="secondary" onClick={handleCompare}>
+            Compare Files
+          </Button>
         </div>
       </div>
       <div>
-        <h2>Submissions</h2>
+        <h2 className="font-bold">Submissions</h2>
         <p>Display submissions here</p>
         <ul className="m-3">
           {storedFiles.map((file, index) => (
