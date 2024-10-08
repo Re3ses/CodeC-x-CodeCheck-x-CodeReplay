@@ -2,6 +2,10 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 
+
+// TODO:
+// check file types, accept only text files
+// allow for comparison of files
 export default function Page() {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [storedFiles, setStoredFiles] = useState([]);
@@ -58,7 +62,7 @@ export default function Page() {
         <p>Upload java files for similarity detection.</p>
         <div className="flex flex-col items-center justify-evenly">
           <Button variant="default" color="primary">
-            Submit
+            Compare Files
           </Button>
           <div>
             <label htmlFor="file-upload">Upload Files:</label>
@@ -71,7 +75,7 @@ export default function Page() {
             />
 
             <Button variant="default" color="secondary" onClick={handleUploadClick}>
-              Upload and compare
+              Upload files
             </Button>
           </div>
         </div>
