@@ -49,20 +49,20 @@ export default function Page() {
     return result;
   }
 
-  function handleRoomDeletion(id: string) {
+    function handleRoomDeletion(id: string) {
     const deleteRoom = async () => {
       try {
-        await fetch(`/api/rooms?room_id=${id}`, { method: 'DELETE' }).then(
-          () => {
-            toast({ title: `Room with id of: ${id} successfully deleted` });
-          }
-        );
+        const response = await fetch(`/api/rooms?room_id=${id}`, { method: 'DELETE' });
+        if (!response.ok) {
+          throw new Error(`Failed to delete room with id: ${id}. Status: ${response.status}`);
+        }
+        toast({ title: `Room with id of: ${id} successfully deleted` });
       } catch (e) {
-        console.error('Failed to delete problem: ', e);
-        return;
+        console.error('Failed to delete room: ', e);
+        toast({ title: `Failed to delete room with id of: ${id}`});
       }
     };
-
+  
     deleteRoom();
     roomsQuery.refetch();
   }

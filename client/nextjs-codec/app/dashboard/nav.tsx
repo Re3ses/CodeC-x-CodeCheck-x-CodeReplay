@@ -45,6 +45,11 @@ export default function Nav(props: {
             label: 'Leaderboards',
             href: '/leaderboards?page=1&perPage=10',
           },
+          {
+            id: 'submissionsCheck',
+            label: 'Submissions Checking',
+            href: '/submissionsCheck',
+          }
         ].map(({ label, href, id }) => (
           <Link
             className={pathname.endsWith(id) ? 'underline' : ''}

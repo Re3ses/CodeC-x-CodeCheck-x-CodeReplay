@@ -3,14 +3,17 @@
 // * autmatically register username and room id []
 // * figure out how those 2 previous task work []
 
-const { SOCKET_PORT } = require('../config')
-
+const { SOCKET_PORT } = require('../config/index.js')
 const { UserService, LiveCodingService } = require('../services')
-
 const { Logger } = require('../scripts')
 const user = require('../models/user/user')
+const http = require('http')
 
-const io = require('socket.io')(SOCKET_PORT, {
+// Create an HTTP server
+const httpServer = http.createServer();
+
+// Attach the socket.io server to the HTTP server
+const io = require('socket.io')(httpServer, {
   cors: {
     origin: "*"
   }
@@ -64,9 +67,12 @@ class SessionData {
 // TODO: make this mentor specific, hint: classes?edwditor_value
 
 const listen = () => {
-  io.httpServer.on('listening', () => {
-    console.log(`Socket Server listening at port ${io.httpServer.address().port}...`)
-  })
+  // io.httpServer.on('listening', () => {
+  //   console.log(`Socket Server listening at port ${io.httpServer.address().port}...`)
+  // })
+  httpServer.listen(SOCKET_PORT, () => {
+    console.log(`Socket Server listening at port ${SOCKET_PORT}...`)
+  });
 
   const current_sesh = new SessionData(false, false, "", "");
 
