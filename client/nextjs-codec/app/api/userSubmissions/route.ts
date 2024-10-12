@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '../../../lib/dbConnect';
 import UserSubmissions from '@/models/UserSubmissions';
 import mongoose from 'mongoose';
@@ -80,6 +80,8 @@ export async function POST(request: Request) {
       start_time: formData.get('start_time'),
       end_time: formData.get('end_time'),
       completion_time: formData.get('completion_time'), // in ms
+      similarity_score: formData.get('similarity_score'),
+      most_similar: formData.get('most_similar'),
     });
 
     await userSubmission.save();
@@ -87,6 +89,46 @@ export async function POST(request: Request) {
     return NextResponse.json({
       message: 'User submission entry created!',
       submission: userSubmission,
+    });
+  } catch (e) {
+    return NextResponse.json(e, { status: 500 });
+  }
+}
+
+export async function PATCH(request: NextRequest) {
+  const { searchParams } = new URL(request.url);
+  
+  const room_id = searchParams.get('room_id');
+  const problem_slug = searchParams.get('problem_slug');
+  const learner_id = searchParams.get('learner_id');
+
+  if (!room_id || !problem_slug || !learner_id) {
+    return NextResponse.json({ message: 'room_id, problem_slug, and learner_id are required' }, { status: 400 });
+  }
+
+  try {
+    await dbConnect();
+
+    const formData = await request.formData();
+    const updateData: any = {};
+
+    formData.forEach((value, key) => {
+      updateData[key] = value;
+    });
+
+    const updatedSubmission = await UserSubmissions.findOneAndUpdate(
+      { room: room_id, problem: problem_slug, learner_id: learner_id },
+      updateData,
+      { new: true }
+    );
+
+    if (!updatedSubmission) {
+      return NextResponse.json({ message: 'Submission not found' }, { status: 404 });
+    }
+
+    return NextResponse.json({
+      message: 'User submission entry updated!',
+      submission: updatedSubmission,
     });
   } catch (e) {
     return NextResponse.json(e, { status: 500 });
