@@ -6,6 +6,9 @@ import { Button } from "@/components/ui/button";
 // TODO:
 // check file types, accept only text files
 // allow for comparison of files
+// BASICALLY:
+// This page is for code similarity checking (preferably done via local storage) (dont need to store in db)
+// Need page in mentor/coderoom/problem
 export default function Page() {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [storedFiles, setStoredFiles] = useState([]);

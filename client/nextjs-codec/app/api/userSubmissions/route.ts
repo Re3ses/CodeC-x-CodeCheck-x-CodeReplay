@@ -17,17 +17,6 @@ export async function GET(request: Request) {
 
     const userSubmissionCollection = db.collection('usersubmissions');
 
-    // All - ...?all=true
-    if (all) {
-      const allSubmissions = await userSubmissionCollection.find({}).toArray();
-
-      return NextResponse.json({
-        message: 'Fetch all Success!',
-        slug: problem_slug,
-        submissions: allSubmissions,
-      });
-    }
-
     // All via room_id - ..?room_id=example_room_id_123
     if (room_id !== null) {
       const submission = await userSubmissionCollection
@@ -37,22 +26,48 @@ export async function GET(request: Request) {
         .toArray();
 
       return NextResponse.json({
-        message: 'Success!',
+        message: 'Success! all via room_id',
         room_slug: room_id,
         submission: submission,
       });
     }
 
+    // All via problem_slug - ...?problem_slug=example_slug_123?all=True
+    if (problem_slug !== null && all) {
+      const submission = await userSubmissionCollection
+        .find({
+          problem: problem_slug,
+        })
+        .toArray();
+
+      return NextResponse.json({
+        message: 'Success! all via problem_slug',
+        problem_slug: problem_slug,
+        submission: submission,
+      });
+    }
+
     // Individual via problem_slug - ...?problem_slug=example_slug_123
-    if (problem_slug !== null) {
+    if (problem_slug !== null && !all) {
       const submission = await userSubmissionCollection.findOne({
         problem: problem_slug,
       });
 
       return NextResponse.json({
-        message: 'Success!',
+        message: 'Success! individual via problem_slug',
         problem_slug: problem_slug,
         submission: submission,
+      });
+    }
+
+    // All - ...?all=true
+    if (all) {
+      const allSubmissions = await userSubmissionCollection.find({}).toArray();
+
+      return NextResponse.json({
+        message: 'Fetch all Success!',
+        slug: problem_slug,
+        submissions: allSubmissions,
       });
     }
   } catch (e) {
