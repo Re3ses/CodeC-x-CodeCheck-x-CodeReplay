@@ -63,13 +63,13 @@ export default function RoomProblemList({
       {roomQuery.data?.problems.map(
         (item: ProblemSchemaInferredType, index: number) => {
           return (
-            <BorderedContainer customStyle="h-fit" key={index}>
+            <BorderedContainer customStyle="h-fit flex flex-col" key={index}>
               <div className="text-md bg-zinc-900 p-5 flex justify-between align-middle">
                 <p className="self-center">{item.name}</p>
               </div>
               <div className="p-2 w-full">
                 {userQuery.data?.type === 'Mentor' ? (
-                  <div className="text-md p-2 flex justify-between align-middle">
+                  <div className="text-md p-2 flex justify-between align-middle flex-wrap gap-2">
                     <Link
                       href={`/mentor/coderoom/r/${params.slug}/problem/${item.slug}`}
                       className={buttonVariants({
@@ -78,6 +78,16 @@ export default function RoomProblemList({
                     >
                       View
                     </Link>
+
+                    <Link
+                      href={`/comparisons/${item.slug}`}
+                      className={buttonVariants({
+                        variant: 'default'
+                      })}
+                    >
+                      View Comparisons
+                    </Link>
+                    
                     <Dialog>
                       <DialogTrigger
                         className={buttonVariants({ variant: 'destructive' })}
