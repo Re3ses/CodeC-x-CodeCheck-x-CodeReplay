@@ -1,4 +1,7 @@
 // components/CodeEditor.tsx
+
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import type { Session } from 'next-auth';

@@ -53,7 +53,7 @@ export default function Nav(props: {
           {
             id: 'codeReplay',
             label: 'Code Replay',
-            href: `/codereplay/CodeEditor`,
+            href: `/codereplay`,
           }
         ].map(({ label, href, id }) => (
           <Link
