@@ -48,6 +48,88 @@ export default function CodeReplayApp() {
   const [saving, setSaving] = useState(false);
   const [selectedSnippet, setSelectedSnippet] = useState<string | null>(null);
   const [isFetchingSimilarity, setIsFetchingSimilarity] = useState(false);
+  const [saveMode, setSaveMode] = useState<'manual' | 'auto'>('manual');
+  const [lastSaved, setLastSaved] = useState<string>(code);
+
+  // Function to check if code has significant changes
+  const hasSignificantChanges = (newCode: string, oldCode: string) => {
+    const lengthDiff = Math.abs(newCode.length - oldCode.length);
+    return lengthDiff > 50; // Consider changes significant if more than 50 characters are added/removed
+  };
+
+  // Auto-save function
+  const autoSaveCode = async (codeToSave: string) => {
+    if (codeToSave === lastSaved) return; // Don't save if code hasn't changed
+    
+    setSaving(true);
+    try {
+      const userId = getUserId();
+      const saveResponse = await fetch('/api/codereplay', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          code: codeToSave,
+          userId,
+          problemId: 'sorting-1',
+          roomId: 'room-1'
+        }),
+      });
+
+      if (saveResponse.ok) {
+        const savedData = await saveResponse.json();
+        if (savedData.snippet && 'code' in savedData.snippet) {
+          setSnippets(prevSnippets => [{
+            userId: savedData.snippet.userId,
+            code: savedData.snippet.code,
+            timestamp: savedData.snippet.timestamp,
+            fileName: savedData.snippet.fileName
+          }, ...prevSnippets]);
+          setLastSaved(codeToSave);
+        }
+      }
+    } catch (error) {
+      console.error('Auto-save error:', error);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  // Auto-save effect
+  useEffect(() => {
+    if (saveMode !== 'auto') return;
+
+    let autoSaveTimer: NodeJS.Timeout;
+
+    const handleVisibilityChange = () => {
+      if (document.hidden && code !== lastSaved) {
+        autoSaveCode(code);
+      }
+    };
+
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (code !== lastSaved) {
+        autoSaveCode(code);
+      }
+    };
+
+    // Save on significant changes or every 10 seconds
+    if (code !== '// Start coding here' && 
+        (hasSignificantChanges(code, lastSaved) || code !== lastSaved)) {
+      autoSaveTimer = setTimeout(() => {
+        autoSaveCode(code);
+      }, 10000);
+    }
+
+    // Add event listeners for tab/window changes
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      clearTimeout(autoSaveTimer);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [code, saveMode, lastSaved]);
 
   const getUserId = () => {
     if (typeof window !== 'undefined') {
@@ -218,6 +300,28 @@ export default function CodeReplayApp() {
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <div className="space-y-4">
+          <div className="flex justify-between items-center mb-2">
+              <select
+                value={saveMode}
+                onChange={(e) => setSaveMode(e.target.value as 'manual' | 'auto')}
+                className="bg-gray-800 text-white px-3 py-2 rounded border border-gray-700"
+              >
+                <option value="manual">Manual Save</option>
+                <option value="auto">Auto Save</option>
+              </select>
+              {saveMode === 'manual' && (
+                <button
+                  onClick={() => saveCode()}
+                  disabled={saving}
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded disabled:opacity-50"
+                >
+                  {saving ? 'Saving...' : 'Save Code'}
+                </button>
+              )}
+              {saveMode === 'auto' && saving && (
+                <span className="text-gray-400">Auto-saving...</span>
+              )}
+            </div>
             <div className="border border-gray-700 rounded-lg overflow-hidden">
               <Editor
                 height="400px"
@@ -233,13 +337,13 @@ export default function CodeReplayApp() {
                 }}
               />
             </div>
-            <button
+            {/* <button
               onClick={saveCode}
               disabled={saving}
               className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded disabled:opacity-50"
             >
               {saving ? 'Saving...' : 'Save Code'}
-            </button>
+            </button> */}
           </div>
 
           <div className="space-y-4">
