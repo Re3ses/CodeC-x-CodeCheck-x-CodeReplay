@@ -1,16 +1,22 @@
+//page.tsx
 'use client'
 import { useState, useEffect } from 'react';
 import Editor from '@monaco-editor/react';
 import dbConnect from '../../lib/dbConnect';
 import { NextResponse } from 'next/server';
 
+// Update the SimilarSnippet interface
 interface SimilarSnippet {
   userId: string;
-  similarity: number;
+  similarity: number | null;
+  jaccardScore: number | null;
+  tfidfScore: number | null;
+  codebertScore: number | null;
   timestamp: string;
   code: string;
   fileName: string;
 }
+
 
 import mongoose, { Model, Schema } from 'mongoose';
 
@@ -282,12 +288,23 @@ export default function CodeReplayApp() {
     getUserId(); // This will create and store a userId if one doesn't exist
   }, []);
 
-  const getSimilarityColor = (similarity: number) => {
+  const getSimilarityColor = (similarity: number | null | undefined) => {
+    if (!similarity) return 'bg-gray-600';
     if (similarity > 80) return 'bg-red-600';
     if (similarity > 60) return 'bg-yellow-600';
     if (similarity > 30) return 'bg-green-600';
     return 'bg-gray-600';
   };
+  
+// Update the renderSimilarityScore function
+const renderSimilarityScore = (label: string, score: number | null | undefined) => (
+  <div className="flex justify-between items-center py-1">
+    <span className="text-sm text-gray-300">{label}:</span>
+    <span className={`px-2 py-0.5 rounded text-sm ${getSimilarityColor(score)}`}>
+      {score?.toFixed(1) ?? 'N/A'}%
+    </span>
+  </div>
+);
 
   const checkSimilarity = async () => {
     await fetchSimilarityData(code);
@@ -337,44 +354,35 @@ export default function CodeReplayApp() {
                 }}
               />
             </div>
-            {/* <button
-              onClick={saveCode}
-              disabled={saving}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded disabled:opacity-50"
-            >
-              {saving ? 'Saving...' : 'Save Code'}
-            </button> */}
           </div>
-
           <div className="space-y-4">
             <h2 className="text-xl font-semibold">Similarity Analysis</h2>
-            {/* <button
-              onClick={checkSimilarity}
-              disabled={isFetchingSimilarity}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded disabled:opacity-50"
-            >
-              {isFetchingSimilarity ? 'Checking Similarity...' : 'Check Similarity'}
-            </button> */}
             <div className="space-y-2 max-h-[600px] overflow-y-auto">
-              {similarSnippets.map((snippet, index) => (
-                <div 
-                  key={index}
-                  className="border border-gray-700 rounded-lg p-4 hover:bg-gray-800 cursor-pointer"
-                  onClick={() => setSelectedSnippet(snippet.code === selectedSnippet ? null : snippet.code)}
-                >
-                  <div className="flex justify-between items-center mb-2">
-                    <div className="space-y-1">
-                      <div>User: {snippet.userId}</div>
-                      <div className="text-sm text-gray-400">
-                        {new Date(snippet.timestamp).toLocaleString()}
-                      </div>
+            {similarSnippets.map((snippet, index) => (
+              <div 
+                key={index}
+                className="border border-gray-700 rounded-lg p-4 hover:bg-gray-800 cursor-pointer"
+                onClick={() => setSelectedSnippet(snippet.code === selectedSnippet ? null : snippet.code)}
+              >
+                <div className="flex justify-between items-center mb-2">
+                  <div className="space-y-1">
+                    <div>User: {snippet.userId}</div>
+                    <div className="text-sm text-gray-400">
+                      {new Date(snippet.timestamp).toLocaleString()}
                     </div>
-                    <span className={`px-2 py-1 rounded ${getSimilarityColor(snippet.similarity)}`}>
-                      {snippet.similarity.toFixed(1)}% Similar
-                    </span>
                   </div>
+                  <span className={`px-2 py-1 rounded ${getSimilarityColor(snippet.similarity)}`}>
+                    {snippet.similarity?.toFixed(1) ?? 'N/A'}% Similar
+                  </span>
+                </div>
                   {selectedSnippet === snippet.code && (
                     <div className="mt-2">
+                      <div className="bg-gray-800 rounded p-3 mb-2">
+                        <h3 className="text-sm font-semibold mb-2">Similarity Breakdown:</h3>
+                        {renderSimilarityScore("Lexical Similarity (Jaccard)", snippet.jaccardScore)}
+                        {renderSimilarityScore("Statistical Patterns (TF-IDF)", snippet.tfidfScore)}
+                        {renderSimilarityScore("Semantic Meaning (CodeBERT)", snippet.codebertScore)}
+                      </div>
                       <Editor
                         height="200px"
                         defaultLanguage="javascript"
@@ -392,7 +400,7 @@ export default function CodeReplayApp() {
                   )}
                 </div>
               ))}
-                {similarSnippets.length === 0 && !isFetchingSimilarity && (
+              {similarSnippets.length === 0 && !isFetchingSimilarity && (
                 <div className="text-gray-400">
                   No comparisons available yet
                 </div>
