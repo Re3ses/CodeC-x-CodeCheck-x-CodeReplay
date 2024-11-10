@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Editor from '@monaco-editor/react';
 import dbConnect from '../../lib/dbConnect';
 import { NextResponse } from 'next/server';
+import SimilarityLoading from './SimilarityLoading';
 
 // Update the SimilarSnippet interface
 interface SimilarSnippet {
@@ -136,6 +137,7 @@ export default function CodeReplayApp() {
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
   }, [code, saveMode, lastSaved]);
+
 
   const getUserId = () => {
     if (typeof window !== 'undefined') {
@@ -358,57 +360,56 @@ const renderSimilarityScore = (label: string, score: number | null | undefined) 
           <div className="space-y-4">
             <h2 className="text-xl font-semibold">Similarity Analysis</h2>
             <div className="space-y-2 max-h-[600px] overflow-y-auto">
-            {similarSnippets.map((snippet, index) => (
-              <div 
-                key={index}
-                className="border border-gray-700 rounded-lg p-4 hover:bg-gray-800 cursor-pointer"
-                onClick={() => setSelectedSnippet(snippet.code === selectedSnippet ? null : snippet.code)}
-              >
-                <div className="flex justify-between items-center mb-2">
-                  <div className="space-y-1">
-                    <div>User: {snippet.userId}</div>
-                    <div className="text-sm text-gray-400">
-                      {new Date(snippet.timestamp).toLocaleString()}
-                    </div>
-                  </div>
-                  <span className={`px-2 py-1 rounded ${getSimilarityColor(snippet.similarity)}`}>
-                    {snippet.similarity?.toFixed(1) ?? 'N/A'}% Similar
-                  </span>
-                </div>
-                  {selectedSnippet === snippet.code && (
-                    <div className="mt-2">
-                      <div className="bg-gray-800 rounded p-3 mb-2">
-                        <h3 className="text-sm font-semibold mb-2">Similarity Breakdown:</h3>
-                        {renderSimilarityScore("Lexical Similarity (Jaccard)", snippet.jaccardScore)}
-                        {renderSimilarityScore("Statistical Patterns (TF-IDF)", snippet.tfidfScore)}
-                        {renderSimilarityScore("Semantic Meaning (CodeBERT)", snippet.codebertScore)}
-                      </div>
-                      <Editor
-                        height="200px"
-                        defaultLanguage="javascript"
-                        value={snippet.code}
-                        theme="vs-dark"
-                        options={{
-                          readOnly: true,
-                          minimap: { enabled: false },
-                          fontSize: 14,
-                          scrollBeyondLastLine: false,
-                          wordWrap: 'on',
-                        }}
-                      />
-                    </div>
-                  )}
-                </div>
-              ))}
-              {similarSnippets.length === 0 && !isFetchingSimilarity && (
+              {/* This is where you'll replace the existing code with the new loading logic */}
+              {isFetchingSimilarity ? (
+                <SimilarityLoading />
+              ) : similarSnippets.length === 0 ? (
                 <div className="text-gray-400">
                   No comparisons available yet
                 </div>
-              )}
-              {isFetchingSimilarity && (
-                <div className="text-gray-400">
-                  Loading similarity data...
-                </div>
+              ) : (
+                similarSnippets.map((snippet, index) => (
+                  <div 
+                    key={index}
+                    className="border border-gray-700 rounded-lg p-4 hover:bg-gray-800 cursor-pointer"
+                    onClick={() => setSelectedSnippet(snippet.code === selectedSnippet ? null : snippet.code)}
+                  >
+                    <div className="flex justify-between items-center mb-2">
+                      <div className="space-y-1">
+                        <div>User: {snippet.userId}</div>
+                        <div className="text-sm text-gray-400">
+                          {new Date(snippet.timestamp).toLocaleString()}
+                        </div>
+                      </div>
+                      <span className={`px-2 py-1 rounded ${getSimilarityColor(snippet.similarity)}`}>
+                        {snippet.similarity?.toFixed(1) ?? 'N/A'}% Similar
+                      </span>
+                    </div>
+                    {selectedSnippet === snippet.code && (
+                      <div className="mt-2">
+                        <div className="bg-gray-800 rounded p-3 mb-2">
+                          <h3 className="text-sm font-semibold mb-2">Similarity Breakdown:</h3>
+                          {renderSimilarityScore("Lexical Similarity (Jaccard)", snippet.jaccardScore)}
+                          {renderSimilarityScore("Statistical Patterns (TF-IDF)", snippet.tfidfScore)}
+                          {renderSimilarityScore("Semantic Meaning (CodeBERT)", snippet.codebertScore)}
+                        </div>
+                        <Editor
+                          height="200px"
+                          defaultLanguage="javascript"
+                          value={snippet.code}
+                          theme="vs-dark"
+                          options={{
+                            readOnly: true,
+                            minimap: { enabled: false },
+                            fontSize: 14,
+                            scrollBeyondLastLine: false,
+                            wordWrap: 'on',
+                          }}
+                        />
+                      </div>
+                    )}
+                  </div>
+                ))
               )}
             </div>
           </div>
@@ -416,29 +417,29 @@ const renderSimilarityScore = (label: string, score: number | null | undefined) 
 
         <div className="mt-8">
           <h2 className="text-xl font-semibold mb-4">Previous Submissions</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {snippets.map((snippet, index) => (
-              <div key={index} className="border border-gray-700 rounded-lg p-4">
-                <div className="space-y-1 mb-2">
-                  <div>User: {snippet.userId}</div>
-                  <div className="text-sm text-gray-400">
-                    {new Date(snippet.timestamp).toLocaleString()}
-                  </div>
+          <div className="flex flex-wrap gap-4">
+          {snippets.map((snippet, index) => (
+            <div key={index} className="border border-gray-700 rounded-lg p-4 w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.33%-1rem)]">
+              <div className="space-y-1 mb-2">
+                <div>User: {snippet.userId}</div>
+                <div className="text-sm text-gray-400">
+                  {new Date(snippet.timestamp).toLocaleString()}
                 </div>
-                <Editor
-                  height="200px"
-                  defaultLanguage="javascript"
-                  value={snippet.code}
-                  theme="vs-dark"
-                  options={{
-                    readOnly: true,
-                    minimap: { enabled: false },
-                    fontSize: 14,
-                    scrollBeyondLastLine: false,
-                    wordWrap: 'on',
-                  }}
-                />
               </div>
+              <Editor
+                height="300px" 
+                defaultLanguage="javascript"
+                value={snippet.code}
+                theme="vs-dark"
+                options={{
+                  readOnly: true,
+                  minimap: { enabled: false },
+                  fontSize: 14,
+                  scrollBeyondLastLine: false,
+                  wordWrap: 'on',
+                }}
+              />
+            </div>
             ))}
             {snippets.length === 0 && (
               <div className="text-gray-400">
