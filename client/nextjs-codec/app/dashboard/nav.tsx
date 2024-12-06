@@ -49,6 +49,11 @@ export default function Nav(props: {
             id: 'submissionsCheck',
             label: 'Submissions Checking',
             href: '/submissionsCheck',
+          },
+          {
+            id: 'codeReplay',
+            label: 'Code Replay',
+            href: `/codereplay`,
           }
         ].map(({ label, href, id }) => (
           <Link
