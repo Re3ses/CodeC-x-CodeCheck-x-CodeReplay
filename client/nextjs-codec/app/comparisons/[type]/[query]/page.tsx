@@ -1,7 +1,7 @@
 'use client';
 
 import { UserContext } from '@/app/dashboard/contexts';
-import BorderedContainer from '../../../components/ui/wrappers/BorderedContainer';
+import BorderedContainer from '../../../../components/ui/wrappers/BorderedContainer';
 import {
   Table,
   TableBody,
@@ -31,7 +31,7 @@ interface User {
 export default function Page() {
   const router = useRouter();
 
-  const { query } = useParams();
+  const { type, query } = useParams();
   const [submissions, setSubmissions] = useState<any>();
   const [selectedSubmission, setSelectedSubmission] = useState<any>();
   const [user, setUser] = useState<User>();
@@ -53,17 +53,27 @@ export default function Page() {
 
     // Fetch room data
     const fetchData = async () => {
-      await fetch(`/api/userSubmissions?problem_slug=${query}&all=true`).then(
-        async (val) => {
-          await val.json().then((data) => {
-            setSubmissions(data);
-          });
-        }
-      );
+      if (type === "problem") {
+        await fetch(`/api/userSubmissions?problem_slug=${query}&all=true`).then(
+          async (val) => {
+            await val.json().then((data) => {
+              setSubmissions(data);
+            });
+          }
+        );
+      } else if (type === "coderoom") {
+        await fetch(`/api/userSubmissions?room_id=${query}&all=true`).then(
+          async (val) => {
+            await val.json().then((data) => {
+              setSubmissions(data);
+            });
+          }
+        );
+      }
     };
 
     fetchData();
-  }, [query, router]);
+  }, [type, query, router]);
 
   return (
     <>

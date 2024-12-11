@@ -80,7 +80,7 @@ export default function RoomProblemList({
                     </Link>
 
                     <Link
-                      href={`/comparisons/${item.slug}`}
+                      href={`/comparisons/problem/${item.slug}`}
                       className={buttonVariants({
                         variant: 'default'
                       })}
