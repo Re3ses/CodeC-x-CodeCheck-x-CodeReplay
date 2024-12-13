@@ -49,10 +49,21 @@ def compare_submissions():
         detection_type = query['detection_type']
         print("detection_type: ", detection_type)
         
+        # Convert new submission format to the expected format
+        converted_submissions = {}
+        for submission in submissions:
+            file_name = submission.get('learner', 'unknown_learner')
+            code = submission.get('code', '')
+            language = submission.get('language_used', 'unknown_language')
+            converted_submissions[file_name] = {
+                'code': code,
+                'language': language
+            }
+        
         if detection_type == 'comparison':
-            comparison_results = detector.compare_files(submissions, query)
+            comparison_results = detector.compare_files(converted_submissions, query)
         if detection_type == 'model':
-            comparison_results = get_plagiarism_probability(submissions, model)
+            comparison_results = get_plagiarism_probability(converted_submissions, model)
         
         return jsonify(comparison_results)
     
