@@ -44,9 +44,9 @@ def compare_submissions():
         submissions = data['submissions']
         query = data['query']
         print("query: ", query)
-        model = query['model']
+        model = query.get('model', 'codebert')
         print("model: ", model)
-        detection_type = query['detection_type']
+        detection_type = query.get('detection_type', 'comparison')
         print("detection_type: ", detection_type)
         
         # Convert new submission format to the expected format
