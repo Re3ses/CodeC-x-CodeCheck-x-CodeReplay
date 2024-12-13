@@ -8,7 +8,8 @@ export async function GET(request: Request) {
 
   const room_id = searchParams.get('room_id');
   const problem_slug = searchParams.get('problem_slug');
-  const all = searchParams.get('all') === 'true';
+  const all: boolean = Boolean(searchParams.get('all')?.toLowerCase() === 'true');
+  const single: boolean = Boolean(searchParams.get('single')?.toLowerCase() === 'true');
 
   try {
     await dbConnect();
@@ -33,7 +34,7 @@ export async function GET(request: Request) {
     }
 
     // All via problem_slug - ...?problem_slug=example_slug_123?all=True
-    if (problem_slug !== null && all) {
+    if (problem_slug !== null && all && !single) {
       const submission = await userSubmissionCollection
         .find({
           problem: problem_slug,
@@ -60,18 +61,71 @@ export async function GET(request: Request) {
       });
     }
 
+        // All but only the first accepted submissions only per learner - ...?problem_slug=example_slug_123?all=true&single=true
+        if (all === true && single === true) {
+          const submissions = await userSubmissionCollection.aggregate([
+            {
+              $match: {
+                verdict: "ACCEPTED"
+              }
+            },
+            {
+              $sort: {
+                submission_date: -1 // Sort by latest submission first
+              }
+            },
+            {
+              $group: {
+                _id: "$learner",
+                submission: { $first: "$$ROOT" } // Take the first (latest) submission for each learner
+              }
+            },
+            {
+              $replaceRoot: { newRoot: "$submission" } // Replace the root to get the original document structure
+            }
+          ]).toArray();
+    
+          return NextResponse.json({
+            message: 'Success! one accepted submission per learner',
+            problem_slug: problem_slug,
+            submission: submissions,
+          });
+        }
+
     // All - ...?all=true
-    if (all) {
+    if (all === true) {
       const allSubmissions = await userSubmissionCollection.find({}).toArray();
 
       return NextResponse.json({
         message: 'Fetch all Success!',
         slug: problem_slug,
+        all: all,
         submissions: allSubmissions,
       });
     }
+
+    // If no query parameter is provided
+    if (all === false) {
+      return NextResponse.json({
+        message: 'Please provide a query parameter',
+        query_params: {
+          problem_slug,
+          all,
+          single
+        }
+      }, { status: 400 });
+    }
+
   } catch (e) {
-    return NextResponse.json(e, { status: 500 });
+    return NextResponse.json({
+      error: e,
+      message: "An error occurred",
+      query_params: {
+        problem_slug,
+        all,
+        single
+      }
+    }, { status: 500 });
   }
 }
 
@@ -112,7 +166,7 @@ export async function POST(request: Request) {
 
 export async function PATCH(request: NextRequest) {
   const { searchParams } = new URL(request.url);
-  
+
   const room_id = searchParams.get('room_id');
   const problem_slug = searchParams.get('problem_slug');
   const learner_id = searchParams.get('learner_id');
