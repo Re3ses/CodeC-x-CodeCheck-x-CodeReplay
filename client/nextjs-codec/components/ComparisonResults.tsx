@@ -2,7 +2,6 @@ import React from "react";
 import {
     Table,
     TableBody,
-    TableCaption,
     TableCell,
     TableHead,
     TableHeader,
@@ -33,7 +32,7 @@ const ComparisonResults: React.FC<ComparisonResultsProps> = ({ comparisonResult 
     <BorderedContainer customStyle="w-full p-2 flex items-center flex-col">
         <h2 className="font-medium mb-2">List of Comparison Results for this Problem</h2>
         {comparisonResult.map((result, index) => (
-            <BorderedContainer customStyle="w-full p-2 my-2">
+            <BorderedContainer customStyle=" p-2 my-2">
                 <div key={index} className="mb-4">
                     <h2 className="font-bold uppercase p-2">
                         {result.file}
@@ -42,7 +41,7 @@ const ComparisonResults: React.FC<ComparisonResultsProps> = ({ comparisonResult 
                     <Table className="border-collapse">
                         <TableHeader className="w-full">
                             <TableRow>
-                                <TableHead className="border text-left">Filename</TableHead>
+                                <TableHead className="border text-left">Learner</TableHead>
                                 <TableHead className="border text-right">Structural Similarity</TableHead>
                                 <TableHead className="border text-right">Token Similarity</TableHead>
                                 <TableHead className="border text-right">TF-IDF Similarity</TableHead>
