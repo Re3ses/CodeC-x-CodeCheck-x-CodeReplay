@@ -1,6 +1,9 @@
 "use client";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import ComparisonResults from "@/components/ComparisonResults";
+import BorderedContainer from "@/components/ui/wrappers/BorderedContainer";
+
 
 
 // TODO:
@@ -12,8 +15,9 @@ import { Button } from "@/components/ui/button";
 export default function Page() {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [storedFiles, setStoredFiles] = useState([]);
-
   const USER_FILE_PREFIX = "user-file-"; // Prefix to identify user-uploaded files
+  const [results, setResults] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     // Fetch user-uploaded files from localStorage when the component mounts
@@ -39,66 +43,98 @@ export default function Page() {
         const reader = new FileReader();
         reader.onload = (e) => {
           const content = e.target.result;
-
-          // Save to localStorage with a unique prefix
           localStorage.setItem(`${USER_FILE_PREFIX}${file.name}`, content);
-
-          // Update the stored files list
           setStoredFiles((prevFiles) => [
             ...prevFiles,
             { name: file.name, content },
           ]);
-
-          alert(`File ${file.name} stored in localStorage!`);
         };
-        reader.readAsDataURL(file); // You can also use readAsText based on your file type
+        reader.readAsText(file);
       });
     } else {
       alert("No files selected.");
     }
   };
 
-  const handleCompare = () => {
-    // Compare files
-    // Implement file comparison logic here
-    alert("Files compared!");
-  }
+  const handleCompare = async () => {
+    setLoading(true);
+    try {
+      const formattedSubmissions = storedFiles.map(file => ({
+        code: file.content,
+        language_used: file.name.endsWith('.py') ? 'Python' : 'Java',
+        learner: file.name.split('.')[0],
+      }));
+
+      const res = await fetch("http://127.0.0.1:5000/compare", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          submissions: formattedSubmissions,
+          query: {
+            tokenizer: "char",
+            model: "default",
+            detection_type: "comparison"
+          }
+        })
+      });
+
+      const data = await res.json();
+      setResults(data);
+    } catch (error) {
+      console.error('Comparison error:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    handleCompare();
+  }, [storedFiles]);
 
   return (
-    <div className="flex flex-row  justify-around">
-      <div className="flex flex-col items-start">
-        <h1 className="font-bold">Submissions Check</h1>
-        <p>Upload java files for similarity detection.</p>
-        <div className="flex flex-col items-start justify-evenly gap-2 m-3">
-          <div>
-            <label htmlFor="file-upload">Upload Files:</label>
-            <input
-              id="file-upload"
-              type="file"
-              onChange={handleFileChange}
-              accept="*"
-              multiple
-            />
-            <Button variant="default" color="primary" onClick={handleUploadClick}>
-              Upload files
+    <div className="flex flex-col items-center">
+      <BorderedContainer customStyle="flex flex-row items-start justify-center w-fit mx-4">
+        <BorderedContainer customStyle="flex flex-col items-start p-4 gap-2">
+          <h1 className="font-bold">Submissions Check</h1>
+          <p>Upload files for similarity detection.</p>
+          <div className="flex flex-col items-start justify-evenly gap-2">
+            <BorderedContainer customStyle="flex flex-col p-2">
+              <input
+                id="file-upload"
+                type="file"
+                onChange={handleFileChange}
+                accept="*"
+                multiple
+              />
+              <Button variant="default" color="primary" onClick={handleUploadClick}>
+                Upload files
+              </Button>
+            </BorderedContainer>
+            <Button variant="default" color="secondary" onClick={handleCompare}>
+              Compare Files
             </Button>
           </div>
-          <Button variant="default" color="secondary" onClick={handleCompare}>
-            Compare Files
-          </Button>
-        </div>
-      </div>
-      <div>
-        <h2 className="font-bold">Submissions</h2>
-        <p>Display submissions here</p>
-        <ul className="m-3">
-          {storedFiles.map((file, index) => (
-            <li key={index}>
-              {file.name.split('.')[0]} {file.name.split('.').pop()?.toLowerCase()} - {file.content.substring(0, 50)}...
-            </li>
-          ))}
-        </ul>
-      </div>
+        </BorderedContainer>
+
+        {loading ? (
+          ""
+        ) : results ? (
+          <ComparisonResults comparisonResult={results} />
+        ) : null}
+
+        <BorderedContainer customStyle="flex flex-col items-start p-4">
+          <h2 className="font-bold">Files</h2>
+          <ul className="m-3">
+            {storedFiles.map((file, index) => (
+              <li key={index}>
+                {file.name.split('.')[0]} {file.name.split('.').pop()?.toLowerCase()}
+              </li>
+            ))}
+          </ul>
+        </BorderedContainer>
+      </BorderedContainer>
     </div>
   );
 }
