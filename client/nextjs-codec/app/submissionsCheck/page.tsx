@@ -56,6 +56,22 @@ export default function Page() {
     }
   };
 
+  const handleClearFiles = () => {
+    if (window.confirm('Are you sure you want to clear all uploaded files?')) {
+      // Clear files from localStorage
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key?.startsWith(USER_FILE_PREFIX)) {
+          localStorage.removeItem(key);
+        }
+      }
+      // Reset state
+      setStoredFiles([]);
+      setSelectedFiles([]);
+      setResults(null);
+    }
+  };
+
   const handleCompare = async () => {
     setLoading(true);
     try {
@@ -90,7 +106,9 @@ export default function Page() {
   };
 
   useEffect(() => {
-    handleCompare();
+    if (storedFiles.length > 1) {
+      handleCompare();
+    }
   }, [storedFiles]);
 
   return (
@@ -100,7 +118,7 @@ export default function Page() {
           <h1 className="font-bold">Submissions Check</h1>
           <p>Upload files for similarity detection.</p>
           <div className="flex flex-col items-start justify-evenly gap-2">
-            <BorderedContainer customStyle="flex flex-col p-2">
+            <BorderedContainer customStyle="flex flex-col p-2 gap-2">
               <input
                 id="file-upload"
                 type="file"
@@ -109,12 +127,12 @@ export default function Page() {
                 multiple
               />
               <Button variant="default" color="primary" onClick={handleUploadClick}>
-                Upload files
+                Compare Files
               </Button>
             </BorderedContainer>
-            <Button variant="default" color="secondary" onClick={handleCompare}>
+            {/* <Button variant="default" color="secondary" onClick={handleCompare}>
               Compare Files
-            </Button>
+            </Button> */}
           </div>
         </BorderedContainer>
 
@@ -124,8 +142,17 @@ export default function Page() {
           <ComparisonResults comparisonResult={results} />
         ) : null}
 
-        <BorderedContainer customStyle="flex flex-col items-start p-4">
-          <h2 className="font-bold">Files</h2>
+        <BorderedContainer customStyle="flex flex-col items-start p-4 min-w-[100px]">
+          <div className="flex justify-start items-center gap-2">
+            <h2 className="font-bold">Files</h2>
+            <Button
+              variant="destructive"
+              onClick={handleClearFiles}
+              disabled={storedFiles.length === 0}
+            >
+              Clear Files
+            </Button>
+          </div>
           <ul className="m-3">
             {storedFiles.map((file, index) => (
               <li key={index}>
