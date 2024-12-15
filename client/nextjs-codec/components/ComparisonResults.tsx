@@ -31,7 +31,7 @@ interface ComparisonResultsProps {
 
 const ComparisonResults: React.FC<ComparisonResultsProps> = ({ comparisonResult, customStyle }) => (
     <BorderedContainer customStyle={`p-2 flex items-center flex-col ${customStyle}`}>
-        <h2 className="font-medium m-2">List of Comparison Results for this Problem</h2>
+        <h2 className="font-medium m-2">Comparison Results</h2>
         {comparisonResult.map((result, index) => (
             <BorderedContainer customStyle=" p-2 my-2">
                 <div key={index} className="mb-4">
