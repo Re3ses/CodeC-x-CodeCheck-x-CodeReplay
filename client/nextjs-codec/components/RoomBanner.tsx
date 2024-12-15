@@ -84,11 +84,12 @@ export default function RoomBanner({
         >
           Show room submissions
         </Link>
-        <Link
+        {/* For future implmentation */}
+        {/* <Link
           href={`/comparisons/coderoom/${roomQuery.data?.slug}`}
           className={buttonVariants({ variant: 'ghost' })}
         >View Code Comparisons
-        </Link>
+        </Link> */}
       </div>
     </BorderedContainer>
   );
