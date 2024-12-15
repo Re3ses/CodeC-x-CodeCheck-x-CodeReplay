@@ -1,22 +1,9 @@
 'use client';
-
-import { UserContext } from '@/app/dashboard/contexts';
-import BorderedContainer from '../../../../components/ui/wrappers/BorderedContainer';
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
-import { Badge } from '@/components/ui/badge';
-import { useEffect, useState } from 'react';
+import { use, useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { getUser } from '@/lib/auth';
 import Nav from '@/app/dashboard/nav';
-import moment from 'moment';
+import ComparisonResults from "@/components/ComparisonResults";
 
 interface User {
   _id: number;
@@ -32,9 +19,10 @@ export default function Page() {
   const router = useRouter();
 
   const { type, query } = useParams();
-  const [submissions, setSubmissions] = useState<any>();
-  const [selectedSubmission, setSelectedSubmission] = useState<any>();
+  const [submissions, setSubmissions] = useState([]);
   const [user, setUser] = useState<User>();
+  const [results, setResults] = useState<any>();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Get user/login
@@ -54,18 +42,18 @@ export default function Page() {
     // Fetch room data
     const fetchData = async () => {
       if (type === "problem") {
-        await fetch(`/api/userSubmissions?problem_slug=${query}&all=true`).then(
+        await fetch(`/api/userSubmissions?problem_slug=${query}&all=true&single=true`).then(
           async (val) => {
             await val.json().then((data) => {
-              setSubmissions(data);
+              setSubmissions(data.submission);
             });
           }
         );
       } else if (type === "coderoom") {
-        await fetch(`/api/userSubmissions?room_id=${query}&all=true`).then(
+        await fetch(`/api/userSubmissions?room_id=${query}&all=true&single=true`).then(
           async (val) => {
             await val.json().then((data) => {
-              setSubmissions(data);
+              setSubmissions(data.submission);
             });
           }
         );
@@ -75,22 +63,49 @@ export default function Page() {
     fetchData();
   }, [type, query, router]);
 
+  const handleCompare = async () => {
+    setLoading(true);
+    try {
+      console.log("Comparing files");
+
+      const res = await fetch("http://127.0.0.1:5000/compare", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          submissions: submissions,
+          query: {
+            tokenizer: "char",
+            model: "default",
+            detection_type: "comparison"
+          }
+        })
+      });
+      const data = await res.json();
+      console.log("data:", data);
+      setResults(data);
+      console.log("results:", results);
+    }
+    catch (e) {
+      console.error(e);
+    }
+    finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    handleCompare();
+  }, [submissions]);
+
   return (
     <>
       <Nav type={user?.type} name={user?.auth.username} />
       <div className="flex flex-col gap-2 justify-between m-4">
-        {/* Results summary section */}
-        <div className='flex'>
-          <BorderedContainer customStyle="w-full p-2">
-            Similarity Graph
-          </BorderedContainer>
-          <BorderedContainer customStyle="w-full p-2">
-            Group Distance Similarity
-          </BorderedContainer>
-        </div>
-
+        {loading ?  null : <ComparisonResults comparisonResult={results} />}
         {/* Submission section */}
-        <BorderedContainer customStyle="w-full p-2">
+        {/* <BorderedContainer customStyle="w-full p-2">
           <Table>
             <TableCaption>List of who submitted in this room</TableCaption>
             <TableHeader>
@@ -123,7 +138,7 @@ export default function Page() {
               })}
             </TableBody>
           </Table>
-        </BorderedContainer>
+        </BorderedContainer> */}
       </div>
     </>
   );

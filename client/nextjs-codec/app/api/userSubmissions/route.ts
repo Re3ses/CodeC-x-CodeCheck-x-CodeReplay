@@ -19,7 +19,7 @@ export async function GET(request: Request) {
     const userSubmissionCollection = db.collection('usersubmissions');
 
     // All via room_id - ..?room_id=example_room_id_123
-    if (room_id !== null) {
+    if (room_id !== null && !single) {
       const submission = await userSubmissionCollection
         .find({
           room: room_id,
@@ -33,8 +33,40 @@ export async function GET(request: Request) {
       });
     }
 
+    // All via room_id but only the first accepted submissions only per learner - ...?room_id=example_room_id_123?all=true&single=true
+    if (room_id !== null && all === true && single === true) {
+      const submissions = await userSubmissionCollection.aggregate([
+        {
+          $match: {
+            room: room_id,
+            verdict: "ACCEPTED"
+          }
+        },
+        {
+          $sort: {
+            submission_date: -1 // Sort by latest submission first
+          }
+        },
+        {
+          $group: {
+            _id: "$learner",
+            submission: { $first: "$$ROOT" } // Take the first (latest) submission for each learner
+          }
+        },
+        {
+          $replaceRoot: { newRoot: "$submission" } // Replace the root to get the original document structure
+        }
+      ]).toArray();
+
+      return NextResponse.json({
+        message: 'Success! one accepted submission per learner',
+        problem_slug: problem_slug,
+        submission: submissions,
+      });
+    }
+    
     // All via problem_slug - ...?problem_slug=example_slug_123?all=True
-    if (problem_slug !== null && all && !single) {
+    if (problem_slug !== null && all === true && !single) {
       const submission = await userSubmissionCollection
         .find({
           problem: problem_slug,
@@ -45,6 +77,38 @@ export async function GET(request: Request) {
         message: 'Success! all via problem_slug',
         problem_slug: problem_slug,
         submission: submission,
+      });
+    }
+
+    // All via problem_slug but only the first accepted submissions only per learner - ...?problem_slug=example_slug_123?all=true&single=true
+    if (problem_slug !== null && all === true && single === true) {
+      const submissions = await userSubmissionCollection.aggregate([
+        {
+          $match: {
+            problem: problem_slug,
+            verdict: "ACCEPTED"
+          }
+        },
+        {
+          $sort: {
+            submission_date: -1 // Sort by latest submission first
+          }
+        },
+        {
+          $group: {
+            _id: "$learner",
+            submission: { $first: "$$ROOT" } // Take the first (latest) submission for each learner
+          }
+        },
+        {
+          $replaceRoot: { newRoot: "$submission" } // Replace the root to get the original document structure
+        }
+      ]).toArray();
+
+      return NextResponse.json({
+        message: 'Success! one accepted submission per learner',
+        problem_slug: problem_slug,
+        submission: submissions,
       });
     }
 
@@ -61,36 +125,36 @@ export async function GET(request: Request) {
       });
     }
 
-        // All but only the first accepted submissions only per learner - ...?problem_slug=example_slug_123?all=true&single=true
-        if (all === true && single === true) {
-          const submissions = await userSubmissionCollection.aggregate([
-            {
-              $match: {
-                verdict: "ACCEPTED"
-              }
-            },
-            {
-              $sort: {
-                submission_date: -1 // Sort by latest submission first
-              }
-            },
-            {
-              $group: {
-                _id: "$learner",
-                submission: { $first: "$$ROOT" } // Take the first (latest) submission for each learner
-              }
-            },
-            {
-              $replaceRoot: { newRoot: "$submission" } // Replace the root to get the original document structure
-            }
-          ]).toArray();
-    
-          return NextResponse.json({
-            message: 'Success! one accepted submission per learner',
-            problem_slug: problem_slug,
-            submission: submissions,
-          });
+    // All but only the first accepted submissions only per learner - ...?problem_slug=example_slug_123?all=true&single=true
+    if (all === true && single === true) {
+      const submissions = await userSubmissionCollection.aggregate([
+        {
+          $match: {
+            verdict: "ACCEPTED"
+          }
+        },
+        {
+          $sort: {
+            submission_date: -1 // Sort by latest submission first
+          }
+        },
+        {
+          $group: {
+            _id: "$learner",
+            submission: { $first: "$$ROOT" } // Take the first (latest) submission for each learner
+          }
+        },
+        {
+          $replaceRoot: { newRoot: "$submission" } // Replace the root to get the original document structure
         }
+      ]).toArray();
+
+      return NextResponse.json({
+        message: 'Success! one accepted submission per learner',
+        problem_slug: problem_slug,
+        submission: submissions,
+      });
+    }
 
     // All - ...?all=true
     if (all === true) {
