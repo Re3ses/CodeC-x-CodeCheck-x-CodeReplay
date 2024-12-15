@@ -94,7 +94,7 @@ export default function Page() {
         <ul className="m-3">
           {storedFiles.map((file, index) => (
             <li key={index}>
-              {file.name} - {file.content.substring(0, 50)}...
+              {file.name.split('.')[0]} {file.name.split('.').pop()?.toLowerCase()} - {file.content.substring(0, 50)}...
             </li>
           ))}
         </ul>
