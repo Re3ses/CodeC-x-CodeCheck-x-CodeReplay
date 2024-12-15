@@ -4,7 +4,10 @@ import { Button } from "@/components/ui/button";
 import ComparisonResults from "@/components/ComparisonResults";
 import BorderedContainer from "@/components/ui/wrappers/BorderedContainer";
 
-
+interface StoredFile {
+  name: string;
+  content: string | ArrayBuffer | null;
+}
 
 // TODO:
 // check file types, accept only text files
@@ -13,10 +16,10 @@ import BorderedContainer from "@/components/ui/wrappers/BorderedContainer";
 // This page is for code similarity checking (preferably done via local storage) (dont need to store in db)
 // Need page in mentor/coderoom/problem
 export default function Page() {
-  const [selectedFiles, setSelectedFiles] = useState([]);
-  const [storedFiles, setStoredFiles] = useState([]);
-  const USER_FILE_PREFIX = "user-file-"; // Prefix to identify user-uploaded files
-  const [results, setResults] = useState(null);
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [storedFiles, setStoredFiles] = useState<StoredFile[]>([]);
+  const USER_FILE_PREFIX = "user-file-";
+  const [results, setResults] = useState<any>(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
