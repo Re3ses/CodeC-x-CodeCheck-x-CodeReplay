@@ -15,7 +15,6 @@ export interface UserSubmissions extends mongoose.Document {
   completion_time: number;
   start_time: number;
   end_time: number;
-  similarity_score: number;
   most_similar: string;
 }
 
@@ -77,10 +76,6 @@ const UserSubmissionsSchema = new mongoose.Schema<UserSubmissions>({
   },
   completion_time: {
     type: Number, // in ms
-    default: 0,
-  },
-  similarity_score: {
-    type: Number,
     default: 0,
   },
   most_similar: {
