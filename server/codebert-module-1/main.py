@@ -45,8 +45,8 @@ def compare_submissions():
         query = data['query']
         print("query: ", query)
         print("submissions: ", submissions)
-        model = query.get('model', 'codebert')
-        detection_type = query.get('detection_type', 'comparison')
+        model = query.get('model', 'default')
+        detection_type = query.get('detection_type', 'token')
         
         # Convert new submission format to the expected format
         converted_submissions = {}
@@ -59,7 +59,7 @@ def compare_submissions():
                 'language': language
             }
         
-        if detection_type == 'comparison':
+        if detection_type == 'token':
             comparison_results = detector.compare_files(converted_submissions, query)
         if detection_type == 'model':
             comparison_results = get_plagiarism_probability(converted_submissions, model)

@@ -33,6 +33,37 @@ class CodeBERTForPlagiarism(RobertaPreTrainedModel):
             outputs = (loss,) + outputs
 
         return outputs
+    
+def tokenize_per_word(text: str) -> list:
+    """
+    Tokenize text into words, removing punctuation and converting to lowercase.
+    
+    Args:
+        text (str): Input text to tokenize
+        
+    Returns:
+        list: List of word tokens
+    """
+    # Remove special characters and convert to lowercase
+    cleaned_text = re.sub(r'[^\w\s]', '', text.lower())
+    
+    # Split into words and filter empty strings
+    tokens = [word for word in cleaned_text.split() if word]
+    
+    return tokens
+
+def tokenize_per_character(text: str) -> list:
+    """
+    Tokenize text into individual characters.
+    
+    Args:
+        text (str): Input text to tokenize
+        
+    Returns:
+        list: List of individual characters
+    """
+    # Remove whitespace and split into characters
+    return [char for char in text.strip() if char and not char.isspace()]
 
 def predict_plagiarism(model, tokenizer, code, tokenize_method='default'):
     """

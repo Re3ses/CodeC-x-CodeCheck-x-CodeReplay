@@ -4,6 +4,8 @@ import { useParams, useRouter } from 'next/navigation';
 import { getUser } from '@/lib/auth';
 import Nav from '@/app/dashboard/nav';
 import ComparisonResults from "@/components/ComparisonResults";
+import SourceCodeViewer from "@/components/ui/comparison-ui/sourceCodeViewer";
+import BorderedContainer from '@/components/ui/wrappers/BorderedContainer';
 
 interface User {
   _id: number;
@@ -59,14 +61,13 @@ export default function Page() {
         );
       }
     };
-
+    console.log("submissions:", submissions);
     fetchData();
   }, [type, query, router]);
 
   const handleCompare = async () => {
     setLoading(true);
     try {
-      console.log("Comparing files");
 
       const res = await fetch("http://127.0.0.1:5000/compare", {
         method: "POST",
@@ -78,14 +79,12 @@ export default function Page() {
           query: {
             tokenizer: "char",
             model: "default",
-            detection_type: "comparison"
+            detection_type: "model" // Change this to "model" or "embeddings" to set the detection type
           }
         })
       });
       const data = await res.json();
-      console.log("data:", data);
       setResults(data);
-      console.log("results:", results);
     }
     catch (e) {
       console.error(e);
@@ -102,43 +101,13 @@ export default function Page() {
   return (
     <>
       <Nav type={user?.type} name={user?.auth.username} />
-      <div className="flex flex-col gap-2 justify-between m-4">
-        {loading ?  null : <ComparisonResults comparisonResult={results} />}
-        {/* Submission section */}
-        {/* <BorderedContainer customStyle="w-full p-2">
-          <Table>
-            <TableCaption>List of who submitted in this room</TableCaption>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-[250px]">Name</TableHead>
-                <TableHead>Similarity Score</TableHead>
-                <TableHead>Most Similar Submission</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {submissions?.submission.map((submission: any) => {
-                return (
-                  <TableRow
-                    key={submission._id}
-                    onClick={() => {
-                      setSelectedSubmission(submission);
-                    }}
-                  >
-                    <TableCell className="font-medium">
-                      {submission?.learner}
-                    </TableCell>
-                    <TableCell>
-                      {submission?.similarity_score || 'N/A'}
-                    </TableCell>
-                    <TableCell>
-                      {submission?.most_similar_submission || 'N/A'}
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </BorderedContainer> */}
+      <div className='flex justify-center w-full'>
+      <div className="flex flex-row gap-2 justify-center p-2 max-w-screen-2xl">
+        {loading ? null : <ComparisonResults comparisonResult={results} />}
+        <div className='flex flex-col w-full'>
+          {loading ? null : <SourceCodeViewer submissions={submissions} ComparisonResult={results} />}
+        </div>
+      </div>
       </div>
     </>
   );

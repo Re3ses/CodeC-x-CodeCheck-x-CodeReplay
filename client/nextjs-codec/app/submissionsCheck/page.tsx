@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import ComparisonResults from "@/components/ComparisonResults";
 import BorderedContainer from "@/components/ui/wrappers/BorderedContainer";
+import SourceCodeViewer from "@/components/ui/comparison-ui/sourceCodeViewer";
 
 interface StoredFile {
   name: string;
@@ -18,6 +19,7 @@ interface StoredFile {
 export default function Page() {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [storedFiles, setStoredFiles] = useState<StoredFile[]>([]);
+  const [formattedSubmissions, setFormattedSubmissions] = useState<any[]>([]);
   const USER_FILE_PREFIX = "user-file-";
   const [results, setResults] = useState<any>(null);
   const [loading, setLoading] = useState(false);
@@ -78,11 +80,11 @@ export default function Page() {
   const handleCompare = async () => {
     setLoading(true);
     try {
-      const formattedSubmissions = storedFiles.map(file => ({
+      setFormattedSubmissions(storedFiles.map(file => ({
         code: file.content,
-        language_used: file.name.endsWith('.py') ? 'Python' : 'Java',
+        language_used: file.name.endsWith('.py') ? 'python 3.8' : 'java 11',
         learner: file.name.split('.')[0],
-      }));
+      })))
 
       const res = await fetch("http://127.0.0.1:5000/compare", {
         method: "POST",
@@ -94,7 +96,7 @@ export default function Page() {
           query: {
             tokenizer: "char",
             model: "default",
-            detection_type: "comparison"
+            detection_type: "model"
           }
         })
       });
@@ -115,56 +117,65 @@ export default function Page() {
   }, [storedFiles]);
 
   return (
-    <div className="flex flex-col items-center">
-      <BorderedContainer customStyle="flex flex-row items-start justify-center w-fit mx-4">
-        <BorderedContainer customStyle="flex flex-col items-start p-4 gap-2">
-          <h1 className="font-bold">Submissions Check</h1>
-          <p>Upload files for similarity detection.</p>
-          <div className="flex flex-col items-start justify-evenly gap-2">
-            <BorderedContainer customStyle="flex flex-col p-2 gap-2">
-              <input
-                id="file-upload"
-                type="file"
-                onChange={handleFileChange}
-                accept="*"
-                multiple
-              />
-              <Button variant="default" color="primary" onClick={handleUploadClick}>
-                Compare Files
-              </Button>
+    <div className="flex justify-center w-full">
+      <div className="flex flex-row w-screen max-w-screen-2xl p-2 gap-2">
+        <div className="flex flex-col items-start w-fit">
+          <BorderedContainer customStyle="flex flex-col items-start gap-2 p-2">
+            <h1 className="font-bold">Submissions Check</h1>
+            <p>Upload files for similarity detection.</p>
+            <div className="flex flex-col items-start justify-evenly gap-2">
+              <BorderedContainer customStyle="flex flex-col p-2 gap-2">
+                <input
+                  id="file-upload"
+                  type="file"
+                  onChange={handleFileChange}
+                  accept="*"
+                  multiple
+                />
+                <Button variant="default" color="primary" onClick={handleUploadClick}>
+                  Compare Files
+                </Button>
+                <Button
+                  variant="destructive"
+                  onClick={handleClearFiles}
+                  disabled={storedFiles.length === 0}
+                >
+                  Clear Files
+                </Button>
+              </BorderedContainer>
+            </div>
+
+            <BorderedContainer customStyle="p-2 w-full">
+              <h2 className="font-bold mb-2">High Risk Submissions</h2>
+              {results && (
+                <ul className="list-disc pl-4">
+                  {results
+                    .filter(result => result.confidence > .75)
+                    .map((result, index) => (
+                      <li key={index} className="text-red-500">
+                        {result.file_name} - {(result.confidence * 100).toFixed(2)}%
+                      </li>
+                    ))}
+                </ul>
+              )}
+              {results &&
+                !results.some(result => result.confidence > .75) && (
+                  <p className="text-green-600">No high risk submissions found.</p>
+                )}
             </BorderedContainer>
-            {/* <Button variant="default" color="secondary" onClick={handleCompare}>
-              Compare Files
-            </Button> */}
-          </div>
-        </BorderedContainer>
 
-        {loading ? (
-          ""
-        ) : results ? (
-          <ComparisonResults comparisonResult={results} />
-        ) : null}
+          </BorderedContainer>
 
-        <BorderedContainer customStyle="flex flex-col items-start p-4 min-w-[100px]">
-          <div className="flex justify-start items-center gap-2">
-            <h2 className="font-bold">Files</h2>
-            <Button
-              variant="destructive"
-              onClick={handleClearFiles}
-              disabled={storedFiles.length === 0}
-            >
-              Clear Files
-            </Button>
-          </div>
-          <ul className="m-3">
-            {storedFiles.map((file, index) => (
-              <li key={index}>
-                {file.name.split('.')[0]} {file.name.split('.').pop()?.toLowerCase()}
-              </li>
-            ))}
-          </ul>
-        </BorderedContainer>
-      </BorderedContainer>
+          {loading ? (
+            ""
+          ) : results ? (
+            <ComparisonResults comparisonResult={results} />
+          ) : null}
+        </div>
+
+        {formattedSubmissions ? <SourceCodeViewer submissions={formattedSubmissions} ComparisonResult={results} /> : null}
+
+      </div>
     </div>
   );
 }
