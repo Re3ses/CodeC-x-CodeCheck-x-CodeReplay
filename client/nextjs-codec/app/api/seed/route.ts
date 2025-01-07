@@ -13,133 +13,208 @@ const CodeSnippetSchema = new mongoose.Schema({
 
 const CodeSnippet = mongoose.models.CodeSnippet || mongoose.model('CodeSnippet', CodeSnippetSchema);
 
-// Array of longer code snippet templates
+// Array of 10 different sorting implementations
 const codeTemplates = [
-  `function advancedSort(arr) {
-  console.log('Starting sort...');
-  const sorted = arr.sort((a, b) => {
-    if (typeof a === 'number' && typeof b === 'number') {
-      return a - b;
+  `// Bubble Sort Implementation
+function bubbleSort(arr) {
+  const n = arr.length;
+  for (let i = 0; i < n - 1; i++) {
+    for (let j = 0; j < n - i - 1; j++) {
+      if (arr[j] > arr[j + 1]) {
+        // Swap elements
+        [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
+      }
     }
-    return String(a).localeCompare(String(b));
-  });
-  console.log('Sort completed');
-  return sorted;
+  }
+  return arr;
 }`,
 
-  `const arrayOperations = {
-  filter: (arr, condition) => arr.filter(condition),
-  map: (arr, transform) => arr.map(transform),
-  reduce: (arr, callback, initial) => arr.reduce(callback, initial),
-  process: function(arr) {
-    return this.map(this.filter(arr, x => x != null), x => x * 2);
-  }
-};`,
-
-  `function analyzeArray(numbers) {
-  const sum = numbers.reduce((a, b) => a + b, 0);
-  const avg = sum / numbers.length;
-  const max = Math.max(...numbers);
-  const min = Math.min(...numbers);
-  return {
-    sum, average: avg,
-    max, min,
-    length: numbers.length
-  };
+  `// Quick Sort Implementation
+function quickSort(arr) {
+  if (arr.length <= 1) return arr;
+  
+  const pivot = arr[Math.floor(arr.length / 2)];
+  const left = arr.filter(x => x < pivot);
+  const middle = arr.filter(x => x === pivot);
+  const right = arr.filter(x => x > pivot);
+  
+  return [...quickSort(left), ...middle, ...quickSort(right)];
 }`,
 
-  `class ArrayManipulator {
-  constructor(array) {
-    this.array = array;
-    this.length = array.length;
+  `// Merge Sort Implementation
+function mergeSort(arr) {
+  if (arr.length <= 1) return arr;
+  
+  const mid = Math.floor(arr.length / 2);
+  const left = arr.slice(0, mid);
+  const right = arr.slice(mid);
+  
+  return merge(mergeSort(left), mergeSort(right));
+}
+
+function merge(left, right) {
+  const result = [];
+  while (left.length && right.length) {
+    result.push(left[0] <= right[0] ? left.shift() : right.shift());
   }
-  reverse() {
-    this.array.reverse();
-    return this;
-  }
-  sort() {
-    this.array.sort((a, b) => a - b);
-    return this;
-  }
-  getResult() {
-    return this.array;
-  }
+  return [...result, ...left, ...right];
 }`,
 
-  `function processData(data) {
-  const filtered = data
-    .filter(item => item && item.value > 0)
-    .map(item => ({
-      ...item,
-      processed: true,
-      timestamp: new Date(),
-      value: item.value * 2
-    }));
-  return filtered;
-}`,
-
-  `const arrayUtils = {
-  findDuplicates: arr => {
-    const seen = new Set();
-    const duplicates = new Set();
-    arr.forEach(item => {
-      if (seen.has(item)) duplicates.add(item);
-      seen.add(item);
-    });
-    return Array.from(duplicates);
+  `// Insertion Sort Implementation
+function insertionSort(arr) {
+  for (let i = 1; i < arr.length; i++) {
+    const current = arr[i];
+    let j = i - 1;
+    while (j >= 0 && arr[j] > current) {
+      arr[j + 1] = arr[j];
+      j--;
+    }
+    arr[j + 1] = current;
   }
-};`,
-
-  `function transformArray(input) {
-  const mapped = input.map((x, i) => ({
-    value: x,
-    index: i,
-    isEven: x % 2 === 0,
-    doubled: x * 2,
-    stringified: String(x)
-  }));
-  return mapped.filter(x => x.isEven);
+  return arr;
 }`,
 
-  `const statsCalculator = numbers => {
-  const sorted = [...numbers].sort((a, b) => a - b);
-  const mid = Math.floor(sorted.length / 2);
-  return {
-    median: sorted.length % 2 === 0
-      ? (sorted[mid - 1] + sorted[mid]) / 2
-      : sorted[mid],
-    mean: numbers.reduce((a, b) => a + b) / numbers.length
-  };
-};`,
+  `// Selection Sort Implementation
+function selectionSort(arr) {
+  for (let i = 0; i < arr.length - 1; i++) {
+    let minIndex = i;
+    for (let j = i + 1; j < arr.length; j++) {
+      if (arr[j] < arr[minIndex]) {
+        minIndex = j;
+      }
+    }
+    if (minIndex !== i) {
+      [arr[i], arr[minIndex]] = [arr[minIndex], arr[i]];
+    }
+  }
+  return arr;
+}`,
 
-  `function searchArray(arr, target) {
-  console.log('Searching array...');
-  const result = {
-    found: false,
-    index: -1,
-    comparisons: 0
-  };
+  `// Heap Sort Implementation
+function heapSort(arr) {
+  function heapify(arr, n, i) {
+    let largest = i;
+    const left = 2 * i + 1;
+    const right = 2 * i + 2;
+    
+    if (left < n && arr[left] > arr[largest]) largest = left;
+    if (right < n && arr[right] > arr[largest]) largest = right;
+    
+    if (largest !== i) {
+      [arr[i], arr[largest]] = [arr[largest], arr[i]];
+      heapify(arr, n, largest);
+    }
+  }
+  
+  for (let i = Math.floor(arr.length / 2) - 1; i >= 0; i--)
+    heapify(arr, arr.length, i);
+    
+  for (let i = arr.length - 1; i > 0; i--) {
+    [arr[0], arr[i]] = [arr[i], arr[0]];
+    heapify(arr, i, 0);
+  }
+  return arr;
+}`,
+
+  `// Counting Sort Implementation
+function countingSort(arr) {
+  const max = Math.max(...arr);
+  const min = Math.min(...arr);
+  const range = max - min + 1;
+  const count = new Array(range).fill(0);
+  const output = new Array(arr.length);
+  
   for (let i = 0; i < arr.length; i++) {
-    result.comparisons++;
-    if (arr[i] === target) {
-      result.found = true;
-      result.index = i;
-      break;
-    }
+    count[arr[i] - min]++;
   }
-  return result;
+  
+  for (let i = 1; i < count.length; i++) {
+    count[i] += count[i - 1];
+  }
+  
+  for (let i = arr.length - 1; i >= 0; i--) {
+    output[count[arr[i] - min] - 1] = arr[i];
+    count[arr[i] - min]--;
+  }
+  
+  return output;
 }`,
 
-  `const arrayProcessor = arr => {
-  const processed = arr
-    .filter(Boolean)
-    .map(x => typeof x === 'string' ? x.trim() : x)
-    .reduce((acc, curr) => {
-      acc[typeof curr] = (acc[typeof curr] || []).concat(curr);
-      return acc;
-    }, {});
-  return processed;
-};`
+  `// Shell Sort Implementation
+function shellSort(arr) {
+  const n = arr.length;
+  for (let gap = Math.floor(n / 2); gap > 0; gap = Math.floor(gap / 2)) {
+    for (let i = gap; i < n; i++) {
+      const temp = arr[i];
+      let j;
+      for (j = i; j >= gap && arr[j - gap] > temp; j -= gap) {
+        arr[j] = arr[j - gap];
+      }
+      arr[j] = temp;
+    }
+  }
+  return arr;
+}`,
+
+  `// Radix Sort Implementation
+function radixSort(arr) {
+  const max = Math.max(...arr);
+  
+  for (let exp = 1; Math.floor(max / exp) > 0; exp *= 10) {
+    const output = new Array(arr.length).fill(0);
+    const count = new Array(10).fill(0);
+    
+    for (let i = 0; i < arr.length; i++) {
+      count[Math.floor(arr[i] / exp) % 10]++;
+    }
+    
+    for (let i = 1; i < 10; i++) {
+      count[i] += count[i - 1];
+    }
+    
+    for (let i = arr.length - 1; i >= 0; i--) {
+      output[count[Math.floor(arr[i] / exp) % 10] - 1] = arr[i];
+      count[Math.floor(arr[i] / exp) % 10]--;
+    }
+    
+    for (let i = 0; i < arr.length; i++) {
+      arr[i] = output[i];
+    }
+  }
+  return arr;
+}`,
+
+  `// Cocktail Sort Implementation
+function cocktailSort(arr) {
+  let swapped = true;
+  let start = 0;
+  let end = arr.length - 1;
+  
+  while (swapped) {
+    swapped = false;
+    
+    for (let i = start; i < end; i++) {
+      if (arr[i] > arr[i + 1]) {
+        [arr[i], arr[i + 1]] = [arr[i + 1], arr[i]];
+        swapped = true;
+      }
+    }
+    
+    if (!swapped) break;
+    swapped = false;
+    end--;
+    
+    for (let i = end - 1; i >= start; i--) {
+      if (arr[i] > arr[i + 1]) {
+        [arr[i], arr[i + 1]] = [arr[i + 1], arr[i]];
+        swapped = true;
+      }
+    }
+    
+    start++;
+  }
+  return arr;
+}`
 ];
 
 function generateRandomSnippet() {
@@ -152,33 +227,11 @@ function generateSubmissions() {
   const submissions = [];
   const startDate = new Date('2024-01-01');
   
-  // Generate for test-user-1 (70 submissions)
-  for (let i = 0; i < 70; i++) {
+  // Generate exactly 10 submissions, one for each sorting implementation
+  for (let i = 0; i < 10; i++) {
     submissions.push({
-      code: generateRandomSnippet(),
-      userId: 'test-user-1',
-      roomId: 'room-1',
-      problemId: 'sorting-1',
-      timestamp: new Date(startDate.getTime() + i * 24 * 60 * 60 * 1000)
-    });
-  }
-  
-  // Generate for test-user-2 (70 submissions)
-  for (let i = 0; i < 70; i++) {
-    submissions.push({
-      code: generateRandomSnippet(),
-      userId: 'test-user-2',
-      roomId: 'room-1',
-      problemId: 'sorting-1',
-      timestamp: new Date(startDate.getTime() + i * 24 * 60 * 60 * 1000)
-    });
-  }
-  
-  // Generate for test-user-3 (60 submissions)
-  for (let i = 0; i < 60; i++) {
-    submissions.push({
-      code: generateRandomSnippet(),
-      userId: 'test-user-3',
+      code: codeTemplates[i], // Use each template exactly once
+      userId: `test-user-${Math.floor(i / 5) + 1}`, // Distribute between user-1 and user-2
       roomId: 'room-1',
       problemId: 'sorting-1',
       timestamp: new Date(startDate.getTime() + i * 24 * 60 * 60 * 1000)

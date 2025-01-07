@@ -5,21 +5,29 @@ import Editor from '@monaco-editor/react';
 import dbConnect from '../../lib/dbConnect';
 import { NextResponse } from 'next/server';
 import SimilarityLoading from './SimilarityLoading';
+import CodeBERTStats from './CodeBERTStats';
+import SimilarityVisualization from './SimilarityVisualization';
+import mongoose, { Model, Schema } from 'mongoose';
 
 // Update the SimilarSnippet interface
+
+interface TokenAnalysis {
+  totalTokens: number;
+  uniqueTokens: number;
+  sharedTokens: string[];
+}
+
 interface SimilarSnippet {
   userId: string;
-  similarity: number | null;
-  jaccardScore: number | null;
-  tfidfScore: number | null;
-  codebertScore: number | null;
+  similarity: number;
+  codebertScore: number;
   timestamp: string;
   code: string;
   fileName: string;
+  tokenAnalysis?: TokenAnalysis;
+  clusterId?: number;
+  isLikelySource?: boolean;
 }
-
-
-import mongoose, { Model, Schema } from 'mongoose';
 
 interface CodeSnippet {
   userId: string;
@@ -299,14 +307,24 @@ export default function CodeReplayApp() {
   };
   
 // Update the renderSimilarityScore function
-const renderSimilarityScore = (label: string, score: number | null | undefined) => (
+const renderSimilarityScore = (
+  label: string,
+  score: number | null | undefined,
+  sharedTokens?: string[]
+) => (
   <div className="flex justify-between items-center py-1">
     <span className="text-sm text-gray-300">{label}:</span>
     <span className={`px-2 py-0.5 rounded text-sm ${getSimilarityColor(score)}`}>
       {score?.toFixed(1) ?? 'N/A'}%
     </span>
+    {sharedTokens && (
+      <span className="ml-2 text-sm text-gray-400">
+        Tokens: {sharedTokens.length}
+      </span>
+    )}
   </div>
 );
+
 
   const checkSimilarity = async () => {
     await fetchSimilarityData(code);
@@ -314,110 +332,65 @@ const renderSimilarityScore = (label: string, score: number | null | undefined) 
   
   return (
     <div className="min-h-screen bg-gray-900 text-white p-4">
-      <div className="container mx-auto">
-        <h1 className="text-2xl font-bold mb-4">Code Replay System</h1>
-        
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          <div className="space-y-4">
+    <div className="container mx-auto">
+      <h1 className="text-2xl font-bold mb-4">CodeBERT Embeddings Similarity System</h1>
+      
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div className="space-y-4">
           <div className="flex justify-between items-center mb-2">
-              <select
-                value={saveMode}
-                onChange={(e) => setSaveMode(e.target.value as 'manual' | 'auto')}
-                className="bg-gray-800 text-white px-3 py-2 rounded border border-gray-700"
+            <select
+              value={saveMode}
+              onChange={(e) => setSaveMode(e.target.value as 'manual' | 'auto')}
+              className="bg-gray-800 text-white px-3 py-2 rounded border border-gray-700"
+            >
+              <option value="manual">Manual Save</option>
+              <option value="auto">Auto Save</option>
+            </select>
+            {saveMode === 'manual' && (
+              <button
+                onClick={() => saveCode()}
+                disabled={saving}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded disabled:opacity-50"
               >
-                <option value="manual">Manual Save</option>
-                <option value="auto">Auto Save</option>
-              </select>
-              {saveMode === 'manual' && (
-                <button
-                  onClick={() => saveCode()}
-                  disabled={saving}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded disabled:opacity-50"
-                >
-                  {saving ? 'Saving...' : 'Save Code'}
-                </button>
-              )}
-              {saveMode === 'auto' && saving && (
-                <span className="text-gray-400">Auto-saving...</span>
-              )}
-            </div>
-            <div className="border border-gray-700 rounded-lg overflow-hidden">
-              <Editor
-                height="400px"
-                defaultLanguage="javascript"
-                value={code}
-                onChange={(value) => setCode(value || '')}
-                theme="vs-dark"
-                options={{
-                  minimap: { enabled: false },
-                  fontSize: 14,
-                  scrollBeyondLastLine: false,
-                  wordWrap: 'on',
-                }}
-              />
-            </div>
+                {saving ? 'Saving...' : 'Save Code'}
+              </button>
+            )}
+            {saveMode === 'auto' && saving && (
+              <span className="text-gray-400">Auto-saving...</span>
+            )}
           </div>
-          <div className="space-y-4">
-            <h2 className="text-xl font-semibold">Similarity Analysis</h2>
-            <div className="space-y-2 max-h-[600px] overflow-y-auto">
-              {/* This is where you'll replace the existing code with the new loading logic */}
-              {isFetchingSimilarity ? (
-                <SimilarityLoading />
-              ) : similarSnippets.length === 0 ? (
-                <div className="text-gray-400">
-                  No comparisons available yet
-                </div>
-              ) : (
-                similarSnippets.map((snippet, index) => (
-                  <div 
-                    key={index}
-                    className="border border-gray-700 rounded-lg p-4 hover:bg-gray-800 cursor-pointer"
-                    onClick={() => setSelectedSnippet(snippet.code === selectedSnippet ? null : snippet.code)}
-                  >
-                    <div className="flex justify-between items-center mb-2">
-                      <div className="space-y-1">
-                        <div>User: {snippet.userId}</div>
-                        <div className="text-sm text-gray-400">
-                          {new Date(snippet.timestamp).toLocaleString()}
-                        </div>
-                      </div>
-                      <span className={`px-2 py-1 rounded ${getSimilarityColor(snippet.similarity)}`}>
-                        {snippet.similarity?.toFixed(1) ?? 'N/A'}% Similar
-                      </span>
-                    </div>
-                    {selectedSnippet === snippet.code && (
-                      <div className="mt-2">
-                        <div className="bg-gray-800 rounded p-3 mb-2">
-                          <h3 className="text-sm font-semibold mb-2">Similarity Breakdown:</h3>
-                          {renderSimilarityScore("Lexical Similarity (Jaccard)", snippet.jaccardScore)}
-                          {renderSimilarityScore("Statistical Patterns (TF-IDF)", snippet.tfidfScore)}
-                          {renderSimilarityScore("Semantic Meaning (CodeBERT)", snippet.codebertScore)}
-                        </div>
-                        <Editor
-                          height="200px"
-                          defaultLanguage="javascript"
-                          value={snippet.code}
-                          theme="vs-dark"
-                          options={{
-                            readOnly: true,
-                            minimap: { enabled: false },
-                            fontSize: 14,
-                            scrollBeyondLastLine: false,
-                            wordWrap: 'on',
-                          }}
-                        />
-                      </div>
-                    )}
-                  </div>
-                ))
-              )}
-            </div>
+          <div className="border border-gray-700 rounded-lg overflow-hidden">
+            <Editor
+              height="400px"
+              defaultLanguage="javascript"
+              value={code}
+              onChange={(value) => setCode(value || '')}
+              theme="vs-dark"
+              options={{
+                minimap: { enabled: false },
+                fontSize: 14,
+                scrollBeyondLastLine: false,
+                wordWrap: 'on',
+              }}
+            />
           </div>
         </div>
+        <div className="space-y-4">
+          <h2 className="text-xl font-semibold">Similarity Analysis</h2>
+          <CodeBERTStats similarSnippets={similarSnippets} />
+          {isFetchingSimilarity ? (
+            <SimilarityLoading />
+          ) : (
+            <div className="container mx-auto p-4">
+              <SimilarityVisualization similarSnippets={similarSnippets} />
+            </div>
+          )}
+        </div>
+      </div>
 
-        <div className="mt-8">
-          <h2 className="text-xl font-semibold mb-4">Previous Submissions</h2>
-          <div className="flex flex-wrap gap-4">
+      <div className="mt-8">
+        <h2 className="text-xl font-semibold mb-4">Previous Submissions</h2>
+        <div className="flex flex-wrap gap-4">
           {snippets.map((snippet, index) => (
             <div key={index} className="border border-gray-700 rounded-lg p-4 w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.33%-1rem)]">
               <div className="space-y-1 mb-2">
@@ -440,15 +413,15 @@ const renderSimilarityScore = (label: string, score: number | null | undefined) 
                 }}
               />
             </div>
-            ))}
-            {snippets.length === 0 && (
-              <div className="text-gray-400">
-                No submissions yet
-              </div>
-            )}
-          </div>
+          ))}
+          {snippets.length === 0 && (
+            <div className="text-gray-400">
+              No submissions yet
+            </div>
+          )}
         </div>
       </div>
     </div>
+  </div>
   );
 }
