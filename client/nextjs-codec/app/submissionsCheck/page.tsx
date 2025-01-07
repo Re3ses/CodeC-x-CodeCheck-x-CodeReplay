@@ -117,7 +117,7 @@ export default function Page() {
   }, [storedFiles]);
 
   return (
-    <div className="flex justify-center w-full">
+    <div className="flex justify-center w-fullz ">
       <div className="flex flex-row w-screen max-w-screen-2xl p-2 gap-2">
         <div className="flex flex-col items-start w-fit">
           <BorderedContainer customStyle="flex flex-col items-start gap-2 p-2">
