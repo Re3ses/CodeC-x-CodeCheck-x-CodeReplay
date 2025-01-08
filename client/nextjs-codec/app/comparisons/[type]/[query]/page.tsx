@@ -4,8 +4,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { getUser } from '@/lib/auth';
 import Nav from '@/app/dashboard/nav';
 import ComparisonResults from "@/components/ComparisonResults";
-import SourceCodeViewer from "@/components/ui/comparison-ui/sourceCodeViewer";
-import BorderedContainer from '@/components/ui/wrappers/BorderedContainer';
+import SourceCodeViewer from "@/components/ui/comparison-ui/SourceCodeViewer";
 
 interface User {
   _id: number;
