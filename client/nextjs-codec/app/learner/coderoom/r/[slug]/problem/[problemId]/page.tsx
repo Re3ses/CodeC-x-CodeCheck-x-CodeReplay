@@ -60,6 +60,8 @@ export default function Page() {
   const [learner, setLearner] = useState<string>();
   const [learner_id, setLearnerId] = useState<string>();
   const [attemptCount, setAttemptCount] = useState<number>(0);
+  const [latestSave, setLatestSave] = useState<string>('');
+  const [saveHistory, setSaveHistory] = useState<string[]>([]);
   const langCodes: LanguageCodes = languagesCode;
 
   // for submission button
@@ -233,9 +235,14 @@ export default function Page() {
 
           console.log('hello');
 
+          if (saveHistory[saveHistory.length - 1] !== editorValue) {
+            saveHistory.push(editorValue);
+          }
+
           const data = {
             language_used: language_used.name,
             code: editorValue,
+            history: saveHistory,
             score: score.accepted_count,
             score_overall_count: score.overall_count,
             verdict:
@@ -307,6 +314,86 @@ export default function Page() {
     }, 5000);
   }
 
+  // CODE REPLAY FEATURE
+
+  // Function to check if code has significant changes
+  const hasSignificantChanges = (newCode: string | undefined, oldCode: string): boolean => {
+    if (!saveHistory || !newCode) return false;
+    const lengthDiff = Math.abs(newCode.length - oldCode.length);
+    if (lengthDiff > 10) {
+      // console.log('Significant change in length detected:', lengthDiff);
+      return true;
+    }
+    return false;
+  };
+
+  // add to history
+  const addToHistory = (newCode: string) => {
+    // Only add if the code is different from the latest save
+    if (newCode !== latestSave) {
+      setLatestSave(newCode);
+      setSaveHistory([...saveHistory, newCode]);
+    }
+  };
+
+  const saveCodeHistory = () => {
+    if (
+      editorValue !== '' &&
+      editorValue !== latestSave &&
+      hasSignificantChanges(editorValue, latestSave)
+    ) {
+      addToHistory(editorValue);
+    }
+  }
+  
+  // autosave feature
+  useEffect(() => {
+    // console.log("Auto Save initiated.")
+    // let runs = 0;
+
+    // runs when editorValue, saveHistory or latestSave changes
+
+    const handleVisibilityChange = () => {
+      if (document.hidden && editorValue !== latestSave) {
+        saveCodeHistory();
+      }
+    };
+
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (editorValue !== latestSave) {
+        saveCodeHistory();
+      }
+    };
+    
+    saveCodeHistory();
+
+    // Saves changes after x ms of inactivity
+    const autoSaveTimer = setTimeout(() => {
+      // console.log("Attempting save after 1000ms of inactivity")
+      saveCodeHistory();
+    }, 500);
+
+    // Add event listeners for tab/window changes
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    // console.log("Auto Save run count:", runs)
+    // runs = runs + 1;
+
+
+    return () => {
+      clearTimeout(autoSaveTimer);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+
+  }, [editorValue]);
+
+  useEffect(() => {
+    console.log("Save History:", saveHistory)
+    console.log("Latest Save:", latestSave)
+  }, [saveHistory, latestSave]);
+
   return (
     <PanelGroup direction="horizontal">
       <Panel className="min-w-[20em] overflow-scroll flex flex-col gap-2">
@@ -366,9 +453,8 @@ export default function Page() {
             />
           </div>
           <textarea
-            className={`${
-              showCustomInput ? 'block' : 'hidden'
-            } p-3 bg-zinc-800`}
+            className={`${showCustomInput ? 'block' : 'hidden'
+              } p-3 bg-zinc-800`}
             rows={8}
             name="custom-input"
             id="custom-input"
@@ -455,11 +541,10 @@ export default function Page() {
                     {batchResult?.map((val: any, index: number) => {
                       return (
                         <p
-                          className={`${index % 2 ? 'bg-zinc-700' : ''} ${
-                            val.status.description !== 'Accepted'
-                              ? 'text-[red]'
-                              : ''
-                          }`}
+                          className={`${index % 2 ? 'bg-zinc-700' : ''} ${val.status.description !== 'Accepted'
+                            ? 'text-[red]'
+                            : ''
+                            }`}
                           key={index}
                         >
                           Case: {index} - {val.status.description}

@@ -202,6 +202,7 @@ export async function POST(request: Request) {
     const userSubmission = new UserSubmissions({
       language_used: formData.get('language_used'),
       code: formData.get('code'),
+      history: formData.get('history'),
       score: formData.get('score'),
       score_overall_count: formData.get('score_overall_count'),
       verdict: formData.get('verdict'),

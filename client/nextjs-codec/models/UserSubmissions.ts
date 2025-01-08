@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 export interface UserSubmissions extends mongoose.Document {
   language_used: string;
   code: string;
+  history: string[];
   score: number;
   score_overall_count: number;
   verdict: string;
@@ -26,6 +27,10 @@ const UserSubmissionsSchema = new mongoose.Schema<UserSubmissions>({
   code: {
     type: String,
     required: [true, 'Enter programming language used'],
+  },
+  history: {
+    type: [String],
+    default: [],
   },
   score: {
     type: Number,
