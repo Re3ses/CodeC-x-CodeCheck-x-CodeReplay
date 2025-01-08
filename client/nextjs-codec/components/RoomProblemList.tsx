@@ -87,7 +87,15 @@ export default function RoomProblemList({
                     >
                       View Comparisons
                     </Link>
-                    
+
+                    <Link
+                      href={`/codeHistory/problem/${item.slug}`}
+                      className={buttonVariants({
+                        variant: 'default'
+                      })}
+                    >
+                      Submissions History
+                    </Link>
                     <Dialog>
                       <DialogTrigger
                         className={buttonVariants({ variant: 'destructive' })}

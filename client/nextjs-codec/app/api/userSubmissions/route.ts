@@ -199,10 +199,14 @@ export async function POST(request: Request) {
 
     const formData = await request.formData();
 
+    // Parse `history` field if it exists
+    const historyString = formData.get('history');
+    const historyArray = historyString ? JSON.parse(historyString as string) : [];
+
     const userSubmission = new UserSubmissions({
       language_used: formData.get('language_used'),
       code: formData.get('code'),
-      history: formData.get('history'),
+      history: historyArray, // Use the parsed array here
       score: formData.get('score'),
       score_overall_count: formData.get('score_overall_count'),
       verdict: formData.get('verdict'),
@@ -228,6 +232,7 @@ export async function POST(request: Request) {
     return NextResponse.json(e, { status: 500 });
   }
 }
+
 
 export async function PATCH(request: NextRequest) {
   const { searchParams } = new URL(request.url);
