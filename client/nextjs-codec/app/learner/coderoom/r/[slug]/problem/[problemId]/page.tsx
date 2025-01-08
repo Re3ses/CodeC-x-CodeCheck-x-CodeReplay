@@ -237,12 +237,13 @@ export default function Page() {
 
           if (saveHistory[saveHistory.length - 1] !== editorValue) {
             saveHistory.push(editorValue);
+            console.log(saveHistory);
           }
 
           const data = {
             language_used: language_used.name,
             code: editorValue,
-            history: saveHistory,
+            history: JSON.stringify(saveHistory),
             score: score.accepted_count,
             score_overall_count: score.overall_count,
             verdict:

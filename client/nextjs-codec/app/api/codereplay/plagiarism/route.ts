@@ -19,7 +19,7 @@ interface SimilarSnippet {
   fileName: string;
 }
 
-const CodeSnippet = mongoose.models.CodeSnippet || 
+const CodeSnippet = mongoose.models.CodeSnippet ||
   mongoose.model('CodeSnippet', new mongoose.Schema({
     code: String,
     timestamp: { type: Date, default: Date.now },
@@ -35,21 +35,21 @@ class CodeAnalyzer {
   private static calculateFallbackSimilarity(code1: string, code2: string): number {
     const tokens1 = code1.split(/\s+/);
     const tokens2 = code2.split(/\s+/);
-    
+
     const allTokens = [...new Set([...tokens1, ...tokens2])];
     const getVector = (tokens: string[]) => {
       const freq = new Map();
       tokens.forEach(t => freq.set(t, (freq.get(t) || 0) + 1));
       return allTokens.map(t => (freq.get(t) || 0) / tokens.length);
     };
-    
+
     const vec1 = getVector(tokens1);
     const vec2 = getVector(tokens2);
-    
+
     const dotProduct = vec1.reduce((sum, val, i) => sum + val * vec2[i], 0);
     const mag1 = Math.sqrt(vec1.reduce((sum, val) => sum + val * val, 0));
     const mag2 = Math.sqrt(vec2.reduce((sum, val) => sum + val * val, 0));
-    
+
     return mag1 && mag2 ? dotProduct / (mag1 * mag2) : 0;
   }
 
@@ -67,7 +67,7 @@ class CodeAnalyzer {
     try {
       const embedding = await this.fetchEmbedding(code);
       embeddingCache.set(cacheKey, embedding);
-      
+
       if (embeddingCache.size > 1000) {
         const firstKey = Array.from(embeddingCache.keys())[0];
         if (firstKey) {
@@ -86,7 +86,7 @@ class CodeAnalyzer {
 
   private static async fetchEmbedding(code: string): Promise<number[]> {
     const preprocessed = this.preprocessCode(code);
-    
+
     try {
       const output = await hf.featureExtraction({
         model: 'microsoft/codebert-base',
@@ -112,18 +112,18 @@ class CodeAnalyzer {
     if (Array.isArray(output[0])) {
       const tokenEmbeddings = output as number[][];
       const sumVector = new Array(tokenEmbeddings[0].length).fill(0);
-      
+
       for (const tokenEmbedding of tokenEmbeddings) {
         for (let i = 0; i < tokenEmbedding.length; i++) {
           sumVector[i] += tokenEmbedding[i];
         }
       }
-      
+
       const meanVector = sumVector.map(sum => sum / tokenEmbeddings.length);
       const magnitude = Math.sqrt(meanVector.reduce((sum, val) => sum + val * val, 0));
       return magnitude === 0 ? meanVector : meanVector.map(val => val / magnitude);
     }
-    
+
     const vector = output as number[];
     const magnitude = Math.sqrt(vector.reduce((sum, val) => sum + val * val, 0));
     return magnitude === 0 ? vector : vector.map(val => val / magnitude);
@@ -134,7 +134,7 @@ class CodeAnalyzer {
 
     let vectors: number[] = [];
     if (Array.isArray(output[0])) {
-      vectors = (output as number[][]).reduce((acc, curr) => 
+      vectors = (output as number[][]).reduce((acc, curr) =>
         acc.map((val, idx) => val + curr[idx])
       ).map(val => val / output.length);
     } else {
@@ -149,7 +149,7 @@ class CodeAnalyzer {
     try {
       const cache1 = this.generateCacheKey(code1);
       const cache2 = this.generateCacheKey(code2);
-      
+
       const [emb1, emb2] = await Promise.all([
         this.getEmbedding(code1, cache1),
         this.getEmbedding(code2, cache2)
@@ -163,7 +163,7 @@ class CodeAnalyzer {
       }
 
       const similarity = this.calculateCosineSimilarity(emb1, emb2);
-      
+
       if (isNaN(similarity) || similarity === null) {
         if (DEBUG) {
           console.log('Invalid similarity score:', similarity);
@@ -180,7 +180,7 @@ class CodeAnalyzer {
 
   private static calculateCosineSimilarity(vec1: number[], vec2: number[]): number {
     const maxLength = Math.max(vec1.length, vec2.length);
-    
+
     const padVector = (vec: number[], targetLength: number): number[] => {
       if (vec.length >= targetLength) return vec;
       return [...vec, ...new Array(targetLength - vec.length).fill(0)];
@@ -227,7 +227,7 @@ class CodeAnalyzer {
       const truncated = processed.substring(0, 509).trim();
       return truncated.substring(0, truncated.lastIndexOf(' ')) + '...';
     }
-    
+
     return processed;
   }
 }
@@ -236,7 +236,7 @@ export async function POST(request: Request) {
   try {
     await dbConnect();
     const { code, problemId, roomId, userId } = await request.json();
-    
+
     const otherSnippets = await CodeSnippet.find({
       problemId,
       roomId,
@@ -274,3 +274,32 @@ export async function POST(request: Request) {
     }, { status: 500 });
   }
 }
+
+// export async function POST(request: Request) {
+//   try {
+//     const { code, codeSnippet } = await request.json();
+
+//     // Input validation
+//     if (!code || !codeSnippet) {
+//       return new Response(
+//         JSON.stringify({ error: 'Both code and codeSnippet are required.' }),
+//         { status: 400, headers: { 'Content-Type': 'application/json' } }
+//       );
+//     }
+
+//     // Call the CodeAnalyzer function
+//     const score = await CodeAnalyzer.getCodeBERTScore(code, codeSnippet);
+
+//     // Return the result
+//     return new Response(
+//       JSON.stringify({ score }),
+//       { status: 200, headers: { 'Content-Type': 'application/json' } }
+//     );
+//   } catch (error) {
+//     console.error('Error processing request:', error);
+//     return new Response(
+//       JSON.stringify({ error: 'Internal Server Error' }),
+//       { status: 500, headers: { 'Content-Type': 'application/json' } }
+//     );
+//   }
+// }
