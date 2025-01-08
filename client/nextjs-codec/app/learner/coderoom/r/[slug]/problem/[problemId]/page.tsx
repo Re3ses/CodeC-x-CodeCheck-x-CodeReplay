@@ -321,7 +321,7 @@ export default function Page() {
   const hasSignificantChanges = (newCode: string | undefined, oldCode: string): boolean => {
     if (!saveHistory || !newCode) return false;
     const lengthDiff = Math.abs(newCode.length - oldCode.length);
-    if (lengthDiff > 10) {
+    if (lengthDiff > 50) {
       // console.log('Significant change in length detected:', lengthDiff);
       return true;
     }
@@ -372,7 +372,7 @@ export default function Page() {
     const autoSaveTimer = setTimeout(() => {
       // console.log("Attempting save after 1000ms of inactivity")
       saveCodeHistory();
-    }, 500);
+    }, 10000);
 
     // Add event listeners for tab/window changes
     document.addEventListener('visibilitychange', handleVisibilityChange);
