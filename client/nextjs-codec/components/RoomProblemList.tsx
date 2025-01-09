@@ -79,14 +79,50 @@ export default function RoomProblemList({
                       View
                     </Link>
 
-                    <Link
-                      href={`/comparisons/problem/${item.slug}`}
-                      className={buttonVariants({
-                        variant: 'default'
-                      })}
-                    >
-                      View Comparisons
-                    </Link>
+                    <Dialog>
+                      <DialogTrigger
+                        className={buttonVariants({ variant: 'default' })}
+                      >
+                        View Results
+                      </DialogTrigger>
+                      <DialogContent>
+                        <DialogHeader>
+                          <DialogTitle>
+                            Choose which comparison type you would like to use.
+                          </DialogTitle>
+                          <DialogDescription>
+                            You can choose between the different comparison types
+                            to view the results.
+                          </DialogDescription>
+                        </DialogHeader>
+
+                        <Link
+                          href={`/comparisons/problem/${item.slug}/default`}
+                          className={buttonVariants({
+                            variant: 'default'
+                          })}
+                        >
+                          Default
+                        </Link>
+                        <Link
+                          href={`/comparisons/problem/${item.slug}/tree_no_preproc`}
+                          className={buttonVariants({
+                            variant: 'default'
+                          })}
+                        >
+                          Tree-sitter
+                        </Link>
+                        <Link
+                          href={`/comparisons/problem/${item.slug}/tree_preproc`}
+                          className={buttonVariants({
+                            variant: 'default'
+                          })}
+                        >
+                          Tree-sitter with preprocessing
+                        </Link>
+
+                      </DialogContent>
+                    </Dialog>
 
                     <Link
                       href={`/codeHistory/problem/${item.slug}`}
@@ -96,6 +132,7 @@ export default function RoomProblemList({
                     >
                       Submissions History
                     </Link>
+
                     <Dialog>
                       <DialogTrigger
                         className={buttonVariants({ variant: 'destructive' })}
