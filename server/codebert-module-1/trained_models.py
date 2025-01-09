@@ -129,11 +129,9 @@ def get_plagiarism_probability(submissions, model_type="default"):
     """
     # Select the appropriate model based on type
     model_paths = {
-        "default": "bert_models/codebert_plagiarism_model_default.pth",
-        "character": "bert_models/codebert_plagiarism_model_character.pth",
-        "tree_default": "bert_models/codebert_plagiarism_model_tree_sitter_default.pth",
-        "tree_word": "bert_models/codebert_plagiarism_model_tree_sitter_word.pth",
-        "tree_char": "bert_models/codebert_plagiarism_model_tree_sitter_character.pth"
+        "default": "bert_models/codebert_plagiarism_model_no_tree.pth",
+        "tree_no_preproc": "bert_models/codebert_plagiarism_model_tree_no_preproc.pth",
+        "tree_preproc": "bert_models/codebert_plagiarism_model_tree_preproc.pth"
     }
     
     if model_type not in model_paths:

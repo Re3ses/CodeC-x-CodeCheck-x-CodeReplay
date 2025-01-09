@@ -164,6 +164,11 @@ export default function Page() {
                         }}
                     />
                 </BorderedContainer>
+
+                <BorderedContainer customStyle="p-2 w-1/6 min-w-[15rem] h-5/6 max-h-[80vh] max-w-screen flex flex-col gap-2 content-stretch bg-[#808782]">
+                    <h1>Results</h1>
+                    
+                </BorderedContainer>
             </div>
         </div>
     );

@@ -38,8 +38,6 @@ const getLanguage = (language: string) => {
 }
 
 const SourceCodeViewer: React.FC<SourceCodeViewerProps> = ({ submissions, ComparisonResult }) => {
-    console.log("submissions:", submissions);
-
     if (submissions.length === 0) {
         return null;
     } else {

@@ -3,8 +3,13 @@ import { use, useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { getUser } from '@/lib/auth';
 import Nav from '@/app/dashboard/nav';
+import { ProblemSchemaInferredType } from '@/lib/interface/problem';
+import { RoomSchemaInferredType } from '@/lib/interface/room';
 import ComparisonResults from "@/components/ComparisonResults";
 import SourceCodeViewer from "@/components/ui/comparison-ui/SourceCodeViewer";
+import { GetProblems } from '@/utilities/apiService';
+import SafeHtml from '@/components/SafeHtml';
+import { Button } from '@/components/ui/button';
 
 interface User {
   _id: number;
@@ -18,9 +23,9 @@ interface User {
 
 export default function Page() {
   const router = useRouter();
-
-  const { type, id, query } = useParams();
+  const params = useParams<{ type: string, id: string, query: string }>();
   const [submissions, setSubmissions] = useState([]);
+  const [additionalInfo, setAdditionalInfo] = useState<ProblemSchemaInferredType | RoomSchemaInferredType>();
   const [user, setUser] = useState<User>();
   const [results, setResults] = useState<any>();
   const [loading, setLoading] = useState(true);
@@ -42,27 +47,37 @@ export default function Page() {
 
     // Fetch room data
     const fetchData = async () => {
-      if (type === "problem") {
-        await fetch(`/api/userSubmissions?problem_slug=${id}&all=true&single=true`).then(
+      if (params.type === "problem") {
+        await fetch(`/api/userSubmissions?problem_slug=${params.id}&all=true&single=true`).then(
           async (val) => {
             await val.json().then((data) => {
               setSubmissions(data.submission);
             });
           }
         );
-      } else if (type === "coderoom") {
-        await fetch(`/api/userSubmissions?room_id=${id}&all=true&single=true`).then(
+        const res: () => Promise<ProblemSchemaInferredType> = async () => {
+          return await GetProblems(params.id);
+        };
+        res().then((result) => setAdditionalInfo(result));
+      } else if (params.type === "coderoom") {
+        await fetch(`/api/userSubmissions?room_id=${params.id}&all=true&single=true`).then(
           async (val) => {
             await val.json().then((data) => {
               setSubmissions(data.submission);
             });
           }
         );
+        // await fetch(`/api/rooms?room_id=${params.id}`).then(
+        //   async (val) => {
+        //     await val.json().then((data) => {
+        //       setAdditionalInfo(data.room);
+        //     });
+        //   }
+        // );
       }
     };
-    console.log("submissions:", submissions);
     fetchData();
-  }, [type, id, query, router]);
+  }, [params.type, params.id, params.query, router]);
 
   const handleCompare = async () => {
     setLoading(true);
@@ -77,7 +92,7 @@ export default function Page() {
           submissions: submissions,
           query: {
             tokenizer: "char",
-            model: query || "default", // default, tree_preproc, tree_no_preproc
+            model: params.query || "default", // default, tree_preproc, tree_no_preproc
             detection_type: "model" // Change this to "model" or "embeddings" to set the detection type
           }
         })
@@ -97,18 +112,36 @@ export default function Page() {
     handleCompare();
   }, [submissions]);
 
+  useEffect(() => {
+    console.log("additionalInfo:", additionalInfo);
+  }, [additionalInfo]);
+
   return (
-    <>
+    <div className='h-screen w-screen flex flex-col'>
       <Nav type={user?.type} name={user?.auth.username} />
-      <div className='flex justify-center w-full'>
-      <div className="flex flex-row gap-2 justify-center p-2 max-w-screen-2xl">
+      <div className='flex-grow flex flex-col items-center justify-center w-full'>
         {loading ? <h1>Loading...</h1> : null}
-        {loading ? null : <ComparisonResults comparisonResult={results} />}
-        <div className='flex flex-col w-full'>
-          {loading ? null : <SourceCodeViewer submissions={submissions} ComparisonResult={results} />}
-        </div>
+        {loading ? null :
+          <div className='w-full max-w-screen-2xl flex justify-between'>
+            <div>
+              <SafeHtml
+                className="text-center font-bold"
+                html={additionalInfo?.name!}
+              />
+              <SafeHtml html={additionalInfo?.description!} />
+            </div>
+            <Button onClick={() => router.back()} variant="secondary">Back</Button>
+          </div>
+        }
+        {loading ? null :
+          <div className="flex flex-row gap-2 justify-center p-2 max-w-screen-2xl">
+            <ComparisonResults comparisonResult={results} />
+            <div className='flex flex-col w-full'>
+              <SourceCodeViewer submissions={submissions} ComparisonResult={results} />
+            </div>
+          </div>
+        }
       </div>
-      </div>
-    </>
+    </div>
   );
 }

@@ -9,6 +9,8 @@ const hf = new HfInference(process.env.HUGGINGFACE_API_KEY || '');
 
 const embeddingCache = new Map<string, number[]>();
 
+// == REPLACE ==
+
 interface SimilarSnippet {
   length?: number;
   userId: string;
@@ -28,6 +30,31 @@ const CodeSnippet = mongoose.models.CodeSnippet ||
     roomId: String,
     problemId: String
   }));
+
+
+// == REPLACE ==
+
+// interface Submission {
+//   _id: string;
+//   language_used: string;
+//   code: string;
+//   history: string[];
+//   score: number;
+//   score_overall_count: number;
+//   verdict: string;
+//   learner: string;
+//   learner_id: string;
+//   problem: string;
+//   room: string;
+//   attempt_count: number;
+//   start_time: number;
+//   end_time: number;
+//   completion_time: number;
+//   most_similar: string | null;
+//   submission_date: string;
+//   __v: number;
+// }
+
 
 class CodeAnalyzer {
   private static readonly SIMILARITY_THRESHOLD = 0.7;
@@ -274,32 +301,3 @@ export async function POST(request: Request) {
     }, { status: 500 });
   }
 }
-
-// export async function POST(request: Request) {
-//   try {
-//     const { code, codeSnippet } = await request.json();
-
-//     // Input validation
-//     if (!code || !codeSnippet) {
-//       return new Response(
-//         JSON.stringify({ error: 'Both code and codeSnippet are required.' }),
-//         { status: 400, headers: { 'Content-Type': 'application/json' } }
-//       );
-//     }
-
-//     // Call the CodeAnalyzer function
-//     const score = await CodeAnalyzer.getCodeBERTScore(code, codeSnippet);
-
-//     // Return the result
-//     return new Response(
-//       JSON.stringify({ score }),
-//       { status: 200, headers: { 'Content-Type': 'application/json' } }
-//     );
-//   } catch (error) {
-//     console.error('Error processing request:', error);
-//     return new Response(
-//       JSON.stringify({ error: 'Internal Server Error' }),
-//       { status: 500, headers: { 'Content-Type': 'application/json' } }
-//     );
-//   }
-// }
