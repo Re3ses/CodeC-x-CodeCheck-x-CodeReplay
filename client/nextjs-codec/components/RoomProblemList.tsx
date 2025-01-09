@@ -83,7 +83,7 @@ export default function RoomProblemList({
                       <DialogTrigger
                         className={buttonVariants({ variant: 'default' })}
                       >
-                        View Results
+                        View Reports
                       </DialogTrigger>
                       <DialogContent>
                         <DialogHeader>
