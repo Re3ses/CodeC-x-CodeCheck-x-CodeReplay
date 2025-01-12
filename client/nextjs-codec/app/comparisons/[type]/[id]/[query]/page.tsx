@@ -10,6 +10,7 @@ import SourceCodeViewer from "@/components/ui/comparison-ui/SourceCodeViewer";
 import { GetProblems } from '@/utilities/apiService';
 import SafeHtml from '@/components/SafeHtml';
 import { Button } from '@/components/ui/button';
+import BorderedContainer from '@/components/ui/wrappers/BorderedContainer';
 
 interface User {
   _id: number;
@@ -91,8 +92,7 @@ export default function Page() {
         body: JSON.stringify({
           submissions: submissions,
           query: {
-            tokenizer: "char",
-            model: params.query || "default", // default, tree_preproc, tree_no_preproc
+            model: params.query || "default", // "default", "ts_no-prep", "no-ts_prep", "no-ts_no-prep"
             detection_type: "model" // Change this to "model" or "embeddings" to set the detection type
           }
         })
@@ -122,7 +122,7 @@ export default function Page() {
       <div className='flex-grow flex flex-col items-center justify-center w-full'>
         {loading ? <h1>Loading...</h1> : null}
         {loading ? null :
-          <div className='w-full max-w-screen-2xl flex justify-between'>
+          <BorderedContainer customStyle='w-full max-w-screen-2xl flex justify-between'>
             <div>
               <SafeHtml
                 className="text-center font-bold"
@@ -131,10 +131,10 @@ export default function Page() {
               <SafeHtml html={additionalInfo?.description!} />
             </div>
             <Button onClick={() => router.back()} variant="secondary">Back</Button>
-          </div>
+          </BorderedContainer>
         }
         {loading ? null :
-          <div className="flex flex-row gap-2 justify-center p-2 max-w-screen-2xl">
+          <div className="flex flex-row gap-2 justify-center max-w-screen-2xl">
             <ComparisonResults comparisonResult={results} />
             <div className='flex flex-col w-full'>
               <SourceCodeViewer submissions={submissions} ComparisonResult={results} />

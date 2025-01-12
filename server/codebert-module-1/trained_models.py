@@ -129,9 +129,10 @@ def get_plagiarism_probability(submissions, model_type="default"):
     """
     # Select the appropriate model based on type
     model_paths = {
-        "default": "bert_models/codebert_plagiarism_model_no_tree.pth",
-        "tree_no_preproc": "bert_models/codebert_plagiarism_model_tree_no_preproc.pth",
-        "tree_preproc": "bert_models/codebert_plagiarism_model_tree_preproc.pth"
+        "default": "bert_models/ts_prep.pth",
+        "ts_no-prep": "bert_models/ts_no-prep.pth",
+        "no-ts_prep": "bert_models/no-ts_prep.pth",
+        "no-ts_no-prep": "bert_models/no-ts_no-prep.pth"
     }
     
     if model_type not in model_paths:
