@@ -45,16 +45,20 @@ export default function Nav(props: {
             label: 'Leaderboards',
             href: '/leaderboards?page=1&perPage=10',
           },
-          {
-            id: 'submissionsCheck',
-            label: 'Submissions Checking',
-            href: '/submissionsCheck',
-          },
-          {
-            id: 'codeReplay',
-            label: 'CodeBERT ES',
-            href: `/codereplay`,
-          }
+          // {
+          //   id: 'submissionsCheck',
+          //   label: 'Submissions Checking',
+          //   href: '/submissionsCheck',
+          // },
+          // {
+          //   id: 'codeReplay',
+          //   label: 'CodeBERT ES',
+          //   href: `/codereplay`,
+          // },
+          // {id: 'devLink',
+          // label: 'Code History Dev Link',
+          // href: '/codeHistory/problem/test-problem-1-8607553534'
+          // }
         ].map(({ label, href, id }) => (
           <Link
             className={pathname.endsWith(id) ? 'underline' : ''}
