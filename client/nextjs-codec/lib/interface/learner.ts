@@ -9,4 +9,4 @@ export const LearnerShema = z.object({
   id: z.string(),
 });
 
-export type LearnerShemaInferredType = z.infer<typeof LearnerShema>;
+export type LearnerSchemaInferredType = z.infer<typeof LearnerShema>;
