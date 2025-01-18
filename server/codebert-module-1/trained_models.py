@@ -116,12 +116,12 @@ def predict_plagiarism(model, tokenizer, code, tokenize_method='default'):
         print(f"Error processing code: {str(e)}")
         return False, 0.0  # Return not plagiarized on error
 
-def get_plagiarism_probability(submissions, model_type="default"):
+def get_plagiarism_probability(submissions, model_type="default", tokenizer="default"):
     """
     Process multiple submissions and check each for plagiarism.
     
     Args:
-        submissions (dict): Dictionary of {filename: code_content}
+        submissions (dict): Dictionary of {learner_id: {'code': code_content, 'language': language}}
         model_type (str): Type of model to use
         
     Returns:
@@ -144,12 +144,19 @@ def get_plagiarism_probability(submissions, model_type="default"):
     plagiarism_reports = []
     
     # Process each submission
-    for file_name, submission in submissions.items():
-        is_plagiarized, confidence = predict_plagiarism(model, tokenizer, submission)
+    for learner_id, submission_data in submissions.items():
+        # print(f"Processing submission for {learner_id}")
+        
+        # Extract code from the nested structure
+        code = submission_data['code']
+        # print("code:", code)
+        
+        is_plagiarized, confidence = predict_plagiarism(model=model, tokenizer=tokenizer, code=code)
         plagiarism_reports.append({
-            'file_name': file_name,
+            'file_name': learner_id,  # Using learner_id as file_name for consistency with frontend
             'is_plagiarized': is_plagiarized,
-            'confidence': confidence
+            'confidence': confidence,
+            'language': submission_data['language']  # Including language in the report
         })
     
     return plagiarism_reports

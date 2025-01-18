@@ -67,7 +67,7 @@ interface ComparisonResultsProps {
 }
 
 // Components
-const CodeEditor: React.FC<CodeEditorProps> = ({ value, height = "100%" }) => {
+const CodeEditor: React.FC<CodeEditorProps> = ({ value, height = "95%" }) => {
     const editorOptions = {
         readOnly: true,
         minimap: { enabled: true },
@@ -176,7 +176,7 @@ const ComparisonResults: React.FC<ComparisonResultsProps> = ({
     const snippet1 = learner1.history[historyIndex1];
     const snippet2 = learner2.history[historyIndex2];
 
-    const comparisonResult = comparisons[learner1.learner]?.[snippet1]?.find(
+    const comparisonResult = comparisons[selectedLearner1]?.[snippet1]?.find(
         (result: any) =>
             result.comparedLearnerId === selectedLearner2 &&
             result.comparedSnippet === snippet2

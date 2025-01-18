@@ -43,8 +43,6 @@ def compare_submissions():
         
         submissions = data['submissions']
         query = data['query']
-        print("query: ", query)
-        print("submissions: ", submissions)
         model = query.get('model', 'default')
         detection_type = query.get('detection_type', 'token')
         
@@ -59,10 +57,14 @@ def compare_submissions():
                 'language': language
             }
         
+        # print("submissions:", submissions)
+        # print("converted submissions:", converted_submissions)
+        # print("query:", query)
+        
         if detection_type == 'token':
             comparison_results = detector.compare_files(converted_submissions, query)
         if detection_type == 'model':
-            comparison_results = get_plagiarism_probability(converted_submissions, model)
+            comparison_results = get_plagiarism_probability(submissions=converted_submissions, model_type=model)
         
         return jsonify(comparison_results)
     

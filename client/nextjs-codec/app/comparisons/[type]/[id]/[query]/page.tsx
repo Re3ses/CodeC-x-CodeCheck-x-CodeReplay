@@ -116,6 +116,10 @@ export default function Page() {
     console.log("additionalInfo:", additionalInfo);
   }, [additionalInfo]);
 
+  useEffect(() => {
+    console.log("Results:", results);
+  }, [results]);
+
   return (
     <div className='h-screen w-screen flex flex-col'>
       <Nav type={user?.type} name={user?.auth.username} />
