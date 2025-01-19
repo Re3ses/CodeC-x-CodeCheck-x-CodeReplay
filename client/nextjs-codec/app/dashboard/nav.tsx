@@ -50,11 +50,11 @@ export default function Nav(props: {
           //   label: 'Submissions Checking',
           //   href: '/submissionsCheck',
           // },
-          // {
-          //   id: 'codeReplay',
-          //   label: 'CodeBERT ES',
-          //   href: `/codereplay`,
-          // },
+          {
+            id: 'codeReplay',
+            label: 'Code Replay Dev Link',
+            href: `/codereplay`,
+          },
           // {id: 'devLink',
           // label: 'Code History Dev Link',
           // href: '/codeHistory/problem/test-problem-1-8607553534'

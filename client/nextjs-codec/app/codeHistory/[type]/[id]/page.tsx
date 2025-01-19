@@ -120,41 +120,49 @@ const LearnerSelector: React.FC<LearnerSelectorProps> = ({
     onSelect,
     historyIndex,
     onHistorySelect
-}) => (
-    <div className="flex gap-2">
-        <div className="border p-2">
-            <select
-                className=""
-                onChange={(e) => onSelect(e.target.value)}
-                value={selectedLearnerId}
-            >
-                <option value="">Select a learner</option>
-                {submissions.map(sub => (
-                    <option key={sub.learner_id} value={sub.learner_id}>
-                        {sub.learner}
-                    </option>
-                ))}
-            </select>
-        </div>
-        {selectedLearnerId && (
+}) => {
+    const selectedSubmission = submissions.find(sub => sub.learner_id === selectedLearnerId);
+    
+    return (
+        <div className="flex gap-2">
             <div className="border p-2">
                 <select
                     className=""
-                    onChange={(e) => onHistorySelect(parseInt(e.target.value, 10))}
-                    value={historyIndex}
+                    onChange={(e) => onSelect(e.target.value)}
+                    value={selectedLearnerId}
                 >
-                    {submissions
-                        .find(sub => sub.learner_id === selectedLearnerId)
-                        ?.history.map((_, index) => (
-                            <option key={index} value={index}>
-                                {index + 1}
-                            </option>
-                        ))}
+                    <option value="">Select a learner</option>
+                    {submissions.map(sub => (
+                        <option key={sub.learner_id} value={sub.learner_id}>
+                            {sub.learner}
+                        </option>
+                    ))}
                 </select>
             </div>
-        )}
-    </div>
-);
+            {selectedLearnerId && selectedSubmission && (
+                <div className="border p-2">
+                    <select
+                        className=""
+                        onChange={(e) => {
+                            const selectedIndex = parseInt(e.target.value, 10);
+                            onHistorySelect(selectedIndex);
+                        }}
+                        value={historyIndex}
+                    >
+                        {[...Array(selectedSubmission.history.length)].map((_, index) => {
+                            const reverseIndex = selectedSubmission.history.length - 1 - index;
+                            return (
+                                <option key={reverseIndex} value={reverseIndex}>
+                                    {selectedSubmission.history.length - index}
+                                </option>
+                            );
+                        })}
+                    </select>
+                </div>
+            )}
+        </div>
+    );
+};
 
 const ComparisonResults: React.FC<ComparisonResultsProps> = ({
     comparisons,
@@ -260,10 +268,20 @@ const SubmissionViewer: React.FC = () => {
         editorKey: keyof EditorStates,
         updates: Partial<EditorState>
     ) => {
-        setEditorStates(prev => ({
-            ...prev,
-            [editorKey]: { ...prev[editorKey], ...updates }
-        }));
+        setEditorStates(prev => {
+            const submission = submissions.find(sub => sub.learner_id === prev[editorKey].learnerId);
+            const newState = { ...prev[editorKey], ...updates };
+            
+            // Update the value when historyIndex changes
+            if (submission && 'historyIndex' in updates) {
+                newState.value = submission.history[updates.historyIndex];
+            }
+            
+            return {
+                ...prev,
+                [editorKey]: newState
+            };
+        });
     };
 
     const handleLearnerSelect = (editorKey: keyof EditorStates) => (learnerId: string) => {
