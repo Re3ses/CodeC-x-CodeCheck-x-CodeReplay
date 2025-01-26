@@ -95,7 +95,7 @@ export default function Page() {
           submissions: formattedSubmissions,
           query: {
             tokenizer: "char",
-            model: "default",
+            model: "ts_no-prep",
             detection_type: "model"
           }
         })
@@ -109,6 +109,10 @@ export default function Page() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    console.log("results:", results);
+  }, [results]);
 
   useEffect(() => {
     if (storedFiles.length > 1) {

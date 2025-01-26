@@ -52,8 +52,13 @@ export default function Nav(props: {
           // },
           {
             id: 'codeReplay',
-            label: 'Code Replay Dev Link',
+            label: 'CodeBERT ES',
             href: `/codereplay`,
+          },
+          {
+            id: 'codeReplayV3',
+            label: 'CodeReplay',
+            href: `/codereplayV3`,
           },
           // {id: 'devLink',
           // label: 'Code History Dev Link',
