@@ -1,3 +1,4 @@
+// code snapshot route for codereplay v3
 import { NextResponse } from 'next/server';
 import dbConnect from '../../../../lib/dbConnect';
 import mongoose from 'mongoose';
@@ -14,24 +15,39 @@ const CodeSnapshotSchema = new mongoose.Schema({
 });
 
 // Use CodeSnapshots instead of CodeSnippet
-const CodeSnapshots = mongoose.models.CodeSnapshots || 
+const CodeSnapshots = mongoose.models.CodeSnapshots ||
   mongoose.model('CodeSnapshots', CodeSnapshotSchema);
 
-export async function GET() {
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
   try {
     await dbConnect();
 
     // Fetch all snapshots, sorted by userId, problemId, and version
-    const snapshots = await CodeSnapshots.find({})
-      .sort({ 
-        userId: 1, 
-        problemId: 1, 
-        version: 1 
+    let snapshots = await CodeSnapshots.find({})
+      .sort({
+        userId: 1,
+        problemId: 1,
+        version: 1
       })
       .lean();
 
-    return NextResponse.json({ 
-      success: true, 
+    if (searchParams.has('learner_id')) {
+      snapshots = await
+        CodeSnapshots.find({
+          userId: searchParams.get('learner_id')
+        }).sort({
+          userId: 1,
+          problemId: 1,
+          version: 1
+        })
+          .lean();
+    } else {
+      
+    }
+
+    return NextResponse.json({
+      success: true,
       snapshots: snapshots.map(snapshot => ({
         code: snapshot.code,
         timestamp: snapshot.timestamp.toISOString(),
@@ -49,11 +65,11 @@ export async function GET() {
     });
   } catch (error) {
     console.error('Error fetching snapshots:', error);
-    return NextResponse.json({ 
-      success: false, 
+    return NextResponse.json({
+      success: false,
       error: error instanceof Error ? error.message : 'Failed to fetch snapshots',
       snapshots: [],
-      metadata: {} 
+      metadata: {}
     }, { status: 500 });
   }
 }
@@ -61,7 +77,7 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     await dbConnect();
-    
+
     // Parse the entire request body
     const { code, userId, problemId, roomId, submissionId, version } = await request.json();
 
@@ -117,3 +133,4 @@ export async function POST(request: Request) {
     }, { status: 500 });
   }
 }
+
