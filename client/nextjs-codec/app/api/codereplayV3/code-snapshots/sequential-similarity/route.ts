@@ -1,3 +1,4 @@
+// sequential similarity route for codereplay v3
 import { NextResponse } from 'next/server';
 import dbConnect from '../../../../../lib/dbConnect';
 import mongoose from 'mongoose';
@@ -9,8 +10,6 @@ const hf = new HfInference(process.env.HUGGINGFACE_API_KEY || '');
 
 const embeddingCache = new Map<string, number[]>();
 
-// == REPLACE ==
-
 // Interface for the sequential similarity calculation
 interface SequentialSimilarity {
   fromIndex: number;
@@ -18,51 +17,6 @@ interface SequentialSimilarity {
   similarity: number;
   codebertScore: number;
 }
-
-interface SimilarSnippet {
-  length?: number;
-  userId: string;
-  similarity: number;
-  codebertScore: number;
-  timestamp: string;
-  code: string;
-  fileName: string;
-}
-
-const CodeSnippet = mongoose.models.CodeSnippet ||
-  mongoose.model('CodeSnippet', new mongoose.Schema({
-    code: String,
-    timestamp: { type: Date, default: Date.now },
-    userId: String,
-    submissionId: String,
-    roomId: String,
-    problemId: String
-  }));
-
-
-// == REPLACE ==
-
-// interface Submission {
-//   _id: string;
-//   language_used: string;
-//   code: string;
-//   history: string[];
-//   score: number;
-//   score_overall_count: number;
-//   verdict: string;
-//   learner: string;
-//   learner_id: string;
-//   problem: string;
-//   room: string;
-//   attempt_count: number;
-//   start_time: number;
-//   end_time: number;
-//   completion_time: number;
-//   most_similar: string | null;
-//   submission_date: string;
-//   __v: number;
-// }
-
 
 class CodeAnalyzer {
   private static readonly SIMILARITY_THRESHOLD = 0.7;
@@ -306,7 +260,7 @@ class CodeAnalyzer {
 export async function POST(request: Request) {
   try {
     await dbConnect();
-    const { snapshots, problemId, roomId, userId } = await request.json();
+    const { snapshots } = await request.json();
 
     const recentSnapshots = snapshots;
 
