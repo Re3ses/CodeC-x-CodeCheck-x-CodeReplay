@@ -2,7 +2,18 @@ import React, { useMemo, useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Info, Clipboard } from 'lucide-react';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
-import { Dialog } from '@headlessui/react';
+// import { Dialog } from '@headlessui/react';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+
+
 import Editor from '@monaco-editor/react';
 
 interface CodeSnapshot {
@@ -40,20 +51,20 @@ interface SequentialSimilarityVisualizationProps {
   pastedSnippets: EnhancedPasteInfo[];
 }
 
-const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizationProps> = ({ 
-  snapshots, 
+const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizationProps> = ({
+  snapshots,
   sequentialSimilarities,
   pasteCount,
   bigPasteCount,
-  pastedSnippets 
+  pastedSnippets
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [localPastedSnippets, setLocalPastedSnippets] = useState<PasteInfo[]>([]);
   const [expandedCards, setExpandedCards] = useState<number[]>([]);
 
   const toggleCard = (index: number) => {
-    setExpandedCards(prev => 
-      prev.includes(index) 
+    setExpandedCards(prev =>
+      prev.includes(index)
         ? prev.filter(i => i !== index)
         : [...prev, index]
     );
@@ -75,7 +86,7 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
     const cssValues = sequentialSimilarities.map(s => s.similarity);
 
     // Max Change
-    const changes = cssValues.slice(1).map((val, i) => 
+    const changes = cssValues.slice(1).map((val, i) =>
       Math.abs(val - cssValues[i])
     );
     const maxChange = Math.max(...changes);
@@ -95,10 +106,10 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
     const normalizedVariance = (variance / 2500) * 100;
 
     // Weighted Plagiarism Score
-    const weightedScore = 
-      (maxChange) * 0.4 + 
-      (100 - averageSimilarity) * 0.2 + 
-      (100 - minSimilarity) * 0.2 + 
+    const weightedScore =
+      (maxChange) * 0.4 +
+      (100 - averageSimilarity) * 0.2 +
+      (100 - minSimilarity) * 0.2 +
       (normalizedVariance) * 0.2;
 
     return {
@@ -121,25 +132,25 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
 
   // Determine plagiarism risk level and color
   const getPlagiarismRiskDetails = (score: number) => {
-    if (score <= 40) return { 
-      level: 'Low Probability', 
-      color: 'bg-green-600 text-white', 
-      textColor: 'text-green-600' 
+    if (score <= 40) return {
+      level: 'Low Probability',
+      color: 'bg-green-600 text-white',
+      textColor: 'text-green-600'
     };
-    if (score <= 60) return { 
-      level: 'Medium Probability', 
-      color: 'bg-yellow-600 text-white', 
-      textColor: 'text-yellow-600' 
+    if (score <= 60) return {
+      level: 'Medium Probability',
+      color: 'bg-yellow-600 text-white',
+      textColor: 'text-yellow-600'
     };
-    if (score <= 80) return { 
-      level: 'High Probability', 
-      color: 'bg-orange-600 text-white', 
-      textColor: 'text-orange-600' 
+    if (score <= 80) return {
+      level: 'High Probability',
+      color: 'bg-orange-600 text-white',
+      textColor: 'text-orange-600'
     };
-    return { 
-      level: 'Very High Probability', 
-      color: 'bg-red-600 text-white', 
-      textColor: 'text-red-600' 
+    return {
+      level: 'Very High Probability',
+      color: 'bg-red-600 text-white',
+      textColor: 'text-red-600'
     };
   };
 
@@ -148,7 +159,7 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
       <h3 className="text-lg font-semibold mb-4 flex items-center">
         Sequential Similarity Analysis
       </h3>
-      
+
       {sequentialSimilarities.length === 0 ? (
         <div className="text-gray-400">
           No sequential similarities calculated yet.
@@ -162,20 +173,20 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
                 <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
                 <XAxis dataKey="name" stroke="#9CA3AF" />
                 <YAxis stroke="#9CA3AF" />
-                <RechartsTooltip 
+                <RechartsTooltip
                   contentStyle={{ backgroundColor: '#1F2937', color: '#fff' }}
                   labelStyle={{ color: '#fff' }}
                 />
                 <Legend />
-                <Line 
-                  type="monotone" 
-                  dataKey="similarity" 
-                  stroke="#8884d8" 
-                  activeDot={{ r: 8 }} 
+                <Line
+                  type="monotone"
+                  dataKey="similarity"
+                  stroke="#8884d8"
+                  activeDot={{ r: 8 }}
                 />
               </LineChart>
             </ResponsiveContainer>
-            
+
             {/* Graph Analysis Description */}
             <div className="mt-4 bg-gray-700 rounded-lg p-4 shadow-lg">
               <div className="flex items-center mb-3">
@@ -186,14 +197,14 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
               </div>
               <div className="text-gray-400 text-sm">
                 <p>
-                  The graph above shows the similarity between consecutive code snapshots. 
-                  The more the line deviates from a straight line, the more inconsistent 
+                  The graph above shows the similarity between consecutive code snapshots.
+                  The more the line deviates from a straight line, the more inconsistent
                   the similarity scores are, which could indicate a higher chance of plagiarism.
                 </p>
               </div>
             </div>
           </div>
-  
+
           {/* Metrics Column */}
           <div className="space-y-4">
             {advancedMetrics && (
@@ -219,34 +230,34 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
                       </div>
                     );
                   })()}
-  
+
                   {/* Metric Cards */}
-                  <MetricCard 
-                    label="Max Change" 
-                    value={`${advancedMetrics.maxChange}%`} 
+                  <MetricCard
+                    label="Max Change"
+                    value={`${advancedMetrics.maxChange}%`}
                     tooltipId="maxChangeTooltip"
                     tooltipContent="Maximum difference in similarity between consecutive snapshots"
                   />
-                  <MetricCard 
-                    label="Average Similarity" 
-                    value={`${advancedMetrics.averageSimilarity}%`} 
+                  <MetricCard
+                    label="Average Similarity"
+                    value={`${advancedMetrics.averageSimilarity}%`}
                     tooltipId="averageSimilarityTooltip"
                     tooltipContent="Mean value of all similarity scores"
                   />
-                  <MetricCard 
-                    label="Minimum Similarity" 
-                    value={`${advancedMetrics.minSimilarity}%`} 
+                  <MetricCard
+                    label="Minimum Similarity"
+                    value={`${advancedMetrics.minSimilarity}%`}
                     tooltipId="minSimilarityTooltip"
                     tooltipContent="Lowest similarity score observed"
                   />
-                  <MetricCard 
-                    label="Variance" 
-                    value={`${advancedMetrics.normalizedVariance}%`} 
+                  <MetricCard
+                    label="Variance"
+                    value={`${advancedMetrics.normalizedVariance}%`}
                     tooltipId="varianceTooltip"
                     tooltipContent="Measure of similarity score fluctuation"
                   />
                 </div>
-  
+
                 {/* Paste Statistics */}
                 <div className="mt-4 flex items-center justify-between bg-gray-600 p-3 rounded-lg">
                   <div className="flex items-center">
@@ -261,7 +272,7 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
                       Big Pastes: {bigPasteCount}
                     </span>
                   </div>
-                  <button 
+                  <button
                     onClick={() => setIsModalOpen(true)}
                     className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors"
                   >
@@ -273,15 +284,138 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
           </div>
         </div>
       )}
-  
+
       {/* Tooltips */}
       <ReactTooltip id="maxChangeTooltip" place="top" effect="solid" />
       <ReactTooltip id="averageSimilarityTooltip" place="top" effect="solid" />
       <ReactTooltip id="minSimilarityTooltip" place="top" effect="solid" />
       <ReactTooltip id="varianceTooltip" place="top" effect="solid" />
-  
+
+      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+        <DialogTrigger asChild>
+          <Button
+            onClick={() => setIsModalOpen(true)}
+            className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors"
+          >
+            View Pasted Snippets
+          </Button>
+        </DialogTrigger>
+        <DialogContent className="max-w-4xl max-h-[80vh] flex flex-col">
+          <DialogHeader>
+            <DialogTitle>Pasted Snippets ({localPastedSnippets.length})</DialogTitle>
+          </DialogHeader>
+
+          <div className="flex-1 overflow-y-auto pr-2">
+            {localPastedSnippets.length === 0 ? (
+              <div className="text-gray-400">No pasted snippets found.</div>
+            ) : (
+              <div className="space-y-4">
+                {localPastedSnippets.map((snippet, index) => (
+                  <div
+                    key={index}
+                    className="bg-gray-700 rounded-lg overflow-hidden"
+                  >
+                    {/* Collapsible Card Header - Always Visible */}
+                    <button
+                      onClick={() => toggleCard(index)}
+                      className="w-full p-4 flex items-center justify-between text-left hover:bg-gray-600 transition-colors"
+                    >
+                      <div>
+                        <div className="font-semibold">Paste {index + 1}</div>
+                        <div className="text-sm text-gray-400">
+                          {new Date(snippet.timestamp).toLocaleString()}
+                        </div>
+                      </div>
+                      <div className="text-sm text-gray-400">
+                        {snippet.length} characters at line {snippet.contextRange.startLine}
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <span className="text-sm text-gray-400">
+                          {expandedCards.includes(index) ? 'Hide Details' : 'Show Details'}
+                        </span>
+                        <svg
+                          className={`w-5 h-5 transform transition-transform ${expandedCards.includes(index) ? 'rotate-180' : ''
+                            }`}
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M19 9l-7 7-7-7"
+                          />
+                        </svg>
+                      </div>
+                    </button>
+
+                    {/* Expanded Content */}
+                    {expandedCards.includes(index) && (
+                      <div className="border-t border-gray-600 p-4">
+                        <div className="mt-2">
+                          <div className="text-sm font-semibold mb-2">Code Context:</div>
+                          <Editor
+                            height="200px"
+                            defaultLanguage="javascript"
+                            value={snippet.fullCode}
+                            theme="vs-dark"
+                            options={{
+                              readOnly: true,
+                              minimap: { enabled: false },
+                              fontSize: 12,
+                              scrollBeyondLastLine: false,
+                              wordWrap: 'on',
+                              renderLineHighlight: 'none',
+                              hideCursorInOverviewRuler: true,
+                              overviewRulerBorder: false,
+                            }}
+                            onMount={(editor) => {
+                              const decoration = {
+                                range: new (window as any).monaco.Range(
+                                  snippet.contextRange.startLine,
+                                  snippet.contextRange.startColumn,
+                                  snippet.contextRange.endLine,
+                                  snippet.contextRange.endColumn
+                                ),
+                                options: {
+                                  inlineClassName: 'bg-yellow-500 bg-opacity-20',
+                                  isWholeLine: false,
+                                  overviewRuler: {
+                                    color: '#ffd700',
+                                    position: 1
+                                  }
+                                }
+                              };
+                              editor.createDecorationsCollection([decoration]);
+
+                              setTimeout(() => {
+                                editor.revealLineInCenter(snippet.contextRange.startLine);
+                              }, 100);
+                            }}
+                          />
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="flex justify-end mt-4">
+            <Button
+              variant="secondary"
+              onClick={() => setIsModalOpen(false)}
+            >
+              Close
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
       {/* Pasted Snippets Modal */}
-      <Dialog open={isModalOpen} onClose={() => setIsModalOpen(false)} className="relative z-50">
+      {/* <Dialog open={isModalOpen} onClose={() => setIsModalOpen(false)} className="relative z-50">
         <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
         <div className="fixed inset-0 flex items-center justify-center p-4">
           <Dialog.Panel className="w-full max-w-4xl rounded-lg bg-gray-800 p-6 max-h-[80vh] flex flex-col">
@@ -298,9 +432,9 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
                     <div 
                       key={index} 
                       className="bg-gray-700 rounded-lg overflow-hidden"
-                    >
-                      {/* Collapsible Card Header - Always Visible */}
-                      <button
+                    > */}
+      {/* Collapsible Card Header - Always Visible */}
+      {/* <button
                         onClick={() => toggleCard(index)}
                         className="w-full p-4 flex items-center justify-between text-left hover:bg-gray-600 transition-colors"
                       >
@@ -333,13 +467,13 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
                             />
                           </svg>
                         </div>
-                      </button>
+                      </button> */}
 
-                      {/* Expanded Content */}
-                      {expandedCards.includes(index) && (
-                        <div className="border-t border-gray-600 p-4">
-                          {/* Full Context Editor */}
-                          <div className="mt-2">
+      {/* Expanded Content */}
+      {/* {expandedCards.includes(index) && (
+                        <div className="border-t border-gray-600 p-4"> */}
+      {/* Full Context Editor */}
+      {/* <div className="mt-2">
                             <div className="text-sm font-semibold mb-2">Code Context:</div>
                             <Editor
                               height="200px"
@@ -400,7 +534,7 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
             </div>
           </Dialog.Panel>
         </div>
-      </Dialog>
+      </Dialog> */}
     </div>
   );
 };
@@ -415,9 +549,9 @@ const MetricCard: React.FC<{
   <div className="p-3 rounded-lg bg-gray-600 text-gray-200">
     <div className="font-semibold text-sm mb-1 flex items-center">
       {label}
-      <Info 
-        className="ml-2 text-gray-400 cursor-pointer" 
-        size={16} 
+      <Info
+        className="ml-2 text-gray-400 cursor-pointer"
+        size={16}
         data-tooltip-id={tooltipId}
         data-tooltip-content={tooltipContent}
       />
