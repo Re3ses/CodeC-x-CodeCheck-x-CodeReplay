@@ -44,6 +44,17 @@ interface Data {
   completion_time: number;
 }
 
+// Code Replay definitions
+interface CodeSnapshot {
+  code: string;
+  timestamp: string;
+  userId: string;
+  problemId?: string;
+  roomId?: string;
+  submissionId?: string;
+  version?: number;
+}
+
 export default function Page() {
   const editorRef = useRef(null);
 
@@ -60,9 +71,14 @@ export default function Page() {
   const [learner, setLearner] = useState<string>();
   const [learner_id, setLearnerId] = useState<string>();
   const [attemptCount, setAttemptCount] = useState<number>(0);
-  const [latestSave, setLatestSave] = useState<string>('');
-  const [saveHistory, setSaveHistory] = useState<string[]>([]);
   const langCodes: LanguageCodes = languagesCode;
+
+  // Code Replay states
+  const [saveMode, setSaveMode] = useState<'manual' | 'auto'>('auto');
+  const [code, setCode] = useState<any>('// Start coding here');
+  const [lastSaved, setLastSaved] = useState<string>(code);
+  const [saving, setSaving] = useState(false);
+  const [snapshots, setSnapshots] = useState<CodeSnapshot[]>([]);
 
   // for submission button
   const [disabled, setDisabled] = useState(false);
@@ -234,16 +250,9 @@ export default function Page() {
           }
 
           console.log('hello');
-
-          if (saveHistory[saveHistory.length - 1] !== editorValue) {
-            saveHistory.push(editorValue);
-            console.log(saveHistory);
-          }
-
           const data = {
             language_used: language_used.name,
             code: editorValue,
-            history: JSON.stringify(saveHistory),
             score: score.accepted_count,
             score_overall_count: score.overall_count,
             verdict:
@@ -317,83 +326,150 @@ export default function Page() {
 
   // CODE REPLAY FEATURE
 
+  // Get or generate a unique user ID
+  // const getUserId = async () => {
+  //   if (typeof window !== 'undefined') {
+  //     // First, check if we have a stored userId
+  //     let userId = learner_id;
+
+  //     // // If no stored userId, try to fetch from existing snapshots
+  //     // if (!userId) {
+  //     //   try {
+  //     //     const response = await fetch('/api/codereplayV3/code-snapshots');
+  //     //     const data = await response.json();
+
+  //     //     if (data.success && data.snapshots.length > 0) {
+  //     //       // Use the userId from the first snapshot
+  //     //       userId = data.snapshots[0].userId;
+  //     //     }
+
+  //     //     // If still no userId, generate a random one
+  //     //     if (!userId) {
+  //     //       userId = `user-${Math.floor(Math.random() * 10000)}`;
+  //     //     }
+
+  //     //     // Store the userId
+  //     //     localStorage.setItem('userId', userId);
+  //     //   } catch (error) {
+  //     //     console.error('Error fetching snapshots:', error);
+  //     //     // Fallback to random userId if fetch fails
+  //     //     userId = `user-${Math.floor(Math.random() * 10000)}`;
+  //     //     localStorage.setItem('userId', userId);
+  //     //   }
+  //     // }
+
+  //     return userId;
+  //   }
+  //   return null;
+  // };
+
+  // Auto-save function
+  const autoSaveCode = async (codeToSave: string) => {
+    if (codeToSave === lastSaved) return;
+
+    setSaving(true);
+    try {
+      // const userId = await getUserId();
+      const userId = learner_id;
+
+      // Find the last version from existing snapshots
+      const lastVersion = snapshots.length > 0
+        ? Math.max(...snapshots.map(snapshot => snapshot.version || 0))
+        : 0;
+
+      // Increment the last version by 1
+      const nextVersion = lastVersion + 1;
+
+      const saveResponse = await fetch('/api/codereplayV3/code-snapshots', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          code: codeToSave,
+          userId,
+          problemId: params.problemId,
+          roomId: params.slug,
+          submissionId: `submission-${Date.now()}`,
+          version: nextVersion // Explicitly pass the next version
+        }),
+      });
+
+      if (saveResponse.ok) {
+        const savedData = await saveResponse.json();
+        if (savedData.snippet) {
+          // Update snapshots while maintaining order
+          setSnapshots(prevSnapshots => {
+            const updatedSnapshots = [...prevSnapshots, savedData.snippet];
+            return updatedSnapshots.sort((a, b) => {
+              if (a.version && b.version) {
+                return a.version - b.version;
+              }
+              return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
+            });
+          });
+
+          setLastSaved(codeToSave);
+          
+          // // Recalculate sequential similarities
+          // await calculateSequentialSimilarities([...snapshots, savedData.snippet]);
+        }
+      }
+
+      console.log("snapshots: ", snapshots);
+    
+    } catch (error) {
+      console.error('Auto-save error:', error);
+    } finally {
+      setSaving(false);
+    }
+  };
+
   // Function to check if code has significant changes
-  const hasSignificantChanges = (newCode: string | undefined, oldCode: string): boolean => {
-    if (!saveHistory || !newCode) return false;
+  const hasSignificantChanges = (newCode: string, oldCode: string) => {
     const lengthDiff = Math.abs(newCode.length - oldCode.length);
-    if (lengthDiff > 50) {
-      // console.log('Significant change in length detected:', lengthDiff);
-      return true;
-    }
-    return false;
+    return lengthDiff > 50; // Consider changes significant if more than 50 characters are added/removed
   };
 
-  // add to history
-  const addToHistory = (newCode: string) => {
-    // Only add if the code is different from the latest save
-    if (newCode !== latestSave) {
-      setLatestSave(newCode);
-      setSaveHistory([...saveHistory, newCode]);
-    }
-  };
-
-  const saveCodeHistory = () => {
-    if (
-      editorValue !== '' &&
-      editorValue !== latestSave &&
-      hasSignificantChanges(editorValue, latestSave)
-    ) {
-      addToHistory(editorValue);
-    }
-  }
-  
-  // autosave feature
+  // Auto-save effect
   useEffect(() => {
-    // console.log("Auto Save initiated.")
-    // let runs = 0;
+    if (saveMode !== 'auto') return;
 
-    // runs when editorValue, saveHistory or latestSave changes
+    let autoSaveTimer: NodeJS.Timeout;
 
     const handleVisibilityChange = () => {
-      if (document.hidden && editorValue !== latestSave) {
-        saveCodeHistory();
+      if (document.hidden && code !== lastSaved) {
+        autoSaveCode(code);
       }
     };
 
-    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-      if (editorValue !== latestSave) {
-        saveCodeHistory();
+    const handleBeforeUnload = () => {
+      if (code !== lastSaved) {
+        autoSaveCode(code);
       }
     };
-    
-    saveCodeHistory();
 
-    // Saves changes after x ms of inactivity
-    const autoSaveTimer = setTimeout(() => {
-      // console.log("Attempting save after 1000ms of inactivity")
-      saveCodeHistory();
-    }, 10000);
+    // Save on significant changes or every 10 seconds
+    if (code !== '// Start coding here' &&
+      (hasSignificantChanges(code, lastSaved) || code !== lastSaved)) {
+      autoSaveTimer = setTimeout(() => {
+        autoSaveCode(code);
+      }, 10000);
+    }
 
     // Add event listeners for tab/window changes
     document.addEventListener('visibilitychange', handleVisibilityChange);
     window.addEventListener('beforeunload', handleBeforeUnload);
-
-    // console.log("Auto Save run count:", runs)
-    // runs = runs + 1;
-
 
     return () => {
       clearTimeout(autoSaveTimer);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
-
-  }, [editorValue]);
+  }, [code, saveMode, lastSaved]);
 
   useEffect(() => {
-    console.log("Save History:", saveHistory)
-    console.log("Latest Save:", latestSave)
-  }, [saveHistory, latestSave]);
+    console.log("code editor changed: ", code);
+  }, [code]);
+
 
   return (
     <PanelGroup direction="horizontal">
@@ -509,10 +585,11 @@ export default function Page() {
             <div className="h-full">
               <Editor
                 theme="vs-dark"
+                defaultValue='// Start coding here'
                 defaultLanguage="plaintext"
                 language={langCodes[String(selectedLang)]}
                 onMount={handleEditorDidMount}
-                onChange={setEditorValue}
+                onChange={(value) => setCode(value || '')}
               />
             </div>
           </Panel>
