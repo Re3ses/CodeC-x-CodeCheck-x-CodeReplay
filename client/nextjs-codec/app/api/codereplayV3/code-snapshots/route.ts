@@ -11,7 +11,6 @@ const CodeSnapshotSchema = new mongoose.Schema({
   submissionId: String,
   roomId: String,
   problemId: String,
-  attemptCount: Number,
   version: { type: Number, required: true }
 });
 
@@ -22,7 +21,6 @@ const CodeSnapshots = mongoose.models.CodeSnapshots ||
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const learnerId = searchParams.get('learner_id');
-  const attemptCount = searchParams.get('attempt_count');
 
   try {
     await dbConnect();
@@ -30,7 +28,6 @@ export async function GET(request: Request) {
     // Build the query based on search parameters
     const query: { [key: string]: any } = {};
     if (learnerId) query['userId'] = learnerId;
-    if (attemptCount) query['attemptCount'] = Number(attemptCount);
 
     // Use a single query with conditional filtering
     const snapshots = await CodeSnapshots.find(query)
@@ -63,7 +60,6 @@ export async function GET(request: Request) {
       problemId: snapshot.problemId,
       roomId: snapshot.roomId,
       submissionId: snapshot.submissionId,
-      attemptCount: snapshot.attemptCount,
       version: snapshot.version
     }));
 
@@ -101,7 +97,7 @@ export async function POST(request: Request) {
     await dbConnect();
 
     // Parse the entire request body
-    const { code, userId, problemId, roomId, submissionId, attemptCount, version } = await request.json();
+    const { code, userId, problemId, roomId, submissionId, version } = await request.json();
 
     // Validate required fields
     const missingFields = [];
@@ -109,7 +105,6 @@ export async function POST(request: Request) {
     if (!userId) missingFields.push('userId');
     if (!problemId) missingFields.push('problemId');
     if (!roomId) missingFields.push('roomId');
-    if (attemptCount === undefined || attemptCount === null) missingFields.push('attemptCount');
 
     if (missingFields.length > 0) {
       return NextResponse.json({
@@ -135,7 +130,6 @@ export async function POST(request: Request) {
       problemId,
       roomId,
       submissionId: submissionId || `submission-${Date.now()}`,
-      attemptCount,
       version: newVersion,
       timestamp: new Date()
     });
@@ -152,7 +146,6 @@ export async function POST(request: Request) {
         problemId: newSnapshot.problemId,
         roomId: newSnapshot.roomId,
         submissionId: newSnapshot.submissionId,
-        attemptCount: newSnapshot.attemptCount,
         version: newSnapshot.version
       }
     }, { status: 201 });
