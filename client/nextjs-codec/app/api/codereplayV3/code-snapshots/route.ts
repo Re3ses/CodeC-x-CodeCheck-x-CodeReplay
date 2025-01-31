@@ -11,6 +11,7 @@ const CodeSnapshotSchema = new mongoose.Schema({
   submissionId: String,
   roomId: String,
   problemId: String,
+  attemptCount: Number,
   version: { type: Number, required: true }
 });
 
@@ -20,72 +21,100 @@ const CodeSnapshots = mongoose.models.CodeSnapshots ||
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
+  const learnerId = searchParams.get('learner_id');
+  const attemptCount = searchParams.get('attempt_count');
+
   try {
     await dbConnect();
 
-    // Fetch all snapshots, sorted by userId, problemId, and version
-    let snapshots = await CodeSnapshots.find({})
+    // Build the query based on search parameters
+    const query: { [key: string]: any } = {};
+    if (learnerId) query['userId'] = learnerId;
+    if (attemptCount) query['attemptCount'] = Number(attemptCount);
+
+    // Use a single query with conditional filtering
+    const snapshots = await CodeSnapshots.find(query)
       .sort({
         userId: 1,
         problemId: 1,
         version: 1
       })
-      .lean();
+      .lean()
+      .exec(); // Adding .exec() for better error handling
 
-    if (searchParams.has('learner_id')) {
-      snapshots = await
-        CodeSnapshots.find({
-          userId: searchParams.get('learner_id')
-        }).sort({
-          userId: 1,
-          problemId: 1,
-          version: 1
-        })
-          .lean();
-    } else {
-      
+    // Early return if no snapshots found
+    if (!snapshots.length) {
+      return NextResponse.json({
+        success: true,
+        snapshots: [],
+        metadata: {
+          totalSnapshots: 0,
+          uniqueUsers: 0,
+          uniqueProblems: 0
+        }
+      });
     }
+
+    // Process snapshots data
+    const processedSnapshots = snapshots.map(snapshot => ({
+      code: snapshot.code,
+      timestamp: snapshot.timestamp.toISOString(),
+      userId: snapshot.userId,
+      problemId: snapshot.problemId,
+      roomId: snapshot.roomId,
+      submissionId: snapshot.submissionId,
+      attemptCount: snapshot.attemptCount,
+      version: snapshot.version
+    }));
+
+    // Calculate metadata using Set for better performance
+    const uniqueUsers = new Set(snapshots.map(s => s.userId));
+    const uniqueProblems = new Set(snapshots.map(s => s.problemId));
 
     return NextResponse.json({
       success: true,
-      snapshots: snapshots.map(snapshot => ({
-        code: snapshot.code,
-        timestamp: snapshot.timestamp.toISOString(),
-        userId: snapshot.userId,
-        problemId: snapshot.problemId,
-        roomId: snapshot.roomId,
-        submissionId: snapshot.submissionId,
-        version: snapshot.version
-      })),
+      snapshots: processedSnapshots,
       metadata: {
         totalSnapshots: snapshots.length,
-        uniqueUsers: [...new Set(snapshots.map(s => s.userId))].length,
-        uniqueProblems: [...new Set(snapshots.map(s => s.problemId))].length
+        uniqueUsers: uniqueUsers.size,
+        uniqueProblems: uniqueProblems.size
       }
     });
   } catch (error) {
     console.error('Error fetching snapshots:', error);
+
+    // Determine appropriate status code
+    const statusCode = error.name === 'ValidationError' ? 400 : 500;
+
     return NextResponse.json({
       success: false,
       error: error instanceof Error ? error.message : 'Failed to fetch snapshots',
       snapshots: [],
       metadata: {}
-    }, { status: 500 });
+    }, { status: statusCode });
   }
 }
+
 
 export async function POST(request: Request) {
   try {
     await dbConnect();
 
     // Parse the entire request body
-    const { code, userId, problemId, roomId, submissionId, version } = await request.json();
+    const { code, userId, problemId, roomId, submissionId, attemptCount, version } = await request.json();
 
     // Validate required fields
-    if (!code || !userId || !problemId || !roomId) {
+    const missingFields = [];
+    if (!code) missingFields.push('code');
+    if (!userId) missingFields.push('userId');
+    if (!problemId) missingFields.push('problemId');
+    if (!roomId) missingFields.push('roomId');
+    if (attemptCount === undefined || attemptCount === null) missingFields.push('attemptCount');
+
+    if (missingFields.length > 0) {
       return NextResponse.json({
         success: false,
-        error: 'Missing required fields'
+        error: `Missing required fields: ${missingFields.join(', ')}`
       }, { status: 400 });
     }
 
@@ -106,6 +135,7 @@ export async function POST(request: Request) {
       problemId,
       roomId,
       submissionId: submissionId || `submission-${Date.now()}`,
+      attemptCount,
       version: newVersion,
       timestamp: new Date()
     });
@@ -122,6 +152,7 @@ export async function POST(request: Request) {
         problemId: newSnapshot.problemId,
         roomId: newSnapshot.roomId,
         submissionId: newSnapshot.submissionId,
+        attemptCount: newSnapshot.attemptCount,
         version: newSnapshot.version
       }
     }, { status: 201 });
