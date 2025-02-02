@@ -1,21 +1,15 @@
 //page.tsx
 'use client'
 import { useState, useEffect } from 'react';
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { ChevronDown, ChevronUp, FileCode2 } from "lucide-react";
 import Editor from '@monaco-editor/react';
 import dbConnect from '../../lib/dbConnect';
 import { NextResponse } from 'next/server';
 import SimilarityLoading from './SimilarityLoading';
-import CodeBERTStats from './CodeBERTStats';
-import SimilarityVisualization from './SimilarityVisualization';
 import mongoose, { Model, Schema } from 'mongoose';
-
-// Update the SimilarSnippet interface
-
-interface TokenAnalysis {
-  totalTokens: number;
-  uniqueTokens: number;
-  sharedTokens: string[];
-}
+import SimilarityNetwork from './SimilarityMatrix';
 
 interface SimilarSnippet {
   userId: string;
@@ -24,7 +18,6 @@ interface SimilarSnippet {
   timestamp: string;
   code: string;
   fileName: string;
-  tokenAnalysis?: TokenAnalysis;
   clusterId?: number;
   isLikelySource?: boolean;
 }
@@ -56,6 +49,17 @@ export async function GET() {
     }
   }
 
+const getSimilarityColor = (similarity) => {
+  if (similarity >= 80) return 'bg-red-700 text-white';
+  if (similarity >= 60) return 'bg-yellow-600 text-white';
+  return 'bg-gray-700 text-white';
+};
+
+interface SimilarityMatrix {
+  matrix: number[][];
+  snippets: SnippetInfo[];
+}
+
 export default function CodeReplayApp() {
   const [code, setCode] = useState('// Start coding here');
   const [snippets, setSnippets] = useState<CodeSnippet[]>([]);
@@ -65,6 +69,15 @@ export default function CodeReplayApp() {
   const [isFetchingSimilarity, setIsFetchingSimilarity] = useState(false);
   const [saveMode, setSaveMode] = useState<'manual' | 'auto'>('manual');
   const [lastSaved, setLastSaved] = useState<string>(code);
+  const [selectedAnalysisSnippet, setSelectedAnalysisSnippet] = useState(null);
+  const [similarityMatrix, setSimilarityMatrix] = useState<{
+    matrix: number[][];
+    snippets: SnippetInfo[];
+  } | null>(null);
+  const [showMatrix, setShowMatrix] = useState(false);
+  const [expandedSnippet, setExpandedSnippet] = useState(null);
+  const [isMatrixLoading, setIsMatrixLoading] = useState(true);
+  const [referenceFile, setReferenceFile] = useState<string>(''); // State to hold the reference file
 
   // Function to check if code has significant changes
   const hasSignificantChanges = (newCode: string, oldCode: string) => {
@@ -159,41 +172,29 @@ export default function CodeReplayApp() {
     return null;
   };
 
-  const fetchSimilarityData = async (codeToCheck: string) => {
+  const fetchSimilarityData = async () => {
     try {
-      setIsFetchingSimilarity(true);
-      if (!codeToCheck.trim()) {
-        setSimilarSnippets([]);
-        setIsFetchingSimilarity(false);
-        return;
-      }
-
-      const userId = getUserId();
+      setIsMatrixLoading(true);
       const response = await fetch('/api/codereplay/plagiarism', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          code: codeToCheck,
-          userId,
           problemId: 'sorting-1',
           roomId: 'room-1'
         }),
       });
-
-      if (response.ok) {
-        const data = await response.json();
-        if (Array.isArray(data.similarSnippets)) {
-          setSimilarSnippets(data.similarSnippets);
-        } else {
-          setSimilarSnippets([]);
-        }
-      } else {
-        console.error('Similarity fetch error:', response.status);
+  
+      const data = await response.json();
+      if (data.success) {
+        setSimilarityMatrix({
+          matrix: data.matrix,
+          snippets: data.snippets
+        });
       }
     } catch (error) {
-      console.error('Similarity fetch error:', error);
+      console.error('Fetch error:', error);
     } finally {
-      setIsFetchingSimilarity(false);
+      setIsMatrixLoading(false);
     }
   };
 
@@ -226,7 +227,7 @@ export default function CodeReplayApp() {
   useEffect(() => {
     const timer = setTimeout(() => {
       if (code !== '// Start coding here') {
-        fetchSimilarityData(code);
+        fetchSimilarityData();
       }
     }, 1000); // Debounce for 1 second
 
@@ -242,7 +243,7 @@ export default function CodeReplayApp() {
           if (data.success && Array.isArray(data.snippets)) {
             setSnippets(data.snippets);
             if (code !== '// Start coding here') {
-              await fetchSimilarityData(code);
+              await fetchSimilarityData();
             }
           } else {
             console.error('Error in response:', data.error || 'Invalid data format');
@@ -258,6 +259,41 @@ export default function CodeReplayApp() {
     fetchInitialData();
   }, []);
 
+  useEffect(() => {
+    const fetchInitialData = async () => {
+      try {
+        const response = await fetch('/api/codereplay');
+        if (response.ok) {
+          const data = await response.json();
+          if (data.success && Array.isArray(data.snippets)) {
+            setSnippets(data.snippets);
+            await fetchSimilarityData(); // Fetch matrix immediately
+          }
+        }
+      } catch (error) {
+        console.error('Initial fetch error:', error);
+      }
+    };
+
+    fetchInitialData();
+  }, []);
+
+  useEffect(() => {
+    const fetchReferenceFile = async () => {
+      try {
+        const response = await fetch('/api/reference-file'); // Replace with your API endpoint
+        const data = await response.json();
+        if (data.success) {
+          setReferenceFile(data.referenceFile); // Set the reference file
+        }
+      } catch (error) {
+        console.error('Error fetching reference file:', error);
+      }
+    };
+  
+    fetchReferenceFile();
+  }, []);
+  
   const saveCode = async () => {
     setSaving(true);
     try {
@@ -282,7 +318,7 @@ export default function CodeReplayApp() {
             timestamp: savedData.snippet.timestamp,
             fileName: savedData.snippet.fileName
           }, ...prevSnippets]);
-          await fetchSimilarityData(code);
+          await fetchSimilarityData();
         }
       } else {
         console.error('Save error:', saveResponse.status);
@@ -298,130 +334,188 @@ export default function CodeReplayApp() {
     getUserId(); // This will create and store a userId if one doesn't exist
   }, []);
 
-  const getSimilarityColor = (similarity: number | null | undefined) => {
-    if (!similarity) return 'bg-gray-600';
-    if (similarity > 80) return 'bg-red-600';
-    if (similarity > 60) return 'bg-yellow-600';
-    if (similarity > 30) return 'bg-green-600';
-    return 'bg-gray-600';
-  };
-  
-// Update the renderSimilarityScore function
-const renderSimilarityScore = (
-  label: string,
-  score: number | null | undefined,
-  sharedTokens?: string[]
-) => (
-  <div className="flex justify-between items-center py-1">
-    <span className="text-sm text-gray-300">{label}:</span>
-    <span className={`px-2 py-0.5 rounded text-sm ${getSimilarityColor(score)}`}>
-      {score?.toFixed(1) ?? 'N/A'}%
-    </span>
-    {sharedTokens && (
-      <span className="ml-2 text-sm text-gray-400">
-        Tokens: {sharedTokens.length}
-      </span>
-    )}
-  </div>
-);
-
-
-  const checkSimilarity = async () => {
-    await fetchSimilarityData(code);
-  };
-  
-  return (
-    <div className="min-h-screen bg-gray-900 text-white p-4">
-    <div className="container mx-auto">
-      <h1 className="text-2xl font-bold mb-4">CodeBERT Embeddings Similarity System</h1>
+    // Calculate statistics for each snippet
+    const calculateSnippetStats = (matrix, index) => {
+      if (!matrix || !matrix[index]) return null;
       
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <div className="space-y-4">
-          <div className="flex justify-between items-center mb-2">
-            <select
-              value={saveMode}
-              onChange={(e) => setSaveMode(e.target.value as 'manual' | 'auto')}
-              className="bg-gray-800 text-white px-3 py-2 rounded border border-gray-700"
-            >
-              <option value="manual">Manual Save</option>
-              <option value="auto">Auto Save</option>
-            </select>
-            {saveMode === 'manual' && (
-              <button
-                onClick={() => saveCode()}
-                disabled={saving}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded disabled:opacity-50"
-              >
-                {saving ? 'Saving...' : 'Save Code'}
-              </button>
-            )}
-            {saveMode === 'auto' && saving && (
-              <span className="text-gray-400">Auto-saving...</span>
-            )}
-          </div>
-          <div className="border border-gray-700 rounded-lg overflow-hidden">
-            <Editor
-              height="400px"
-              defaultLanguage="javascript"
-              value={code}
-              onChange={(value) => setCode(value || '')}
-              theme="vs-dark"
-              options={{
-                minimap: { enabled: false },
-                fontSize: 14,
-                scrollBeyondLastLine: false,
-                wordWrap: 'on',
-              }}
-            />
-          </div>
-        </div>
-        <div className="space-y-4">
-          <h2 className="text-xl font-semibold">Similarity Analysis</h2>
-          <CodeBERTStats similarSnippets={similarSnippets} />
-          {isFetchingSimilarity ? (
-            <SimilarityLoading />
-          ) : (
-            <div className="container mx-auto p-4">
-              <SimilarityVisualization similarSnippets={similarSnippets} />
-            </div>
-          )}
-        </div>
-      </div>
+      const similarities = matrix[index].filter((_, i) => i !== index);
+      const avgSimilarity = similarities.reduce((a, b) => a + b, 0) / similarities.length;
+      const maxSimilarity = Math.max(...similarities);
+      
+      // Find highly similar snippets (>= 60%)
+      const similarSnippets = similarities
+        .map((similarity, i) => ({ index: i, similarity }))
+        .filter(item => item.similarity >= 60 && item.index !== index)
+        .sort((a, b) => b.similarity - a.similarity);
+  
+      return {
+        averageSimilarity: avgSimilarity,
+        maxSimilarity,
+        similarSnippets
+      };
+    };
+  
+    const getColorClass = (similarity) => {
+      if (similarity >= 80) return 'bg-red-700';
+      if (similarity >= 60) return 'bg-yellow-600';
+      return 'bg-blue-600';
+    };
 
-      <div className="mt-8">
-        <h2 className="text-xl font-semibold mb-4">Previous Submissions</h2>
-        <div className="flex flex-wrap gap-4">
-          {snippets.map((snippet, index) => (
-            <div key={index} className="border border-gray-700 rounded-lg p-4 w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.33%-1rem)]">
-              <div className="space-y-1 mb-2">
-                <div>User: {snippet.userId}</div>
-                <div className="text-sm text-gray-400">
-                  {new Date(snippet.timestamp).toLocaleString()}
-                </div>
+
+    return (
+      <div className="min-h-screen bg-gray-900 text-white p-4">
+        <div className="container mx-auto space-y-6">
+          <h1 className="text-2xl font-bold mb-4">CodeBERT Plagiarism Detection System</h1>
+
+          {/* Network Graph with Loading State */}
+          <div className="relative">
+            {isMatrixLoading ? (
+              <div>
+                <SimilarityLoading />
               </div>
+            ) : similarityMatrix && (
+              <SimilarityNetwork 
+              matrix={similarityMatrix.matrix}
+              snippets={similarityMatrix.snippets}
+              referenceFile={referenceFile} // Pass the reference file here
+            />
+            )}
+          </div>
+  
+          {/* Similarity Analysis Per Snippet */}
+          <div className="space-y-4">
+            <h2 className="text-xl font-semibold">Snippet Analysis</h2>
+            {similarityMatrix?.snippets.map((snippet, index) => {
+              const stats = calculateSnippetStats(similarityMatrix.matrix, index);
+              if (!stats) return null;
+  
+              return (
+                <Card key={index} className="bg-gray-800 hover:bg-gray-750 transition-colors">
+                  <CardContent className="p-6">
+                    <div 
+                      className="cursor-pointer"
+                      onClick={() => setExpandedSnippet(expandedSnippet === index ? null : index)}
+                    >
+                      <div className="flex justify-between items-center">
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-2">
+                            <FileCode2 className="w-4 h-4" />
+                            <span className="font-medium">Snippet {index + 1}</span>
+                            <span className="text-gray-400">({snippet.userId})</span>
+                          </div>
+                          <div className="text-sm text-gray-400">
+                            {new Date(snippet.timestamp).toLocaleString()}
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Badge className={getColorClass(stats.maxSimilarity)}>
+                            Max: {stats.maxSimilarity.toFixed(1)}%
+                          </Badge>
+                          <Badge className={getColorClass(stats.averageSimilarity)}>
+                            Avg: {stats.averageSimilarity.toFixed(1)}%
+                          </Badge>
+                          {expandedSnippet === index ? <ChevronUp /> : <ChevronDown />}
+                        </div>
+                      </div>
+                    </div>
+  
+                    {expandedSnippet === index && (
+                      <div className="mt-4 space-y-4">
+                        <Editor
+                          height="200px"
+                          defaultLanguage="javascript"
+                          value={snippet.code}
+                          theme="vs-dark"
+                          options={{
+                            readOnly: true,
+                            minimap: { enabled: false },
+                            fontSize: 14,
+                            scrollBeyondLastLine: false,
+                            wordWrap: 'on',
+                          }}
+                        />
+                        
+                        {stats.similarSnippets.length > 0 && (
+                          <div className="space-y-2">
+                            <h4 className="font-medium">Similar Snippets (≥60% similarity):</h4>
+                            {stats.similarSnippets.map(similar => (
+                              <Card key={similar.index} className="bg-gray-700">
+                                <CardContent className="p-4">
+                                  <div className="flex justify-between items-center mb-2">
+                                    <span>Snippet {similar.index + 1}</span>
+                                    <Badge className={getColorClass(similar.similarity)}>
+                                      {similar.similarity.toFixed(1)}% Similar
+                                    </Badge>
+                                  </div>
+                                  <Editor
+                                    height="200px"
+                                    defaultLanguage="javascript"
+                                    value={similarityMatrix.snippets[similar.index].code}
+                                    theme="vs-dark"
+                                    options={{
+                                      readOnly: true,
+                                      minimap: { enabled: false },
+                                      fontSize: 14,
+                                      scrollBeyondLastLine: false,
+                                      wordWrap: 'on',
+                                    }}
+                                  />
+                                </CardContent>
+                              </Card>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+  
+          {/* Code Editor */}
+          <Card className="bg-gray-800">
+            <CardHeader>
+              <CardTitle className="flex justify-between items-center">
+                <span>Code Editor</span>
+                <div className="flex items-center gap-4">
+                  <select
+                    value={saveMode}
+                    onChange={(e) => setSaveMode(e.target.value)}
+                    className="bg-gray-700 text-white px-3 py-2 rounded border border-gray-600"
+                  >
+                    <option value="manual">Manual Save</option>
+                    <option value="auto">Auto Save</option>
+                  </select>
+                  {saveMode === 'manual' && (
+                    <button
+                      onClick={() => {/* Add save handler */}}
+                      disabled={saving}
+                      className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded disabled:opacity-50"
+                    >
+                      {saving ? 'Saving...' : 'Save Code'}
+                    </button>
+                  )}
+                </div>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
               <Editor
-                height="300px" 
+                height="400px"
                 defaultLanguage="javascript"
-                value={snippet.code}
+                value={code}
+                onChange={(value) => setCode(value || '')}
                 theme="vs-dark"
                 options={{
-                  readOnly: true,
                   minimap: { enabled: false },
                   fontSize: 14,
                   scrollBeyondLastLine: false,
                   wordWrap: 'on',
                 }}
               />
-            </div>
-          ))}
-          {snippets.length === 0 && (
-            <div className="text-gray-400">
-              No submissions yet
-            </div>
-          )}
+            </CardContent>
+          </Card>
         </div>
       </div>
-    </div>
-  </div>
-  );
-}
+    );
+  };

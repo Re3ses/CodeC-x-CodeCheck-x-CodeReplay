@@ -9,16 +9,11 @@ const hf = new HfInference(process.env.HUGGINGFACE_API_KEY || '');
 
 const embeddingCache = new Map<string, number[]>();
 
-// == REPLACE ==
-
-interface SimilarSnippet {
-  length?: number;
+interface SnippetInfo {
   userId: string;
-  similarity: number;
-  codebertScore: number;
-  timestamp: string;
-  code: string;
   fileName: string;
+  code: string;
+  timestamp: string;
 }
 
 const CodeSnippet = mongoose.models.CodeSnippet ||
@@ -85,28 +80,18 @@ class CodeAnalyzer {
     return Buffer.from(preprocessed).toString('base64');
   }
 
-  private static async getEmbedding(code: string, cacheKey: string): Promise<number[]> {
+  public static async getEmbedding(code: string, cacheKey: string): Promise<number[]> {
+    // Implementation remains the same as original
     const cachedValue = embeddingCache.get(cacheKey);
-    if (cachedValue) {
-      return cachedValue;
-    }
+    if (cachedValue) return cachedValue;
 
     try {
       const embedding = await this.fetchEmbedding(code);
       embeddingCache.set(cacheKey, embedding);
-
-      if (embeddingCache.size > 1000) {
-        const firstKey = Array.from(embeddingCache.keys())[0];
-        if (firstKey) {
-          embeddingCache.delete(firstKey);
-        }
-      }
-
+      if (embeddingCache.size > 1000) embeddingCache.delete(embeddingCache.keys().next().value);
       return embedding;
     } catch (error) {
-      if (DEBUG) {
-        console.log('Embedding fetch failed:', error);
-      }
+      if (DEBUG) console.log('Embedding fetch failed:', error);
       return [];
     }
   }
@@ -262,42 +247,69 @@ class CodeAnalyzer {
 export async function POST(request: Request) {
   try {
     await dbConnect();
-    const { code, problemId, roomId, userId } = await request.json();
+    const { problemId, roomId } = await request.json();
 
-    const otherSnippets = await CodeSnippet.find({
-      problemId,
-      roomId,
-      userId: { $ne: userId }
-    }).lean();
+    // Fetch all snippets for the given problem and room
+    const snippets = await CodeSnippet.find({ problemId, roomId }).lean();
+    if (snippets.length === 0) {
+      return NextResponse.json({
+        success: true,
+        matrix: [],
+        snippets: [],
+        message: 'No snippets found for this problem and room'
+      });
+    }
 
-    const similarSnippets: SimilarSnippet[] = await Promise.all(
-      otherSnippets.map(async snippet => {
-        const codebertScore = await CodeAnalyzer.getCodeBERTScore(code, snippet.code);
-        const similarity = Math.round(codebertScore * 100);
+    // Precompute embeddings for all snippets
+    const codes = snippets.map(s => s.code);
+    const cacheKeys = codes.map(code => CodeAnalyzer.generateCacheKey(code));
+    const embeddings = await Promise.all(
+      codes.map((code, index) => 
+        CodeAnalyzer.getEmbedding(code, cacheKeys[index])
+      )
+    );
 
-        return {
-          userId: snippet.userId,
-          similarity,
-          codebertScore: Math.round(codebertScore * 100),
-          timestamp: new Date(snippet.timestamp).toISOString(),
-          code: snippet.code,
-          fileName: `${snippet.userId}_${problemId}.js`,
-          length: snippet.code.length
-        };
+    // Compute similarity matrix
+    const matrix = codes.map((code1, i) => 
+      codes.map((code2, j) => {
+        if (i === j) return 100; // Self similarity
+        
+        const emb1 = embeddings[i];
+        const emb2 = embeddings[j];
+        
+        // Handle missing embeddings with fallback
+        if (!emb1?.length || !emb2?.length) {
+          const fallback = CodeAnalyzer.calculateFallbackSimilarity(code1, code2);
+          return Math.round(fallback * 100);
+        }
+
+        // Calculate cosine similarity
+        const similarity = CodeAnalyzer.calculateCosineSimilarity(emb1, emb2);
+        const normalized = (similarity + 1) / 2; // Scale to [0, 1]
+        return Math.round(normalized * 100);
       })
     );
 
-    const sortedSnippets = similarSnippets.sort((a, b) => b.similarity - a.similarity);
+    // Prepare snippet metadata for frontend
+    const snippetInfo: SnippetInfo[] = snippets.map(snippet => ({
+      userId: snippet.userId,
+      fileName: `${snippet.userId}_${problemId}.js`,
+      code: snippet.code,
+      timestamp: new Date(snippet.timestamp).toISOString()
+    }));
 
     return NextResponse.json({
       success: true,
-      similarSnippets: sortedSnippets
+      matrix,
+      snippets: snippetInfo
     });
+
   } catch (error) {
     return NextResponse.json({ 
       success: false, 
-      error: error instanceof Error ? error.message : 'Failed to check plagiarism',
-      similarSnippets: [] 
+      error: error instanceof Error ? error.message : 'Failed to compute similarity matrix',
+      matrix: [],
+      snippets: []
     }, { status: 500 });
   }
 }

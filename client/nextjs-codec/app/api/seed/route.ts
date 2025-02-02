@@ -13,7 +13,7 @@ const CodeSnippetSchema = new mongoose.Schema({
 
 const CodeSnippet = mongoose.models.CodeSnippet || mongoose.model('CodeSnippet', CodeSnippetSchema);
 
-// Array of 10 different sorting implementations
+// Array of 20 different sorting implementations
 const codeTemplates = [
   `// Bubble Sort Implementation
 function bubbleSort(arr) {
@@ -214,6 +214,291 @@ function cocktailSort(arr) {
     start++;
   }
   return arr;
+}`,
+
+  `// Bucket Sort Implementation
+function bucketSort(arr, bucketSize = 5) {
+  if (arr.length === 0) return arr;
+
+  const min = Math.min(...arr);
+  const max = Math.max(...arr);
+  const bucketCount = Math.floor((max - min) / bucketSize) + 1;
+  const buckets = new Array(bucketCount).fill().map(() => []);
+
+  for (let i = 0; i < arr.length; i++) {
+    const bucketIndex = Math.floor((arr[i] - min) / bucketSize);
+    buckets[bucketIndex].push(arr[i]);
+  }
+
+  const sortedArray = [];
+  for (let i = 0; i < buckets.length; i++) {
+    insertionSort(buckets[i]);
+    sortedArray.push(...buckets[i]);
+  }
+
+  return sortedArray;
+}`,
+
+  `// Comb Sort Implementation
+function combSort(arr) {
+  let gap = arr.length;
+  let shrink = 1.3;
+  let sorted = false;
+
+  while (!sorted) {
+    gap = Math.floor(gap / shrink);
+    if (gap <= 1) {
+      gap = 1;
+      sorted = true;
+    }
+
+    for (let i = 0; i + gap < arr.length; i++) {
+      if (arr[i] > arr[i + gap]) {
+        [arr[i], arr[i + gap]] = [arr[i + gap], arr[i]];
+        sorted = false;
+      }
+    }
+  }
+
+  return arr;
+}`,
+
+  `// Gnome Sort Implementation
+function gnomeSort(arr) {
+  let pos = 0;
+
+  while (pos < arr.length) {
+    if (pos === 0 || arr[pos] >= arr[pos - 1]) {
+      pos++;
+    } else {
+      [arr[pos], arr[pos - 1]] = [arr[pos - 1], arr[pos]];
+      pos--;
+    }
+  }
+
+  return arr;
+}`,
+
+  `// Pigeonhole Sort Implementation
+function pigeonholeSort(arr) {
+  const min = Math.min(...arr);
+  const max = Math.max(...arr);
+  const range = max - min + 1;
+  const holes = new Array(range).fill(0);
+
+  for (let i = 0; i < arr.length; i++) {
+    holes[arr[i] - min]++;
+  }
+
+  let index = 0;
+  for (let i = 0; i < range; i++) {
+    while (holes[i]-- > 0) {
+      arr[index++] = i + min;
+    }
+  }
+
+  return arr;
+}`,
+
+  `// Cycle Sort Implementation
+function cycleSort(arr) {
+  for (let cycleStart = 0; cycleStart < arr.length - 1; cycleStart++) {
+    let item = arr[cycleStart];
+    let pos = cycleStart;
+
+    for (let i = cycleStart + 1; i < arr.length; i++) {
+      if (arr[i] < item) pos++;
+    }
+
+    if (pos === cycleStart) continue;
+
+    while (item === arr[pos]) pos++;
+
+    [item, arr[pos]] = [arr[pos], item];
+
+    while (pos !== cycleStart) {
+      pos = cycleStart;
+      for (let i = cycleStart + 1; i < arr.length; i++) {
+        if (arr[i] < item) pos++;
+      }
+
+      while (item === arr[pos]) pos++;
+
+      [item, arr[pos]] = [arr[pos], item];
+    }
+  }
+
+  return arr;
+}`,
+
+  `// Bogo Sort Implementation
+function bogoSort(arr) {
+  function isSorted(arr) {
+    for (let i = 1; i < arr.length; i++) {
+      if (arr[i - 1] > arr[i]) return false;
+    }
+    return true;
+  }
+
+  function shuffle(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+
+  while (!isSorted(arr)) {
+    arr = shuffle(arr);
+  }
+
+  return arr;
+}`,
+
+  `// Tim Sort Implementation
+function timSort(arr) {
+  const RUN = 32;
+  const n = arr.length;
+
+  for (let i = 0; i < n; i += RUN) {
+    insertionSort(arr, i, Math.min(i + RUN - 1, n - 1));
+  }
+
+  for (let size = RUN; size < n; size = 2 * size) {
+    for (let left = 0; left < n; left += 2 * size) {
+      const mid = left + size - 1;
+      const right = Math.min(left + 2 * size - 1, n - 1);
+      merge(arr, left, mid, right);
+    }
+  }
+
+  return arr;
+}
+
+function insertionSort(arr, left, right) {
+  for (let i = left + 1; i <= right; i++) {
+    const temp = arr[i];
+    let j = i - 1;
+    while (j >= left && arr[j] > temp) {
+      arr[j + 1] = arr[j];
+      j--;
+    }
+    arr[j + 1] = temp;
+  }
+}
+
+function merge(arr, l, m, r) {
+  const len1 = m - l + 1;
+  const len2 = r - m;
+  const left = new Array(len1);
+  const right = new Array(len2);
+
+  for (let i = 0; i < len1; i++) {
+    left[i] = arr[l + i];
+  }
+  for (let i = 0; i < len2; i++) {
+    right[i] = arr[m + 1 + i];
+  }
+
+  let i = 0, j = 0, k = l;
+  while (i < len1 && j < len2) {
+    if (left[i] <= right[j]) {
+      arr[k] = left[i];
+      i++;
+    } else {
+      arr[k] = right[j];
+      j++;
+    }
+    k++;
+  }
+
+  while (i < len1) {
+    arr[k] = left[i];
+    i++;
+    k++;
+  }
+
+  while (j < len2) {
+    arr[k] = right[j];
+    j++;
+    k++;
+  }
+}`,
+
+  `// Pancake Sort Implementation
+function pancakeSort(arr) {
+  for (let i = arr.length; i > 1; i--) {
+    const maxIndex = findMaxIndex(arr, i);
+    if (maxIndex !== i - 1) {
+      flip(arr, maxIndex);
+      flip(arr, i - 1);
+    }
+  }
+  return arr;
+}
+
+function findMaxIndex(arr, n) {
+  let maxIndex = 0;
+  for (let i = 0; i < n; i++) {
+    if (arr[i] > arr[maxIndex]) {
+      maxIndex = i;
+    }
+  }
+  return maxIndex;
+}
+
+function flip(arr, k) {
+  let i = 0;
+  while (i < k) {
+    [arr[i], arr[k]] = [arr[k], arr[i]];
+    i++;
+    k--;
+  }
+}`,
+
+  `// Bitonic Sort Implementation
+function bitonicSort(arr, up = true) {
+  bitonicMerge(arr, 0, arr.length, up);
+  return arr;
+}
+
+function bitonicMerge(arr, low, cnt, up) {
+  if (cnt > 1) {
+    const k = Math.floor(cnt / 2);
+    bitonicCompare(arr, low, cnt, up);
+    bitonicMerge(arr, low, k, up);
+    bitonicMerge(arr, low + k, k, up);
+  }
+}
+
+function bitonicCompare(arr, low, cnt, up) {
+  const k = Math.floor(cnt / 2);
+  for (let i = low; i < low + k; i++) {
+    if ((arr[i] > arr[i + k]) === up) {
+      [arr[i], arr[i + k]] = [arr[i + k], arr[i]];
+    }
+  }
+}`,
+
+  `// Odd-Even Sort Implementation
+function oddEvenSort(arr) {
+  let sorted = false;
+  while (!sorted) {
+    sorted = true;
+    for (let i = 1; i < arr.length - 1; i += 2) {
+      if (arr[i] > arr[i + 1]) {
+        [arr[i], arr[i + 1]] = [arr[i + 1], arr[i]];
+        sorted = false;
+      }
+    }
+    for (let i = 0; i < arr.length - 1; i += 2) {
+      if (arr[i] > arr[i + 1]) {
+        [arr[i], arr[i + 1]] = [arr[i + 1], arr[i]];
+        sorted = false;
+      }
+    }
+  }
+  return arr;
 }`
 ];
 
@@ -226,18 +511,18 @@ function generateRandomSnippet() {
 function generateSubmissions() {
   const submissions = [];
   const startDate = new Date('2024-01-01');
-  
-  // Generate exactly 10 submissions, one for each sorting implementation
-  for (let i = 0; i < 10; i++) {
+
+  // Generate exactly 20 submissions, one for each sorting implementation
+  for (let i = 0; i < 20; i++) {
     submissions.push({
       code: codeTemplates[i], // Use each template exactly once
-      userId: `test-user-${Math.floor(i / 5) + 1}`, // Distribute between user-1 and user-2
+      userId: `test-user-${i + 1}`, // Assign a unique test user to each snippet
       roomId: 'room-1',
       problemId: 'sorting-1',
       timestamp: new Date(startDate.getTime() + i * 24 * 60 * 60 * 1000)
     });
   }
-  
+
   return submissions;
 }
 
