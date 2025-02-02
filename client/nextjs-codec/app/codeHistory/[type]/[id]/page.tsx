@@ -31,17 +31,33 @@ interface SnapshotSimilarity {
     codebertScore: number;
 }
 
-const ReplayView = ({ submission, onClose }: { 
+interface EnhancedPasteInfo {
+    text: string;
+    fullCode: string;
+    timestamp: string;
+    length: number;
+    contextRange: {
+        startLine: number;
+        startColumn: number;
+        endLine: number;
+        endColumn: number;
+    };
+}
+
+const ReplayView = ({ submission, onClose }: {
     submission: SubmissionSchemaInferredType;
-    onClose: () => void 
+    onClose: () => void
 }) => {
     const [snapshots, setSnapshots] = useState<CodeSnapshot[]>([]);
     const [sequentialSimilarities, setSequentialSimilarities] = useState<SnapshotSimilarity[]>([]);
     const [loading, setLoading] = useState(true);
     const [isFetchingSimilarity, setIsFetchingSimilarity] = useState(false);
     const [selectedSnapshot, setSelectedSnapshot] = useState<CodeSnapshot | null>(null);
+    const [pasteHistory, setPasteHistory] = useState<EnhancedPasteInfo[]>([]);
 
     useEffect(() => {
+        // console.log("submission: ", submission);
+
         const fetchLearnerSnapshots = async () => {
             try {
                 setLoading(true);
@@ -51,6 +67,7 @@ const ReplayView = ({ submission, onClose }: {
                 const data = await response.json();
 
                 if (data.success && Array.isArray(data.snapshots)) {
+                    // console.log(data.success, data.snapshots);
                     const sortedSnapshots = data.snapshots.sort((a: CodeSnapshot, b: CodeSnapshot) => {
                         if (a.version && b.version) {
                             return a.version - b.version;
@@ -73,7 +90,14 @@ const ReplayView = ({ submission, onClose }: {
         };
 
         fetchLearnerSnapshots();
-    }, [submission.learner_id]);
+    }, [submission]);
+
+    useEffect(() => {
+        if (submission.paste_history && submission.paste_history.length > 0) {
+            const parsedPasteHistory: EnhancedPasteInfo[] = JSON.parse(submission.paste_history[0]);
+            setPasteHistory(parsedPasteHistory);
+        }
+    }, [submission]);
 
     const calculateSequentialSimilarities = async (snapshotsToCompare: CodeSnapshot[]) => {
         try {
@@ -131,9 +155,7 @@ const ReplayView = ({ submission, onClose }: {
                         <SequentialSimilarityVisualization
                             snapshots={snapshots}
                             sequentialSimilarities={sequentialSimilarities}
-                            pasteCount={0}
-                            bigPasteCount={0}
-                            pastedSnippets={[]}
+                            pastedSnippets={pasteHistory}
                         />
                     </CardContent>
                 </Card>
@@ -191,7 +213,8 @@ const SubmissionViewer = () => {
                 const response = await fetch(`/api/userSubmissions?${queryParam}&all=true&single=true`);
                 const submissionsData = await response.json();
                 setSubmissions(submissionsData.submission);
-                console.log("submissions: ", submissionsData.submission);
+                // console.log("submissions: ", submissionsData.submission);
+
 
                 const info = params.type === 'problem' ?
                     await GetProblems(params.id) :
@@ -208,7 +231,6 @@ const SubmissionViewer = () => {
     }, [params.type, params.id, router]);
 
     const handleShowReplay = (submission: SubmissionSchemaInferredType) => {
-        console.log("submission history:", submission);
         setSelectedSubmission(selectedSubmission?.learner_id === submission.learner_id ? null : submission);
     };
 
@@ -242,7 +264,7 @@ const SubmissionViewer = () => {
                                     className={`p-4 transition-colors ${selectedSubmission?.learner_id === submission.learner_id
                                         ? 'bg-muted border-primary'
                                         : ''
-                                    }`}
+                                        }`}
                                 >
                                     <div className="space-y-2">
                                         <h3 className="text-lg font-semibold">{submission.learner}</h3>

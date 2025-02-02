@@ -199,19 +199,6 @@ export async function POST(request: Request) {
 
     const formData = await request.formData();
 
-    const pasteHistoryString = formData.get('paste_history'); // Get the stringified JSON
-
-    let pasteHistoryArray = []; // Initialize an empty array
-    if (pasteHistoryString) {
-      try {
-        pasteHistoryArray = JSON.parse(pasteHistoryString as string); // Parse the JSON string
-      } catch (parseError) {
-        console.error("Error parsing paste_history:", parseError);
-        // Handle the parsing error appropriately, e.g., return an error response
-        return NextResponse.json({ error: "Invalid paste_history format" }, { status: 400 });
-      }
-    }
-
     const userSubmission = new UserSubmissions({
       language_used: formData.get('language_used'),
       code: formData.get('code'),
@@ -228,7 +215,7 @@ export async function POST(request: Request) {
       completion_time: formData.get('completion_time'),
       similarity_score: formData.get('similarity_score'),
       most_similar: formData.get('most_similar'),
-      paste_history: pasteHistoryArray, // Save the parsed array
+      paste_history: formData.get('paste_history'), // Save the parsed array
     });
 
     await userSubmission.save();

@@ -291,7 +291,7 @@ export default function Page() {
             attempt_count: attemptCount + 1,
             start_time: start_time,
             end_time: end_time,
-            pasteHistory: JSON.stringify(enhancedPastes),
+            paste_history: JSON.stringify(enhancedPastes),
             completion_time: end_time > 0 ? end_time - start_time : 0,
           };
 

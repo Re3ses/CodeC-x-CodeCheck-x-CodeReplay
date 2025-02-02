@@ -46,21 +46,19 @@ interface EnhancedPasteInfo {
 interface SequentialSimilarityVisualizationProps {
   snapshots: CodeSnapshot[];
   sequentialSimilarities: SequentialSimilarity[];
-  pasteCount: number;
-  bigPasteCount: number;
   pastedSnippets: EnhancedPasteInfo[];
 }
 
 const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizationProps> = ({
   snapshots,
   sequentialSimilarities,
-  pasteCount,
-  bigPasteCount,
   pastedSnippets
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [localPastedSnippets, setLocalPastedSnippets] = useState<EnhancedPasteInfo[]>([]);
   const [expandedCards, setExpandedCards] = useState<number[]>([]);
+  const [pasteCount, setPasteCount] = useState(0);
+  const [bigPasteCount, setBigPasteCount] = useState(0);
 
   const toggleCard = (index: number) => {
     setExpandedCards(prev =>
@@ -76,6 +74,14 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
     if (pastedSnippets && pastedSnippets.length > 0) {
       setLocalPastedSnippets(pastedSnippets);
     }
+    setPasteCount(pastedSnippets.length);
+    let count = 0;
+    for (let i = 0; i < pastedSnippets.length; i++) {
+        if (pastedSnippets[i].text.length > 200) {
+            count++;
+        }
+    }
+    setBigPasteCount(prevCount => prevCount + count);
   }, [pastedSnippets]);
 
   // Compute advanced metrics

@@ -15,7 +15,7 @@ export interface UserSubmissions extends mongoose.Document {
   completion_time: number;
   start_time: number;
   end_time: number;
-  paste_history: string[];
+  paste_history: string;
 }
 
 const UserSubmissionsSchema = new mongoose.Schema<UserSubmissions>({
@@ -79,8 +79,8 @@ const UserSubmissionsSchema = new mongoose.Schema<UserSubmissions>({
     default: 0,
   },
   paste_history: {
-    type: [String],
-    default: [],
+    type: String,
+    default: "",
   }
 });
 
