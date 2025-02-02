@@ -23,6 +23,11 @@ import { getUser } from '@/lib/auth';
 import languagesCode from '@/utilities/languages_code.json';
 import SafeHtml from '@/components/SafeHtml';
 
+// Code Replay Imports
+import { editor as Monaco } from 'monaco-editor';
+import { isPagesAPIRouteMatch } from 'next/dist/server/future/route-matches/pages-api-route-match';
+import { ColumnSpacingIcon } from '@radix-ui/react-icons';
+
 type languageData = {
   id: number;
   name: string;
@@ -44,12 +49,37 @@ interface Data {
   completion_time: number;
 }
 
+// Code Replay definitions
+interface CodeSnapshot {
+  code: string;
+  timestamp: string;
+  userId: string;
+  problemId?: string;
+  roomId?: string;
+  submissionId?: string;
+  version?: number;
+}
+
+interface EnhancedPasteInfo {
+  text: string;          // The pasted text
+  fullCode: string;      // Complete code after paste
+  timestamp: string;
+  length: number;
+  contextRange: {        // Range of the paste in the full code
+    startLine: number;
+    startColumn: number;
+    endLine: number;
+    endColumn: number;
+  };
+}
+
+
 export default function Page() {
-  const editorRef = useRef(null);
+  const editorRef = useRef<Monaco.IStandaloneCodeEditor | null>(null);
 
   const params = useParams<{ slug: string; problemId: string }>();
   const [problem, setProblem] = useState<ProblemSchemaInferredType>();
-  const [editorValue, setEditorValue] = useState<any>();
+  const [editorValue, setEditorValue] = useState<any>("// Start coding here");
   const [selectedLang, setSelectedLang] = useState<string>();
   const [compileResult, setCompileResult] = useState<any>();
   const [languages, setLanguages] = useState<languageData[]>();
@@ -60,9 +90,18 @@ export default function Page() {
   const [learner, setLearner] = useState<string>();
   const [learner_id, setLearnerId] = useState<string>();
   const [attemptCount, setAttemptCount] = useState<number>(0);
-  const [latestSave, setLatestSave] = useState<string>('');
-  const [saveHistory, setSaveHistory] = useState<string[]>([]);
   const langCodes: LanguageCodes = languagesCode;
+
+  // Code Replay states
+  const [saveMode, setSaveMode] = useState<'manual' | 'auto'>('auto');
+  // const [code, setCode] = useState<any>('// Start coding here');
+  const [lastSaved, setLastSaved] = useState<string>(editorValue);
+  const [saving, setSaving] = useState(false);
+  const [snapshots, setSnapshots] = useState<CodeSnapshot[]>([]);
+  const [pasteCount, setPasteCount] = useState(0);
+  const [bigPasteCount, setBigPasteCount] = useState(0);
+  const [enhancedPastes, setEnhancedPastes] = useState<EnhancedPasteInfo[]>([]);
+
 
   // for submission button
   const [disabled, setDisabled] = useState(false);
@@ -95,9 +134,9 @@ export default function Page() {
     });
   }, [params.problemId]);
 
-  function handleEditorDidMount(editor: any) {
-    editorRef.current = editor;
-  }
+  // function handleEditorDidMount(editor: any) {
+  //   editorRef.current = editor;
+  // }
 
   /**
    * @param input - standard input / custom input
@@ -234,16 +273,11 @@ export default function Page() {
           }
 
           console.log('hello');
-
-          if (saveHistory[saveHistory.length - 1] !== editorValue) {
-            saveHistory.push(editorValue);
-            console.log(saveHistory);
-          }
-
+          console.log('enhancedPastes', enhancedPastes);
+          console.log('enhancedPastes', JSON.stringify(enhancedPastes));
           const data = {
             language_used: language_used.name,
             code: editorValue,
-            history: JSON.stringify(saveHistory),
             score: score.accepted_count,
             score_overall_count: score.overall_count,
             verdict:
@@ -257,6 +291,7 @@ export default function Page() {
             attempt_count: attemptCount + 1,
             start_time: start_time,
             end_time: end_time,
+            paste_history: JSON.stringify(enhancedPastes),
             completion_time: end_time > 0 ? end_time - start_time : 0,
           };
 
@@ -317,248 +352,324 @@ export default function Page() {
 
   // CODE REPLAY FEATURE
 
-  // Function to check if code has significant changes
-  const hasSignificantChanges = (newCode: string | undefined, oldCode: string): boolean => {
-    if (!saveHistory || !newCode) return false;
-    const lengthDiff = Math.abs(newCode.length - oldCode.length);
-    if (lengthDiff > 50) {
-      // console.log('Significant change in length detected:', lengthDiff);
-      return true;
-    }
-    return false;
-  };
+  // Auto-save function
+  const autoSaveCode = async (codeToSave: string) => {
+    if (codeToSave === lastSaved) return;
+    setSaving(true);
+    try {
+      console.log('Auto-saving...');
+      // const userId = await getUserId();
 
-  // add to history
-  const addToHistory = (newCode: string) => {
-    // Only add if the code is different from the latest save
-    if (newCode !== latestSave) {
-      setLatestSave(newCode);
-      setSaveHistory([...saveHistory, newCode]);
-    }
-  };
+      // Find the last version from existing snapshots
+      const lastVersion = snapshots.length > 0
+        ? Math.max(...snapshots.map(snapshot => snapshot.version || 0))
+        : 0;
 
-  const saveCodeHistory = () => {
-    if (
-      editorValue !== '' &&
-      editorValue !== latestSave &&
-      hasSignificantChanges(editorValue, latestSave)
-    ) {
-      addToHistory(editorValue);
+      // Increment the last version by 1
+      const nextVersion = lastVersion + 1;
+
+      const saveResponse = await fetch('/api/codereplayV3/code-snapshots', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          code: codeToSave,
+          userId: learner_id,
+          problemId: params.problemId,
+          roomId: params.slug,
+          submissionId: `submission-${Date.now()}`,
+          version: nextVersion // Explicitly pass the next version
+          }),
+        });
+
+        if(saveResponse.ok) {
+          const savedData = await saveResponse.json();
+      if (savedData.snippet) {
+        // Update snapshots while maintaining order
+        setSnapshots(prevSnapshots => {
+          const updatedSnapshots = [...prevSnapshots, savedData.snippet];
+          return updatedSnapshots.sort((a, b) => {
+            if (a.version && b.version) {
+              return a.version - b.version;
+            }
+            return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
+          });
+        });
+
+        setLastSaved(codeToSave);
+
+        // // Recalculate sequential similarities
+        // await calculateSequentialSimilarities([...snapshots, savedData.snippet]);
+        console.log("snapshots: ", snapshots);
+      }
     }
+
+
+    } catch (error) {
+    console.error('Auto-save error:', error);
+  } finally {
+    setSaving(false);
   }
-  
-  // autosave feature
-  useEffect(() => {
-    // console.log("Auto Save initiated.")
-    // let runs = 0;
+};
 
-    // runs when editorValue, saveHistory or latestSave changes
+// Function to check if code has significant changes
+const hasSignificantChanges = (newCode: string, oldCode: string) => {
+  const lengthDiff = Math.abs(newCode.length - oldCode.length);
+  return lengthDiff > 50; // Consider changes significant if more than 50 characters are added/removed
+};
 
-    const handleVisibilityChange = () => {
-      if (document.hidden && editorValue !== latestSave) {
-        saveCodeHistory();
-      }
-    };
+// Auto-save effect
+useEffect(() => {
+  if (saveMode !== 'auto') return;
 
-    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-      if (editorValue !== latestSave) {
-        saveCodeHistory();
-      }
-    };
-    
-    saveCodeHistory();
+  let autoSaveTimer: NodeJS.Timeout;
 
-    // Saves changes after x ms of inactivity
-    const autoSaveTimer = setTimeout(() => {
-      // console.log("Attempting save after 1000ms of inactivity")
-      saveCodeHistory();
+  const handleVisibilityChange = () => {
+    if (document.hidden && editorValue !== lastSaved) {
+      autoSaveCode(editorValue);
+    }
+  };
+
+  const handleBeforeUnload = () => {
+    if (editorValue !== lastSaved) {
+      autoSaveCode(editorValue);
+    }
+  };
+
+  // Save on significant changes or every 10 seconds
+  if (editorValue !== '// Start coding here' &&
+    (hasSignificantChanges(editorValue, lastSaved) || editorValue !== lastSaved)) {
+    autoSaveTimer = setTimeout(() => {
+      autoSaveCode(editorValue);
     }, 10000);
+  }
 
-    // Add event listeners for tab/window changes
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    window.addEventListener('beforeunload', handleBeforeUnload);
+  // Add event listeners for tab/window changes
+  document.addEventListener('visibilitychange', handleVisibilityChange);
+  window.addEventListener('beforeunload', handleBeforeUnload);
 
-    // console.log("Auto Save run count:", runs)
-    // runs = runs + 1;
+  return () => {
+    clearTimeout(autoSaveTimer);
+    document.removeEventListener('visibilitychange', handleVisibilityChange);
+    window.removeEventListener('beforeunload', handleBeforeUnload);
+  };
+}, [editorValue, saveMode, lastSaved]);
+
+// Updated handleEditorMount with enhanced paste tracking
+const handleEditorMount = (editor: Monaco.IStandaloneCodeEditor) => {
+  editorRef.current = editor;
+
+  editor.onDidPaste((event) => {
+    try {
+      console.log("PASTE EVENT:", event);
+      const model = editor.getModel();
+      if (!model) return;
+
+      // Get the pasted content and its range
+      const pastedText = model.getValueInRange(event.range);
+      const fullCode = model.getValue();
+
+      // Create enhanced paste info
+      const newPaste: EnhancedPasteInfo = {
+        text: pastedText,
+        fullCode: fullCode,
+        timestamp: new Date().toISOString(),
+        length: pastedText.length,
+        contextRange: {
+          startLine: event.range.startLineNumber,
+          startColumn: event.range.startColumn,
+          endLine: event.range.endLineNumber,
+          endColumn: event.range.endColumn
+        }
+      };
+
+      // Update paste tracking state
+      setEnhancedPastes(prev => [...prev, newPaste]);
+      setPasteCount(prev => prev + 1);
+      if (pastedText.length > 200) {
+        setBigPasteCount(prev => prev + 1);
+      }
+
+      // Optional: Automatically save after a paste
+      // if (saveMode === 'auto') {
+      //   autoSaveCode(fullCode);
+      // }
+
+    } catch (error) {
+      console.error('Error handling paste event:', error);
+    }
+  });
+};
+
+useEffect(() => {
+  console.log("Paste History: ", enhancedPastes);
+}, [enhancedPastes]);
 
 
-    return () => {
-      clearTimeout(autoSaveTimer);
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
+return (
+  <PanelGroup direction="horizontal">
+    <Panel className="min-w-[20em] overflow-scroll flex flex-col gap-2">
+      <div className="p-3 bg-zinc-900">
+        <p>Problem description</p>
+      </div>
 
-  }, [editorValue]);
-
-  useEffect(() => {
-    console.log("Save History:", saveHistory)
-    console.log("Latest Save:", latestSave)
-  }, [saveHistory, latestSave]);
-
-  return (
-    <PanelGroup direction="horizontal">
-      <Panel className="min-w-[20em] overflow-scroll flex flex-col gap-2">
-        <div className="p-3 bg-zinc-900">
-          <p>Problem description</p>
-        </div>
-
-        {/* TODO: Make problem preview into component */}
-        <div className="p-3 flex-1 overflow-auto">
-          <div
-            className="text-sm
+      {/* TODO: Make problem preview into component */}
+      <div className="p-3 flex-1 overflow-auto">
+        <div
+          className="text-sm
                           [&_li]:list-decimal
                           [&_li]:ml-8
                           [&_li]:py-2
                           [&_code]:bg-[#1E1E1E]
                           [&_code]:p-1
                           [&_h4]:font-bold"
-          >
-            <SafeHtml
-              className="text-center font-bold pb-2"
-              html={problem?.name!}
-            />
-            <SafeHtml className="pb-2" html={problem?.description!} />
-            <SafeHtml className="pb-2" html={problem?.constraints!} />
-            <SafeHtml className="pb-2" html={problem?.input_format!} />
-            <SafeHtml className="pb-2" html={problem?.output_format!} />
-          </div>
+        >
+          <SafeHtml
+            className="text-center font-bold pb-2"
+            html={problem?.name!}
+          />
+          <SafeHtml className="pb-2" html={problem?.description!} />
+          <SafeHtml className="pb-2" html={problem?.constraints!} />
+          <SafeHtml className="pb-2" html={problem?.input_format!} />
+          <SafeHtml className="pb-2" html={problem?.output_format!} />
         </div>
-        <div className="p-3">
-          <p className="bg-zinc-900 p-3 rounded-t-lg">Sample cases</p>
-          <table className="w-full">
-            <tr>
-              <th>Sample input</th>
-              <th>Sample output</th>
-            </tr>
-            {problem?.test_cases.map((val: any, index: number) => {
-              if (val.is_sample) {
-                return (
-                  <tr
-                    className={index % 2 == 0 ? '' : 'bg-zinc-900'}
-                    key={index}
-                  >
-                    <td>{val.input}</td>
-                    <td>{val.output}</td>
-                  </tr>
-                );
-              }
-            })}
-          </table>
-        </div>
-        <div className="flex flex-col p-3">
-          <div className="flex gap-2 bg-zinc-900 p-3 rounded-t-lg">
-            <p>Custom input</p>
-            <Switch
-              checked={showCustomInput}
-              onCheckedChange={setShowCustomInput}
-            />
-          </div>
-          <textarea
-            className={`${showCustomInput ? 'block' : 'hidden'
-              } p-3 bg-zinc-800`}
-            rows={8}
-            name="custom-input"
-            id="custom-input"
-            placeholder="Custom input here"
-            value={inputVal}
-            onChange={(e) => setInputVal(e.currentTarget.value)}
+      </div>
+      <div className="p-3">
+        <p className="bg-zinc-900 p-3 rounded-t-lg">Sample cases</p>
+        <table className="w-full">
+          <tr>
+            <th>Sample input</th>
+            <th>Sample output</th>
+          </tr>
+          {problem?.test_cases.map((val: any, index: number) => {
+            if (val.is_sample) {
+              return (
+                <tr
+                  className={index % 2 == 0 ? '' : 'bg-zinc-900'}
+                  key={index}
+                >
+                  <td>{val.input}</td>
+                  <td>{val.output}</td>
+                </tr>
+              );
+            }
+          })}
+        </table>
+      </div>
+      <div className="flex flex-col p-3">
+        <div className="flex gap-2 bg-zinc-900 p-3 rounded-t-lg">
+          <p>Custom input</p>
+          <Switch
+            checked={showCustomInput}
+            onCheckedChange={setShowCustomInput}
           />
         </div>
-      </Panel>
-      <PanelResizeHandle className="bg-zinc-700 w-[2px]" />
-      <Panel>
-        <PanelGroup direction="vertical" className="flex flex-col flex-1">
-          <Panel className="flex-1 flex flex-col min-h-[10em]">
-            <div className="flex justify-between bg-zinc-900 p-3">
-              <div className="flex gap-2 my-auto">
-                <div>
-                  <select
-                    className="p-2 rounded-md"
-                    name="languages"
-                    form="submit-form"
-                    onChange={(e) => {
-                      setSelectedLang(e.currentTarget.value);
-                    }}
-                    required
-                  >
-                    <option value="">None</option>
-                    {languages?.map((val) => {
-                      return (
-                        <option value={val.id} key={val.id}>
-                          {val.name}
-                        </option>
-                      );
-                    })}
-                  </select>
-                </div>
-              </div>
-              <div className="flex gap-2">
-                <Button onClick={() => handleTry()}>Try</Button>
-                <Button
-                  disabled={disabled}
-                  onClick={() => {
-                    disableSubmissionButtonTemporarily();
-                    handleSubmit(false);
-                    setShowCustomInput(false);
+        <textarea
+          className={`${showCustomInput ? 'block' : 'hidden'
+            } p-3 bg-zinc-800`}
+          rows={8}
+          name="custom-input"
+          id="custom-input"
+          placeholder="Custom input here"
+          value={inputVal}
+          onChange={(e) => setInputVal(e.currentTarget.value)}
+        />
+      </div>
+    </Panel>
+    <PanelResizeHandle className="bg-zinc-700 w-[2px]" />
+    <Panel>
+      <PanelGroup direction="vertical" className="flex flex-col flex-1">
+        <Panel className="flex-1 flex flex-col min-h-[10em]">
+          <div className="flex justify-between bg-zinc-900 p-3">
+            <div className="flex gap-2 my-auto">
+              <div>
+                <select
+                  className="p-2 rounded-md"
+                  name="languages"
+                  form="submit-form"
+                  onChange={(e) => {
+                    setSelectedLang(e.currentTarget.value);
                   }}
+                  required
                 >
-                  Submit
-                </Button>
+                  <option value="">None</option>
+                  {languages?.map((val) => {
+                    return (
+                      <option value={val.id} key={val.id}>
+                        {val.name}
+                      </option>
+                    );
+                  })}
+                </select>
               </div>
             </div>
-            <div className="h-full">
-              <Editor
-                theme="vs-dark"
-                defaultLanguage="plaintext"
-                language={langCodes[String(selectedLang)]}
-                onMount={handleEditorDidMount}
-                onChange={setEditorValue}
-              />
+            <div className="flex gap-2">
+              <Button onClick={() => handleTry()}>Try</Button>
+              <Button
+                disabled={disabled}
+                onClick={() => {
+                  disableSubmissionButtonTemporarily();
+                  handleSubmit(false);
+                  setShowCustomInput(false);
+                }}
+              >
+                Submit
+              </Button>
             </div>
-          </Panel>
-          <PanelResizeHandle className="bg-zinc-700 h-[2px]" />
-          <Panel className="h-[20em] overflow-scroll flex min-h-[10em]">
-            <div className="flex-1 overflow-scroll whitespace-pre-wrap">
-              {showCustomInput ? (
-                compileResult?.status.id != 3 ? (
-                  <>{compileResult?.stderr}</>
-                ) : (
-                  <>
-                    <div>
-                      <p className="bg-zinc-900/70 p-3 sticky top-0 backdrop-blur-sm">
-                        Output
-                      </p>
-                      <p className="p-3">{atob(compileResult?.stdout)}</p>
-                    </div>
-                  </>
-                )
+          </div>
+          <div className="h-full">
+            <Editor
+              theme="vs-dark"
+              defaultValue='// Start coding here'
+              defaultLanguage="plaintext"
+              language={langCodes[String(selectedLang)]}
+              onMount={handleEditorMount}
+              onChange={(value) => setEditorValue(value || '')}
+            />
+          </div>
+        </Panel>
+        <PanelResizeHandle className="bg-zinc-700 h-[2px]" />
+        <Panel className="h-[20em] overflow-scroll flex min-h-[10em]">
+          <div className="flex-1 overflow-scroll whitespace-pre-wrap">
+            {showCustomInput ? (
+              compileResult?.status.id != 3 ? (
+                <>{compileResult?.stderr}</>
               ) : (
                 <>
-                  <p className="bg-zinc-900 p-3">
-                    Result | Accepted: {score?.accepted_count}/
-                    {score?.overall_count}
-                  </p>
-                  <div className="p-3">
-                    {batchResult?.map((val: any, index: number) => {
-                      return (
-                        <p
-                          className={`${index % 2 ? 'bg-zinc-700' : ''} ${val.status.description !== 'Accepted'
-                            ? 'text-[red]'
-                            : ''
-                            }`}
-                          key={index}
-                        >
-                          Case: {index} - {val.status.description}
-                        </p>
-                      );
-                    })}
+                  <div>
+                    <p className="bg-zinc-900/70 p-3 sticky top-0 backdrop-blur-sm">
+                      Output
+                    </p>
+                    <p className="p-3">{atob(compileResult?.stdout)}</p>
                   </div>
                 </>
-              )}
-            </div>
-          </Panel>
-        </PanelGroup>
-      </Panel>
-    </PanelGroup>
-  );
+              )
+            ) : (
+              <>
+                <p className="bg-zinc-900 p-3">
+                  Result | Accepted: {score?.accepted_count}/
+                  {score?.overall_count}
+                </p>
+                <div className="p-3">
+                  {batchResult?.map((val: any, index: number) => {
+                    return (
+                      <p
+                        className={`${index % 2 ? 'bg-zinc-700' : ''} ${val.status.description !== 'Accepted'
+                          ? 'text-[red]'
+                          : ''
+                          }`}
+                        key={index}
+                      >
+                        Case: {index} - {val.status.description}
+                      </p>
+                    );
+                  })}
+                </div>
+              </>
+            )}
+          </div>
+        </Panel>
+      </PanelGroup>
+    </Panel>
+  </PanelGroup>
+);
 }

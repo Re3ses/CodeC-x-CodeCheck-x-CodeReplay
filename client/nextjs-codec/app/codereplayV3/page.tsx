@@ -65,6 +65,7 @@ export default function CodeSnapshotComparisonApp() {
 
     editor.onDidPaste((event) => {
       try {
+        console.log("Paste event:", event);
         const model = editor.getModel();
         if (!model) return;
 
@@ -85,6 +86,7 @@ export default function CodeSnapshotComparisonApp() {
             endColumn: event.range.endColumn
           }
         };
+        console.log("New Paste:", newPaste);
 
         // Update paste tracking state
         setEnhancedPastes(prev => [...prev, newPaste]);
@@ -97,7 +99,7 @@ export default function CodeSnapshotComparisonApp() {
         if (saveMode === 'auto') {
           autoSaveCode(fullCode);
         }
-
+        console.log("Paste history:", enhancedPastes);
       } catch (error) {
         console.error('Error handling paste event:', error);
       }

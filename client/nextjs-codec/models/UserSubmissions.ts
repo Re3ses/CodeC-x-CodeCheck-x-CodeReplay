@@ -3,7 +3,6 @@ import mongoose from 'mongoose';
 export interface UserSubmissions extends mongoose.Document {
   language_used: string;
   code: string;
-  history: string[];
   score: number;
   score_overall_count: number;
   verdict: string;
@@ -16,7 +15,7 @@ export interface UserSubmissions extends mongoose.Document {
   completion_time: number;
   start_time: number;
   end_time: number;
-  most_similar: string;
+  paste_history: string;
 }
 
 const UserSubmissionsSchema = new mongoose.Schema<UserSubmissions>({
@@ -27,10 +26,6 @@ const UserSubmissionsSchema = new mongoose.Schema<UserSubmissions>({
   code: {
     type: String,
     required: [true, 'Enter programming language used'],
-  },
-  history: {
-    type: [String],
-    default: [],
   },
   score: {
     type: Number,
@@ -83,10 +78,10 @@ const UserSubmissionsSchema = new mongoose.Schema<UserSubmissions>({
     type: Number, // in ms
     default: 0,
   },
-  most_similar: {
+  paste_history: {
     type: String,
-    default: '',
-  },
+    default: "",
+  }
 });
 
 export default mongoose.models.UserSubmission ||

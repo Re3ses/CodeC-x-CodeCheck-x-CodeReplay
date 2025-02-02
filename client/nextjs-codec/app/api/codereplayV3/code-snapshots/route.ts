@@ -1,3 +1,4 @@
+// code snapshot route for codereplay v3
 import { NextResponse } from 'next/server';
 import dbConnect from '../../../../lib/dbConnect';
 import mongoose from 'mongoose';
@@ -14,62 +15,101 @@ const CodeSnapshotSchema = new mongoose.Schema({
 });
 
 // Use CodeSnapshots instead of CodeSnippet
-const CodeSnapshots = mongoose.models.CodeSnapshots || 
+const CodeSnapshots = mongoose.models.CodeSnapshots ||
   mongoose.model('CodeSnapshots', CodeSnapshotSchema);
 
-export async function GET() {
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const learnerId = searchParams.get('learner_id');
+
   try {
     await dbConnect();
 
-    // Fetch all snapshots, sorted by userId, problemId, and version
-    const snapshots = await CodeSnapshots.find({})
-      .sort({ 
-        userId: 1, 
-        problemId: 1, 
-        version: 1 
-      })
-      .lean();
+    // Build the query based on search parameters
+    const query: { [key: string]: any } = {};
+    if (learnerId) query['userId'] = learnerId;
 
-    return NextResponse.json({ 
-      success: true, 
-      snapshots: snapshots.map(snapshot => ({
-        code: snapshot.code,
-        timestamp: snapshot.timestamp.toISOString(),
-        userId: snapshot.userId,
-        problemId: snapshot.problemId,
-        roomId: snapshot.roomId,
-        submissionId: snapshot.submissionId,
-        version: snapshot.version
-      })),
+    // Use a single query with conditional filtering
+    const snapshots = await CodeSnapshots.find(query)
+      .sort({
+        userId: 1,
+        problemId: 1,
+        version: 1
+      })
+      .lean()
+      .exec(); // Adding .exec() for better error handling
+
+    // Early return if no snapshots found
+    if (!snapshots.length) {
+      return NextResponse.json({
+        success: true,
+        snapshots: [],
+        metadata: {
+          totalSnapshots: 0,
+          uniqueUsers: 0,
+          uniqueProblems: 0
+        }
+      });
+    }
+
+    // Process snapshots data
+    const processedSnapshots = snapshots.map(snapshot => ({
+      code: snapshot.code,
+      timestamp: snapshot.timestamp.toISOString(),
+      userId: snapshot.userId,
+      problemId: snapshot.problemId,
+      roomId: snapshot.roomId,
+      submissionId: snapshot.submissionId,
+      version: snapshot.version
+    }));
+
+    // Calculate metadata using Set for better performance
+    const uniqueUsers = new Set(snapshots.map(s => s.userId));
+    const uniqueProblems = new Set(snapshots.map(s => s.problemId));
+
+    return NextResponse.json({
+      success: true,
+      snapshots: processedSnapshots,
       metadata: {
         totalSnapshots: snapshots.length,
-        uniqueUsers: [...new Set(snapshots.map(s => s.userId))].length,
-        uniqueProblems: [...new Set(snapshots.map(s => s.problemId))].length
+        uniqueUsers: uniqueUsers.size,
+        uniqueProblems: uniqueProblems.size
       }
     });
   } catch (error) {
     console.error('Error fetching snapshots:', error);
-    return NextResponse.json({ 
-      success: false, 
+
+    // Determine appropriate status code
+    const statusCode = error.name === 'ValidationError' ? 400 : 500;
+
+    return NextResponse.json({
+      success: false,
       error: error instanceof Error ? error.message : 'Failed to fetch snapshots',
       snapshots: [],
-      metadata: {} 
-    }, { status: 500 });
+      metadata: {}
+    }, { status: statusCode });
   }
 }
+
 
 export async function POST(request: Request) {
   try {
     await dbConnect();
-    
+
     // Parse the entire request body
     const { code, userId, problemId, roomId, submissionId, version } = await request.json();
 
     // Validate required fields
-    if (!code || !userId || !problemId || !roomId) {
+    const missingFields = [];
+    if (!code) missingFields.push('code');
+    if (!userId) missingFields.push('userId');
+    if (!problemId) missingFields.push('problemId');
+    if (!roomId) missingFields.push('roomId');
+
+    if (missingFields.length > 0) {
       return NextResponse.json({
         success: false,
-        error: 'Missing required fields'
+        error: `Missing required fields: ${missingFields.join(', ')}`
       }, { status: 400 });
     }
 
@@ -117,3 +157,4 @@ export async function POST(request: Request) {
     }, { status: 500 });
   }
 }
+

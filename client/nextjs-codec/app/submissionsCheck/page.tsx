@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import ComparisonResults from "@/components/ComparisonResults";
 import BorderedContainer from "@/components/ui/wrappers/BorderedContainer";
-import SourceCodeViewer from "@/components/ui/comparison-ui/sourceCodeViewer";
+import SourceCodeViewer from "@/components/ui/comparison-ui/SourceCodeViewer";
 
 interface StoredFile {
   name: string;
@@ -109,10 +109,6 @@ export default function Page() {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    console.log("results:", results);
-  }, [results]);
 
   useEffect(() => {
     if (storedFiles.length > 1) {
