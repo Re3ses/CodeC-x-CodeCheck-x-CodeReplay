@@ -73,7 +73,7 @@ const ReplayView = ({ submission, onClose }: {
         };
 
         fetchLearnerSnapshots();
-    }, [submission.learner_id, submission.attempt_count]);
+    }, [submission.learner_id]);
 
     const calculateSequentialSimilarities = async (snapshotsToCompare: CodeSnapshot[]) => {
         try {
@@ -84,7 +84,6 @@ const ReplayView = ({ submission, onClose }: {
                 body: JSON.stringify({
                     snapshots: snapshotsToCompare,
                     learnerId: submission.learner_id,
-                    attemptCount: submission.attempt_count
                 }),
             });
 
@@ -209,6 +208,7 @@ const SubmissionViewer = () => {
     }, [params.type, params.id, router]);
 
     const handleShowReplay = (submission: SubmissionSchemaInferredType) => {
+        console.log("submission history:", submission);
         setSelectedSubmission(selectedSubmission?.learner_id === submission.learner_id ? null : submission);
     };
 
@@ -249,7 +249,7 @@ const SubmissionViewer = () => {
                                         <p className="text-sm text-muted-foreground">
                                             Latest: {new Date(submission.submission_date).toLocaleDateString()}
                                             <br />
-                                            Attempt: {submission.attempt_count}
+                                            Attempts: {submission.attempt_count}
                                         </p>
                                         <Button
                                             variant={selectedSubmission?.learner_id === submission.learner_id ? "default" : "secondary"}

@@ -273,6 +273,8 @@ export default function Page() {
           }
 
           console.log('hello');
+          console.log('enhancedPastes', enhancedPastes);
+          console.log('enhancedPastes', JSON.stringify(enhancedPastes));
           const data = {
             language_used: language_used.name,
             code: editorValue,
@@ -374,7 +376,6 @@ export default function Page() {
           userId: learner_id,
           problemId: params.problemId,
           roomId: params.slug,
-          attemptCount: attemptCount + 1,
           submissionId: `submission-${Date.now()}`,
           version: nextVersion // Explicitly pass the next version
           }),
@@ -493,12 +494,15 @@ const handleEditorMount = (editor: Monaco.IStandaloneCodeEditor) => {
       //   autoSaveCode(fullCode);
       // }
 
-      console.log("Paste History: ", enhancedPastes);
     } catch (error) {
       console.error('Error handling paste event:', error);
     }
   });
 };
+
+useEffect(() => {
+  console.log("Paste History: ", enhancedPastes);
+}, [enhancedPastes]);
 
 
 return (
