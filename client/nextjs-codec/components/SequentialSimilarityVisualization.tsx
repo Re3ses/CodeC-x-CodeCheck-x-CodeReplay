@@ -59,7 +59,7 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
   pastedSnippets
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [localPastedSnippets, setLocalPastedSnippets] = useState<PasteInfo[]>([]);
+  const [localPastedSnippets, setLocalPastedSnippets] = useState<EnhancedPasteInfo[]>([]);
   const [expandedCards, setExpandedCards] = useState<number[]>([]);
 
   const toggleCard = (index: number) => {
@@ -413,128 +413,6 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
           </div>
         </DialogContent>
       </Dialog>
-
-      {/* Pasted Snippets Modal */}
-      {/* <Dialog open={isModalOpen} onClose={() => setIsModalOpen(false)} className="relative z-50">
-        <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
-        <div className="fixed inset-0 flex items-center justify-center p-4">
-          <Dialog.Panel className="w-full max-w-4xl rounded-lg bg-gray-800 p-6 max-h-[80vh] flex flex-col">
-            <Dialog.Title className="text-lg font-semibold mb-4 sticky top-0 bg-gray-800">
-              Pasted Snippets ({localPastedSnippets.length})
-            </Dialog.Title>
-            
-            <div className="flex-1 overflow-y-auto pr-2">
-              {localPastedSnippets.length === 0 ? (
-                <div className="text-gray-400">No pasted snippets found.</div>
-              ) : (
-                <div className="space-y-4">
-                  {localPastedSnippets.map((snippet, index) => (
-                    <div 
-                      key={index} 
-                      className="bg-gray-700 rounded-lg overflow-hidden"
-                    > */}
-      {/* Collapsible Card Header - Always Visible */}
-      {/* <button
-                        onClick={() => toggleCard(index)}
-                        className="w-full p-4 flex items-center justify-between text-left hover:bg-gray-600 transition-colors"
-                      >
-                        <div>
-                          <div className="font-semibold">Paste {index + 1}</div>
-                          <div className="text-sm text-gray-400">
-                            {new Date(snippet.timestamp).toLocaleString()}
-                          </div>
-                        </div>
-                        <div className="text-sm text-gray-400">
-                          {snippet.length} characters at line {snippet.contextRange.startLine}
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <span className="text-sm text-gray-400">
-                            {expandedCards.includes(index) ? 'Hide Details' : 'Show Details'}
-                          </span>
-                          <svg
-                            className={`w-5 h-5 transform transition-transform ${
-                              expandedCards.includes(index) ? 'rotate-180' : ''
-                            }`}
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M19 9l-7 7-7-7"
-                            />
-                          </svg>
-                        </div>
-                      </button> */}
-
-      {/* Expanded Content */}
-      {/* {expandedCards.includes(index) && (
-                        <div className="border-t border-gray-600 p-4"> */}
-      {/* Full Context Editor */}
-      {/* <div className="mt-2">
-                            <div className="text-sm font-semibold mb-2">Code Context:</div>
-                            <Editor
-                              height="200px"
-                              defaultLanguage="javascript"
-                              value={snippet.fullCode}
-                              theme="vs-dark"
-                              options={{
-                                readOnly: true,
-                                minimap: { enabled: false },
-                                fontSize: 12,
-                                scrollBeyondLastLine: false,
-                                wordWrap: 'on',
-                                renderLineHighlight: 'none',
-                                hideCursorInOverviewRuler: true,
-                                overviewRulerBorder: false,
-                              }}
-                              onMount={(editor) => {
-                                const decoration = {
-                                  range: new (window as any).monaco.Range(
-                                    snippet.contextRange.startLine,
-                                    snippet.contextRange.startColumn,
-                                    snippet.contextRange.endLine,
-                                    snippet.contextRange.endColumn
-                                  ),
-                                  options: {
-                                    inlineClassName: 'bg-yellow-500 bg-opacity-20',
-                                    isWholeLine: false,
-                                    overviewRuler: {
-                                      color: '#ffd700',
-                                      position: 1
-                                    }
-                                  }
-                                };
-                                editor.createDecorationsCollection([decoration]);
-                                
-                                // Scroll to the pasted region
-                                setTimeout(() => {
-                                  editor.revealLineInCenter(snippet.contextRange.startLine);
-                                }, 100);
-                              }}
-                            />
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            <div className="mt-4 sticky bottom-0 bg-gray-800 pt-2">
-              <button 
-                onClick={() => setIsModalOpen(false)}
-                className="bg-gray-700 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-colors"
-              >
-                Close
-              </button>
-            </div>
-          </Dialog.Panel>
-        </div>
-      </Dialog> */}
     </div>
   );
 };
