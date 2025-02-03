@@ -52,7 +52,7 @@ export default function Nav(props: {
           // },
           {
             id: 'codeReplay',
-            label: 'CodeBERT ES',
+            label: 'CodeCheck',
             href: `/codereplay`,
           },
           {

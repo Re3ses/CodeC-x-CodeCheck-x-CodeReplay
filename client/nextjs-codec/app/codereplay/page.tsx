@@ -1,6 +1,6 @@
 //page.tsx
 'use client'
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ChevronDown, ChevronUp, FileCode2 } from "lucide-react";
@@ -10,6 +10,37 @@ import { NextResponse } from 'next/server';
 import SimilarityLoading from './SimilarityLoading';
 import mongoose, { Model, Schema } from 'mongoose';
 import SimilarityNetwork from './SimilarityMatrix';
+import SequentialSimilarityVisualization from './SequentialSimilarityVisualization';
+
+interface CodeSnapshot {
+  code: string;
+  timestamp: string;
+  userId: string;
+  problemId?: string;
+  roomId?: string;
+  submissionId?: string;
+  version?: number;
+}
+
+interface SnapshotSimilarity {
+  fromIndex: number;
+  toIndex: number;
+  similarity: number;
+  codebertScore: number;
+}
+
+interface EnhancedPasteInfo {
+  text: string;
+  fullCode: string;
+  timestamp: string;
+  length: number;
+  contextRange: {
+    startLine: number;
+    startColumn: number;
+    endLine: number;
+    endColumn: number;
+  };
+}
 
 interface SimilarSnippet {
   userId: string;
@@ -78,41 +109,99 @@ export default function CodeReplayApp() {
   const [expandedSnippet, setExpandedSnippet] = useState(null);
   const [isMatrixLoading, setIsMatrixLoading] = useState(true);
   const [referenceFile, setReferenceFile] = useState<string>(''); // State to hold the reference file
+  
+  const [snapshots, setSnapshots] = useState<CodeSnapshot[]>([]);
+  const [sequentialSimilarities, setSequentialSimilarities] = useState<SnapshotSimilarity[]>([]);
+  const [pasteCount, setPasteCount] = useState(0);
+  const [bigPasteCount, setBigPasteCount] = useState(0);
+  const [enhancedPastes, setEnhancedPastes] = useState<EnhancedPasteInfo[]>([]);
+
+  const editorRef = useRef<Monaco.IStandaloneCodeEditor | null>(null);
+
+  const handleEditorMount = (editor: Monaco.IStandaloneCodeEditor, monaco: typeof Monaco) => {
+    editorRef.current = editor;
+
+    editor.onDidPaste((event) => {
+      try {
+        const model = editor.getModel();
+        if (!model) return;
+
+        const pastedText = model.getValueInRange(event.range);
+        const fullCode = model.getValue();
+
+        const newPaste: EnhancedPasteInfo = {
+          text: pastedText,
+          fullCode: fullCode,
+          timestamp: new Date().toISOString(),
+          length: pastedText.length,
+          contextRange: {
+            startLine: event.range.startLineNumber,
+            startColumn: event.range.startColumn,
+            endLine: event.range.endLineNumber,
+            endColumn: event.range.endColumn
+          }
+        };
+
+        setEnhancedPastes(prev => [...prev, newPaste]);
+        setPasteCount(prev => prev + 1);
+        if (pastedText.length > 200) {
+          setBigPasteCount(prev => prev + 1);
+        }
+
+        if (saveMode === 'auto') {
+          autoSaveCode(fullCode);
+        }
+      } catch (error) {
+        console.error('Error handling paste event:', error);
+      }
+    });
+  };
 
   // Function to check if code has significant changes
   const hasSignificantChanges = (newCode: string, oldCode: string) => {
     const lengthDiff = Math.abs(newCode.length - oldCode.length);
-    return lengthDiff > 50; // Consider changes significant if more than 50 characters are added/removed
+    return lengthDiff > 50;
   };
 
-  // Auto-save function
+  // Auto-save function with version control
   const autoSaveCode = async (codeToSave: string) => {
-    if (codeToSave === lastSaved) return; // Don't save if code hasn't changed
+    if (codeToSave === lastSaved) return;
     
     setSaving(true);
     try {
-      const userId = getUserId();
-      const saveResponse = await fetch('/api/codereplay', {
+      const userId = await getUserId();
+      const lastVersion = snapshots.length > 0 
+        ? Math.max(...snapshots.map(snapshot => snapshot.version || 0))
+        : 0;
+      const nextVersion = lastVersion + 1;
+
+      const saveResponse = await fetch('/api/codereplayV3/code-snapshots', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           code: codeToSave,
           userId,
           problemId: 'sorting-1',
-          roomId: 'room-1'
+          roomId: 'room-1',
+          submissionId: `submission-${Date.now()}`,
+          version: nextVersion
         }),
       });
 
       if (saveResponse.ok) {
         const savedData = await saveResponse.json();
-        if (savedData.snippet && 'code' in savedData.snippet) {
-          setSnippets(prevSnippets => [{
-            userId: savedData.snippet.userId,
-            code: savedData.snippet.code,
-            timestamp: savedData.snippet.timestamp,
-            fileName: savedData.snippet.fileName
-          }, ...prevSnippets]);
+        if (savedData.snippet) {
+          setSnapshots(prevSnapshots => {
+            const updatedSnapshots = [...prevSnapshots, savedData.snippet];
+            return updatedSnapshots.sort((a, b) => {
+              if (a.version && b.version) {
+                return a.version - b.version;
+              }
+              return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
+            });
+          });
           setLastSaved(codeToSave);
+          await calculateSequentialSimilarities([...snapshots, savedData.snippet]);
         }
       }
     } catch (error) {
@@ -121,6 +210,75 @@ export default function CodeReplayApp() {
       setSaving(false);
     }
   };
+
+  const calculateSequentialSimilarities = async (snapshotsToCompare: CodeSnapshot[]) => {
+    try {
+      setIsFetchingSimilarity(true);
+      const response = await fetch('/api/codereplayV3/code-snapshots/sequential-similarity', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          snapshots: snapshotsToCompare,
+          problemId: 'sorting-1',
+          roomId: 'room-1'
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        if (Array.isArray(data.sequentialSimilarities)) {
+          setSequentialSimilarities(data.sequentialSimilarities);
+        }
+      }
+    } catch (error) {
+      console.error('Sequential similarity calculation error:', error);
+    } finally {
+      setIsFetchingSimilarity(false);
+    }
+  };
+
+  // // Function to check if code has significant changes
+  // const hasSignificantChanges = (newCode: string, oldCode: string) => {
+  //   const lengthDiff = Math.abs(newCode.length - oldCode.length);
+  //   return lengthDiff > 50; // Consider changes significant if more than 50 characters are added/removed
+  // };
+
+  // // Auto-save function
+  // const autoSaveCode = async (codeToSave: string) => {
+  //   if (codeToSave === lastSaved) return; // Don't save if code hasn't changed
+    
+  //   setSaving(true);
+  //   try {
+  //     const userId = getUserId();
+  //     const saveResponse = await fetch('/api/codereplay', {
+  //       method: 'POST',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: JSON.stringify({
+  //         code: codeToSave,
+  //         userId,
+  //         problemId: 'sorting-1',
+  //         roomId: 'room-1'
+  //       }),
+  //     });
+
+  //     if (saveResponse.ok) {
+  //       const savedData = await saveResponse.json();
+  //       if (savedData.snippet && 'code' in savedData.snippet) {
+  //         setSnippets(prevSnippets => [{
+  //           userId: savedData.snippet.userId,
+  //           code: savedData.snippet.code,
+  //           timestamp: savedData.snippet.timestamp,
+  //           fileName: savedData.snippet.fileName
+  //         }, ...prevSnippets]);
+  //         setLastSaved(codeToSave);
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.error('Auto-save error:', error);
+  //   } finally {
+  //     setSaving(false);
+  //   }
+  // };
 
   // Auto-save effect
   useEffect(() => {
@@ -358,14 +516,14 @@ export default function CodeReplayApp() {
     const getColorClass = (similarity) => {
       if (similarity >= 80) return 'bg-red-700';
       if (similarity >= 60) return 'bg-yellow-600';
-      return 'bg-blue-600';
+      return 'bg-gray-500';
     };
 
 
     return (
       <div className="min-h-screen bg-gray-900 text-white p-4">
         <div className="container mx-auto space-y-6">
-          <h1 className="text-2xl font-bold mb-4">CodeBERT Plagiarism Detection System</h1>
+          <h1 className="text-2xl font-bold mb-4">CodeCheck</h1>
 
           {/* Network Graph with Loading State */}
           <div className="relative">
@@ -384,13 +542,13 @@ export default function CodeReplayApp() {
   
           {/* Similarity Analysis Per Snippet */}
           <div className="space-y-4">
-            <h2 className="text-xl font-semibold">Snippet Analysis</h2>
+            <h1 className="text-2xl font-bold">CodeReplay</h1>
             {similarityMatrix?.snippets.map((snippet, index) => {
               const stats = calculateSnippetStats(similarityMatrix.matrix, index);
               if (!stats) return null;
-  
+
               return (
-                <Card key={index} className="bg-gray-800 hover:bg-gray-750 transition-colors">
+                <Card key={index} className="bg-gray-800 hover:bg-gray-750 transition-colors border-0 shadow-none">
                   <CardContent className="p-6">
                     <div 
                       className="cursor-pointer"
@@ -400,11 +558,9 @@ export default function CodeReplayApp() {
                         <div className="space-y-1">
                           <div className="flex items-center gap-2">
                             <FileCode2 className="w-4 h-4" />
-                            <span className="font-medium">Snippet {index + 1}</span>
-                            <span className="text-gray-400">({snippet.userId})</span>
-                          </div>
-                          <div className="text-sm text-gray-400">
-                            {new Date(snippet.timestamp).toLocaleString()}
+                            {/* Display user name instead of "Snippet X" */}
+                            <span className="font-medium">{snippet.userId}</span>
+                            <span className="text-gray-400">({new Date(snippet.timestamp).toLocaleString()})</span>
                           </div>
                         </div>
                         <div className="flex items-center gap-2">
@@ -417,54 +573,78 @@ export default function CodeReplayApp() {
                           {expandedSnippet === index ? <ChevronUp /> : <ChevronDown />}
                         </div>
                       </div>
-                    </div>
-  
-                    {expandedSnippet === index && (
-                      <div className="mt-4 space-y-4">
-                        <Editor
-                          height="200px"
-                          defaultLanguage="javascript"
-                          value={snippet.code}
-                          theme="vs-dark"
-                          options={{
-                            readOnly: true,
-                            minimap: { enabled: false },
-                            fontSize: 14,
-                            scrollBeyondLastLine: false,
-                            wordWrap: 'on',
-                          }}
-                        />
-                        
-                        {stats.similarSnippets.length > 0 && (
-                          <div className="space-y-2">
-                            <h4 className="font-medium">Similar Snippets (≥60% similarity):</h4>
-                            {stats.similarSnippets.map(similar => (
-                              <Card key={similar.index} className="bg-gray-700">
-                                <CardContent className="p-4">
-                                  <div className="flex justify-between items-center mb-2">
-                                    <span>Snippet {similar.index + 1}</span>
-                                    <Badge className={getColorClass(similar.similarity)}>
-                                      {similar.similarity.toFixed(1)}% Similar
-                                    </Badge>
-                                  </div>
-                                  <Editor
-                                    height="200px"
-                                    defaultLanguage="javascript"
-                                    value={similarityMatrix.snippets[similar.index].code}
-                                    theme="vs-dark"
-                                    options={{
-                                      readOnly: true,
-                                      minimap: { enabled: false },
-                                      fontSize: 14,
-                                      scrollBeyondLastLine: false,
-                                      wordWrap: 'on',
-                                    }}
-                                  />
-                                </CardContent>
-                              </Card>
-                            ))}
-                          </div>
+                      {/* Sequential Visualization when expanded */}
+                      {expandedSnippet === index && (
+                      <div className="mt-4">
+                        {isFetchingSimilarity ? (
+                          <SimilarityLoading />
+                        ) : (
+                          <SequentialSimilarityVisualization 
+                            snapshots={snapshots.filter(s => s.userId === snippet.userId)}
+                            sequentialSimilarities={sequentialSimilarities}
+                            pasteCount={pasteCount}
+                            bigPasteCount={bigPasteCount}
+                            pastedSnippets={enhancedPastes}
+                          />
                         )}
+                      </div>
+                    )}
+                    </div>
+
+                    {expandedSnippet === index && (
+                      <div className="mt-4 flex space-x-4">
+                        {/* Main Code Snippet */}
+                        <div className="flex-1">
+                          <Editor
+                            height="400px"
+                            defaultLanguage="javascript"
+                            value={snippet.code}
+                            theme="vs-dark"
+                            options={{
+                              readOnly: true,
+                              minimap: { enabled: false },
+                              fontSize: 14,
+                              scrollBeyondLastLine: false,
+                              wordWrap: 'on',
+                            }}
+                          />
+                        </div>
+
+                        {/* Similar Snippets Section */}
+                        <div className="flex-1">
+                          <h4 className="font-medium mb-2">Similar Snippets</h4>
+                          <div className="space-y-2 h-[400px] overflow-y-auto pr-2">
+                            {stats.similarSnippets.map(similar => {
+                              const similarSnippet = similarityMatrix.snippets[similar.index];
+                              return (
+                                <Card key={similar.index} className="bg-gray-700 border-0 shadow-none">
+                                  <CardContent className="p-4">
+                                    <div className="flex justify-between items-center mb-2">
+                                      {/* Display user name instead of "Snippet X" */}
+                                      <span>{similarSnippet.userId}</span>
+                                      <Badge className={getColorClass(similar.similarity)}>
+                                        {similar.similarity.toFixed(1)}% Similar
+                                      </Badge>
+                                    </div>
+                                    <Editor
+                                      height="200px"
+                                      defaultLanguage="javascript"
+                                      value={similarSnippet.code}
+                                      theme="vs-dark"
+                                      options={{
+                                        readOnly: true,
+                                        minimap: { enabled: false },
+                                        fontSize: 14,
+                                        scrollBeyondLastLine: false,
+                                        wordWrap: 'on',
+                                      }}
+                                    />
+                                  </CardContent>
+                                </Card>
+                              );
+                            })}
+                          </div>
+                        </div>
                       </div>
                     )}
                   </CardContent>
@@ -474,7 +654,7 @@ export default function CodeReplayApp() {
           </div>
   
           {/* Code Editor */}
-          <Card className="bg-gray-800">
+          {/* <Card className="bg-gray-800">
             <CardHeader>
               <CardTitle className="flex justify-between items-center">
                 <span>Code Editor</span>
@@ -489,8 +669,8 @@ export default function CodeReplayApp() {
                   </select>
                   {saveMode === 'manual' && (
                     <button
-                      onClick={() => {/* Add save handler */}}
-                      disabled={saving}
+                      onClick={() => {/* Add save handler */}
+                      {/* disabled={saving}
                       className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded disabled:opacity-50"
                     >
                       {saving ? 'Saving...' : 'Save Code'}
@@ -514,7 +694,7 @@ export default function CodeReplayApp() {
                 }}
               />
             </CardContent>
-          </Card>
+          </Card> */} 
         </div>
       </div>
     );

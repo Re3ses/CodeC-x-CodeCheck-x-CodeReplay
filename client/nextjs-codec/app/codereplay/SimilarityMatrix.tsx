@@ -3,7 +3,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import Editor from '@monaco-editor/react';
-import SimilarityLoading from './SimilarityLoading';
+import { ArrowLeft } from 'lucide-react';
 
 // Types
 interface Snippet {
@@ -65,6 +65,23 @@ const getColorForSimilarity = (similarity: number) => {
   return 'bg-gray-700';
 };
 
+// Add getHighSimilarityPairs helper function after other helper functions
+const getHighSimilarityPairs = (matrix: number[][], snippets: Snippet[]) => {
+  const pairs: Array<{source: number, target: number, similarity: number}> = [];
+  matrix.forEach((row, i) => {
+    row.forEach((similarity, j) => {
+      if (i < j && similarity >= 80) {
+        pairs.push({
+          source: i,
+          target: j,
+          similarity
+        });
+      }
+    });
+  });
+  return pairs.sort((a, b) => b.similarity - a.similarity);
+};
+
 // Memoized SimilarityCard component
 const SimilarityCard = React.memo(({ snippetId, similarity, onClick, snippet }: SimilarityCardProps) => {
   if (!snippet) return null;
@@ -99,6 +116,7 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
   const [selectedSnippetCode, setSelectedSnippetCode] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [graphPositions, setGraphPositions] = useState<GraphPositions | null>(null);
+  const [showHighSimilaritySection, setShowHighSimilaritySection] = useState(true);
   
   const width = 500;
   const height = 400;
@@ -139,26 +157,6 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
     };
   }, [matrix, snippets.length]);
 
-  // Get high similarity pairs
-  const highSimilarityPairs = useMemo(() => {
-    if (!matrix || !snippets) return [];
-    
-    const pairs: HighSimilarityPair[] = [];
-    matrix.forEach((row, i) => {
-      row.forEach((similarity, j) => {
-        if (i < j && similarity >= 80) {
-          pairs.push({
-            user1: snippets[i].userId,
-            user2: snippets[j].userId,
-            similarity
-          });
-        }
-      });
-    });
-    
-    return pairs.sort((a, b) => b.similarity - a.similarity);
-  }, [matrix, snippets]);
-
   // Initialize with first node selected
   useEffect(() => {
     if (snippets?.length && !selectedNode) {
@@ -192,6 +190,7 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
       }
       setIsNodeLocked(true);
       setSelectedSnippetCode(snippets[nodeId].code);
+      setShowHighSimilaritySection(false); // Close high similarity section
       return nodeId;
     });
   }, [isNodeLocked, snippets]);
@@ -200,6 +199,7 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
     if (!isNodeLocked && snippets[nodeId]) {
       setSelectedNode(nodeId);
       setSelectedSnippetCode(snippets[nodeId].code);
+      setShowHighSimilaritySection(false); // Close high similarity section
     }
   }, [isNodeLocked, snippets]);
 
@@ -372,10 +372,13 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
         <div className="text-xl font-bold">{stats.total}</div>
       </div>
       <div 
-        className="p-3 bg-gray-700 rounded-lg"
+        className="p-3 bg-gray-700 rounded-lg cursor-pointer hover:bg-gray-600 transition-colors"
+        onClick={() => setShowHighSimilaritySection(prev => !prev)}
       >
         <h4 className="text-xs font-medium mb-1">High Similarity</h4>
-        <div className="text-xl font-bold">{stats.highSimCount}</div>
+        <div className="text-xl font-bold">
+          {getHighSimilarityPairs(matrix, snippets).length}
+        </div>
       </div>
     </div>
   );
@@ -383,7 +386,7 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
   return (
     <Card className="bg-gray-800">
       <CardHeader>
-        <CardTitle>Similarity Analysis Dashboard</CardTitle>
+        <CardTitle className="text-xl font-semibold">Similarity Analysis Dashboard</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-2 gap-6">
@@ -438,8 +441,8 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
             {/* Statistics section */}
             <StatsSection />
 
-            {/* Connections section */}
-            {selectedNode !== null && (
+            {/* Connections or High Similarity section */}
+            {selectedNode !== null && !showHighSimilaritySection && (
               <div className="bg-gray-700 rounded-lg p-4">
                 <h4 className="font-medium mb-3">
                   Connections for {snippets[selectedNode]?.userId}'s Submission
@@ -453,6 +456,42 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
                       onClick={handleSnippetClick}
                       snippet={snippets[conn.connectedNode]}
                     />
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* High Similarity Section */}
+            {showHighSimilaritySection && (
+              <div className="bg-gray-700 rounded-lg p-4">
+                <div className="flex justify-between items-center mb-3">
+                  <h4 className="font-medium">High Similarity Pairs</h4>
+                  <button 
+                    onClick={() => setShowHighSimilaritySection(false)}
+                    className="p-1 hover:bg-gray-600 rounded-full transition-colors"
+                  >
+                    <ArrowLeft className="w-4 h-4" />
+                  </button>
+                </div>
+                <div className="grid grid-cols-2 gap-2 max-h-[300px] overflow-y-auto pr-2">
+                  {getHighSimilarityPairs(matrix, snippets).map((pair, i) => (
+                    <div 
+                      key={i}
+                      className="bg-gray-800 rounded-lg p-3 cursor-pointer hover:bg-gray-750"
+                      onClick={() => {
+                        handleSnippetClick(pair.source);
+                        setSelectedNode(pair.target);
+                      }}
+                    >
+                      <div className="flex justify-between items-center mb-1">
+                        <span className="text-sm truncate max-w-[70%]">
+                          {snippets[pair.source].userId} & {snippets[pair.target].userId}
+                        </span>
+                        <Badge className={getColorForSimilarity(pair.similarity)}>
+                          {pair.similarity.toFixed(1)}%
+                        </Badge>
+                      </div>
+                    </div>
                   ))}
                 </div>
               </div>
