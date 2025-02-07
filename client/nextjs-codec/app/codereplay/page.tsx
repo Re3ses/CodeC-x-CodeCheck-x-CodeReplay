@@ -550,11 +550,14 @@ export default function CodeReplayApp() {
                 <SimilarityLoading />
               ) : (
                 <div className="space-y-6">
+                  {similarityMatrix ?
                   <SimilarityNetwork 
                     matrix={similarityMatrix.matrix}
                     snippets={similarityMatrix.snippets}
                     referenceFile={referenceFile}
-                  />
+                  /> :
+                  <div className="text-center text-gray-400">No similarity data available</div>
+                  }
                   
                   <div className="space-y-4">
                     {similarityMatrix?.snippets.map((snippet, index) => {

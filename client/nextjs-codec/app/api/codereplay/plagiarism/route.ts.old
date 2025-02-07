@@ -16,12 +16,45 @@ interface SnippetInfo {
   timestamp: string;
 }
 
-const userSubmissions = mongoose.models.UserSubmission;
+const CodeSnippet = mongoose.models.CodeSnippet ||
+  mongoose.model('CodeSnippet', new mongoose.Schema({
+    code: String,
+    timestamp: { type: Date, default: Date.now },
+    userId: String,
+    submissionId: String,
+    roomId: String,
+    problemId: String
+  }));
+
+
+// == REPLACE ==
+
+// interface Submission {
+//   _id: string;
+//   language_used: string;
+//   code: string;
+//   history: string[];
+//   score: number;
+//   score_overall_count: number;
+//   verdict: string;
+//   learner: string;
+//   learner_id: string;
+//   problem: string;
+//   room: string;
+//   attempt_count: number;
+//   start_time: number;
+//   end_time: number;
+//   completion_time: number;
+//   most_similar: string | null;
+//   submission_date: string;
+//   __v: number;
+// }
+
 
 class CodeAnalyzer {
   private static readonly SIMILARITY_THRESHOLD = 0.7;
 
-  public static calculateFallbackSimilarity(code1: string, code2: string): number {
+  private static calculateFallbackSimilarity(code1: string, code2: string): number {
     const tokens1 = code1.split(/\s+/);
     const tokens2 = code2.split(/\s+/);
 
@@ -42,7 +75,7 @@ class CodeAnalyzer {
     return mag1 && mag2 ? dotProduct / (mag1 * mag2) : 0;
   }
 
-  public static generateCacheKey(code: string): string {
+  private static generateCacheKey(code: string): string {
     const preprocessed = this.preprocessCode(code);
     return Buffer.from(preprocessed).toString('base64');
   }
@@ -157,7 +190,7 @@ class CodeAnalyzer {
     }
   }
 
-  public static calculateCosineSimilarity(vec1: number[], vec2: number[]): number {
+  private static calculateCosineSimilarity(vec1: number[], vec2: number[]): number {
     const maxLength = Math.max(vec1.length, vec2.length);
 
     const padVector = (vec: number[], targetLength: number): number[] => {
@@ -214,13 +247,10 @@ class CodeAnalyzer {
 export async function POST(request: Request) {
   try {
     await dbConnect();
-    const { query } = await request.json();
-    
-    const problemId = query.problemId;
-    const roomId = query.roomId;
+    const { problemId, roomId } = await request.json();
 
     // Fetch all snippets for the given problem and room
-    const snippets = await userSubmissions.find({ problemId, roomId, verdict: "ACCEPTED" }).lean();
+    const snippets = await CodeSnippet.find({ problemId, roomId }).lean();
     if (snippets.length === 0) {
       return NextResponse.json({
         success: true,
@@ -262,10 +292,10 @@ export async function POST(request: Request) {
 
     // Prepare snippet metadata for frontend
     const snippetInfo: SnippetInfo[] = snippets.map(snippet => ({
-      userId: snippet.learner,
-      fileName: `${snippet.learner}_${query}.js`,
+      userId: snippet.userId,
+      fileName: `${snippet.userId}_${problemId}.js`,
       code: snippet.code,
-      timestamp: snippet.submission_date,
+      timestamp: new Date(snippet.timestamp).toISOString()
     }));
 
     return NextResponse.json({

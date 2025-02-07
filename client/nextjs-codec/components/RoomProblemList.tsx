@@ -79,7 +79,7 @@ export default function RoomProblemList({
                       View
                     </Link>
 
-                    <Dialog>
+                    {/* <Dialog>
                       <DialogTrigger
                         className={buttonVariants({ variant: 'default' })}
                       >
@@ -122,7 +122,7 @@ export default function RoomProblemList({
                         </Link>
 
                       </DialogContent>
-                    </Dialog>
+                    </Dialog> */}
 
                     <Link
                       href={`/codeHistory/problem/${item.slug}`}

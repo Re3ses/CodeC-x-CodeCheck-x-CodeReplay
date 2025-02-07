@@ -108,7 +108,7 @@ const SimilarityCard = React.memo(({ snippetId, similarity, onClick, snippet }: 
   );
 });
 
-const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snippets, referenceFile }) => {
+const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snippets }) => {
   const [nodes, setNodes] = useState<NodeData[]>([]);
   const [links, setLinks] = useState<LinkData[]>([]);
   const [selectedNode, setSelectedNode] = useState<number | null>(null);
