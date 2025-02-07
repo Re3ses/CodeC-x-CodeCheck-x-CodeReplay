@@ -296,42 +296,42 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
             </Dialog>
           </div>
 
-          <div className="grid grid-cols-6 gap-4">
+          <div className="grid grid-cols-5 gap-4">
             <MetricCard
               label="Max Change"
               value={`${advancedMetrics.maxChange}%`}
               tooltipId="maxChangeTooltip"
-              tooltipContent="Maximum difference in similarity between consecutive snapshots"
+              tooltipContent="Maximum difference in similarity between consecutive snapshots, higher values indicate higher plagiarism risk"
             />
             <MetricCard
               label="Average Similarity"
               value={`${advancedMetrics.averageSimilarity}%`}
               tooltipId="averageSimilarityTooltip"
-              tooltipContent="Mean value of all similarity scores"
+              tooltipContent="Mean value of all similarity scores, lower values indicate higher plagiarism risk"
             />
             <MetricCard
               label="Minimum Similarity"
               value={`${advancedMetrics.minSimilarity}%`}
               tooltipId="minSimilarityTooltip"
-              tooltipContent="Lowest similarity score observed"
+              tooltipContent="Lowest similarity score observed, lower values indicate higher plagiarism risk"
             />
             <MetricCard
               label="Variance"
               value={`${advancedMetrics.normalizedVariance}%`}
               tooltipId="varianceTooltip"
-              tooltipContent="Measure of similarity score fluctuation"
+              tooltipContent="Measure of similarity score fluctuation, higher values indicate higher plagiarism risk"
             />
-            <MetricCard
+            {/* <MetricCard
               label="Pastes"
               value={pasteCount}
               tooltipId="pastesTooltip"
               tooltipContent="Number of paste operations detected"
-            />
+            /> */}
             <MetricCard
               label="Big Pastes"
               value={bigPasteCount}
               tooltipId="bigPastesTooltip"
-              tooltipContent="Number of large paste operations detected"
+              tooltipContent="Number of large paste (More than 200 Characters) operations detected"
             />
           </div>
         </div>

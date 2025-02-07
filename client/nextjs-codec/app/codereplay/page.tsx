@@ -3,7 +3,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ChevronDown, ChevronUp, FileCode2 } from "lucide-react";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { ChevronDown, ChevronUp, FileCode2, Network, GitBranch, Activity} from "lucide-react";
 import Editor from '@monaco-editor/react';
 import dbConnect from '../../lib/dbConnect';
 import { NextResponse } from 'next/server';
@@ -118,10 +119,6 @@ export default function CodeReplayApp() {
   const [pasteCount, setPasteCount] = useState(0);
   const [bigPasteCount, setBigPasteCount] = useState(0);
   const [enhancedPastes, setEnhancedPastes] = useState<EnhancedPasteInfo[]>([]);
-  const [advancedMetrics, setAdvancedMetrics] = useState<AdvancedMetrics>({
-    weightedPlagiarismScore: 0
-  });
-
   const editorRef = useRef<Monaco.IStandaloneCodeEditor | null>(null);
 
   const handleEditorMount = (editor: Monaco.IStandaloneCodeEditor, monaco: typeof Monaco) => {
@@ -525,124 +522,113 @@ export default function CodeReplayApp() {
       return 'bg-gray-500';
     };
 
+    const [activeTab, setActiveTab] = useState<'network' | 'evolution'>('network');
+    const [expandedCard, setExpandedCard] = useState<number | null>(null);
+    const [advancedMetrics, setAdvancedMetrics] = useState<{ [key: string]: number }>({});
 
     return (
       <div className="min-h-screen bg-gray-900 text-white p-4">
         <div className="container mx-auto space-y-6">
-          <h1 className="text-2xl font-bold mb-4">CodeCheck</h1>
-
-          {/* Network Graph with Loading State */}
-          <div className="relative">
-            {isMatrixLoading ? (
-              <div>
+        <h1 className="text-2xl font-bold mb-4 flex items-center gap-2">
+          <Activity className="w-6 h-6 text-yellow-500" />
+          CodeCheck
+        </h1>
+          <Tabs defaultValue="network" className="w-full">
+            <TabsList className="bg-gray-800 border-b border-gray-700">
+              <TabsTrigger value="network" className="data-[state=active]:bg-gray-700">
+                <Network className="w-4 h-4 mr-2 text-yellow-500" />
+                Similarity Network
+              </TabsTrigger>
+              <TabsTrigger value="evolution" className="data-[state=active]:bg-gray-700">
+                <GitBranch className="w-4 h-4 mr-2 text-yellow-500" />
+                Code Evolution
+              </TabsTrigger>
+            </TabsList>
+    
+            <TabsContent value="network" className="mt-6">
+              {isMatrixLoading ? (
                 <SimilarityLoading />
-              </div>
-            ) : similarityMatrix && (
-              <SimilarityNetwork 
-              matrix={similarityMatrix.matrix}
-              snippets={similarityMatrix.snippets}
-              referenceFile={referenceFile} // Pass the reference file here
-            />
-            )}
-          </div>
-  
-          {/* Similarity Analysis Per Snippet */}
-          <div className="space-y-4">
-            <h1 className="text-2xl font-bold">CodeReplay</h1>
-            {similarityMatrix?.snippets.map((snippet, index) => {
-              const stats = calculateSnippetStats(similarityMatrix.matrix, index);
-              if (!stats) return null;
-
-              return (
-                <Card key={index} className="bg-gray-800 hover:bg-gray-750 transition-colors border-0 shadow-none">
-                  <CardContent className="p-6">
-                    <div 
-                      className="cursor-pointer"
-                      onClick={() => setExpandedSnippet(expandedSnippet === index ? null : index)}
-                    >
-                      <div className="flex justify-between items-center">
-                        <div className="space-y-1">
-                          <div className="flex items-center gap-2">
-                            <FileCode2 className="w-4 h-4" />
-                            {/* Display user name instead of "Snippet X" */}
-                            <span className="font-medium">{snippet.userId}</span>
-                            <span className="text-gray-400">({new Date(snippet.timestamp).toLocaleString()})</span>
+              ) : (
+                <div className="space-y-6">
+                  <SimilarityNetwork 
+                    matrix={similarityMatrix.matrix}
+                    snippets={similarityMatrix.snippets}
+                    referenceFile={referenceFile}
+                  />
+                  
+                  <div className="space-y-4">
+                    {similarityMatrix?.snippets.map((snippet, index) => {
+                      const stats = calculateSnippetStats(similarityMatrix.matrix, index);
+                      if (!stats) return null;
+    
+                      return (
+                        <Card key={index} className="bg-gray-800/50 border-0 shadow-lg hover:bg-gray-800/70 transition-colors">
+                          {/* ... existing card content ... */}
+                        </Card>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </TabsContent>
+    
+            <TabsContent value="evolution" className="mt-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 relative">
+                {similarityMatrix?.snippets.map((snippet, index) => (
+                  <div key={index} className={`${
+                    expandedCard === index ? 'col-span-full row-span-2' : ''
+                  } transition-all duration-300`}>
+                    <Card className="bg-gray-800/50 border-0 shadow-lg h-full">
+                      <CardHeader 
+                        className="cursor-pointer p-4" 
+                        onClick={() => setExpandedCard(expandedCard === index ? null : index)}
+                      >
+                        <CardTitle className="text-sm">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2 truncate">
+                              <FileCode2 className="w-4 h-4 flex-shrink-0" />
+                              <span className="truncate">{snippet.userId}</span>
+                            </div>
+                            <div className="flex items-center gap-2 flex-shrink-0">
+                              <Badge className={`${
+                                (advancedMetrics[snippet.userId]?.weightedPlagiarismScore || 0) >= 80 ? 'bg-red-600' :
+                                (advancedMetrics[snippet.userId]?.weightedPlagiarismScore || 0) >= 60 ? 'bg-yellow-600' :
+                                'bg-gray-600'
+                              }`}>
+                                {(advancedMetrics[snippet.userId]?.weightedPlagiarismScore || 0).toFixed(1)}%
+                              </Badge>
+                              {expandedCard === index ? (
+                                <ChevronUp className="w-4 h-4" />
+                              ) : (
+                                <ChevronDown className="w-4 h-4" />
+                              )}
+                            </div>
                           </div>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Badge className={getColorClass(advancedMetrics?.weightedPlagiarismScore || 0)}>
-                            Score: {(advancedMetrics?.weightedPlagiarismScore || 0).toFixed(1)}%
-                          </Badge>
-                          {expandedSnippet === index ? <ChevronUp /> : <ChevronDown />}
-                        </div>
-                      </div>
-                      {/* Sequential Visualization when expanded */}
-                      {expandedSnippet === index && (
-                      <div className="mt-4">
-                        {isFetchingSimilarity ? (
-                          <SimilarityLoading />
-                        ) : (
+                        </CardTitle>
+                      </CardHeader>
+                      {expandedCard === index && (
+                        <CardContent className="p-4">
                           <SequentialSimilarityVisualization 
                             snapshots={snapshots.filter(s => s.userId === snippet.userId)}
                             sequentialSimilarities={sequentialSimilarities}
                             pasteCount={pasteCount}
                             bigPasteCount={bigPasteCount}
                             pastedSnippets={enhancedPastes}
+                            onMetricsUpdate={(metrics) => {
+                              setAdvancedMetrics(prev => ({
+                                ...prev,
+                                [snippet.userId]: metrics
+                              }));
+                            }}
                           />
-                        )}
-                      </div>
-                    )}
-                    </div>
-
-
-                  </CardContent>
-                </Card>
-              );
-            })}
-          </div>
-  
-          {/* Code Editor */}
-          {/* <Card className="bg-gray-800">
-            <CardHeader>
-              <CardTitle className="flex justify-between items-center">
-                <span>Code Editor</span>
-                <div className="flex items-center gap-4">
-                  <select
-                    value={saveMode}
-                    onChange={(e) => setSaveMode(e.target.value)}
-                    className="bg-gray-700 text-white px-3 py-2 rounded border border-gray-600"
-                  >
-                    <option value="manual">Manual Save</option>
-                    <option value="auto">Auto Save</option>
-                  </select>
-                  {saveMode === 'manual' && (
-                    <button
-                      onClick={() => {/* Add save handler */}
-                      {/* disabled={saving}
-                      className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded disabled:opacity-50"
-                    >
-                      {saving ? 'Saving...' : 'Save Code'}
-                    </button>
-                  )}
-                </div>
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Editor
-                height="400px"
-                defaultLanguage="javascript"
-                value={code}
-                onChange={(value) => setCode(value || '')}
-                theme="vs-dark"
-                options={{
-                  minimap: { enabled: false },
-                  fontSize: 14,
-                  scrollBeyondLastLine: false,
-                  wordWrap: 'on',
-                }}
-              />
-            </CardContent>
-          </Card> */} 
+                        </CardContent>
+                      )}
+                    </Card>
+                  </div>
+                ))}
+              </div>
+            </TabsContent>
+          </Tabs>
         </div>
       </div>
     );

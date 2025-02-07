@@ -296,7 +296,7 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
             </Dialog>
           </div>
 
-          <div className="grid grid-cols-6 gap-4">
+          <div className="grid grid-cols-5 gap-4">
             <MetricCard
               label="Max Change"
               value={`${advancedMetrics.maxChange}%`}
@@ -321,17 +321,17 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
               tooltipId="varianceTooltip"
               tooltipContent="Measure of similarity score fluctuation"
             />
-            <MetricCard
+            {/* <MetricCard
               label="Pastes"
               value={pasteCount}
               tooltipId="pastesTooltip"
               tooltipContent="Number of paste operations detected"
-            />
+            /> */}
             <MetricCard
               label="Big Pastes"
               value={bigPasteCount}
-              tooltipId="bigPastesTooltip"
-              tooltipContent="Number of large paste operations detected"
+              // tooltipId="bigPastesTooltip"
+              // tooltipContent="Number of large paste operations detected"
             />
           </div>
         </div>

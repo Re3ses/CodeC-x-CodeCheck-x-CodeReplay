@@ -117,6 +117,7 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
   const [isLoading, setIsLoading] = useState(true);
   const [graphPositions, setGraphPositions] = useState<GraphPositions | null>(null);
   const [showHighSimilaritySection, setShowHighSimilaritySection] = useState(true);
+  const [selectedComparisonUserId, setSelectedComparisonUserId] = useState<string | null>(null);
   
   const width = 500;
   const height = 400;
@@ -206,6 +207,7 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
   const handleSnippetClick = useCallback((snippetId: number) => {
     if (snippets[snippetId]) {
       setSelectedSnippetCode(snippets[snippetId].code);
+      setSelectedComparisonUserId(snippets[snippetId].userId);
     }
   }, [snippets]);
 
@@ -384,9 +386,9 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
   );
 
   return (
-    <Card className="bg-gray-800">
+    <Card className="bg-gray-800 border-0">
       <CardHeader>
-        <CardTitle className="text-xl font-semibold">Similarity Analysis Dashboard</CardTitle>
+        {/* <CardTitle className="text-xl font-semibold">Similarity Analysis Dashboard</CardTitle> */}
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-2 gap-6">
@@ -499,7 +501,6 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
           </div>
         </div>
 
-        {/* Code editors section */}
         {!isLoading && (
           <div className="grid grid-cols-2 gap-6 mt-6">
             <div className="bg-gray-700 rounded-lg p-4">
@@ -525,7 +526,12 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
               />
             </div>
             <div className="bg-gray-700 rounded-lg p-4">
-              <h4 className="font-medium mb-2">Comparison Code</h4>
+              <h4 className="font-medium mb-2">
+                {selectedComparisonUserId 
+                  ? `${selectedComparisonUserId}'s Code`
+                  : "Select a snippet to compare"
+                }
+              </h4>
               <Editor
                 height="300px"
                 language="javascript"
