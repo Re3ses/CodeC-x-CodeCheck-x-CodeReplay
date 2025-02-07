@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import dbConnect from '../../../../lib/dbConnect';
 import mongoose from 'mongoose';
-import { seedCodeSnapshots } from '../../../codereplay/SeedData';
+import { seedCodeSnapshots } from '../../../codereplayV3/SeedData';
 
 // Define the schema for code snapshots
 const CodeSnapshotSchema = new mongoose.Schema({

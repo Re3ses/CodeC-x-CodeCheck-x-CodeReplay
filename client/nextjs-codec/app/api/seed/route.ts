@@ -226,7 +226,7 @@ function generateSubmissions() {
   const startDate = new Date('2024-01-01');
 
   // Generate exactly 20 submissions, one for each sorting implementation
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < 20; i++) {
     submissions.push({
       code: codeTemplates[i], // Use each template exactly once
       userId: `test-user-${i + 1}`, // Assign a unique test user to each snippet

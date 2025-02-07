@@ -1,185 +1,66 @@
-// Types to ensure type safety
 interface CodeSnapshot {
-  code: string;
-  timestamp: string;
-}
-
-interface SubmissionSeedData {
-  userId: string;
-  roomId: string;
-  problemId: string;
-  submissionId?: string;
-  snapshots: CodeSnapshot[];
-}
-
-export const seedCodeSnapshots: SubmissionSeedData[] = [
-  {
-    userId: 'user_learning_sort',
-    roomId: 'algorithms_study_room',
-    problemId: 'bubble_sort',
-    submissionId: 'submission_bubble_sort_001',
-    snapshots: [
-      {
-        code: `def bubble_sort(arr):
-    # Initial attempt - placeholder implementation
-    return arr`,
-        timestamp: '2024-01-25T14:00:00Z'
-      },
-      {
-        code: `def bubble_sort(arr):
-    # Basic bubble sort implementation
-    n = len(arr)
-    for i in range(n):
-        for j in range(0, n - i - 1):
-            if arr[j] > arr[j + 1]:
-                arr[j, arr[j + 1] = arr[j + 1], arr[j]
-    return arr`,
-        timestamp: '2024-01-25T14:15:00Z'
-      },
-      {
-        code: `def bubble_sort(arr):
-    # Optimized bubble sort with early termination
-    n = len(arr)
-    for i in range(n):
-        swapped = False
-        for j in range(0, n - i - 1):
-            if arr[j] > arr[j + 1]:
-                arr[j], arr[j + 1] = arr[j + 1], arr[j]
-                swapped = True
-        if not swapped:
-            break
-    return arr`,
-        timestamp: '2024-01-25T14:30:00Z'
-      },
-      {
-        code: `def bubble_sort(arr):
-    # Added comments to explain the algorithm
-    n = len(arr)
-    for i in range(n):
-        swapped = False
-        for j in range(0, n - i - 1):
-            # Compare adjacent elements
-            if arr[j] > arr[j + 1]:
-                # Swap if the elements are in the wrong order
-                arr[j], arr[j + 1] = arr[j + 1], arr[j]
-                swapped = True
-        if not swapped:
-            # Exit early if no swaps were made
-            break
-    return arr`,
-        timestamp: '2024-01-25T14:45:00Z'
-      },
-      {
-        code: `def bubble_sort(arr):
-    # Refactored to make function more concise
-    n = len(arr)
-    for i in range(n):
-        swapped = False
-        for j in range(n - i - 1):
-            if arr[j] > arr[j + 1]:
-                arr[j], arr[j + 1] = arr[j + 1], arr[j]
-                swapped = True
-        if not swapped:
-            break
-    return arr`,
-        timestamp: '2024-01-25T15:00:00Z'
-      },
-      {
-        code: `def bubble_sort(arr):
-    # Added parameter checks for robustness
-    if not isinstance(arr, list):
-        raise TypeError("Input must be a list")
-    n = len(arr)
-    for i in range(n):
-        swapped = False
-        for j in range(n - i - 1):
-            if arr[j] > arr[j + 1]:
-                arr[j], arr[j + 1] = arr[j + 1], arr[j]
-                swapped = True
-        if not swapped:
-            break
-    return arr`,
-        timestamp: '2024-01-25T15:15:00Z'
-      },
-      {
-        code: `def bubble_sort(arr):
-    # Added input validation and edge case handling
-    if not isinstance(arr, list):
-        raise TypeError("Input must be a list")
-    if len(arr) <= 1:
-        return arr  # Already sorted
-    n = len(arr)
-    for i in range(n):
-        swapped = False
-        for j in range(n - i - 1):
-            if arr[j] > arr[j + 1]:
-                arr[j], arr[j + 1] = arr[j + 1], arr[j]
-                swapped = True
-        if not swapped:
-            break
-    return arr`,
-        timestamp: '2024-01-25T15:30:00Z'
-      },
-      {
-        code: `def bubble_sort(arr):
-    # Improved comments for better readability
-    if not isinstance(arr, list):
-        raise TypeError("Input must be a list")
-    if len(arr) <= 1:
-        return arr  # No need to sort
-    n = len(arr)
-    for i in range(n):
-        swapped = False
-        for j in range(n - i - 1):
-            # Swap if current element is greater than the next
-            if arr[j] > arr[j + 1]:
-                arr[j], arr[j + 1] = arr[j + 1], arr[j]
-                swapped = True
-        if not swapped:
-            break  # List is already sorted
-    return arr`,
-        timestamp: '2024-01-25T15:45:00Z'
-      },
-      {
-        code: `def bubble_sort(arr):
-    # Final version with detailed validation and efficiency notes
-    if not isinstance(arr, list):
-        raise TypeError("Input must be a list")
-    if len(arr) <= 1:
-        return arr  # Single element or empty list is already sorted
-    n = len(arr)
-    for i in range(n):
-        swapped = False
-        for j in range(n - i - 1):
-            # Swap adjacent elements if they're in the wrong order
-            if arr[j] > arr[j + 1]:
-                arr[j], arr[j + 1] = arr[j + 1], arr[j]
-                swapped = True
-        if not swapped:
-            break  # Optimization: stop if no swaps were made
-    return arr`,
-        timestamp: '2024-01-25T16:00:00Z'
-      },
-      {
-        code: `def bubble_sort(arr):
-    # Final polished version
-    if not isinstance(arr, list):
-        raise TypeError("Input must be a list")
-    if len(arr) <= 1:
-        return arr
-    n = len(arr)
-    for i in range(n):
-        swapped = False
-        for j in range(n - i - 1):
-            if arr[j] > arr[j + 1]:
-                arr[j], arr[j + 1] = arr[j + 1], arr[j]
-                swapped = True
-        if not swapped:
-            break
-    return arr`,
-        timestamp: '2024-01-25T16:15:00Z'
-      }
+    code: string;
+    timestamp: string;
+  }
+  
+  interface SubmissionSeedData {
+    userId: string;
+    roomId: string;
+    problemId: string;
+    submissionId?: string;
+    snapshots: CodeSnapshot[];
+  }
+  
+  export const seedCodeSnapshots: SubmissionSeedData[] = [
+    {
+      userId: 'user_learning_sort',
+      roomId: 'algorithms_study_room',
+      problemId: 'bubble_sort',
+      submissionId: 'submission_bubble_sort_001',
+      snapshots: [
+        { code: `def bubble_sort(arr):\n    return arr`, timestamp: '2024-01-25T14:00:00Z' },
+        { code: `def bubble_sort(arr):\n    n = len(arr)\n    return arr`, timestamp: '2024-01-25T14:05:00Z' },
+        { code: `def bubble_sort(arr):\n    n = len(arr)\n    for i in range(n):\n        return arr`, timestamp: '2024-01-25T14:10:00Z' },
+        { code: `def bubble_sort(arr):\n    n = len(arr)\n    for i in range(n):\n        for j in range(n):\n            return arr`, timestamp: '2024-01-25T14:15:00Z' },
+        { code: `def bubble_sort(arr):\n    n = len(arr)\n    for i in range(n):\n        for j in range(n - 1):\n            return arr`, timestamp: '2024-01-25T14:20:00Z' },
+        { code: `def bubble_sort(arr):\n    n = len(arr)\n    for i in range(n):\n        for j in range(n - i - 1):\n            return arr`, timestamp: '2024-01-25T14:25:00Z' },
+        { code: `def bubble_sort(arr):\n    n = len(arr)\n    for i in range(n):\n        for j in range(n - i - 1):\n            if arr[j] > arr[j + 1]:\n                return arr`, timestamp: '2024-01-25T14:30:00Z' },
+        { code: `def bubble_sort(arr):\n    n = len(arr)\n    for i in range(n):\n        for j in range(n - i - 1):\n            if arr[j] > arr[j + 1]:\n                arr[j], arr[j + 1] = arr[j + 1], arr[j]\n    return arr`, timestamp: '2024-01-25T14:35:00Z' },
+        { code: `def bubble_sort(arr):\n    n = len(arr)\n    swapped = False\n    for i in range(n):\n        for j in range(n - i - 1):\n            if arr[j] > arr[j + 1]:\n                arr[j], arr[j + 1] = arr[j + 1], arr[j]\n                swapped = True\n        if not swapped:\n            break\n    return arr`, timestamp: '2024-01-25T14:40:00Z' },
+        { code: `def bubble_sort(arr):\n    if not isinstance(arr, list):\n        raise TypeError("Input must be a list")\n    n = len(arr)\n    swapped = False\n    for i in range(n):\n        for j in range(n - i - 1):\n            if arr[j] > arr[j + 1]:\n                arr[j], arr[j + 1] = arr[j + 1], arr[j]\n                swapped = True\n        if not swapped:\n            break\n    return arr`, timestamp: '2024-01-25T14:45:00Z' },
+        { code: `def bubble_sort(arr):\n    if not isinstance(arr, list):\n        raise TypeError("Input must be a list")\n    if len(arr) <= 1:\n        return arr\n    n = len(arr)\n    swapped = False\n    for i in range(n):\n        for j in range(n - i - 1):\n            if arr[j] > arr[j + 1]:\n                arr[j], arr[j + 1] = arr[j + 1], arr[j]\n                swapped = True\n        if not swapped:\n            break\n    return arr`, timestamp: '2024-01-25T14:50:00Z' },
+        { code: `def bubble_sort(arr):\n    if not isinstance(arr, list):\n        raise TypeError("Input must be a list")\n    if len(arr) <= 1:\n        return arr\n    n = len(arr)\n    for i in range(n):\n        swapped = False\n        for j in range(n - i - 1):\n            if arr[j] > arr[j + 1]:\n                arr[j], arr[j + 1] = arr[j + 1], arr[j]\n                swapped = True\n        if not swapped:\n            break\n    return arr`, timestamp: '2024-01-25T14:55:00Z' },
+        { code: `def bubble_sort(arr):\n    if not isinstance(arr, list):\n        raise TypeError("Input must be a list")\n    if len(arr) <= 1:\n        return arr\n    n = len(arr)\n    for i in range(n):\n        swapped = False\n        for j in range(n - i - 1):\n            if arr[j] > arr[j + 1]:\n                arr[j], arr[j + 1] = arr[j + 1], arr[j]\n                swapped = True\n        if not swapped:\n            break\n    return arr`, timestamp: '2024-01-25T15:00:00Z' },
+        { code: `def bubble_sort(arr):\n    if not isinstance(arr, list):\n        raise TypeError("Input must be a list")\n    if len(arr) <= 1:\n        return arr\n    n = len(arr)\n    for i in range(n):\n        swapped = False\n        for j in range(n - i - 1):\n            if arr[j] > arr[j + 1]:\n                arr[j], arr[j + 1] = arr[j + 1], arr[j]\n                swapped = True\n        if not swapped:\n            break\n    return arr`, timestamp: '2024-01-25T15:05:00Z' },
+        { code: `def bubble_sort(arr):\n    if not isinstance(arr, list):\n        raise TypeError("Input must be a list")\n    if len(arr) <= 1:\n        return arr\n    n = len(arr)\n    for i in range(n):\n        swapped = False\n        for j in range(n - i - 1):\n            if arr[j] > arr[j + 1]:\n                arr[j], arr[j + 1] = arr[j + 1], arr[j]\n                swapped = True\n        if not swapped:\n            break\n    return arr`, timestamp: '2024-01-25T15:10:00Z' },
+        { code: `def bubble_sort(arr):\n    if not isinstance(arr, list):\n        raise TypeError("Input must be a list")\n    if len(arr) <= 1:\n        return arr\n    n = len(arr)\n    for i in range(n):\n        swapped = False\n        for j in range(n - i - 1):\n            if arr[j] > arr[j + 1]:\n                arr[j], arr[j + 1] = arr[j + 1], arr[j]\n                swapped = True\n        if not swapped:\n            break\n    return arr`, timestamp: '2024-01-25T15:15:00Z' },
+        { code: `def bubble_sort(arr):\n    if not isinstance(arr, list):\n        raise TypeError("Input must be a list")\n    if len(arr) <= 1:\n        return arr\n    n = len(arr)\n    for i in range(n):\n        swapped = False\n        for j in range(n - i - 1):\n            if arr[j] > arr[j + 1]:\n                arr[j], arr[j + 1] = arr[j + 1], arr[j]\n                swapped = True\n        if not swapped:\n            break\n    return arr`, timestamp: '2024-01-25T15:20:00Z' },
+        { code: `def bubble_sort(arr):\n    if not isinstance(arr, list):\n        raise TypeError("Input must be a list")\n    if len(arr) <= 1:\n        return arr\n    n = len(arr)\n    for i in range(n):\n        swapped = False\n        for j in range(n - i - 1):\n            if arr[j] > arr[j + 1]:\n                arr[j], arr[j + 1] = arr[j + 1], arr[j]\n                swapped = True\n        if not swapped:\n            break\n    return arr`, timestamp: '2024-01-25T15:25:00Z' },
+        { code: `def bubble_sort(arr):\n    if not isinstance(arr, list):\n        raise TypeError("Input must be a list")\n    if len(arr) <= 1:\n        return arr\n    n = len(arr)\n    for i in range(n):\n        swapped = False\n        for j in range(n - i - 1):\n            if arr[j] > arr[j + 1]:\n                arr[j], arr[j + 1] = arr[j + 1], arr[j]\n                swapped = True\n        if not swapped:\n            break\n    return arr`, timestamp: '2024-01-25T15:30:00Z' },
+        { code: `def bubble_sort(arr):\n    if not isinstance(arr, list):\n        raise TypeError("Input must be a list")\n    if len(arr) <= 1:\n        return arr\n    n = len(arr)\n    for i in range(n):\n        swapped = False\n        for j in range(n - i - 1):\n            if arr[j] > arr[j + 1]:\n                arr[j], arr[j + 1] = arr[j + 1], arr[j]\n                swapped = True\n        if not swapped:\n            break\n    return arr`, timestamp: '2024-01-25T15:35:00Z' },
+        { code: `def bubble_sort(arr):\n    if not isinstance(arr, list):\n        raise TypeError("Input must be a list")\n    if len(arr) <= 1:\n        return arr\n    n = len(arr)\n    for i in range(n):\n        swapped = False\n        for j in range(n - i - 1):\n            if arr[j] > arr[j + 1]:\n                arr[j], arr[j + 1] = arr[j + 1], arr[j]\n                swapped = True\n        if not swapped:\n            break\n    return arr`, timestamp: '2024-01-25T15:40:00Z' },
+        { code: `def bubble_sort(arr):\n    if not isinstance(arr, list):\n        raise TypeError("Input must be a list")\n    if len(arr) <= 1:\n        return arr\n    n = len(arr)\n    for i in range(n):\n        swapped = False\n        for j in range(n - i - 1):\n            if arr[j] > arr[j + 1]:\n                arr[j], arr[j + 1] = arr[j + 1], arr[j]\n                swapped = True\n        if not swapped:\n            break\n    return arr`, timestamp: '2024-01-25T15:45:00Z' },
+        { code: `def bubble_sort(arr):\n    if not isinstance(arr, list):\n        raise TypeError("Input must be a list")\n    if len(arr) <= 1:\n        return arr\n    n = len(arr)\n    for i in range(n):\n        swapped = False\n        for j in range(n - i - 1):\n            if arr[j] > arr[j + 1]:\n                arr[j], arr[j + 1] = arr[j + 1], arr[j]\n                swapped = True\n        if not swapped:\n            break\n    return arr`, timestamp: '2024-01-25T15:50:00Z' },
+        { code: `def bubble_sort(arr):\n    if not isinstance(arr, list):\n        raise TypeError("Input must be a list")\n    if len(arr) <= 1:\n        return arr\n    n = len(arr)\n    for i in range(n):\n        swapped = False\n        for j in range(n - i - 1):\n            if arr[j] > arr[j + 1]:\n                arr[j], arr[j + 1] = arr[j + 1], arr[j]\n                swapped = True\n        if not swapped:\n            break\n    return arr`, timestamp: '2024-01-25T15:55:00Z' },
+        { code: `def bubble_sort(arr):\n    if not isinstance(arr, list):\n        raise TypeError("Input must be a list")\n    if len(arr) <= 1:\n        return arr\n    n = len(arr)\n    for i in range(n):\n        swapped = False\n        for j in range(n - i - 1):\n            if arr[j] > arr[j + 1]:\n                arr[j], arr[j + 1] = arr[j + 1], arr[j]\n                swapped = True\n        if not swapped:\n            break\n    return arr`, timestamp: '2024-01-25T16:00:00Z' },
+      { code: `def bubble_sort(arr):\n    if not isinstance(arr, list):\n        raise TypeError("Input must be a list")\n    if len(arr) <= 1:\n        return arr\n    n = len(arr)\n    for i in range(n):\n        swapped = False\n        for j in range(n - i - 1):\n            if arr[j] > arr[j + 1]:\n                arr[j], arr[j + 1] = arr[j + 1], arr[j]\n                swapped = True\n        if not swapped:\n            break\n    return arr`, timestamp: '2024-01-25T16:10:00Z' },
+      { code: `def bubble_sort(arr):\n    if not isinstance(arr, list):\n        raise TypeError("Input must be a list")\n    if len(arr) <= 1:\n        return arr\n    n = len(arr)\n    for i in range(n):\n        swapped = False\n        for j in range(n - i - 1):\n            if arr[j] > arr[j + 1]:\n                arr[j], arr[j + 1] = arr[j + 1], arr[j]\n                swapped = True\n        if not swapped:\n            break\n    return arr`, timestamp: '2024-01-25T16:15:00Z' },
+      { code: `def bubble_sort(arr):\n    if not isinstance(arr, list):\n        raise TypeError("Input must be a list")\n    if len(arr) <= 1:\n        return arr\n    n = len(arr)\n    for i in range(n):\n        swapped = False\n        for j in range(n - i - 1):\n            if arr[j] > arr[j + 1]:\n                arr[j], arr[j + 1] = arr[j + 1], arr[j]\n                swapped = True\n        if not swapped:\n            break\n    return arr`, timestamp: '2024-01-25T16:20:00Z' },
+      { code: `def bubble_sort(arr):\n    if not isinstance(arr, list):\n        raise TypeError("Input must be a list")\n    if len(arr) <= 1:\n        return arr\n    n = len(arr)\n    for i in range(n):\n        swapped = False\n        for j in range(n - i - 1):\n            if arr[j] > arr[j + 1]:\n                arr[j], arr[j + 1] = arr[j + 1], arr[j]\n                swapped = True\n        if not swapped:\n            break\n    return arr`, timestamp: '2024-01-25T16:25:00Z' },
+      { code: `def bubble_sort(arr):\n    if not isinstance(arr, list):\n        raise TypeError("Input must be a list")\n    if len(arr) <= 1:\n        return arr\n    n = len(arr)\n    for i in range(n):\n        swapped = False\n        for j in range(n - i - 1):\n            if arr[j] > arr[j + 1]:\n                arr[j], arr[j + 1] = arr[j + 1], arr[j]\n                swapped = True\n        if not swapped:\n            break\n    return arr`, timestamp: '2024-01-25T16:30:00Z' },
+      { code: `def bubble_sort(arr):\n    if not isinstance(arr, list):\n        raise TypeError("Input must be a list")\n    if len(arr) <= 1:\n        return arr\n    n = len(arr)\n    for i in range(n):\n        swapped = False\n        for j in range(n - i - 1):\n            if arr[j] > arr[j + 1]:\n                arr[j], arr[j + 1] = arr[j + 1], arr[j]\n                swapped = True\n        if not swapped:\n            break\n    return arr`, timestamp: '2024-01-25T16:35:00Z' },
+      { code: `def bubble_sort(arr):\n    if not isinstance(arr, list):\n        raise TypeError("Input must be a list")\n    if len(arr) <= 1:\n        return arr\n    n = len(arr)\n    for i in range(n):\n        swapped = False\n        for j in range(n - i - 1):\n            if arr[j] > arr[j + 1]:\n                arr[j], arr[j + 1] = arr[j + 1], arr[j]\n                swapped = True\n        if not swapped:\n            break\n    return arr`, timestamp: '2024-01-25T16:40:00Z' },
+      { code: `def bubble_sort(arr):\n    if not isinstance(arr, list):\n        raise TypeError("Input must be a list")\n    if len(arr) <= 1:\n        return arr\n    n = len(arr)\n    for i in range(n):\n        swapped = False\n        for j in range(n - i - 1):\n            if arr[j] > arr[j + 1]:\n                arr[j], arr[j + 1] = arr[j + 1], arr[j]\n                swapped = True\n        if not swapped:\n            break\n    return arr`, timestamp: '2024-01-25T16:45:00Z' },
+      { code: `def bubble_sort(arr):\n    if not isinstance(arr, list):\n        raise TypeError("Input must be a list")\n    if len(arr) <= 1:\n        return arr\n    n = len(arr)\n    for i in range(n):\n        swapped = False\n        for j in range(n - i - 1):\n            if arr[j] > arr[j + 1]:\n                arr[j], arr[j + 1] = arr[j + 1], arr[j]\n                swapped = True\n        if not swapped:\n            break\n    return arr`, timestamp: '2024-01-25T16:50:00Z' },
+      { code: `def bubble_sort(arr):\n    if not isinstance(arr, list):\n        raise TypeError("Input must be a list")\n    if len(arr) <= 1:\n        return arr\n    n = len(arr)\n    for i in range(n):\n        swapped = False\n        for j in range(n - i - 1):\n            if arr[j] > arr[j + 1]:\n                arr[j], arr[j + 1] = arr[j + 1], arr[j]\n                swapped = True\n        if not swapped:\n            break\n    return arr`, timestamp: '2024-01-25T16:55:00Z' },
+      { code: `def bubble_sort(arr):\n    if not isinstance(arr, list):\n        raise TypeError("Input must be a list")\n    if len(arr) <= 1:\n        return arr\n    n = len(arr)\n    for i in range(n):\n        swapped = False\n        for j in range(n - i - 1):\n            if arr[j] > arr[j + 1]:\n                arr[j], arr[j + 1] = arr[j + 1], arr[j]\n                swapped = True\n        if not swapped:\n            break\n    return arr`, timestamp: '2024-01-25T17:00:00Z' },
+      { code: `def bubble_sort(arr):\n    if not isinstance(arr, list):\n        raise TypeError("Input must be a list")\n    if len(arr) <= 1:\n        return arr\n    n = len(arr)\n    for i in range(n):\n        swapped = False\n        for j in range(n - i - 1):\n            if arr[j] > arr[j + 1]:\n                arr[j], arr[j + 1] = arr[j + 1], arr[j]\n                swapped = True\n        if not swapped:\n            break\n    return arr`, timestamp: '2024-01-25T17:05:00Z' },
+      { code: `def bubble_sort(arr):\n    if not isinstance(arr, list):\n        raise TypeError("Input must be a list")\n    if len(arr) <= 1:\n        return arr\n    n = len(arr)\n    for i in range(n):\n        swapped = False\n        for j in range(n - i - 1):\n            if arr[j] > arr[j + 1]:\n                arr[j], arr[j + 1] = arr[j + 1], arr[j]\n                swapped = True\n        if not swapped:\n            break\n    return arr`, timestamp: '2024-01-25T17:10:00Z' },
+      { code: `def bubble_sort(arr):\n    if not isinstance(arr, list):\n        raise TypeError("Input must be a list")\n    if len(arr) <= 1:\n        return arr\n    n = len(arr)\n    for i in range(n):\n        swapped = False\n        for j in range(n - i - 1):\n            if arr[j] > arr[j + 1]:\n                arr[j], arr[j + 1] = arr[j + 1], arr[j]\n                swapped = True\n        if not swapped:\n            break\n    return arr`, timestamp: '2024-01-25T17:15:00Z' },
+      { code: `def bubble_sort(arr):\n    if not isinstance(arr, list):\n        raise TypeError("Input must be a list")\n    if len(arr) <= 1:\n        return arr\n    n = len(arr)\n    for i in range(n):\n        swapped = False\n        for j in range(n - i - 1):\n            if arr[j] > arr[j + 1]:\n                arr[j], arr[j + 1] = arr[j + 1], arr[j]\n                swapped = True\n        if not swapped:\n            break\n    return arr`, timestamp: '2024-01-25T17:20:00Z' },
+      { code: `def bubble_sort(arr):\n    if not isinstance(arr, list):\n        raise TypeError("Input must be a list")\n    if len(arr) <= 1:\n        return arr\n    n = len(arr)\n    for i in range(n):\n        swapped = False\n        for j in range(n - i - 1):\n            if arr[j] > arr[j + 1]:\n                arr[j], arr[j + 1] = arr[j + 1], arr[j]\n                swapped = True\n        if not swapped:\n            break\n    return arr`, timestamp: '2024-01-25T17:25:00Z' },
+      { code: `def bubble_sort(arr):\n    if not isinstance(arr, list):\n        raise TypeError("Input must be a list")\n    if len(arr) <= 1:\n        return arr\n    n = len(arr)\n    for i in range(n):\n        swapped = False\n        for j in range(n - i - 1):\n            if arr[j] > arr[j + 1]:\n                arr[j], arr[j + 1] = arr[j + 1], arr[j]\n                swapped = True\n        if not swapped:\n            break\n    return arr`, timestamp: '2024-01-25T17:30:00Z' },
+      { code: `def bubble_sort(arr):\n    if not isinstance(arr, list):\n        raise TypeError("Input must be a list")\n    if len(arr) <= 1:\n        return arr\n    n = len(arr)\n    for i in range(n):\n        swapped = False\n        for j in range(n - i - 1):\n            if arr[j] > arr[j + 1]:\n                arr[j], arr[j + 1] = arr[j + 1], arr[j]\n                swapped = True\n        if not swapped:\n            break\n    return arr`, timestamp: '2024-01-25T17:35:00Z' }
     ]
   }
 ];
-

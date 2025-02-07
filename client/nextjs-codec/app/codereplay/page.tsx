@@ -91,6 +91,10 @@ interface SimilarityMatrix {
   snippets: SnippetInfo[];
 }
 
+interface AdvancedMetrics {
+  weightedPlagiarismScore: number;
+}
+
 export default function CodeReplayApp() {
   const [code, setCode] = useState('// Start coding here');
   const [snippets, setSnippets] = useState<CodeSnippet[]>([]);
@@ -105,7 +109,6 @@ export default function CodeReplayApp() {
     matrix: number[][];
     snippets: SnippetInfo[];
   } | null>(null);
-  const [showMatrix, setShowMatrix] = useState(false);
   const [expandedSnippet, setExpandedSnippet] = useState(null);
   const [isMatrixLoading, setIsMatrixLoading] = useState(true);
   const [referenceFile, setReferenceFile] = useState<string>(''); // State to hold the reference file
@@ -115,6 +118,9 @@ export default function CodeReplayApp() {
   const [pasteCount, setPasteCount] = useState(0);
   const [bigPasteCount, setBigPasteCount] = useState(0);
   const [enhancedPastes, setEnhancedPastes] = useState<EnhancedPasteInfo[]>([]);
+  const [advancedMetrics, setAdvancedMetrics] = useState<AdvancedMetrics>({
+    weightedPlagiarismScore: 0
+  });
 
   const editorRef = useRef<Monaco.IStandaloneCodeEditor | null>(null);
 
@@ -564,11 +570,8 @@ export default function CodeReplayApp() {
                           </div>
                         </div>
                         <div className="flex items-center gap-2">
-                          <Badge className={getColorClass(stats.maxSimilarity)}>
-                            Max: {stats.maxSimilarity.toFixed(1)}%
-                          </Badge>
-                          <Badge className={getColorClass(stats.averageSimilarity)}>
-                            Avg: {stats.averageSimilarity.toFixed(1)}%
+                          <Badge className={getColorClass(advancedMetrics?.weightedPlagiarismScore || 0)}>
+                            Score: {(advancedMetrics?.weightedPlagiarismScore || 0).toFixed(1)}%
                           </Badge>
                           {expandedSnippet === index ? <ChevronUp /> : <ChevronDown />}
                         </div>
@@ -591,62 +594,7 @@ export default function CodeReplayApp() {
                     )}
                     </div>
 
-                    {expandedSnippet === index && (
-                      <div className="mt-4 flex space-x-4">
-                        {/* Main Code Snippet */}
-                        <div className="flex-1">
-                          <Editor
-                            height="400px"
-                            defaultLanguage="javascript"
-                            value={snippet.code}
-                            theme="vs-dark"
-                            options={{
-                              readOnly: true,
-                              minimap: { enabled: false },
-                              fontSize: 14,
-                              scrollBeyondLastLine: false,
-                              wordWrap: 'on',
-                            }}
-                          />
-                        </div>
 
-                        {/* Similar Snippets Section */}
-                        <div className="flex-1">
-                          <h4 className="font-medium mb-2">Similar Snippets</h4>
-                          <div className="space-y-2 h-[400px] overflow-y-auto pr-2">
-                            {stats.similarSnippets.map(similar => {
-                              const similarSnippet = similarityMatrix.snippets[similar.index];
-                              return (
-                                <Card key={similar.index} className="bg-gray-700 border-0 shadow-none">
-                                  <CardContent className="p-4">
-                                    <div className="flex justify-between items-center mb-2">
-                                      {/* Display user name instead of "Snippet X" */}
-                                      <span>{similarSnippet.userId}</span>
-                                      <Badge className={getColorClass(similar.similarity)}>
-                                        {similar.similarity.toFixed(1)}% Similar
-                                      </Badge>
-                                    </div>
-                                    <Editor
-                                      height="200px"
-                                      defaultLanguage="javascript"
-                                      value={similarSnippet.code}
-                                      theme="vs-dark"
-                                      options={{
-                                        readOnly: true,
-                                        minimap: { enabled: false },
-                                        fontSize: 14,
-                                        scrollBeyondLastLine: false,
-                                        wordWrap: 'on',
-                                      }}
-                                    />
-                                  </CardContent>
-                                </Card>
-                              );
-                            })}
-                          </div>
-                        </div>
-                      </div>
-                    )}
                   </CardContent>
                 </Card>
               );
