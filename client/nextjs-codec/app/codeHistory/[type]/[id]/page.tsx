@@ -1,307 +1,280 @@
-'use client';
-
-import React, { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+//page.tsx
+'use client'
+import { useState, useEffect, useRef } from 'react';
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { ChevronDown, ChevronUp, FileCode2, Network, GitBranch, Activity} from "lucide-react";
 import Editor from '@monaco-editor/react';
-import SimilarityLoading from '@/components/SimilarityLoading';
+import SimilarityLoading from './SimilarityLoading';
+import mongoose, { Model, Schema } from 'mongoose';
+import SimilarityNetwork from './SimilarityMatrix';
 import SequentialSimilarityVisualization from '@/components/SequentialSimilarityVisualization';
-import { getUser } from '@/lib/auth';
-import Nav from '@/app/dashboard/nav';
-import { Button } from '@/components/ui/button';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import SafeHtml from '@/components/SafeHtml';
-import { GetProblems, GetRoom } from '@/utilities/apiService';
-
-import type { ProblemSchemaInferredType } from '@/lib/interface/problem';
-import type { RoomSchemaInferredType } from '@/lib/interface/room';
-import type { SubmissionSchemaInferredType } from '@/lib/interface/submissions';
 
 interface CodeSnapshot {
-    code: string;
-    timestamp: string;
-    userId: string;
-    version?: number;
-    attemptCount: number;
+  code: string;
+  timestamp: string;
+  userId: string;
+  problemId?: string;
+  roomId?: string;
+  submissionId?: string;
+  version?: number;
 }
 
 interface SnapshotSimilarity {
-    fromIndex: number;
-    toIndex: number;
-    similarity: number;
-    codebertScore: number;
+  fromIndex: number;
+  toIndex: number;
+  similarity: number;
+  codebertScore: number;
 }
 
 interface EnhancedPasteInfo {
-    text: string;
-    fullCode: string;
-    timestamp: string;
-    length: number;
-    contextRange: {
-        startLine: number;
-        startColumn: number;
-        endLine: number;
-        endColumn: number;
-    };
+  text: string;
+  fullCode: string;
+  timestamp: string;
+  length: number;
+  contextRange: {
+    startLine: number;
+    startColumn: number;
+    endLine: number;
+    endColumn: number;
+  };
 }
 
-const ReplayView = ({ submission, onClose }: {
-    submission: SubmissionSchemaInferredType;
-    onClose: () => void
-}) => {
-    const [snapshots, setSnapshots] = useState<CodeSnapshot[]>([]);
-    const [sequentialSimilarities, setSequentialSimilarities] = useState<SnapshotSimilarity[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [isFetchingSimilarity, setIsFetchingSimilarity] = useState(false);
-    const [selectedSnapshot, setSelectedSnapshot] = useState<CodeSnapshot | null>(null);
-    const [pasteHistory, setPasteHistory] = useState<EnhancedPasteInfo[]>([]);
+interface SimilarSnippet {
+  userId: string;
+  similarity: number;
+  codebertScore: number;
+  timestamp: string;
+  code: string;
+  fileName: string;
+  clusterId?: number;
+  isLikelySource?: boolean;
+}
 
-    useEffect(() => {
-        // console.log("submission: ", submission);
+interface SnippetInfo {
+  userId: string;
+  code: string;
+  timestamp: string;
+  fileName: string;
+}
 
-        const fetchLearnerSnapshots = async () => {
-            try {
-                setLoading(true);
-                const response = await fetch(
-                    `/api/codereplayV3/code-snapshots?learner_id=${submission.learner_id}`
-                );
-                const data = await response.json();
+const getSimilarityColor = (similarity) => {
+  if (similarity >= 80) return 'bg-red-700 text-white';
+  if (similarity >= 60) return 'bg-yellow-600 text-white';
+  return 'bg-gray-700 text-white';
+};
 
-                if (data.success && Array.isArray(data.snapshots)) {
-                    // console.log(data.success, data.snapshots);
-                    const sortedSnapshots = data.snapshots.sort((a: CodeSnapshot, b: CodeSnapshot) => {
-                        if (a.version && b.version) {
-                            return a.version - b.version;
-                        }
-                        return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
-                    });
+export default function CodeReplayApp() {
+  const [similarityMatrix, setSimilarityMatrix] = useState<{
+    matrix: number[][];
+    snippets: SnippetInfo[];
+  } | null>(null);
+  const [isMatrixLoading, setIsMatrixLoading] = useState(true);
+  const [referenceFile, setReferenceFile] = useState<string>(''); // State to hold the reference file
+  
+  const [snapshots, setSnapshots] = useState<CodeSnapshot[]>([]);
+  const [sequentialSimilarities, setSequentialSimilarities] = useState<SnapshotSimilarity[]>([]);
+  const [pasteCount, setPasteCount] = useState(0);
+  const [bigPasteCount, setBigPasteCount] = useState(0);
+  const [enhancedPastes, setEnhancedPastes] = useState<EnhancedPasteInfo[]>([]);
 
-                    setSnapshots(sortedSnapshots);
-                    setSelectedSnapshot(sortedSnapshots.length > 0 ? sortedSnapshots[sortedSnapshots.length - 1] : null);
+  const fetchSimilarityData = async () => {
+    try {
+      setIsMatrixLoading(true);
+      const response = await fetch('/api/codereplay/plagiarism', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          problemId: 'sorting-1',
+          roomId: 'room-1'
+        }),
+      });
+  
+      const data = await response.json();
+      if (data.success) {
+        setSimilarityMatrix({
+          matrix: data.matrix,
+          snippets: data.snippets
+        });
+      }
+    } catch (error) {
+      console.error('Fetch error:', error);
+    } finally {
+      setIsMatrixLoading(false);
+    }
+  };
 
-                    if (sortedSnapshots.length > 1) {
-                        await calculateSequentialSimilarities(sortedSnapshots);
-                    }
-                }
-            } catch (error) {
-                console.error('Error fetching learner snapshots:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchLearnerSnapshots();
-    }, [submission]);
-
-    useEffect(() => {
-        if (submission.paste_history && submission.paste_history.length > 0) {
-            const parsedPasteHistory: EnhancedPasteInfo[] = JSON.parse(submission.paste_history[0]);
-            setPasteHistory(parsedPasteHistory);
+  useEffect(() => {
+    const fetchAllSnippets = async () => {
+      try {
+        const response = await fetch('/api/codereplay');
+        const data = await response.json();
+        if (data.success) {
+          console.log('All snippets:', data.snippets);
+        } else {
+          console.error('Error fetching snippets:', data.error);
         }
-    }, [submission]);
+      } catch (error) {
+        console.error('Error fetching snippets:', error);
+      }
+    };
+    fetchAllSnippets();
+  }, []);
 
-    const calculateSequentialSimilarities = async (snapshotsToCompare: CodeSnapshot[]) => {
-        try {
-            setIsFetchingSimilarity(true);
-            const response = await fetch('/api/codereplayV3/code-snapshots/sequential-similarity', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    snapshots: snapshotsToCompare,
-                    learnerId: submission.learner_id,
-                }),
-            });
+  useEffect(() => {
+    async function seedDatabase() {
+      const response = await fetch('/api/seed');
+      const data = await response.json();
+      console.log(data);
+    }
+    seedDatabase();
+  }, []);
 
-            if (response.ok) {
-                const data = await response.json();
-                if (Array.isArray(data.sequentialSimilarities)) {
-                    setSequentialSimilarities(data.sequentialSimilarities);
-                }
-            }
-        } catch (error) {
-            console.error('Sequential similarity calculation error:', error);
-        } finally {
-            setIsFetchingSimilarity(false);
+
+  useEffect(() => {
+    const fetchReferenceFile = async () => {
+      try {
+        const response = await fetch('/api/reference-file'); // Replace with your API endpoint
+        const data = await response.json();
+        if (data.success) {
+          setReferenceFile(data.referenceFile); // Set the reference file
         }
+      } catch (error) {
+        console.error('Error fetching reference file:', error);
+      }
+    };
+  
+    fetchReferenceFile();
+  }, []);
+
+
+    // Calculate statistics for each snippet
+    const calculateSnippetStats = (matrix, index) => {
+      if (!matrix || !matrix[index]) return null;
+      
+      const similarities = matrix[index].filter((_, i) => i !== index);
+      const avgSimilarity = similarities.reduce((a, b) => a + b, 0) / similarities.length;
+      const maxSimilarity = Math.max(...similarities);
+      
+      // Find highly similar snippets (>= 60%)
+      const similarSnippets = similarities
+        .map((similarity, i) => ({ index: i, similarity }))
+        .filter(item => item.similarity >= 60 && item.index !== index)
+        .sort((a, b) => b.similarity - a.similarity);
+  
+      return {
+        averageSimilarity: avgSimilarity,
+        maxSimilarity,
+        similarSnippets
+      };
     };
 
-    if (loading) {
-        return <div className="h-full w-full flex items-center justify-center">Loading...</div>;
-    }
+    const [expandedCard, setExpandedCard] = useState<number | null>(null);
+    const [advancedMetrics, setAdvancedMetrics] = useState<{ [key: string]: number }>({});
 
     return (
-        <div className="space-y-4 h-full overflow-y-auto p-6">
-            <Card className="mb-6">
-                <CardHeader>
-                    <div className="flex justify-between items-center">
-                        <CardTitle>Code Replay Analysis for {submission.learner}</CardTitle>
-                    </div>
-                </CardHeader>
-                <CardContent>
-                    <div className="text-sm text-muted-foreground">
-                        Total Versions: {snapshots.length}
-                        {selectedSnapshot && (
-                            <> | Latest Update: {new Date(selectedSnapshot.timestamp).toLocaleString()}</>
-                        )}
-                        <> | Attempt: {submission.attempt_count}</>
-                    </div>
-                </CardContent>
-            </Card>
-
-            {isFetchingSimilarity ? (
+      <div className="min-h-screen bg-gray-900 text-white p-4">
+        <div className="container mx-auto space-y-6">
+        <h1 className="text-2xl font-bold mb-4 flex items-center gap-2">
+          <Activity className="w-6 h-6 text-yellow-500" />
+          CodeCheck
+        </h1>
+          <Tabs defaultValue="network" className="w-full">
+            <TabsList className="bg-gray-800 border-b border-gray-700">
+              <TabsTrigger value="network" className="data-[state=active]:bg-gray-700">
+                <Network className="w-4 h-4 mr-2 text-yellow-500" />
+                Similarity Network
+              </TabsTrigger>
+              <TabsTrigger value="evolution" className="data-[state=active]:bg-gray-700">
+                <GitBranch className="w-4 h-4 mr-2 text-yellow-500" />
+                Code Evolution
+              </TabsTrigger>
+            </TabsList>
+    
+            <TabsContent value="network" className="mt-6">
+              {isMatrixLoading ? (
                 <SimilarityLoading />
-            ) : (
-                <Card>
-                    <CardContent className="p-6">
-                        <SequentialSimilarityVisualization
-                            snapshots={snapshots}
-                            sequentialSimilarities={sequentialSimilarities}
-                            pastedSnippets={pasteHistory}
-                        />
-                    </CardContent>
-                </Card>
-            )}
-
-            {selectedSnapshot && (
-                <Card className="mt-6">
-                    <CardHeader>
-                        <CardTitle>Current Version ({selectedSnapshot.version})</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <Editor
-                            height="400px"
-                            defaultLanguage="javascript"
-                            value={selectedSnapshot.code}
-                            theme="vs-dark"
-                            options={{
-                                readOnly: true,
-                                minimap: { enabled: false },
-                                fontSize: 14,
-                                scrollBeyondLastLine: false,
-                                wordWrap: 'on',
-                            }}
-                        />
-                    </CardContent>
-                </Card>
-            )}
-        </div>
-    );
-};
-
-const SubmissionViewer = () => {
-    const router = useRouter();
-    const params = useParams<{ type: string; id: string }>();
-
-    const [loading, setLoading] = useState(true);
-    const [user, setUser] = useState<any>();
-    const [submissions, setSubmissions] = useState<SubmissionSchemaInferredType[]>([]);
-    const [additionalInfo, setAdditionalInfo] = useState<ProblemSchemaInferredType | RoomSchemaInferredType>();
-    const [selectedSubmission, setSelectedSubmission] = useState<SubmissionSchemaInferredType | null>(null);
-
-    useEffect(() => {
-        const initialize = async () => {
-            try {
-                const userData = await getUser();
-                if ('error' in userData || userData.message === 'Authentication failed: [JWT MALFORMED]') {
-                    router.push('/login');
-                    return;
-                }
-                setUser(userData);
-
-                const queryParam = params.type === 'problem' ?
-                    `problem_slug=${params.id}` :
-                    `room_id=${params.id}`;
-                const response = await fetch(`/api/userSubmissions?${queryParam}&all=true&single=true`);
-                const submissionsData = await response.json();
-                setSubmissions(submissionsData.submission);
-                // console.log("submissions: ", submissionsData.submission);
-
-
-                const info = params.type === 'problem' ?
-                    await GetProblems(params.id) :
-                    await GetRoom(params.id);
-                setAdditionalInfo(info);
-            } catch (error) {
-                console.error('Initialization error:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        initialize();
-    }, [params.type, params.id, router]);
-
-    const handleShowReplay = (submission: SubmissionSchemaInferredType) => {
-        setSelectedSubmission(selectedSubmission?.learner_id === submission.learner_id ? null : submission);
-    };
-
-    if (loading) {
-        return <div className="h-screen w-screen flex items-center justify-center">Loading...</div>;
-    }
-
-    return (
-        <div className="min-h-screen bg-background">
-            <Nav type={user?.type} name={user?.auth.username} />
-
-            <div className="container mx-auto p-6">
-                <Card className="mb-6">
-                    <CardHeader>
-                        <div className="flex justify-between items-center">
-                            <CardTitle>
-                                <SafeHtml html={additionalInfo?.name ?? ''} />
-                            </CardTitle>
-                            <Button onClick={() => router.back()} variant="secondary">Back</Button>
-                        </div>
-                        <SafeHtml html={additionalInfo?.description ?? ''} />
-                    </CardHeader>
-                </Card>
-
-                <div className="flex gap-6">
-                    <div className="w-80 shrink-0 h-[calc(100vh-16rem)] overflow-y-auto">
-                        <div className="space-y-4">
-                            {submissions.map((submission) => (
-                                <Card
-                                    key={`${submission.learner_id}-${submission.attempt_count}`}
-                                    className={`p-4 transition-colors ${selectedSubmission?.learner_id === submission.learner_id
-                                        ? 'bg-muted border-primary'
-                                        : ''
-                                        }`}
-                                >
-                                    <div className="space-y-2">
-                                        <h3 className="text-lg font-semibold">{submission.learner}</h3>
-                                        <p className="text-sm text-muted-foreground">
-                                            Latest: {new Date(submission.submission_date).toLocaleDateString()}
-                                            <br />
-                                            Attempts: {submission.attempt_count}
-                                        </p>
-                                        <Button
-                                            variant={selectedSubmission?.learner_id === submission.learner_id ? "default" : "secondary"}
-                                            onClick={() => handleShowReplay(submission)}
-                                            className="w-full"
-                                        >
-                                            {selectedSubmission?.learner_id === submission.learner_id ? 'Hide Replay' : 'View Replay'}
-                                        </Button>
-                                    </div>
-                                </Card>
-                            ))}
-                        </div>
-                    </div>
-
-                    <div className="flex-1 h-[calc(100vh-16rem)]">
-                        {selectedSubmission ? (
-                            <ReplayView
-                                submission={selectedSubmission}
-                                onClose={() => setSelectedSubmission(null)}
-                            />
-                        ) : (
-                            <div className="h-full flex items-center justify-center text-muted-foreground">
-                                Select a learner to view their code replay
-                            </div>
-                        )}
-                    </div>
+              ) : (
+                <div className="space-y-6">
+                  <SimilarityNetwork 
+                    matrix={similarityMatrix.matrix}
+                    snippets={similarityMatrix.snippets}
+                    referenceFile={referenceFile}
+                  />
+                  
+                  <div className="space-y-4">
+                    {similarityMatrix?.snippets.map((snippet, index) => {
+                      const stats = calculateSnippetStats(similarityMatrix.matrix, index);
+                      if (!stats) return null;
+    
+                      return (
+                        <Card key={index} className="bg-gray-800/50 border-0 shadow-lg hover:bg-gray-800/70 transition-colors">
+                          {/* ... existing card content ... */}
+                        </Card>
+                      );
+                    })}
+                  </div>
                 </div>
-            </div>
+              )}
+            </TabsContent>
+    
+            <TabsContent value="evolution" className="mt-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 relative">
+                {similarityMatrix?.snippets.map((snippet, index) => (
+                  <div key={index} className={`${
+                    expandedCard === index ? 'col-span-full row-span-2' : ''
+                  } transition-all duration-300`}>
+                    <Card className="bg-gray-800/50 border-0 shadow-lg h-full">
+                      <CardHeader 
+                        className="cursor-pointer p-4" 
+                        onClick={() => setExpandedCard(expandedCard === index ? null : index)}
+                      >
+                        <CardTitle className="text-sm">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2 truncate">
+                              <FileCode2 className="w-4 h-4 flex-shrink-0" />
+                              <span className="truncate">{snippet.userId}</span>
+                            </div>
+                            <div className="flex items-center gap-2 flex-shrink-0">
+                              <Badge className={`${
+                                (advancedMetrics[snippet.userId]?.weightedPlagiarismScore || 0) >= 80 ? 'bg-red-600' :
+                                (advancedMetrics[snippet.userId]?.weightedPlagiarismScore || 0) >= 60 ? 'bg-yellow-600' :
+                                'bg-gray-600'
+                              }`}>
+                                {(advancedMetrics[snippet.userId]?.weightedPlagiarismScore || 0).toFixed(1)}%
+                              </Badge>
+                              {expandedCard === index ? (
+                                <ChevronUp className="w-4 h-4" />
+                              ) : (
+                                <ChevronDown className="w-4 h-4" />
+                              )}
+                            </div>
+                          </div>
+                        </CardTitle>
+                      </CardHeader>
+                      {expandedCard === index && (
+                        <CardContent className="p-4">
+                          <SequentialSimilarityVisualization 
+                            snapshots={snapshots.filter(s => s.userId === snippet.userId)}
+                            sequentialSimilarities={sequentialSimilarities}
+                            pastedSnippets={enhancedPastes}
+                            onMetricsUpdate={(metrics) => {
+                              setAdvancedMetrics(prev => ({
+                                ...prev,
+                                [snippet.userId]: metrics
+                              }));
+                            }}
+                          />
+                        </CardContent>
+                      )}
+                    </Card>
+                  </div>
+                ))}
+              </div>
+            </TabsContent>
+          </Tabs>
         </div>
+      </div>
     );
-};
-
-export default SubmissionViewer;
+  };

@@ -49,23 +49,20 @@ interface EnhancedPasteInfo {
 interface SequentialSimilarityVisualizationProps {
   snapshots: CodeSnapshot[];
   sequentialSimilarities: SequentialSimilarity[];
-  pasteCount: number;
-  bigPasteCount: number;
   pastedSnippets: EnhancedPasteInfo[];
 }
 
 const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizationProps> = ({
   snapshots,
   sequentialSimilarities,
-  pasteCount,
-  bigPasteCount,
   pastedSnippets
 }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentSnapshotIndex, setCurrentSnapshotIndex] = useState(0);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [localPastedSnippets, setLocalPastedSnippets] = useState<PasteInfo[]>([]);
+  const [localPastedSnippets, setLocalPastedSnippets] = useState<EnhancedPasteInfo[]>([]);
   const [expandedCards, setExpandedCards] = useState<number[]>([]);
+  const [pasteCount, setPasteCount] = useState(0);
+  const [bigPasteCount, setBigPasteCount] = useState(0);
 
   const toggleCard = (index: number) => {
     setExpandedCards(prev =>
@@ -95,6 +92,12 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
     console.log('Received Paste Snippets:', pastedSnippets);
     if (pastedSnippets && pastedSnippets.length > 0) {
       setLocalPastedSnippets(pastedSnippets);
+    }
+    setPasteCount(pastedSnippets.length);
+    for (let i = 0; i < pastedSnippets.length; i++) {
+      if (pastedSnippets[i].length > 200) {
+        setBigPasteCount(prev => prev + 1);
+      }
     }
   }, [pastedSnippets]);
 
@@ -301,25 +304,25 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
               label="Max Change"
               value={`${advancedMetrics.maxChange}%`}
               tooltipId="maxChangeTooltip"
-              tooltipContent="Maximum difference in similarity between consecutive snapshots, higher values indicate higher plagiarism risk"
+              tooltipContent="Maximum difference in similarity between consecutive snapshots"
             />
             <MetricCard
               label="Average Similarity"
               value={`${advancedMetrics.averageSimilarity}%`}
               tooltipId="averageSimilarityTooltip"
-              tooltipContent="Mean value of all similarity scores, lower values indicate higher plagiarism risk"
+              tooltipContent="Mean value of all similarity scores"
             />
             <MetricCard
               label="Minimum Similarity"
               value={`${advancedMetrics.minSimilarity}%`}
               tooltipId="minSimilarityTooltip"
-              tooltipContent="Lowest similarity score observed, lower values indicate higher plagiarism risk"
+              tooltipContent="Lowest similarity score observed"
             />
             <MetricCard
               label="Variance"
               value={`${advancedMetrics.normalizedVariance}%`}
               tooltipId="varianceTooltip"
-              tooltipContent="Measure of similarity score fluctuation, higher values indicate higher plagiarism risk"
+              tooltipContent="Measure of similarity score fluctuation"
             />
             {/* <MetricCard
               label="Pastes"
@@ -330,8 +333,8 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
             <MetricCard
               label="Big Pastes"
               value={bigPasteCount}
-              tooltipId="bigPastesTooltip"
-              tooltipContent="Number of large paste (More than 200 Characters) operations detected"
+              // tooltipId="bigPastesTooltip"
+              // tooltipContent="Number of large paste operations detected"
             />
           </div>
         </div>
