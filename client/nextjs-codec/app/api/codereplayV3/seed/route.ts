@@ -1,14 +1,14 @@
 import { NextResponse } from 'next/server';
 import dbConnect from '../../../../lib/dbConnect';
 import mongoose from 'mongoose';
-import { seedCodeSnapshots } from '../../../codereplayV3/SeedData';
+import { seedCodeSnapshots } from '../../../codereplay/SeedData';
 
 // Define the schema for code snapshots
 const CodeSnapshotSchema = new mongoose.Schema({
   code: String,
   timestamp: { type: Date, default: Date.now },
-  userId: String,
-  submissionId: String,
+  learner_id: String,
+  submissionId: {type: mongoose.Types.ObjectId, default: () => new mongoose.Types.ObjectId().toString(), ref: "User"},
   roomId: String,
   problemId: String,
   version: { type: Number, required: true }
@@ -30,7 +30,7 @@ export async function GET() {
       submission.snapshots.map((snapshot, index) => ({
         code: snapshot.code,
         timestamp: new Date(snapshot.timestamp),
-        userId: submission.userId,
+        learner_id: submission.learner_id,
         roomId: submission.roomId,
         problemId: submission.problemId,
         submissionId: submission.submissionId,
@@ -69,7 +69,7 @@ export async function POST(request: Request) {
         submission.snapshots.map((snapshot, index) => ({
           code: snapshot.code,
           timestamp: new Date(snapshot.timestamp),
-          userId: submission.userId,
+          learner_id: submission.learner_id,
           roomId: submission.roomId,
           problemId: submission.problemId,
           submissionId: submission.submissionId,

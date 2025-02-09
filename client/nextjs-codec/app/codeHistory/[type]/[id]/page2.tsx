@@ -19,7 +19,7 @@ import type { SubmissionSchemaInferredType } from '@/lib/interface/submissions';
 interface CodeSnapshot {
     code: string;
     timestamp: string;
-    userId: string;
+    learner_id: string;
     version?: number;
     attemptCount: number;
 }

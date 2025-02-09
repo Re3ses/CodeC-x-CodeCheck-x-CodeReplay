@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 // Types to ensure type safety
 interface CodeSnapshot {
   code: string;
@@ -5,7 +7,7 @@ interface CodeSnapshot {
 }
 
 interface SubmissionSeedData {
-  userId: string;
+  learner_id: mongoose.Types.ObjectId;
   roomId: string;
   problemId: string;
   submissionId?: string;
@@ -14,7 +16,7 @@ interface SubmissionSeedData {
 
 export const seedCodeSnapshots: SubmissionSeedData[] = [
   {
-    userId: 'user_learning_sort',
+    learner_id: new mongoose.Types.ObjectId(),
     roomId: 'algorithms_study_room',
     problemId: 'bubble_sort',
     submissionId: 'submission_bubble_sort_001',

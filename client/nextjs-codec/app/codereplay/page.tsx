@@ -16,7 +16,7 @@ import SequentialSimilarityVisualization from './SequentialSimilarityVisualizati
 interface CodeSnapshot {
   code: string;
   timestamp: string;
-  userId: string;
+  learner_id: string;
   problemId?: string;
   roomId?: string;
   submissionId?: string;
@@ -44,7 +44,7 @@ interface EnhancedPasteInfo {
 }
 
 interface SimilarSnippet {
-  userId: string;
+  learner_id: string;
   similarity: number;
   codebertScore: number;
   timestamp: string;
@@ -55,14 +55,14 @@ interface SimilarSnippet {
 }
 
 interface CodeSnippet {
-  userId: string;
+  learner_id: string;
   code: string;
   timestamp: string;
   fileName: string;
 }
 
 const codeSnippetSchema = new Schema<CodeSnippet>({
-  userId: String,
+  learner_id: String,
   code: String,
   timestamp: String,
   fileName: String,
@@ -172,7 +172,7 @@ export default function CodeReplayApp() {
 
     setSaving(true);
     try {
-      const userId = await getUserId();
+      const learner_id = await getUserId();
       const lastVersion = snapshots.length > 0
         ? Math.max(...snapshots.map(snapshot => snapshot.version || 0))
         : 0;
@@ -183,7 +183,7 @@ export default function CodeReplayApp() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           code: codeToSave,
-          userId,
+          learner_id,
           problemId: 'sorting-1',
           roomId: 'room-1',
           submissionId: `submission-${Date.now()}`,
@@ -252,13 +252,13 @@ export default function CodeReplayApp() {
 
   //   setSaving(true);
   //   try {
-  //     const userId = getUserId();
+  //     const learner_id = getUserId();
   //     const saveResponse = await fetch('/api/codereplay', {
   //       method: 'POST',
   //       headers: { 'Content-Type': 'application/json' },
   //       body: JSON.stringify({
   //         code: codeToSave,
-  //         userId,
+  //         learner_id,
   //         problemId: 'sorting-1',
   //         roomId: 'room-1'
   //       }),
@@ -268,7 +268,7 @@ export default function CodeReplayApp() {
   //       const savedData = await saveResponse.json();
   //       if (savedData.snippet && 'code' in savedData.snippet) {
   //         setSnippets(prevSnippets => [{
-  //           userId: savedData.snippet.userId,
+  //           learner_id: savedData.snippet.learner_id,
   //           code: savedData.snippet.code,
   //           timestamp: savedData.snippet.timestamp,
   //           fileName: savedData.snippet.fileName
@@ -323,12 +323,12 @@ export default function CodeReplayApp() {
 
   const getUserId = () => {
     if (typeof window !== 'undefined') {
-      let userId = localStorage.getItem('userId');
-      if (!userId) {
-        userId = `user-${Math.floor(Math.random() * 10000)}`;
-        localStorage.setItem('userId', userId);
+      let learner_id = localStorage.getItem('learner_id');
+      if (!learner_id) {
+        learner_id = `user-${Math.floor(Math.random() * 10000)}`;
+        localStorage.setItem('learner_id', learner_id);
       }
-      return userId;
+      return learner_id;
     }
     return null;
   };
@@ -439,32 +439,32 @@ export default function CodeReplayApp() {
     fetchInitialData();
   }, []);
 
-  useEffect(() => {
-    const fetchReferenceFile = async () => {
-      try {
-        const response = await fetch('/api/reference-file'); // Replace with your API endpoint
-        const data = await response.json();
-        if (data.success) {
-          setReferenceFile(data.referenceFile); // Set the reference file
-        }
-      } catch (error) {
-        console.error('Error fetching reference file:', error);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchReferenceFile = async () => {
+  //     try {
+  //       const response = await fetch('/api/reference-file'); // Replace with your API endpoint
+  //       const data = await response.json();
+  //       if (data.success) {
+  //         setReferenceFile(data.referenceFile); // Set the reference file
+  //       }
+  //     } catch (error) {
+  //       console.error('Error fetching reference file:', error);
+  //     }
+  //   };
 
-    fetchReferenceFile();
-  }, []);
+  //   fetchReferenceFile();
+  // }, []);
 
   const saveCode = async () => {
     setSaving(true);
     try {
-      const userId = getUserId();
+      const learner_id = getUserId();
       const saveResponse = await fetch('/api/codereplay', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           code,
-          userId,
+          learner_id,
           problemId: 'sorting-1',
           roomId: 'room-1'
         }),
@@ -474,7 +474,7 @@ export default function CodeReplayApp() {
         const savedData = await saveResponse.json();
         if (savedData.snippet && 'code' in savedData.snippet) {
           setSnippets(prevSnippets => [{
-            userId: savedData.snippet.userId,
+            learner_id: savedData.snippet.learner_id,
             code: savedData.snippet.code,
             timestamp: savedData.snippet.timestamp,
             fileName: savedData.snippet.fileName
@@ -492,7 +492,7 @@ export default function CodeReplayApp() {
   };
 
   useEffect(() => {
-    getUserId(); // This will create and store a userId if one doesn't exist
+    getUserId(); // This will create and store a learner_id if one doesn't exist
   }, []);
 
   // Calculate statistics for each snippet
@@ -554,7 +554,6 @@ export default function CodeReplayApp() {
                   <SimilarityNetwork
                     matrix={similarityMatrix.matrix}
                     snippets={similarityMatrix.snippets}
-                    referenceFile={referenceFile}
                   /> : null
                 }
 
@@ -588,14 +587,14 @@ export default function CodeReplayApp() {
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2 truncate">
                             <FileCode2 className="w-4 h-4 flex-shrink-0" />
-                            <span className="truncate">{snippet.userId}</span>
+                            <span className="truncate">{snippet.learner_id}</span>
                           </div>
                           <div className="flex items-center gap-2 flex-shrink-0">
-                            <Badge className={`${(advancedMetrics[snippet.userId]?.weightedPlagiarismScore || 0) >= 80 ? 'bg-red-600' :
-                                (advancedMetrics[snippet.userId]?.weightedPlagiarismScore || 0) >= 60 ? 'bg-yellow-600' :
+                            <Badge className={`${(advancedMetrics[snippet.learner_id]?.weightedPlagiarismScore || 0) >= 80 ? 'bg-red-600' :
+                                (advancedMetrics[snippet.learner_id]?.weightedPlagiarismScore || 0) >= 60 ? 'bg-yellow-600' :
                                   'bg-gray-600'
                               }`}>
-                              {(advancedMetrics[snippet.userId]?.weightedPlagiarismScore || 0).toFixed(1)}%
+                              {(advancedMetrics[snippet.learner_id]?.weightedPlagiarismScore || 0).toFixed(1)}%
                             </Badge>
                             {expandedCard === index ? (
                               <ChevronUp className="w-4 h-4" />
@@ -609,7 +608,7 @@ export default function CodeReplayApp() {
                     {expandedCard === index && (
                       <CardContent className="p-4">
                         <SequentialSimilarityVisualization
-                          snapshots={snapshots.filter(s => s.userId === snippet.userId)}
+                          snapshots={snapshots.filter(s => s.learner_id === snippet.learner_id)}
                           sequentialSimilarities={sequentialSimilarities}
                           pasteCount={pasteCount}
                           bigPasteCount={bigPasteCount}
@@ -617,7 +616,7 @@ export default function CodeReplayApp() {
                           onMetricsUpdate={(metrics) => {
                             setAdvancedMetrics(prev => ({
                               ...prev,
-                              [snippet.userId]: metrics
+                              [snippet.learner_id]: metrics
                             }));
                           }}
                         />

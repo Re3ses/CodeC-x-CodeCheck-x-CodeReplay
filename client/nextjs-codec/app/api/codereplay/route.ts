@@ -6,7 +6,7 @@ import mongoose from 'mongoose';
 const CodeSnippetSchema = new mongoose.Schema({
   code: String,
   timestamp: { type: Date, default: Date.now },
-  userId: String,
+  learner_id: String,
   submissionId: { type: String, default: () => new mongoose.Types.ObjectId().toString() },
   roomId: String,
   roomName: String,
@@ -25,7 +25,7 @@ export async function POST(request: Request) {
       code,
       problemId,
       roomId,
-      userId: 'test-user-1', // Using test user for now
+      learner_id: 'test-user-1', // Using test user for now
       submissionId: new mongoose.Types.ObjectId().toString()
     });
 
@@ -39,7 +39,7 @@ export async function POST(request: Request) {
 export async function GET() {
   try {
     await dbConnect();
-    const snippets = await CodeSnippet.find({ userId: 'test-user-1' })
+    const snippets = await CodeSnippet.find({ learner_id: "67a8865eadce43a5e77201b8" })
       .sort({ timestamp: -1 })
       .limit(10);
 

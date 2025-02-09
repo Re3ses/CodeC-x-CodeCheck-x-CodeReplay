@@ -27,7 +27,9 @@ export async function GET(request: Request) {
 
     // Build the query based on search parameters
     const query: { [key: string]: any } = {};
-    if (learnerId) query['learner_id'] = learnerId;
+    if (learnerId) {
+      query['learner_id'] = learnerId;
+    }
 
     // Use a single query with conditional filtering
     const snapshots = await CodeSnapshots.find(query)
@@ -47,47 +49,24 @@ export async function GET(request: Request) {
         metadata: {
           totalSnapshots: 0,
           uniqueUsers: 0,
-          uniqueProblems: 0
-        }
+        },
       });
     }
 
-    // Process snapshots data
-    const processedSnapshots = snapshots.map(snapshot => ({
-      code: snapshot.code,
-      timestamp: snapshot.timestamp.toISOString(),
-      learner_id: snapshot.learner_id,
-      problemId: snapshot.problemId,
-      roomId: snapshot.roomId,
-      submissionId: snapshot.submissionId,
-      version: snapshot.version
-    }));
-
-    // Calculate metadata using Set for better performance
-    const uniqueUsers = new Set(snapshots.map(s => s.learner_id));
-    const uniqueProblems = new Set(snapshots.map(s => s.problemId));
-
+    // Return the snapshots
     return NextResponse.json({
       success: true,
-      snapshots: processedSnapshots,
+      snapshots,
       metadata: {
         totalSnapshots: snapshots.length,
-        uniqueUsers: uniqueUsers.size,
-        uniqueProblems: uniqueProblems.size
-      }
+        uniqueUsers: new Set(snapshots.map(s => s.learner_id)).size,
+      },
     });
   } catch (error) {
-    console.error('Error fetching snapshots:', error);
-
-    // Determine appropriate status code
-    const statusCode = error.name === 'ValidationError' ? 400 : 500;
-
     return NextResponse.json({
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to fetch snapshots',
-      snapshots: [],
-      metadata: {}
-    }, { status: statusCode });
+      error: error.message,
+    });
   }
 }
 

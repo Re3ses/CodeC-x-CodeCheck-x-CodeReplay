@@ -1,28 +1,28 @@
+// sequential similarity route for codereplay v3
 import { NextResponse } from 'next/server';
 import dbConnect from '../../../../lib/dbConnect';
 import mongoose from 'mongoose';
 import { HfInference } from '@huggingface/inference';
 import { FeatureExtractionOutput } from '@huggingface/inference';
-import UserSubmission from '@/models/UserSubmissions';
-
 
 const DEBUG = process.env.DEBUG_CODEBERT === 'true';
 const hf = new HfInference(process.env.HUGGINGFACE_API_KEY || '');
 
 const embeddingCache = new Map<string, number[]>();
 
-interface SnippetInfo {
+// Interface for the sequential similarity calculation
+interface SequentialSimilarity {
+  fromIndex: number;
+  toIndex: number;
   learner_id: string;
-  fileName: string;
-  code: string;
-  timestamp: string;
+  similarity: number;
+  codebertScore: number;
 }
-
 
 class CodeAnalyzer {
   private static readonly SIMILARITY_THRESHOLD = 0.7;
 
-  public static calculateFallbackSimilarity(code1: string, code2: string): number {
+  private static calculateFallbackSimilarity(code1: string, code2: string): number {
     const tokens1 = code1.split(/\s+/);
     const tokens2 = code2.split(/\s+/);
 
@@ -43,38 +43,41 @@ class CodeAnalyzer {
     return mag1 && mag2 ? dotProduct / (mag1 * mag2) : 0;
   }
 
-  public static generateCacheKey(code: string): string {
+  private static generateCacheKey(code: string): string {
     const preprocessed = this.preprocessCode(code);
     return Buffer.from(preprocessed).toString('base64');
   }
 
-  public static async getEmbedding(code: string, cacheKey: string): Promise<number[]> {
-    // Implementation remains the same as original
+  private static async getEmbedding(code: string, cacheKey: string): Promise<number[]> {
     const cachedValue = embeddingCache.get(cacheKey);
-    if (cachedValue) return cachedValue;
+    if (cachedValue) {
+      return cachedValue;
+    }
 
     try {
       const embedding = await this.fetchEmbedding(code);
       embeddingCache.set(cacheKey, embedding);
+
       if (embeddingCache.size > 1000) {
-        const firstKey = embeddingCache.keys().next().value;
-        if (firstKey !== undefined) {
+        const firstKey = Array.from(embeddingCache.keys())[0];
+        if (firstKey) {
           embeddingCache.delete(firstKey);
         }
       }
+
       return embedding;
     } catch (error) {
-      if (DEBUG) console.log('Embedding fetch failed:', error);
+      if (DEBUG) {
+        console.log('Embedding fetch failed:', error);
+      }
       return [];
     }
   }
 
   private static async fetchEmbedding(code: string): Promise<number[]> {
     const preprocessed = this.preprocessCode(code);
-    console.log('Preprocessed code length:', preprocessed.length);
 
     try {
-      console.log('Calling HuggingFace API...');
       const output = await hf.featureExtraction({
         model: 'microsoft/codebert-base',
         inputs: preprocessed,
@@ -83,15 +86,12 @@ class CodeAnalyzer {
           output_hidden_states: true
         }
       });
-      console.log('HF API response type:', typeof output, 'Array?:', Array.isArray(output));
 
       return this.applyMeanPooling(output);
     } catch (error) {
-      console.error('HF API call failed:', {
-        error,
-        codeLength: code.length,
-        preprocessedLength: preprocessed.length
-      });
+      if (DEBUG) {
+        console.log('HF API call failed:', error);
+      }
       throw error;
     }
   }
@@ -136,51 +136,39 @@ class CodeAnalyzer {
   }
 
   static async getCodeBERTScore(code1: string, code2: string): Promise<number> {
-    console.log('Starting similarity analysis for codes:', {
-      code1Length: code1.length,
-      code2Length: code2.length
-    });
-
     try {
       const cache1 = this.generateCacheKey(code1);
       const cache2 = this.generateCacheKey(code2);
-      console.log('Generated cache keys:', { cache1, cache2 });
 
       const [emb1, emb2] = await Promise.all([
         this.getEmbedding(code1, cache1),
         this.getEmbedding(code2, cache2)
       ]);
 
-      console.log('Embeddings received:', {
-        emb1Length: emb1.length,
-        emb2Length: emb2.length,
-        emb1Sample: emb1.slice(0, 3),
-        emb2Sample: emb2.slice(0, 3)
-      });
-
       if (!emb1.length || !emb2.length) {
-        console.warn('Invalid embeddings - falling back to basic similarity');
+        if (DEBUG) {
+          console.log('Invalid embeddings received:', { emb1, emb2 });
+        }
         return this.calculateFallbackSimilarity(code1, code2);
       }
 
       const similarity = this.calculateCosineSimilarity(emb1, emb2);
-      console.log('Calculated similarity:', similarity);
 
       if (isNaN(similarity) || similarity === null) {
-        console.warn('Invalid similarity score - falling back to basic similarity');
+        if (DEBUG) {
+          console.log('Invalid similarity score:', similarity);
+        }
         return this.calculateFallbackSimilarity(code1, code2);
       }
 
-      const finalScore = (similarity + 1) / 2;
-      console.log('Final normalized score:', finalScore);
-      return finalScore;
+      return (similarity + 1) / 2;
     } catch (error) {
       console.error('CodeBERT error:', error);
       return this.calculateFallbackSimilarity(code1, code2);
     }
   }
 
-  public static calculateCosineSimilarity(vec1: number[], vec2: number[]): number {
+  private static calculateCosineSimilarity(vec1: number[], vec2: number[]): number {
     const maxLength = Math.max(vec1.length, vec2.length);
 
     const padVector = (vec: number[], targetLength: number): number[] => {
@@ -218,13 +206,49 @@ class CodeAnalyzer {
   }
 
   private static preprocessCode(code: string): string {
-    const processed = code
-      .replace(/\/\*[\s\S]*?\*\/|\/\/.*$/gm, '')
-      .replace(/\s+/g, ' ')
-      .replace(/[^\w\s]/g, ' ')
-      .trim()
-      .toLowerCase();
+    // Step 1: Whitespace Normalization
+    const normalizedWhitespace = code
+      .replace(/\/\*[\s\S]*?\*\/|\/\/.*$/gm, '') // Remove comments
+      .replace(/\s+/g, ' ')  // Collapse multiple whitespaces
+      .replace(/^\s+|\s+$/g, '')  // Trim leading and trailing whitespaces
+      .replace(/\n/g, ' ')  // Replace newlines with spaces
+      .replace(/\t/g, ' ');  // Replace tabs with spaces
 
+    // Step 2: Variable Name Standardization
+    const variableStandardization = normalizedWhitespace
+      .replace(/\b(let|var|const)\s+(\w+)/g, (match, keyword, varName) => {
+        // Replace camelCase and snake_case with a standard format
+        const standardizedName = varName
+          .replace(/_/g, '')  // Remove underscores
+          .replace(/([A-Z])/g, (_, letter) => letter.toLowerCase());  // Convert camelCase to lowercase
+        return `${keyword} ${standardizedName}`;
+      });
+
+    // Step 3: String Literal Uniformity
+    const stringUniformity = variableStandardization
+      .replace(/(["'])(.*?)\1/g, (match, quote, content) => {
+        // Convert all string literals to a single quote representation
+        // Escape internal single quotes
+        const escapedContent = content.replace(/'/g, "\\'");
+        return `'${escapedContent}'`;
+      });
+
+    // Step 4: Number Format Standardization
+    const numberStandardization = stringUniformity
+      .replace(/\b0+(\d+)/g, '$1')  // Remove leading zeros from integers
+      .replace(/(\d+\.\d*?)0+$/g, '$1')  // Remove trailing zeros from decimals
+      .replace(/(\d+)\.0+\b/g, '$1')  // Convert whole number decimals to integers
+      .replace(/\b0x([a-fA-F0-9]+)/gi, (match, hex) => parseInt(hex, 16).toString())  // Convert hex to decimal
+      .replace(/\b0b([01]+)/gi, (match, binary) => parseInt(binary, 2).toString());  // Convert binary to decimal
+
+    // Final processing
+    const processed = numberStandardization
+      .toLowerCase()  // Convert to lowercase
+      .replace(/[^\w\s']/g, ' ')  // Replace non-word characters (except single quotes) with spaces
+      .replace(/\s+/g, ' ')  // Collapse multiple spaces again
+      .trim();
+
+    // Truncate if too long
     if (processed.length > 512) {
       const truncated = processed.substring(0, 509).trim();
       return truncated.substring(0, truncated.lastIndexOf(' ')) + '...';
@@ -234,99 +258,41 @@ class CodeAnalyzer {
   }
 }
 
-export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const problemId = searchParams.get('problemId');
-  const roomId = searchParams.get('roomId');
-
-  console.log('Processing request:', { problemId, roomId });
-
-  if (!problemId && !roomId) {
-    console.warn('Missing required parameters');
-    return NextResponse.json({
-      success: false,
-      message: 'No problemId or roomId provided'
-    }, { status: 400 });
-  }
-
+export async function POST(request: Request) {
   try {
     await dbConnect();
-    console.log('Database connected');
+    const { snapshots } = await request.json();
 
-    const snippets = await UserSubmission.find({ problemId, roomId, verdict: "ACCEPTED" }).lean();
-    console.log('Found snippets:', snippets.length);
+    // Calculate sequential similarities
+    const sequentialSimilarities: SequentialSimilarity[] = [];
 
-    if (snippets.length === 0) {
-      console.log('No snippets found for query:', { problemId, roomId });
-      return NextResponse.json({
-        success: true,
-        matrix: [],
-        snippets: [],
-        message: 'No snippets found for this problem and room'
+    for (let i = 0; i < snapshots.length - 1; i++) {
+      const currentSnapshot = snapshots[i];
+      const nextSnapshot = snapshots[i + 1];
+
+      const codebertScore = await CodeAnalyzer.getCodeBERTScore(
+        currentSnapshot.code,
+        nextSnapshot.code
+      );
+
+      sequentialSimilarities.push({
+        fromIndex: i,
+        toIndex: i + 1,
+        learner_id: currentSnapshot.learner_id,
+        similarity: Math.round(codebertScore * 100),
+        codebertScore: Math.round(codebertScore * 100)
       });
     }
 
-    // Log the start of embedding computation
-    console.log('Starting embedding computation for', snippets.length, 'snippets');
-
-    const codes = snippets.map(s => s.code);
-    const cacheKeys = codes.map(code => CodeAnalyzer.generateCacheKey(code));
-
-    // Track embedding progress
-    let completedEmbeddings = 0;
-    const embeddings = await Promise.all(
-      codes.map(async (code, index) => {
-        const embedding = await CodeAnalyzer.getEmbedding(code, cacheKeys[index]);
-        completedEmbeddings++;
-        console.log(`Completed ${completedEmbeddings}/${codes.length} embeddings`);
-        return embedding;
-      })
-    );
-
-    console.log('Computing similarity matrix...');
-
-    // Compute similarity matrix
-    const matrix = codes.map((code1, i) =>
-      codes.map((code2, j) => {
-        if (i === j) return 100; // Self similarity
-
-        const emb1 = embeddings[i];
-        const emb2 = embeddings[j];
-
-        // Handle missing embeddings with fallback
-        if (!emb1?.length || !emb2?.length) {
-          const fallback = CodeAnalyzer.calculateFallbackSimilarity(code1, code2);
-          return Math.round(fallback * 100);
-        }
-
-        // Calculate cosine similarity
-        const similarity = CodeAnalyzer.calculateCosineSimilarity(emb1, emb2);
-        const normalized = (similarity + 1) / 2; // Scale to [0, 1]
-        return Math.round(normalized * 100);
-      })
-    );
-
-    // Prepare snippet metadata for frontend
-    const snippetInfo: SnippetInfo[] = snippets.map(snippet => ({
-      learner_id: snippet.learner_id,
-      fileName: `${snippet.learner}_${problemId}.js`,
-      code: snippet.code,
-      timestamp: snippet.submission_date,
-    }));
-
     return NextResponse.json({
       success: true,
-      matrix,
-      snippets: snippetInfo
+      sequentialSimilarities
     });
-
   } catch (error) {
-    console.error('Request failed:', error);
     return NextResponse.json({
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to compute similarity matrix',
-      matrix: [],
-      snippets: []
+      error: error instanceof Error ? error.message : 'Failed to calculate sequential similarities',
+      sequentialSimilarities: []
     }, { status: 500 });
   }
 }

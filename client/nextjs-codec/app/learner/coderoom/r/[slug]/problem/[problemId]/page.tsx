@@ -53,7 +53,7 @@ interface Data {
 interface CodeSnapshot {
   code: string;
   timestamp: string;
-  userId: string;
+  learner_id: string;
   problemId?: string;
   roomId?: string;
   submissionId?: string;
@@ -358,7 +358,7 @@ export default function Page() {
     setSaving(true);
     try {
       console.log('Auto-saving...');
-      // const userId = await getUserId();
+      // const learner_id = await getUserId();
 
       // Find the last version from existing snapshots
       const lastVersion = snapshots.length > 0
@@ -373,7 +373,7 @@ export default function Page() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           code: codeToSave,
-          userId: learner_id,
+          learner_id: learner_id,
           problemId: params.problemId,
           roomId: params.slug,
           submissionId: `submission-${Date.now()}`,

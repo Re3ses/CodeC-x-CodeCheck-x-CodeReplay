@@ -13,7 +13,7 @@ import { useParams } from 'next/navigation';
 interface CodeSnapshot {
     code: string;
     timestamp: string;
-    userId: string;
+    learner_id: string;
     problemId?: string;
     roomId?: string;
     submissionId?: string;
@@ -23,6 +23,7 @@ interface CodeSnapshot {
 interface SnapshotSimilarity {
     fromIndex: number;
     toIndex: number;
+    learner_id: string;
     similarity: number;
     codebertScore: number;
 }
@@ -41,7 +42,7 @@ interface EnhancedPasteInfo {
 }
 
 interface SimilarSnippet {
-    userId: string;
+    learner_id: string;
     similarity: number;
     codebertScore: number;
     timestamp: string;
@@ -52,7 +53,7 @@ interface SimilarSnippet {
 }
 
 interface SnippetInfo {
-    userId: string;
+    learner_id: string;
     code: string;
     timestamp: string;
     fileName: string;
@@ -69,63 +70,70 @@ export default function CodeReplayApp() {
     const [sequentialSimilarities, setSequentialSimilarities] = useState<SnapshotSimilarity[]>([]);
     const [enhancedPastes, setEnhancedPastes] = useState<EnhancedPasteInfo[]>([]);
 
-    // fetch snapshots
-    useEffect(() => {
-        // console.log("submission: ", submission);
-
-        const fetchLearnerSnapshots = async () => {
-            try {
-                const response = await fetch(
-                    `/api/codereplayV3/code-snapshots?learner_id=${submission.learner_id}`
-                );
-                const data = await response.json();
-
-                if (data.success && Array.isArray(data.snapshots)) {
-                    // console.log(data.success, data.snapshots);
-                    const sortedSnapshots = data.snapshots.sort((a: CodeSnapshot, b: CodeSnapshot) => {
-                        if (a.version && b.version) {
-                            return a.version - b.version;
-                        }
-                        return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
-                    });
-
-                    setSnapshots(sortedSnapshots);
-
-                    if (sortedSnapshots.length > 1) {
-                        await calculateSequentialSimilarities(sortedSnapshots);
-                    }
-                }
-            } catch (error) {
-                console.error('Error fetching learner snapshots:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchLearnerSnapshots();
-    }, [submission]);
-
-    const calculateSequentialSimilarities = async (snapshotsToCompare: CodeSnapshot[]) => {
+    // // fetch snapshots
+    const fetchLearnerSnapshots = async () => {
         try {
-            const response = await fetch('/api/codereplayV3/code-snapshots/sequential-similarity', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    snapshots: snapshotsToCompare,
-                    learnerId: submission.learner_id,
-                }),
-            });
+            const response = await fetch(
+                `/api/codereplayV3/code-snapshots`
+            );
+            const data = await response.json();
 
-            if (response.ok) {
-                const data = await response.json();
-                if (Array.isArray(data.sequentialSimilarities)) {
-                    setSequentialSimilarities(data.sequentialSimilarities);
-                }
+            if (data.success && Array.isArray(data.snapshots)) {
+                // console.log(data.success, data.snapshots);
+                const sortedSnapshots = data.snapshots.sort((a: CodeSnapshot, b: CodeSnapshot) => {
+                    if (a.version && b.version) {
+                        return a.version - b.version;
+                    }
+                    return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
+                });
+
+                setSnapshots(sortedSnapshots);
+
+                const groupedSnapshots = sortedSnapshots.reduce((acc: { [key: string]: CodeSnapshot[] }, snapshot: CodeSnapshot) => {
+                    const learnerIdStr = snapshot.learner_id.toString();
+                    if (!acc[learnerIdStr]) {
+                        acc[learnerIdStr] = [];
+                    }
+                    acc[learnerIdStr].push(snapshot);
+                    return acc;
+                }, {});
+
+                const groupedSnapshotsArray = Object.keys(groupedSnapshots).map(learner_id => ({
+                    learner_id,
+                    snapshots: groupedSnapshots[learner_id]
+                }));
+
+                console.log(groupedSnapshotsArray);
+                // if (sortedSnapshots.length > 1) {
+                //     await calculateSequentialSimilarities(sortedSnapshots);
+                // }
             }
         } catch (error) {
-            console.error('Sequential similarity calculation error:', error);
+            console.error('Error fetching learner snapshots:', error);
         }
     };
+
+    // const calculateSequentialSimilarities = async (snapshotsToCompare: CodeSnapshot[]) => {
+    //     try {
+    //         const response = await fetch('/api/codereplayV3/code-snapshots/sequential-similarity', {
+    //             method: 'POST',
+    //             headers: { 'Content-Type': 'application/json' },
+    //             body: JSON.stringify({
+    //                 snapshots: snapshotsToCompare,
+    //                 learnerId: submission.learner_id,
+    //             }),
+    //         });
+
+    //         if (response.ok) {
+    //             const data = await response.json();
+    //             if (Array.isArray(data.sequentialSimilarities)) {
+    //                 setSequentialSimilarities(data.sequentialSimilarities);
+    //             }
+    //         }
+    //     } catch (error) {
+    //         console.error('Sequential similarity calculation error:', error);
+    //     }
+    // };
 
 
     const fetchSimilarityData = async () => {
@@ -133,25 +141,23 @@ export default function CodeReplayApp() {
             setIsMatrixLoading(true);
 
             const queryParam = params.type === 'problem' ?
-                `problem_slug=${params.id}` :
-                `room_id=${params.id}`;
+                `problemId=${params.id}` :
+                `roomId=${params.id}`;
 
-            const response = await fetch('/api/codereplay/plagiarism', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    query: queryParam
-                }),
+            const response = await fetch(`/api/codereplay/plagiarism?${queryParam}`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' }
             });
 
             const data = await response.json();
+            console.log(data);
+
             if (data.success) {
                 setSimilarityMatrix({
                     matrix: data.matrix,
                     snippets: data.snippets
                 });
             }
-            console.log(data);
         } catch (error) {
             console.error('Fetch error:', error);
         } finally {
@@ -175,15 +181,6 @@ export default function CodeReplayApp() {
         };
 
         fetchInitialData();
-    }, []);
-
-    useEffect(() => {
-        async function seedDatabase() {
-            const response = await fetch('/api/seed');
-            const data = await response.json();
-            console.log(data);
-        }
-        seedDatabase();
     }, []);
 
     // Calculate statistics for each snippet
@@ -238,7 +235,7 @@ export default function CodeReplayApp() {
                                     <SimilarityDashboard
                                         matrix={similarityMatrix.matrix}
                                         snippets={similarityMatrix.snippets}
-                                    /> : null
+                                    /> : "similaritymatrix empty"
                                 }
 
                                 <div className="space-y-4">
@@ -271,14 +268,14 @@ export default function CodeReplayApp() {
                                                 <div className="flex items-center justify-between">
                                                     <div className="flex items-center gap-2 truncate">
                                                         <FileCode2 className="w-4 h-4 flex-shrink-0" />
-                                                        <span className="truncate">{snippet.userId}</span>
+                                                        <span className="truncate">{snippet.learner_id}</span>
                                                     </div>
                                                     <div className="flex items-center gap-2 flex-shrink-0">
-                                                        <Badge className={`${(advancedMetrics[snippet.userId]?.weightedPlagiarismScore || 0) >= 80 ? 'bg-red-600' :
-                                                            (advancedMetrics[snippet.userId]?.weightedPlagiarismScore || 0) >= 60 ? 'bg-yellow-600' :
+                                                        <Badge className={`${(advancedMetrics[snippet.learner_id]?.weightedPlagiarismScore || 0) >= 80 ? 'bg-red-600' :
+                                                            (advancedMetrics[snippet.learner_id]?.weightedPlagiarismScore || 0) >= 60 ? 'bg-yellow-600' :
                                                                 'bg-gray-600'
                                                             }`}>
-                                                            {(advancedMetrics[snippet.userId]?.weightedPlagiarismScore || 0).toFixed(1)}%
+                                                            {(advancedMetrics[snippet.learner_id]?.weightedPlagiarismScore || 0).toFixed(1)}%
                                                         </Badge>
                                                         {expandedCard === index ? (
                                                             <ChevronUp className="w-4 h-4" />
@@ -292,13 +289,13 @@ export default function CodeReplayApp() {
                                         {expandedCard === index && (
                                             <CardContent className="p-4">
                                                 <SequentialSimilarityVisualization
-                                                    snapshots={snapshots.filter(s => s.userId === snippet.userId)}
+                                                    snapshots={snapshots.filter(s => s.learner_id === snippet.learner_id)}
                                                     sequentialSimilarities={sequentialSimilarities}
                                                     pastedSnippets={enhancedPastes}
                                                     onMetricsUpdate={(metrics) => {
                                                         setAdvancedMetrics(prev => ({
                                                             ...prev,
-                                                            [snippet.userId]: metrics
+                                                            [snippet.learner_id]: metrics
                                                         }));
                                                     }}
                                                 />

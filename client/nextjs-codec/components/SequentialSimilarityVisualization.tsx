@@ -23,7 +23,7 @@ import {
 interface CodeSnapshot {
   code: string;
   timestamp: string;
-  userId: string;
+  learner_id: string;
 }
 
 interface SequentialSimilarity {

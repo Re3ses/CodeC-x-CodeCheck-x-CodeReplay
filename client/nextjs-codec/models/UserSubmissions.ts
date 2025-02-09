@@ -84,5 +84,5 @@ const UserSubmissionsSchema = new mongoose.Schema<UserSubmissions>({
   }
 });
 
-export default mongoose.models.UserSubmission ||
+export default mongoose.models.UserSubmissions ||
   mongoose.model<UserSubmissions>('UserSubmission', UserSubmissionsSchema);
