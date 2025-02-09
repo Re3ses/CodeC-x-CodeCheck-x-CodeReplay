@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '../../../lib/dbConnect';
-import UserSubmissions from '@/models/UserSubmissions';
+import UserSubmission from '@/models/UserSubmissions';
 import mongoose from 'mongoose';
 
 export async function GET(request: Request) {
@@ -195,11 +195,15 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
+    console.log('Connecting to database...');
     await dbConnect();
+    console.log('Database connected successfully');
 
+    console.log('Parsing form data...');
     const formData = await request.formData();
+    console.log('Form data received:', formData);
 
-    const userSubmission = new UserSubmissions({
+    const userSubmissionData = {
       language_used: formData.get('language_used'),
       code: formData.get('code'),
       score: formData.get('score'),
@@ -216,9 +220,14 @@ export async function POST(request: Request) {
       similarity_score: formData.get('similarity_score'),
       most_similar: formData.get('most_similar'),
       paste_history: formData.get('paste_history'), // Save the parsed array
-    });
+    };
 
+    console.log('Creating new UserSubmission with data:', userSubmissionData);
+    const userSubmission = new UserSubmission(userSubmissionData);
+
+    console.log('Saving UserSubmission...');
     await userSubmission.save();
+    console.log('User submission saved successfully');
 
     return NextResponse.json({
       message: 'User submission entry created!',
@@ -226,6 +235,9 @@ export async function POST(request: Request) {
     });
   } catch (e) {
     console.error("Error in POST route:", e); // Log the error for debugging
-    return NextResponse.json(e, { status: 500 });
+    return NextResponse.json({
+      error: e instanceof Error ? e.message : 'Unknown error',
+      stack: e instanceof Error ? e.stack : 'No stack available'
+    }, { status: 500 });
   }
 }
