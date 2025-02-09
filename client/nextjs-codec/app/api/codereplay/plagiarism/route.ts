@@ -253,7 +253,17 @@ export async function GET(request: Request) {
     await dbConnect();
     console.log('Database connected');
 
-    const snippets = await UserSubmission.find({ problemId, roomId, verdict: "ACCEPTED" }).lean();
+    const query: { [key: string]: any } = { verdict: "ACCEPTED" };
+
+    if (problemId) {
+      query.problem = problemId;
+    }
+
+    if (roomId) {
+      query.room = roomId;
+    }
+
+    const snippets = await UserSubmission.find(query).lean();
     console.log('Found snippets:', snippets.length);
 
     if (snippets.length === 0) {
