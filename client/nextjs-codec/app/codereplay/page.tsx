@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { ChevronDown, ChevronUp, FileCode2, Network, GitBranch, Activity} from "lucide-react";
+import { ChevronDown, ChevronUp, FileCode2, Network, GitBranch, Activity } from "lucide-react";
 import Editor from '@monaco-editor/react';
 import dbConnect from '../../lib/dbConnect';
 import { NextResponse } from 'next/server';
@@ -71,15 +71,15 @@ const codeSnippetSchema = new Schema<CodeSnippet>({
 const CodeSnippetModel = mongoose.model<CodeSnippet>('CodeSnippet', codeSnippetSchema);
 
 export async function GET() {
-    try {
-      await dbConnect();
-      const allSnippets = await CodeSnippetModel.find({}).lean();
-      return NextResponse.json({ success: true, snippets: allSnippets });
-    } catch (error) {
-      console.error('Error fetching snippets:', error);
-      return NextResponse.json({ success: false, error: 'Failed to fetch snippets' }, { status: 500 });
-    }
+  try {
+    await dbConnect();
+    const allSnippets = await CodeSnippetModel.find({}).lean();
+    return NextResponse.json({ success: true, snippets: allSnippets });
+  } catch (error) {
+    console.error('Error fetching snippets:', error);
+    return NextResponse.json({ success: false, error: 'Failed to fetch snippets' }, { status: 500 });
   }
+}
 
 const getSimilarityColor = (similarity) => {
   if (similarity >= 80) return 'bg-red-700 text-white';
@@ -113,7 +113,7 @@ export default function CodeReplayApp() {
   const [expandedSnippet, setExpandedSnippet] = useState(null);
   const [isMatrixLoading, setIsMatrixLoading] = useState(true);
   const [referenceFile, setReferenceFile] = useState<string>(''); // State to hold the reference file
-  
+
   const [snapshots, setSnapshots] = useState<CodeSnapshot[]>([]);
   const [sequentialSimilarities, setSequentialSimilarities] = useState<SnapshotSimilarity[]>([]);
   const [pasteCount, setPasteCount] = useState(0);
@@ -169,11 +169,11 @@ export default function CodeReplayApp() {
   // Auto-save function with version control
   const autoSaveCode = async (codeToSave: string) => {
     if (codeToSave === lastSaved) return;
-    
+
     setSaving(true);
     try {
       const userId = await getUserId();
-      const lastVersion = snapshots.length > 0 
+      const lastVersion = snapshots.length > 0
         ? Math.max(...snapshots.map(snapshot => snapshot.version || 0))
         : 0;
       const nextVersion = lastVersion + 1;
@@ -249,7 +249,7 @@ export default function CodeReplayApp() {
   // // Auto-save function
   // const autoSaveCode = async (codeToSave: string) => {
   //   if (codeToSave === lastSaved) return; // Don't save if code hasn't changed
-    
+
   //   setSaving(true);
   //   try {
   //     const userId = getUserId();
@@ -302,8 +302,8 @@ export default function CodeReplayApp() {
     };
 
     // Save on significant changes or every 10 seconds
-    if (code !== '// Start coding here' && 
-        (hasSignificantChanges(code, lastSaved) || code !== lastSaved)) {
+    if (code !== '// Start coding here' &&
+      (hasSignificantChanges(code, lastSaved) || code !== lastSaved)) {
       autoSaveTimer = setTimeout(() => {
         autoSaveCode(code);
       }, 10000);
@@ -344,7 +344,7 @@ export default function CodeReplayApp() {
           roomId: 'room-1'
         }),
       });
-  
+
       const data = await response.json();
       if (data.success) {
         setSimilarityMatrix({
@@ -384,7 +384,7 @@ export default function CodeReplayApp() {
     }
     seedDatabase();
   }, []);
-  
+
   useEffect(() => {
     const timer = setTimeout(() => {
       if (code !== '// Start coding here') {
@@ -451,10 +451,10 @@ export default function CodeReplayApp() {
         console.error('Error fetching reference file:', error);
       }
     };
-  
+
     fetchReferenceFile();
   }, []);
-  
+
   const saveCode = async () => {
     setSaving(true);
     try {
@@ -495,144 +495,141 @@ export default function CodeReplayApp() {
     getUserId(); // This will create and store a userId if one doesn't exist
   }, []);
 
-    // Calculate statistics for each snippet
-    const calculateSnippetStats = (matrix, index) => {
-      if (!matrix || !matrix[index]) return null;
-      
-      const similarities = matrix[index].filter((_, i) => i !== index);
-      const avgSimilarity = similarities.reduce((a, b) => a + b, 0) / similarities.length;
-      const maxSimilarity = Math.max(...similarities);
-      
-      // Find highly similar snippets (>= 60%)
-      const similarSnippets = similarities
-        .map((similarity, i) => ({ index: i, similarity }))
-        .filter(item => item.similarity >= 60 && item.index !== index)
-        .sort((a, b) => b.similarity - a.similarity);
-  
-      return {
-        averageSimilarity: avgSimilarity,
-        maxSimilarity,
-        similarSnippets
-      };
-    };
-  
-    const getColorClass = (similarity) => {
-      if (similarity >= 80) return 'bg-red-700';
-      if (similarity >= 60) return 'bg-yellow-600';
-      return 'bg-gray-500';
-    };
+  // Calculate statistics for each snippet
+  const calculateSnippetStats = (matrix, index) => {
+    if (!matrix || !matrix[index]) return null;
 
-    const [activeTab, setActiveTab] = useState<'network' | 'evolution'>('network');
-    const [expandedCard, setExpandedCard] = useState<number | null>(null);
-    const [advancedMetrics, setAdvancedMetrics] = useState<{ [key: string]: number }>({});
+    const similarities = matrix[index].filter((_, i) => i !== index);
+    const avgSimilarity = similarities.reduce((a, b) => a + b, 0) / similarities.length;
+    const maxSimilarity = Math.max(...similarities);
 
-    return (
-      <div className="min-h-screen bg-gray-900 text-white p-4">
-        <div className="container mx-auto space-y-6">
+    // Find highly similar snippets (>= 60%)
+    const similarSnippets = similarities
+      .map((similarity, i) => ({ index: i, similarity }))
+      .filter(item => item.similarity >= 60 && item.index !== index)
+      .sort((a, b) => b.similarity - a.similarity);
+
+    return {
+      averageSimilarity: avgSimilarity,
+      maxSimilarity,
+      similarSnippets
+    };
+  };
+
+  const getColorClass = (similarity) => {
+    if (similarity >= 80) return 'bg-red-700';
+    if (similarity >= 60) return 'bg-yellow-600';
+    return 'bg-gray-500';
+  };
+
+  const [activeTab, setActiveTab] = useState<'network' | 'evolution'>('network');
+  const [expandedCard, setExpandedCard] = useState<number | null>(null);
+  const [advancedMetrics, setAdvancedMetrics] = useState<{ [key: string]: number }>({});
+
+  return (
+    <div className="min-h-screen bg-gray-900 text-white p-4">
+      <div className="container mx-auto space-y-6">
         <h1 className="text-2xl font-bold mb-4 flex items-center gap-2">
           <Activity className="w-6 h-6 text-yellow-500" />
           CodeCheck
         </h1>
-          <Tabs defaultValue="network" className="w-full">
-            <TabsList className="bg-gray-800 border-b border-gray-700">
-              <TabsTrigger value="network" className="data-[state=active]:bg-gray-700">
-                <Network className="w-4 h-4 mr-2 text-yellow-500" />
-                Similarity Network
-              </TabsTrigger>
-              <TabsTrigger value="evolution" className="data-[state=active]:bg-gray-700">
-                <GitBranch className="w-4 h-4 mr-2 text-yellow-500" />
-                Code Evolution
-              </TabsTrigger>
-            </TabsList>
-    
-            <TabsContent value="network" className="mt-6">
-              {isMatrixLoading ? (
-                <SimilarityLoading />
-              ) : (
-                <div className="space-y-6">
-                  {similarityMatrix ?
-                  <SimilarityNetwork 
+        <Tabs defaultValue="network" className="w-full">
+          <TabsList className="bg-gray-800 border-b border-gray-700">
+            <TabsTrigger value="network" className="data-[state=active]:bg-gray-700">
+              <Network className="w-4 h-4 mr-2 text-yellow-500" />
+              Similarity Network
+            </TabsTrigger>
+            <TabsTrigger value="evolution" className="data-[state=active]:bg-gray-700">
+              <GitBranch className="w-4 h-4 mr-2 text-yellow-500" />
+              Code Evolution
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="network" className="mt-6">
+            {isMatrixLoading ? (
+              <SimilarityLoading />
+            ) : (
+              <div className="space-y-6">
+                {similarityMatrix ?
+                  <SimilarityNetwork
                     matrix={similarityMatrix.matrix}
                     snippets={similarityMatrix.snippets}
                     referenceFile={referenceFile}
-                  /> :
-                  <div className="text-center text-gray-400">No similarity data available</div>
-                  }
-                  
-                  <div className="space-y-4">
-                    {similarityMatrix?.snippets.map((snippet, index) => {
-                      const stats = calculateSnippetStats(similarityMatrix.matrix, index);
-                      if (!stats) return null;
-    
-                      return (
-                        <Card key={index} className="bg-gray-800/50 border-0 shadow-lg hover:bg-gray-800/70 transition-colors">
-                          {/* ... existing card content ... */}
-                        </Card>
-                      );
-                    })}
-                  </div>
+                  /> : null
+                }
+
+                <div className="space-y-4">
+                  {similarityMatrix?.snippets.map((snippet, index) => {
+                    const stats = calculateSnippetStats(similarityMatrix.matrix, index);
+                    if (!stats) return null;
+
+                    return (
+                      <Card key={index} className="bg-gray-800/50 border-0 shadow-lg hover:bg-gray-800/70 transition-colors">
+                        {/* ... existing card content ... */}
+                      </Card>
+                    );
+                  })}
                 </div>
-              )}
-            </TabsContent>
-    
-            <TabsContent value="evolution" className="mt-6">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 relative">
-                {similarityMatrix?.snippets.map((snippet, index) => (
-                  <div key={index} className={`${
-                    expandedCard === index ? 'col-span-full row-span-2' : ''
-                  } transition-all duration-300`}>
-                    <Card className="bg-gray-800/50 border-0 shadow-lg h-full">
-                      <CardHeader 
-                        className="cursor-pointer p-4" 
-                        onClick={() => setExpandedCard(expandedCard === index ? null : index)}
-                      >
-                        <CardTitle className="text-sm">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2 truncate">
-                              <FileCode2 className="w-4 h-4 flex-shrink-0" />
-                              <span className="truncate">{snippet.userId}</span>
-                            </div>
-                            <div className="flex items-center gap-2 flex-shrink-0">
-                              <Badge className={`${
-                                (advancedMetrics[snippet.userId]?.weightedPlagiarismScore || 0) >= 80 ? 'bg-red-600' :
-                                (advancedMetrics[snippet.userId]?.weightedPlagiarismScore || 0) >= 60 ? 'bg-yellow-600' :
-                                'bg-gray-600'
-                              }`}>
-                                {(advancedMetrics[snippet.userId]?.weightedPlagiarismScore || 0).toFixed(1)}%
-                              </Badge>
-                              {expandedCard === index ? (
-                                <ChevronUp className="w-4 h-4" />
-                              ) : (
-                                <ChevronDown className="w-4 h-4" />
-                              )}
-                            </div>
-                          </div>
-                        </CardTitle>
-                      </CardHeader>
-                      {expandedCard === index && (
-                        <CardContent className="p-4">
-                          <SequentialSimilarityVisualization 
-                            snapshots={snapshots.filter(s => s.userId === snippet.userId)}
-                            sequentialSimilarities={sequentialSimilarities}
-                            pasteCount={pasteCount}
-                            bigPasteCount={bigPasteCount}
-                            pastedSnippets={enhancedPastes}
-                            onMetricsUpdate={(metrics) => {
-                              setAdvancedMetrics(prev => ({
-                                ...prev,
-                                [snippet.userId]: metrics
-                              }));
-                            }}
-                          />
-                        </CardContent>
-                      )}
-                    </Card>
-                  </div>
-                ))}
               </div>
-            </TabsContent>
-          </Tabs>
-        </div>
+            )}
+          </TabsContent>
+
+          <TabsContent value="evolution" className="mt-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 relative">
+              {similarityMatrix?.snippets.map((snippet, index) => (
+                <div key={index} className={`${expandedCard === index ? 'col-span-full row-span-2' : ''
+                  } transition-all duration-300`}>
+                  <Card className="bg-gray-800/50 border-0 shadow-lg h-full">
+                    <CardHeader
+                      className="cursor-pointer p-4"
+                      onClick={() => setExpandedCard(expandedCard === index ? null : index)}
+                    >
+                      <CardTitle className="text-sm">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2 truncate">
+                            <FileCode2 className="w-4 h-4 flex-shrink-0" />
+                            <span className="truncate">{snippet.userId}</span>
+                          </div>
+                          <div className="flex items-center gap-2 flex-shrink-0">
+                            <Badge className={`${(advancedMetrics[snippet.userId]?.weightedPlagiarismScore || 0) >= 80 ? 'bg-red-600' :
+                                (advancedMetrics[snippet.userId]?.weightedPlagiarismScore || 0) >= 60 ? 'bg-yellow-600' :
+                                  'bg-gray-600'
+                              }`}>
+                              {(advancedMetrics[snippet.userId]?.weightedPlagiarismScore || 0).toFixed(1)}%
+                            </Badge>
+                            {expandedCard === index ? (
+                              <ChevronUp className="w-4 h-4" />
+                            ) : (
+                              <ChevronDown className="w-4 h-4" />
+                            )}
+                          </div>
+                        </div>
+                      </CardTitle>
+                    </CardHeader>
+                    {expandedCard === index && (
+                      <CardContent className="p-4">
+                        <SequentialSimilarityVisualization
+                          snapshots={snapshots.filter(s => s.userId === snippet.userId)}
+                          sequentialSimilarities={sequentialSimilarities}
+                          pasteCount={pasteCount}
+                          bigPasteCount={bigPasteCount}
+                          pastedSnippets={enhancedPastes}
+                          onMetricsUpdate={(metrics) => {
+                            setAdvancedMetrics(prev => ({
+                              ...prev,
+                              [snippet.userId]: metrics
+                            }));
+                          }}
+                        />
+                      </CardContent>
+                    )}
+                  </Card>
+                </div>
+              ))}
+            </div>
+          </TabsContent>
+        </Tabs>
       </div>
-    );
-  };
+    </div>
+  );
+};

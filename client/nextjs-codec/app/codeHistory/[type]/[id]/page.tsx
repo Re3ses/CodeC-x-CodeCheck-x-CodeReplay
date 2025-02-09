@@ -8,6 +8,7 @@ import { ChevronDown, ChevronUp, FileCode2, Network, GitBranch, Activity } from 
 import SimilarityLoading from './SimilarityLoading';
 import SimilarityDashboard from './SimilarityMatrix';
 import SequentialSimilarityVisualization from '@/components/SequentialSimilarityVisualization';
+import { useParams } from 'next/navigation';
 
 interface CodeSnapshot {
     code: string;
@@ -57,14 +58,8 @@ interface SnippetInfo {
     fileName: string;
 }
 
-const getSimilarityColor = (similarity) => {
-    if (similarity >= 80) return 'bg-red-700 text-white';
-    if (similarity >= 60) return 'bg-yellow-600 text-white';
-    return 'bg-gray-700 text-white';
-};
-
 export default function CodeReplayApp() {
-    const params = { type: 'problem', id: 'problem-1' };
+    const params = useParams<{ type: string, id: string }>();
     const [similarityMatrix, setSimilarityMatrix] = useState<{
         matrix: number[][];
         snippets: SnippetInfo[];
@@ -73,6 +68,65 @@ export default function CodeReplayApp() {
     const [snapshots, setSnapshots] = useState<CodeSnapshot[]>([]);
     const [sequentialSimilarities, setSequentialSimilarities] = useState<SnapshotSimilarity[]>([]);
     const [enhancedPastes, setEnhancedPastes] = useState<EnhancedPasteInfo[]>([]);
+
+    // fetch snapshots
+    useEffect(() => {
+        // console.log("submission: ", submission);
+
+        const fetchLearnerSnapshots = async () => {
+            try {
+                const response = await fetch(
+                    `/api/codereplayV3/code-snapshots?learner_id=${submission.learner_id}`
+                );
+                const data = await response.json();
+
+                if (data.success && Array.isArray(data.snapshots)) {
+                    // console.log(data.success, data.snapshots);
+                    const sortedSnapshots = data.snapshots.sort((a: CodeSnapshot, b: CodeSnapshot) => {
+                        if (a.version && b.version) {
+                            return a.version - b.version;
+                        }
+                        return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
+                    });
+
+                    setSnapshots(sortedSnapshots);
+
+                    if (sortedSnapshots.length > 1) {
+                        await calculateSequentialSimilarities(sortedSnapshots);
+                    }
+                }
+            } catch (error) {
+                console.error('Error fetching learner snapshots:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchLearnerSnapshots();
+    }, [submission]);
+
+    const calculateSequentialSimilarities = async (snapshotsToCompare: CodeSnapshot[]) => {
+        try {
+            const response = await fetch('/api/codereplayV3/code-snapshots/sequential-similarity', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    snapshots: snapshotsToCompare,
+                    learnerId: submission.learner_id,
+                }),
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                if (Array.isArray(data.sequentialSimilarities)) {
+                    setSequentialSimilarities(data.sequentialSimilarities);
+                }
+            }
+        } catch (error) {
+            console.error('Sequential similarity calculation error:', error);
+        }
+    };
+
 
     const fetchSimilarityData = async () => {
         try {
