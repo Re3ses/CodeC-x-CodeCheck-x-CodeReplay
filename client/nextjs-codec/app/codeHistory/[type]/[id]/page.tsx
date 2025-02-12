@@ -144,7 +144,7 @@ export default function CodeReplayApp() {
                 `problemId=${params.id}` :
                 `roomId=${params.id}`;
 
-            const response = await fetch(`/api/codereplay/plagiarism?${queryParam}`, {
+            const response = await fetch(`localhost:5000/api/codereplay/plagiarism?${queryParam}`, {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json' }
             });
