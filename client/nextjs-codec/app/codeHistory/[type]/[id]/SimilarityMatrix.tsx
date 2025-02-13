@@ -49,7 +49,6 @@ interface HighSimilarityPair {
 interface SimilarityDashboardProps {
   matrix: number[][];
   snippets: Snippet[];
-  referenceFile: string;
 }
 
 // Helper functions
@@ -67,7 +66,7 @@ const getColorForSimilarity = (similarity: number) => {
 
 // Add getHighSimilarityPairs helper function after other helper functions
 const getHighSimilarityPairs = (matrix: number[][], snippets: Snippet[]) => {
-  const pairs: Array<{source: number, target: number, similarity: number}> = [];
+  const pairs: Array<{ source: number, target: number, similarity: number }> = [];
   matrix.forEach((row, i) => {
     row.forEach((similarity, j) => {
       if (i < j && similarity >= 80) {
@@ -87,9 +86,9 @@ const SimilarityCard = React.memo(({ snippetId, similarity, onClick, snippet }: 
   if (!snippet) return null;
 
   const colorClass = getSimilarityColor(similarity);
-  
+
   return (
-    <div 
+    <div
       onClick={() => onClick(snippetId)}
       className="w-full bg-gray-800 hover:bg-gray-700 rounded-lg p-2 flex items-center justify-between cursor-pointer transition-colors duration-200 border border-transparent hover:border-gray-600"
     >
@@ -118,7 +117,7 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
   const [graphPositions, setGraphPositions] = useState<GraphPositions | null>(null);
   const [showHighSimilaritySection, setShowHighSimilaritySection] = useState(true);
   const [selectedComparisonUserId, setSelectedComparisonUserId] = useState<string | null>(null);
-  
+
   const width = 500;
   const height = 400;
   const forceStrength = 0.05;
@@ -134,7 +133,7 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
   // Calculate statistics
   const stats = useMemo(() => {
     if (!matrix) return { avg: 0, total: 0, highSimCount: 0 };
-    
+
     let sum = 0;
     let count = 0;
     let highSimCount = 0;
@@ -170,7 +169,7 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
   // Selected node connections
   const selectedNodeConnections = useMemo(() => {
     if (selectedNode === null || !links.length) return [];
-    
+
     return links
       .filter(link => link.source === selectedNode || link.target === selectedNode)
       .sort((a, b) => b.similarity - a.similarity)
@@ -262,12 +261,12 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
               const force = (nodeSpacing - distance) / distance;
               const moveX = dx * force * forceStrength;
               const moveY = dy * force * forceStrength;
-              
+
               node1.vx -= moveX;
               node1.vy -= moveY;
               node2.vx += moveX;
               node2.vy += moveY;
-              
+
               totalMovement += Math.abs(moveX) + Math.abs(moveY);
             }
           }
@@ -281,10 +280,10 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
             const distance = Math.sqrt(dx * dx + dy * dy);
             const force = (distance - nodeSpacing) / distance;
             const similarity = link.similarity / 100;
-            
+
             const moveX = dx * force * forceStrength * similarity;
             const moveY = dy * force * forceStrength * similarity;
-            
+
             node1.vx += moveX;
             node1.vy += moveY;
           }
@@ -294,7 +293,7 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
         node1.y += node1.vy;
         node1.vx *= 0.8;
         node1.vy *= 0.8;
-        
+
         node1.x = Math.max(nodeRadius, Math.min(width - nodeRadius, node1.x));
         node1.y = Math.max(nodeRadius, Math.min(height - nodeRadius, node1.y));
       });
@@ -328,7 +327,7 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
     const nodeColor = isSelected ? '#3b82f6' : baseColor.hex;
     const learner_id = node.learner_id.length > 20 ? `${node.learner_id.slice(0, 18)}...` : node.learner_id;
     const position = graphPositions?.nodes[i] || node;
-    
+
     return (
       <g key={i}>
         <circle
@@ -373,7 +372,7 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
         <h4 className="text-xs font-medium mb-1">Total Submissions</h4>
         <div className="text-xl font-bold">{stats.total}</div>
       </div>
-      <div 
+      <div
         className="p-3 bg-gray-700 rounded-lg cursor-pointer hover:bg-gray-600 transition-colors"
         onClick={() => setShowHighSimilaritySection(prev => !prev)}
       >
@@ -468,7 +467,7 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
               <div className="bg-gray-700 rounded-lg p-4">
                 <div className="flex justify-between items-center mb-3">
                   <h4 className="font-medium">High Similarity Pairs</h4>
-                  <button 
+                  <button
                     onClick={() => setShowHighSimilaritySection(false)}
                     className="p-1 hover:bg-gray-600 rounded-full transition-colors"
                   >
@@ -477,7 +476,7 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
                 </div>
                 <div className="grid grid-cols-2 gap-2 max-h-[300px] overflow-y-auto pr-2">
                   {getHighSimilarityPairs(matrix, snippets).map((pair, i) => (
-                    <div 
+                    <div
                       key={i}
                       className="bg-gray-800 rounded-lg p-3 cursor-pointer hover:bg-gray-750"
                       onClick={() => {
@@ -505,8 +504,8 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
           <div className="grid grid-cols-2 gap-6 mt-6">
             <div className="bg-gray-700 rounded-lg p-4">
               <h4 className="font-medium mb-2">
-                {selectedNode !== null && snippets[selectedNode] 
-                  ? `${snippets[selectedNode].learner_id}'s Code` 
+                {selectedNode !== null && snippets[selectedNode]
+                  ? `${snippets[selectedNode].learner_id}'s Code`
                   : 'Reference File'
                 }
               </h4>
@@ -514,11 +513,11 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
                 height="300px"
                 language="javascript"
                 theme="vs-dark"
-                value={selectedNode !== null && snippets[selectedNode] 
-                  ? snippets[selectedNode].code 
+                value={selectedNode !== null && snippets[selectedNode]
+                  ? snippets[selectedNode].code
                   : "// Select a node to view its code"
                 }
-                options={{ 
+                options={{
                   readOnly: true,
                   minimap: { enabled: false },
                   scrollBeyondLastLine: false
@@ -527,7 +526,7 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
             </div>
             <div className="bg-gray-700 rounded-lg p-4">
               <h4 className="font-medium mb-2">
-                {selectedComparisonUserId 
+                {selectedComparisonUserId
                   ? `${selectedComparisonUserId}'s Code`
                   : "Select a snippet to compare"
                 }
@@ -537,7 +536,7 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
                 language="javascript"
                 theme="vs-dark"
                 value={selectedSnippetCode || "// Select a snippet to view its code"}
-                options={{ 
+                options={{
                   readOnly: true,
                   minimap: { enabled: false },
                   scrollBeyondLastLine: false

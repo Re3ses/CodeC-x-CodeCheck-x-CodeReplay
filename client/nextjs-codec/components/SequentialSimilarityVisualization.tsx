@@ -24,11 +24,15 @@ interface CodeSnapshot {
   code: string;
   timestamp: string;
   learner_id: string;
+  problemId?: string;
+  roomId?: string;
+  submissionId?: string;
+  version?: number;
 }
-
 interface SequentialSimilarity {
   fromIndex: number;
   toIndex: number;
+  learner_id: string;
   similarity: number;
   codebertScore: number;
 }
@@ -48,13 +52,11 @@ interface EnhancedPasteInfo {
 
 interface SequentialSimilarityVisualizationProps {
   snapshots: CodeSnapshot[];
-  sequentialSimilarities: SequentialSimilarity[];
   pastedSnippets: EnhancedPasteInfo[];
 }
 
 const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizationProps> = ({
   snapshots,
-  sequentialSimilarities,
   pastedSnippets
 }) => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -63,6 +65,32 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
   const [expandedCards, setExpandedCards] = useState<number[]>([]);
   const [pasteCount, setPasteCount] = useState(0);
   const [bigPasteCount, setBigPasteCount] = useState(0);
+  const [sequentialSimilarities, setSequentialSimilarities] = useState<SequentialSimilarity[]>([]);
+
+  useEffect(() => {
+    const calculateSequentialSimilarities = async (snapshotsToCompare: CodeSnapshot[]) => {
+      try {
+        const response = await fetch('http://localhost:5000/api/similarity/sequential', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            snapshots: snapshotsToCompare,
+            learnerId: snapshotsToCompare[0].learner_id,
+          }),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          if (Array.isArray(data.sequentialSimilarities)) {
+            setSequentialSimilarities(data.sequentialSimilarities);
+          }
+        }
+      } catch (error) {
+        console.error('Sequential similarity calculation error:', error);
+      }
+    };
+    calculateSequentialSimilarities(snapshots);
+  })
 
   const toggleCard = (index: number) => {
     setExpandedCards(prev =>
@@ -72,20 +100,20 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
     );
   };
 
-    // Add handlers for next and previous
-    const handleNext = () => {
-      if (currentSnapshotIndex < snapshots.length - 1) {
-        setCurrentSnapshotIndex(prev => prev + 1);
-        setIsPlaying(false);
-      }
-    };
-  
-    const handlePrevious = () => {
-      if (currentSnapshotIndex > 0) {
-        setCurrentSnapshotIndex(prev => prev - 1);
-        setIsPlaying(false);
-      }
-    };
+  // Add handlers for next and previous
+  const handleNext = () => {
+    if (currentSnapshotIndex < snapshots.length - 1) {
+      setCurrentSnapshotIndex(prev => prev + 1);
+      setIsPlaying(false);
+    }
+  };
+
+  const handlePrevious = () => {
+    if (currentSnapshotIndex > 0) {
+      setCurrentSnapshotIndex(prev => prev - 1);
+      setIsPlaying(false);
+    }
+  };
 
   // Add useEffect to log and set local state for snippets
   useEffect(() => {
@@ -114,19 +142,19 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
       cssValues.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / cssValues.length
     );
     const normalizedVariance = (variance / 2500) * 100;
-    const weightedScore = (maxChange) * 0.4 + (100 - averageSimilarity) * 0.2 + 
-                         (100 - minSimilarity) * 0.2 + (normalizedVariance) * 0.2;
+    const weightedScore = (maxChange) * 0.4 + (100 - averageSimilarity) * 0.2 +
+      (100 - minSimilarity) * 0.2 + (normalizedVariance) * 0.2;
 
-        return {
-        maxChange: Math.round(maxChange),
-        averageSimilarity: Math.round(averageSimilarity),
-        minSimilarity: Math.round(minSimilarity),
-        normalizedVariance: Math.round(normalizedVariance),
-        weightedPlagiarismScore: Math.round(weightedScore),
-        pasteCount,
-        bigPasteCount
-      };
-    }, [sequentialSimilarities, pasteCount, bigPasteCount]);
+    return {
+      maxChange: Math.round(maxChange),
+      averageSimilarity: Math.round(averageSimilarity),
+      minSimilarity: Math.round(minSimilarity),
+      normalizedVariance: Math.round(normalizedVariance),
+      weightedPlagiarismScore: Math.round(weightedScore),
+      pasteCount,
+      bigPasteCount
+    };
+  }, [sequentialSimilarities, pasteCount, bigPasteCount]);
 
   // Chart data preparation
   const chartData = sequentialSimilarities.map((similarity, index) => ({
@@ -135,36 +163,36 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
     codebertScore: similarity.codebertScore
   }));
 
-    // Replay system logic
-    useEffect(() => {
-      let interval;
-      if (isPlaying && currentSnapshotIndex < snapshots.length - 1) {
-        interval = setInterval(() => {
-          setCurrentSnapshotIndex(prev => {
-            if (prev >= snapshots.length - 1) {
-              setIsPlaying(false);
-              return prev;
-            }
-            return prev + 1;
-          });
-        }, 500); // Change snapshot every 2 seconds
-      }
-      return () => clearInterval(interval);
-    }, [isPlaying, currentSnapshotIndex, snapshots.length]);
-  
-    const handlePlayPause = () => {
-      setIsPlaying(!isPlaying);
-    };
-  
-    const handleSliderChange = (value) => {
-      setCurrentSnapshotIndex(value[0]);
-      setIsPlaying(false);
-    };
+  // Replay system logic
+  useEffect(() => {
+    let interval;
+    if (isPlaying && currentSnapshotIndex < snapshots.length - 1) {
+      interval = setInterval(() => {
+        setCurrentSnapshotIndex(prev => {
+          if (prev >= snapshots.length - 1) {
+            setIsPlaying(false);
+            return prev;
+          }
+          return prev + 1;
+        });
+      }, 500); // Change snapshot every 2 seconds
+    }
+    return () => clearInterval(interval);
+  }, [isPlaying, currentSnapshotIndex, snapshots.length]);
+
+  const handlePlayPause = () => {
+    setIsPlaying(!isPlaying);
+  };
+
+  const handleSliderChange = (value) => {
+    setCurrentSnapshotIndex(value[0]);
+    setIsPlaying(false);
+  };
 
 
   const CustomSlider = React.forwardRef<
-  React.ElementRef<typeof SliderPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof SliderPrimitive.Root> & { tooltipContent?: string }
+    React.ElementRef<typeof SliderPrimitive.Root>,
+    React.ComponentPropsWithoutRef<typeof SliderPrimitive.Root> & { tooltipContent?: string }
   >(({ className, tooltipContent, ...props }, ref) => (
     <TooltipProvider>
       <Tooltip>
@@ -212,14 +240,14 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
       {advancedMetrics && (
         <div className="bg-gray-700 rounded-lg p-4">
           <h4 className="text-md font-semibold mb-4">Advanced Similarity Metrics</h4>
-          
+
           <div className="grid grid-cols-3 gap-4 mb-4">
             <div className={`
               col-span-2 p-4 rounded-lg text-center 
               ${advancedMetrics.weightedPlagiarismScore > 80 ? 'bg-red-600' :
                 advancedMetrics.weightedPlagiarismScore > 60 ? 'bg-orange-600' :
-                advancedMetrics.weightedPlagiarismScore > 40 ? 'bg-yellow-600' :
-                'bg-green-600'} text-white`}
+                  advancedMetrics.weightedPlagiarismScore > 40 ? 'bg-yellow-600' :
+                    'bg-green-600'} text-white`}
             >
               <div className="text-xs uppercase tracking-wide mb-1">Plagiarism Risk</div>
               <div className="text-4xl font-bold mb-2">{advancedMetrics.weightedPlagiarismScore}%</div>
@@ -252,7 +280,7 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
                           {snippet.length} characters at line {snippet.contextRange.startLine}
                         </div>
                       </button>
-                      
+
                       {expandedCards.includes(index) && (
                         <div className="p-4 border-t border-gray-700">
                           <Editor
@@ -284,7 +312,7 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
                                 }
                               };
                               editor.createDecorationsCollection([decoration]);
-                              
+
                               setTimeout(() => {
                                 editor.revealLineInCenter(snippet.contextRange.startLine);
                               }, 100);
@@ -365,7 +393,7 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
 
         <div className="bg-gray-700 rounded-lg p-4">
           <h4 className="text-md font-semibold mb-4">Code Evolution Replay</h4>
-          
+
           <div className="h-64 mb-4">
             <Editor
               height="100%"
@@ -393,7 +421,7 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
                   className="h-8 w-8">
                   <ChevronLeft className="h-4 w-4" />
                 </Button>
-                
+
                 <Button
                   onClick={handlePlayPause}
                   variant="secondary"
@@ -428,7 +456,7 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
             <div className="text-center text-sm text-gray-400">
               Snapshot {currentSnapshotIndex + 1} of {snapshots.length}
               <br />
-              {snapshots[currentSnapshotIndex]?.timestamp && 
+              {snapshots[currentSnapshotIndex]?.timestamp &&
                 new Date(snapshots[currentSnapshotIndex].timestamp).toLocaleString()}
             </div>
           </div>

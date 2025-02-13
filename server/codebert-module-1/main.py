@@ -89,12 +89,20 @@ def get_similarity_matrix():
                 400,
             )
 
-        submissions = userSubmissionsCollection.find(
-            {"problem": problem_id, "room": room_id}
-        )
+        query = {"verdict": "ACCEPTED"}
+        if problem_id:
+            query["problem"] = problem_id
+        if room_id:
+            query["room"] = room_id
 
-        # Convert your database query results to snippets
-        # This is where you'd integrate with your database
+        submissions = list(userSubmissionsCollection.find(query))
+
+        for submission in submissions:
+            submission["_id"] = str(submission["_id"])
+            submission["learner_id"] = str(submission["learner_id"])
+
+        print("submissions", submissions)
+
         snippets = [
             SnippetInfo(
                 learner_id=submission["learner"],
@@ -102,7 +110,7 @@ def get_similarity_matrix():
                 code=submission["code"],
                 timestamp=submission.get("timestamp", ""),
             )
-            for submission in submissions  # You'd replace this with your DB query
+            for submission in submissions
         ]
 
         if not snippets:
@@ -111,7 +119,8 @@ def get_similarity_matrix():
                     "success": True,
                     "matrix": [],
                     "snippets": [],
-                    "message": "No snippets found for this problem and room",
+                    "message": f"No snippets found for problemId: {problem_id} and roomId: {room_id}",
+                    "submissions": submissions,
                 }
             )
 
@@ -195,19 +204,10 @@ def get_sequential_similarity():
             formatted_snapshots
         )
 
-        # Add submission IDs to the response for reference
-        response_similarities = [
-            {
-                "submission_id": similarity["submission_id"],
-                "similarity_score": similarity["similarity_score"],
-            }
-            for similarity in similarities
-        ]
-
         return jsonify(
             {
                 "success": True,
-                "sequentialSimilarities": response_similarities,
+                "sequentialSimilarities": similarities,
                 "message": "Sequential similarities computed successfully",
             }
         )
@@ -232,7 +232,22 @@ def get_sequential_similarity():
 @app.route("/api/test", methods=["POST"])
 def test_endpoint():
     try:
-        snapshots = list(snapshotsCollection.find())
+        problem_id = request.args.get("problemId")
+        room_id = request.args.get("roomId")
+
+        if not problem_id and not room_id:
+            return (
+                jsonify(
+                    {"success": False, "message": "No problemId or roomId provided"}
+                ),
+                400,
+            )
+
+        # submissions = list(
+        #     userSubmissionsCollection.find({"problem": problem_id, "room": room_id})
+        # )
+
+        snapshots = list(userSubmissionsCollection.find({"problem": problem_id}))
         # Convert ObjectId to string
         for snapshot in snapshots:
             snapshot["_id"] = str(snapshot["_id"])
