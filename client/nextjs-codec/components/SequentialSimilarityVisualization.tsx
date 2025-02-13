@@ -68,19 +68,25 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
   const [sequentialSimilarities, setSequentialSimilarities] = useState<SequentialSimilarity[]>([]);
 
   useEffect(() => {
+    console.log("Snapshots received: ", snapshots);
+  }, [snapshots]);
+
+  useEffect(() => {
     const calculateSequentialSimilarities = async (snapshotsToCompare: CodeSnapshot[]) => {
       try {
-        const response = await fetch('http://localhost:5000/api/similarity/sequential', {
-          method: 'POST',
+        const learnerId = snapshotsToCompare[0].learner_id;
+        const problemId = snapshotsToCompare[0].problemId;
+        const roomId = snapshotsToCompare[0].roomId;
+
+        const response = await fetch(`http://localhost:5000/api/similarity/sequential?learner_id=${learnerId}&problemId=${problemId}&roomId=${roomId}`, {
+          method: 'GET',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            snapshots: snapshotsToCompare,
-            learnerId: snapshotsToCompare[0].learner_id,
-          }),
         });
 
+        const data = await response.json();
+        console.log("sequential data: ", data);
+        console.log("parameters:", { "learnerId": learnerId, "problemId": problemId, "roomId": roomId });
         if (response.ok) {
-          const data = await response.json();
           if (Array.isArray(data.sequentialSimilarities)) {
             setSequentialSimilarities(data.sequentialSimilarities);
           }
@@ -90,7 +96,7 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
       }
     };
     calculateSequentialSimilarities(snapshots);
-  })
+  }, [])
 
   const toggleCard = (index: number) => {
     setExpandedCards(prev =>
@@ -463,12 +469,12 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
         </div>
       </div>
 
-      <ReactTooltip id="maxChangeTooltip" place="top" effect="solid" />
-      <ReactTooltip id="averageSimilarityTooltip" place="top" effect="solid" />
-      <ReactTooltip id="minSimilarityTooltip" place="top" effect="solid" />
-      <ReactTooltip id="varianceTooltip" place="top" effect="solid" />
-      <ReactTooltip id="pastesTooltip" place="top" effect="solid" />
-      <ReactTooltip id="bigPastesTooltip" place="top" effect="solid" />
+      <ReactTooltip id="maxChangeTooltip" place="top" />
+      <ReactTooltip id="averageSimilarityTooltip" place="top" />
+      <ReactTooltip id="minSimilarityTooltip" place="top" />
+      <ReactTooltip id="varianceTooltip" place="top" />
+      <ReactTooltip id="pastesTooltip" place="top" />
+      <ReactTooltip id="bigPastesTooltip" place="top" />
     </div>
   );
 };

@@ -105,7 +105,8 @@ def get_similarity_matrix():
 
         snippets = [
             SnippetInfo(
-                learner_id=submission["learner"],
+                learner=submission["learner"],
+                learner_id=submission["learner_id"],
                 file_name=f"{submission['learner']}_{problem_id}.js",
                 code=submission["code"],
                 timestamp=submission.get("submission_date", ""),
@@ -119,7 +120,7 @@ def get_similarity_matrix():
                     "success": True,
                     "matrix": [],
                     "snippets": [],
-                    "message": f"No snippets found for problemId: {problem_id} and roomId: {room_id}",
+                    "message": f"No snippets found for problemId: {problem_id} or roomId: {room_id}",
                     "submissions": submissions,
                 }
             )
@@ -147,14 +148,13 @@ def get_similarity_matrix():
         print(f"Total time taken: {time.time() - start_time} seconds")
 
 
-@app.route("/api/similarity/sequential", methods=["POST"])
+@app.route("/api/similarity/sequential", methods=["GET"])
 def get_sequential_similarity():
     start_time = time.time()
     try:
-        data = request.json
-        learner_id = data.get("learner_id")
-        problem_id = data.get("problemId")
-        room_id = data.get("roomId")
+        learner_id = request.args.get("learner_id")
+        problem_id = request.args.get("problemId")
+        room_id = request.args.get("roomId")
 
         if not all([learner_id, problem_id, room_id]):
             return (
@@ -168,24 +168,26 @@ def get_sequential_similarity():
             )
 
         # Query MongoDB for the snapshots
-        snapshots_cursor = snapshotsCollection.find(
-            {
-                "learner_id": learner_id,
-                "problem": problem_id,
-                "room": room_id,
-            }
-        ).sort(
-            "submission_date", 1
+        snapshots = list(
+            snapshotsCollection.find(
+                {
+                    "learner_id": ObjectId(learner_id),
+                    "problemId": problem_id,
+                    "roomId": room_id,
+                }
+            ).sort("submission_date", 1)
         )  # Sort by timestamp ascending
 
-        snapshots = list(snapshots_cursor)
+        for snapshot in snapshots:
+            snapshot["_id"] = str(snapshot["_id"])
+            snapshot["learner_id"] = str(snapshot["learner_id"])
 
         if not snapshots:
             return jsonify(
                 {
                     "success": True,
                     "sequentialSimilarities": [],
-                    "message": "No snapshots found for this learner and problem",
+                    "message": f"No snapshots found for this learner and problem with the parameters: {learner_id}, {problem_id}, {room_id}",
                 }
             )
 
@@ -219,8 +221,7 @@ def get_sequential_similarity():
                     "success": False,
                     "error": str(e),
                     "traceback": tb_str,
-                    "matrix": [],
-                    "snippets": [],
+                    "snapshots": snapshots,
                 }
             ),
             500,
@@ -232,22 +233,22 @@ def get_sequential_similarity():
 @app.route("/api/test", methods=["POST"])
 def test_endpoint():
     try:
-        problem_id = request.args.get("problemId")
-        room_id = request.args.get("roomId")
+        # problem_id = request.args.get("problemId")
+        # room_id = request.args.get("roomId")
 
-        if not problem_id and not room_id:
-            return (
-                jsonify(
-                    {"success": False, "message": "No problemId or roomId provided"}
-                ),
-                400,
-            )
+        # if not problem_id and not room_id:
+        #     return (
+        #         jsonify(
+        #             {"success": False, "message": "No problemId or roomId provided"}
+        #         ),
+        #         400,
+        #     )
 
-        # submissions = list(
-        #     userSubmissionsCollection.find({"problem": problem_id, "room": room_id})
-        # )
+        # # submissions = list(
+        # #     userSubmissionsCollection.find({"problem": problem_id, "room": room_id})
+        # # )
 
-        snapshots = list(userSubmissionsCollection.find({"problem": problem_id}))
+        snapshots = list(snapshotsCollection.find({}))
         # Convert ObjectId to string
         for snapshot in snapshots:
             snapshot["_id"] = str(snapshot["_id"])

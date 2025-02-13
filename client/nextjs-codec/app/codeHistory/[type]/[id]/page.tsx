@@ -53,6 +53,7 @@ interface SimilarSnippet {
 }
 
 interface SnippetInfo {
+  learner: string;
   learner_id: string;
   code: string;
   timestamp: string;
@@ -69,49 +70,51 @@ export default function CodeReplayApp() {
   const [snapshots, setSnapshots] = useState<CodeSnapshot[]>([]);
   const [enhancedPastes, setEnhancedPastes] = useState<EnhancedPasteInfo[]>([]);
 
-  // // fetch snapshots
-  const fetchLearnerSnapshots = async () => {
-    try {
-      const response = await fetch(
-        `/api/codereplayV3/code-snapshots`
-      );
-      const data = await response.json();
+  // fetch snapshots
+  useEffect(() => {
+    const fetchLearnerSnapshots = async () => {
+      try {
+        const response = await fetch(
+          `/api/codereplayV3/code-snapshots`
+        );
+        const data = await response.json();
 
-      if (data.success && Array.isArray(data.snapshots)) {
-        // console.log(data.success, data.snapshots);
-        const sortedSnapshots = data.snapshots.sort((a: CodeSnapshot, b: CodeSnapshot) => {
-          if (a.version && b.version) {
-            return a.version - b.version;
-          }
-          return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
-        });
+        if (data.success && Array.isArray(data.snapshots)) {
+          // console.log(data.success, data.snapshots);
+          const sortedSnapshots = data.snapshots.sort((a: CodeSnapshot, b: CodeSnapshot) => {
+            if (a.version && b.version) {
+              return a.version - b.version;
+            }
+            return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
+          });
 
-        setSnapshots(sortedSnapshots);
+          setSnapshots(sortedSnapshots);
 
-        const groupedSnapshots = sortedSnapshots.reduce((acc: { [key: string]: CodeSnapshot[] }, snapshot: CodeSnapshot) => {
-          const learnerIdStr = snapshot.learner_id.toString();
-          if (!acc[learnerIdStr]) {
-            acc[learnerIdStr] = [];
-          }
-          acc[learnerIdStr].push(snapshot);
-          return acc;
-        }, {});
+          const groupedSnapshots = sortedSnapshots.reduce((acc: { [key: string]: CodeSnapshot[] }, snapshot: CodeSnapshot) => {
+            const learnerIdStr = snapshot.learner_id.toString();
+            if (!acc[learnerIdStr]) {
+              acc[learnerIdStr] = [];
+            }
+            acc[learnerIdStr].push(snapshot);
+            return acc;
+          }, {});
 
-        const groupedSnapshotsArray = Object.keys(groupedSnapshots).map(learner_id => ({
-          learner_id,
-          snapshots: groupedSnapshots[learner_id]
-        }));
+          const groupedSnapshotsArray = Object.keys(groupedSnapshots).map(learner_id => ({
+            learner_id,
+            snapshots: groupedSnapshots[learner_id]
+          }));
 
-        console.log(groupedSnapshotsArray);
-        // if (sortedSnapshots.length > 1) {
-        //     await calculateSequentialSimilarities(sortedSnapshots);
-        // }
+          console.log("grouped snapshots array:", groupedSnapshotsArray);
+          // if (sortedSnapshots.length > 1) {
+          //     await calculateSequentialSimilarities(sortedSnapshots);
+          // }
+        }
+      } catch (error) {
+        console.error('Error fetching learner snapshots:', error);
       }
-    } catch (error) {
-      console.error('Error fetching learner snapshots:', error);
-    }
-  };
-
+    };
+    fetchLearnerSnapshots();
+  }, []);
 
   const fetchSimilarityData = async () => {
     try {
@@ -127,7 +130,7 @@ export default function CodeReplayApp() {
       });
 
       const data = await response.json();
-      console.log(data);
+      console.log("matrix api data:", data);
 
       if (data.success) {
         setSimilarityMatrix({
@@ -245,7 +248,7 @@ export default function CodeReplayApp() {
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2 truncate">
                             <FileCode2 className="w-4 h-4 flex-shrink-0" />
-                            <span className="truncate">{snippet.learner_id}</span>
+                            <span className="truncate">{snippet.learner}</span>
                           </div>
                           <div className="flex items-center gap-2 flex-shrink-0">
                             <Badge className={`${(advancedMetrics[snippet.learner_id]?.weightedPlagiarismScore || 0) >= 80 ? 'bg-red-600' :

@@ -7,6 +7,7 @@ import { ArrowLeft } from 'lucide-react';
 
 // Types
 interface Snippet {
+  learner: string;
   learner_id: string;
   timestamp: string;
   code: string;
@@ -14,6 +15,7 @@ interface Snippet {
 
 interface NodeData {
   id: number;
+  learner: string;
   learner_id: string;
   timestamp: string;
   x: number;
@@ -94,7 +96,7 @@ const SimilarityCard = React.memo(({ snippetId, similarity, onClick, snippet }: 
     >
       <div className="flex flex-col text-left overflow-hidden">
         <span className="text-sm font-medium truncate text-white">
-          {snippet.learner_id}
+          {snippet.learner}
         </span>
         <span className="text-xs text-gray-400 truncate">
           {new Date(snippet.timestamp).toLocaleString()}
@@ -206,7 +208,7 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
   const handleSnippetClick = useCallback((snippetId: number) => {
     if (snippets[snippetId]) {
       setSelectedSnippetCode(snippets[snippetId].code);
-      setSelectedComparisonUserId(snippets[snippetId].learner_id);
+      setSelectedComparisonUserId(snippets[snippetId].learner);
     }
   }, [snippets]);
 
@@ -217,7 +219,8 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
 
     const nodeData: NodeData[] = snippets.map((snippet, index) => ({
       id: index,
-      learner_id: snippet.learner_id,
+      learner: snippet.learner,
+      learner_id: snippet.learner,
       timestamp: snippet.timestamp,
       x: Math.random() * (width - 2 * nodeRadius) + nodeRadius,
       y: Math.random() * (height - 2 * nodeRadius) + nodeRadius,
@@ -325,7 +328,7 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
   const renderNode = useCallback((node: NodeData, i: number, isSelected: boolean) => {
     const baseColor = getSimilarityColor(0);
     const nodeColor = isSelected ? '#3b82f6' : baseColor.hex;
-    const learner_id = node.learner_id.length > 20 ? `${node.learner_id.slice(0, 18)}...` : node.learner_id;
+    const learner = node.learner;
     const position = graphPositions?.nodes[i] || node;
 
     return (
@@ -351,7 +354,7 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
           fontSize="10"
           className="select-none"
         >
-          {learner_id}
+          {learner}
         </text>
       </g>
     );
@@ -446,7 +449,7 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
             {selectedNode !== null && !showHighSimilaritySection && (
               <div className="bg-gray-700 rounded-lg p-4">
                 <h4 className="font-medium mb-3">
-                  Connections for {snippets[selectedNode]?.learner_id}'s Submission
+                  Connections for {snippets[selectedNode]?.learner}'s Submission
                 </h4>
                 <div className="grid grid-cols-2 gap-2 max-h-[300px] overflow-y-auto pr-2">
                   {selectedNodeConnections.map((conn, i) => (
@@ -486,7 +489,7 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
                     >
                       <div className="flex justify-between items-center mb-1">
                         <span className="text-sm truncate max-w-[70%]">
-                          {snippets[pair.source].learner_id} & {snippets[pair.target].learner_id}
+                          {snippets[pair.source].learner} & {snippets[pair.target].learner}
                         </span>
                         <Badge className={getColorForSimilarity(pair.similarity)}>
                           {pair.similarity.toFixed(1)}%
@@ -505,7 +508,7 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
             <div className="bg-gray-700 rounded-lg p-4">
               <h4 className="font-medium mb-2">
                 {selectedNode !== null && snippets[selectedNode]
-                  ? `${snippets[selectedNode].learner_id}'s Code`
+                  ? `${snippets[selectedNode].learner}'s Code`
                   : 'Reference File'
                 }
               </h4>

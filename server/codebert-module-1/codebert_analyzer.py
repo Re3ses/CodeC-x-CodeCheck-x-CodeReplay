@@ -8,6 +8,7 @@ from dataclasses import dataclass
 
 @dataclass
 class SnippetInfo:
+    learner: str
     learner_id: str
     file_name: str
     code: str
@@ -114,6 +115,7 @@ class CodeBERTAnalyzer:
 
         snippet_info = [
             {
+                "learner": s.learner,
                 "learner_id": s.learner_id,
                 "fileName": s.file_name,
                 "code": s.code,
