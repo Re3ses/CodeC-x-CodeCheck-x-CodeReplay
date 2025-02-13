@@ -108,7 +108,7 @@ def get_similarity_matrix():
                 learner_id=submission["learner"],
                 file_name=f"{submission['learner']}_{problem_id}.js",
                 code=submission["code"],
-                timestamp=submission.get("timestamp", ""),
+                timestamp=submission.get("submission_date", ""),
             )
             for submission in submissions
         ]

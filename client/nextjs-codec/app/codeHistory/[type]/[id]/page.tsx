@@ -112,28 +112,6 @@ export default function CodeReplayApp() {
     }
   };
 
-  // const calculateSequentialSimilarities = async (snapshotsToCompare: CodeSnapshot[]) => {
-  //     try {
-  //         const response = await fetch('/api/codereplayV3/code-snapshots/sequential-similarity', {
-  //             method: 'POST',
-  //             headers: { 'Content-Type': 'application/json' },
-  //             body: JSON.stringify({
-  //                 snapshots: snapshotsToCompare,
-  //                 learnerId: submission.learner_id,
-  //             }),
-  //         });
-
-  //         if (response.ok) {
-  //             const data = await response.json();
-  //             if (Array.isArray(data.sequentialSimilarities)) {
-  //                 setSequentialSimilarities(data.sequentialSimilarities);
-  //             }
-  //         }
-  //     } catch (error) {
-  //         console.error('Sequential similarity calculation error:', error);
-  //     }
-  // };
-
 
   const fetchSimilarityData = async () => {
     try {
