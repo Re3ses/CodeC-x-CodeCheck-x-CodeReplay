@@ -59,6 +59,15 @@ interface SnippetInfo {
   timestamp: string;
   fileName: string;
 }
+interface AdvancedMetrics {
+  maxChange: number;
+  averageSimilarity: number;
+  minSimilarity: number;
+  normalizedVariance: number;
+  weightedPlagiarismScore: number;
+  pasteCount: number;
+  bigPasteCount: number;
+}
 
 export default function CodeReplayApp() {
   const params = useParams<{ type: string, id: string }>();
@@ -185,7 +194,11 @@ export default function CodeReplayApp() {
   };
 
   const [expandedCard, setExpandedCard] = useState<number | null>(null);
-  const [advancedMetrics, setAdvancedMetrics] = useState<{ [key: string]: number }>({});
+  const [advancedMetrics, setAdvancedMetrics] = useState<{ [key: string]: AdvancedMetrics }>({});
+
+  useEffect(() => {
+    console.log("advanced metrics:", advancedMetrics);
+  }, [advancedMetrics]);
 
   return (
     <div className="min-h-screen bg-gray-900 text-white p-4">
@@ -196,7 +209,8 @@ export default function CodeReplayApp() {
         </h1>
         <Tabs defaultValue="network" className="w-full">
           <TabsList className="bg-gray-800 border-b border-gray-700">
-            <TabsTrigger value="network" className="data-[state=active]:bg-gray-700">
+            <TabsTrigger value="network" className="data-[state=activ
+            e]:bg-gray-700">
               <Network className="w-4 h-4 mr-2 text-yellow-500" />
               Similarity Network
             </TabsTrigger>
@@ -251,12 +265,17 @@ export default function CodeReplayApp() {
                             <span className="truncate">{snippet.learner}</span>
                           </div>
                           <div className="flex items-center gap-2 flex-shrink-0">
-                            <Badge className={`${(advancedMetrics[snippet.learner_id]?.weightedPlagiarismScore || 0) >= 80 ? 'bg-red-600' :
-                              (advancedMetrics[snippet.learner_id]?.weightedPlagiarismScore || 0) >= 60 ? 'bg-yellow-600' :
-                                'bg-gray-600'
-                              }`}>
-                              {(advancedMetrics[snippet.learner_id]?.weightedPlagiarismScore || 0).toFixed(1)}%
-                            </Badge>
+                            {(() => {
+                              const score = advancedMetrics[String(snippet.learner_id)]?.weightedPlagiarismScore || 0;
+                              return (
+                                <Badge className={`${score >= 80 ? 'bg-red-600' :
+                                  score >= 60 ? 'bg-yellow-600' :
+                                    'bg-gray-600'
+                                  }`}>
+                                  {score.toFixed(1)}%
+                                </Badge>
+                              );
+                            })()}
                             {expandedCard === index ? (
                               <ChevronUp className="w-4 h-4" />
                             ) : (
@@ -271,6 +290,12 @@ export default function CodeReplayApp() {
                         <SequentialSimilarityVisualization
                           snapshots={snapshots.filter(s => s.learner_id === snippet.learner_id)}
                           pastedSnippets={enhancedPastes}
+                          onMetricsUpdate={(metrics) => {
+                            setAdvancedMetrics(prev => ({
+                              ...prev,
+                              [snippet.learner_id]: metrics
+                            }));
+                          }}
                         />
                       </CardContent>
                     )}
