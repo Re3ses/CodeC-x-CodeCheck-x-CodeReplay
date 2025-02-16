@@ -29,6 +29,7 @@ interface SnapshotSimilarity {
 }
 
 interface EnhancedPasteInfo {
+  learner_id: string;
   text: string;
   fullCode: string;
   timestamp: string;
@@ -79,17 +80,57 @@ export default function CodeReplayApp() {
   const [snapshots, setSnapshots] = useState<CodeSnapshot[]>([]);
   const [enhancedPastes, setEnhancedPastes] = useState<EnhancedPasteInfo[]>([]);
 
+  // fetch user submissions
+  useEffect(() => {
+    const fetchUserSubmissions = async () => {
+      try {
+        const query = {
+          [params.type === 'problem' ? 'problem_slug' : 'roomId']: params.id,
+          all: "True"
+        };
+
+        const response = await fetch(
+          `/api/userSubmissions/?${new URLSearchParams(query).toString()}`
+        );
+
+        const data = await response.json();
+        // console.log("user submissions", data);
+
+        if (data.message === "Success! all via problem_slug" && Array.isArray(data.submission)) {
+          // console.log("user submissions", data.message, data.submission);
+
+          const enhancedPastes = data.submission.map((submission: any) => {
+            const pasteHistory = JSON.parse(submission.paste_history);
+            return pasteHistory.map((paste: any) => ({
+              text: paste.text,
+              fullCode: paste.fullCode,
+              timestamp: paste.timestamp,
+              length: paste.length,
+              contextRange: paste.contextRange,
+              learner_id: submission.learner_id
+            }));
+          }).flat();
+          // console.log("enhanced pastes", enhancedPastes);
+          setEnhancedPastes(enhancedPastes);
+        }
+      } catch (error) {
+        console.error('Error fetching user submissions:', error);
+      }
+    };
+    fetchUserSubmissions();
+  }, []);
+
   // fetch snapshots
   useEffect(() => {
     const fetchLearnerSnapshots = async () => {
       try {
         const response = await fetch(
-          `/api/codereplayV3/code-snapshots`
+          `/api/codereplay/code-snapshots`
         );
         const data = await response.json();
 
         if (data.success && Array.isArray(data.snapshots)) {
-          // console.log(data.success, data.snapshots);
+          console.log("snapshots successfuly fetched", data.success, data.snapshots);
           const sortedSnapshots = data.snapshots.sort((a: CodeSnapshot, b: CodeSnapshot) => {
             if (a.version && b.version) {
               return a.version - b.version;
@@ -97,26 +138,9 @@ export default function CodeReplayApp() {
             return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
           });
 
+          console.log("sorted snapshots", sortedSnapshots);
+
           setSnapshots(sortedSnapshots);
-
-          const groupedSnapshots = sortedSnapshots.reduce((acc: { [key: string]: CodeSnapshot[] }, snapshot: CodeSnapshot) => {
-            const learnerIdStr = snapshot.learner_id.toString();
-            if (!acc[learnerIdStr]) {
-              acc[learnerIdStr] = [];
-            }
-            acc[learnerIdStr].push(snapshot);
-            return acc;
-          }, {});
-
-          const groupedSnapshotsArray = Object.keys(groupedSnapshots).map(learner_id => ({
-            learner_id,
-            snapshots: groupedSnapshots[learner_id]
-          }));
-
-          console.log("grouped snapshots array:", groupedSnapshotsArray);
-          // if (sortedSnapshots.length > 1) {
-          //     await calculateSequentialSimilarities(sortedSnapshots);
-          // }
         }
       } catch (error) {
         console.error('Error fetching learner snapshots:', error);
@@ -194,11 +218,7 @@ export default function CodeReplayApp() {
   };
 
   const [expandedCard, setExpandedCard] = useState<number | null>(null);
-  const [advancedMetrics, setAdvancedMetrics] = useState<{ [key: string]: AdvancedMetrics }>({});
-
-  useEffect(() => {
-    console.log("advanced metrics:", advancedMetrics);
-  }, [advancedMetrics]);
+  // const [advancedMetrics, setAdvancedMetrics] = useState<{ [key: string]: AdvancedMetrics }>({});
 
   return (
     <div className="min-h-screen bg-gray-900 text-white p-4">
@@ -265,7 +285,7 @@ export default function CodeReplayApp() {
                             <span className="truncate">{snippet.learner}</span>
                           </div>
                           <div className="flex items-center gap-2 flex-shrink-0">
-                            {(() => {
+                            {/* {(() => {
                               const score = advancedMetrics[String(snippet.learner_id)]?.weightedPlagiarismScore || 0;
                               return (
                                 <Badge className={`${score >= 80 ? 'bg-red-600' :
@@ -275,7 +295,7 @@ export default function CodeReplayApp() {
                                   {score.toFixed(1)}%
                                 </Badge>
                               );
-                            })()}
+                            })()} */}
                             {expandedCard === index ? (
                               <ChevronUp className="w-4 h-4" />
                             ) : (
@@ -289,13 +309,13 @@ export default function CodeReplayApp() {
                       <CardContent className="p-4">
                         <SequentialSimilarityVisualization
                           snapshots={snapshots.filter(s => s.learner_id === snippet.learner_id)}
-                          pastedSnippets={enhancedPastes}
-                          onMetricsUpdate={(metrics) => {
-                            setAdvancedMetrics(prev => ({
-                              ...prev,
-                              [snippet.learner_id]: metrics
-                            }));
-                          }}
+                          pastedSnippets={enhancedPastes.filter(s => s.learner_id === snippet.learner_id)}
+                        // onMetricsUpdate={(metrics) => {
+                        //   setAdvancedMetrics(prev => ({
+                        //     ...prev,
+                        //     [snippet.learner_id]: metrics
+                        //   }));
+                        // }}
                         />
                       </CardContent>
                     )}

@@ -38,6 +38,7 @@ interface SequentialSimilarity {
 }
 
 interface EnhancedPasteInfo {
+  learner_id: string;
   text: string;
   fullCode: string;
   timestamp: string;
@@ -63,13 +64,13 @@ interface AdvancedMetrics {
 interface SequentialSimilarityVisualizationProps {
   snapshots: CodeSnapshot[];
   pastedSnippets: EnhancedPasteInfo[];
-  onMetricsUpdate?: (metrics: AdvancedMetrics) => void;
+  // onMetricsUpdate?: (metrics: AdvancedMetrics) => void;
 }
 
 const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizationProps> = ({
   snapshots,
   pastedSnippets,
-  onMetricsUpdate
+  // onMetricsUpdate
 }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentSnapshotIndex, setCurrentSnapshotIndex] = useState(0);
@@ -79,9 +80,10 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
   const [bigPasteCount, setBigPasteCount] = useState(0);
   const [sequentialSimilarities, setSequentialSimilarities] = useState<SequentialSimilarity[]>([]);
 
-  // useEffect(() => {
-  //   console.log("Snapshots received: ", snapshots);
-  // }, [snapshots]);
+  useEffect(() => {
+    console.log("Snapshots received: ", snapshots);
+    console.log("Pasted Snippets received: ", pastedSnippets);
+  }, [snapshots]);
 
   useEffect(() => {
     const calculateSequentialSimilarities = async (snapshotsToCompare: CodeSnapshot[]) => {
@@ -186,7 +188,8 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
       pasteCount,
       bigPasteCount
     };
-  }, [sequentialSimilarities, pasteCount, bigPasteCount, onMetricsUpdate]);
+    // }, [sequentialSimilarities, pasteCount, bigPasteCount, onMetricsUpdate]);
+  }, [sequentialSimilarities, pasteCount, bigPasteCount]);
 
   // Chart data preparation
   const chartData = sequentialSimilarities.map((similarity, index) => ({
