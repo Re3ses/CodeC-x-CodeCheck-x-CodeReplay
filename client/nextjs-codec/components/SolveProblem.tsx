@@ -44,6 +44,15 @@ const SUPPORTED_LANGUAGES = {
   CSHARP: '51', // C# (Mono 6.6.0.161)
 } as const;
 
+// First, define the default template as a constant
+const DEFAULT_TEMPLATE = `#include <iostream>
+using namespace std;
+
+int main() {
+    // Your code here
+    return 0;
+}`;
+
 interface CodeEditorProps {
   userType: 'mentor' | 'learner';
   roomId: string;
@@ -55,9 +64,7 @@ export default function CodeEditor({ userType, roomId, problemId }: CodeEditorPr
   
   // State management
   const [problem, setProblem] = useState<ProblemSchemaInferredType>();
-  const [editorValue, setEditorValue] = useState<string>(
-    '#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}'
-  );
+  const [editorValue, setEditorValue] = useState<string>(DEFAULT_TEMPLATE);
   const [selectedLang, setSelectedLang] = useState<string>(SUPPORTED_LANGUAGES.CPP);
   const [compileResult, setCompileResult] = useState<any>();
   const [languages, setLanguages] = useState<LanguageData[]>();
@@ -123,6 +130,17 @@ export default function CodeEditor({ userType, roomId, problemId }: CodeEditorPr
       setProblem(problemData);
       setLanguages(filteredLanguages);
       setLearner(userData.id);
+
+      // Find template for C++ in problem's langArray
+      if (problemData?.languages) {
+        const cppTemplate = problemData.languages.find(
+          lang => lang.name === 'C++ (GCC 11.2.0)'
+        );
+
+        // Set editor value to template if found, otherwise use default
+        setEditorValue(cppTemplate?.code_snippet || DEFAULT_TEMPLATE);
+      }
+
     };
 
     initializeData();
