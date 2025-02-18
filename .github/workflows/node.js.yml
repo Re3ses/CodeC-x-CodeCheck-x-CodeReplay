@@ -1,0 +1,93 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+
+name: CodeC Development
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: self-hosted
+
+    strategy:
+      matrix:
+        node-version: [20.15.1]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+          cache-dependency-path: "./client/nextjs-codec"
+
+      - name: Set cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.npm
+            ${{ github.workspace }}/client/nextjs-codec/.next/cache
+
+          key:
+            ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx') }}
+            # If source files changed but packages didn't, rebuild from a prior cache.
+          restore-keys: |
+            ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
+
+      - name: Set client environment variables
+        run: |
+          if [ -f ".env.production" ]; then
+            rm .env.production
+          fi
+          echo "SERVER_URL=${{secrets.SERVER_URL}}" >> .env.production
+          echo "SERVER_PORT=${{secrets.SERVER_PORT}}" >> .env.production
+          echo "AUTH_PORT=${{secrets.AUTH_PORT}}" >> .env.production
+          echo "API_PORT=${{secrets.API_PORT}}" >> .env.production
+          echo "SOCKET_PORT=${{secrets.SOCKET_PORT}}" >> .env.production
+          echo "MONGODB_URI=${{secrets.MONGODB_URI}}" >> .env.production
+          echo "NEXT_PUBLIC_SERVER_URL=${{secrets.SERVER_URL}}" >> .env.production
+          echo "NEXT_PUBLIC_SERVER_PORT=${{secrets.SERVER_PORT}}" >> .env.production
+          echo "NEXT_PUBLIC_AUTH_PORT=${{secrets.AUTH_PORT}}" >> .env.production
+          echo "NEXT_PUBLIC_API_PORT=${{secrets.API_PORT}}" >> .env.production
+          echo "NEXT_PUBLIC_SOCKET_PORT=${{secrets.SOCKET_PORT}}" >> .env.production
+          echo "NEXT_PUBLIC_MONGODB_URI=${{secrets.MONGODB_URI}}" >> .env.production
+        working-directory: ./client/nextjs-codec
+
+      - name: Set api environment variables
+        run: |
+          if [ -f ".env" ]; then
+            rm .env
+          fi
+          echo "AUTH_PORT=${{secrets.AUTH_PORT}}" >> .env
+          echo "API_PORT=${{secrets.API_PORT}}" >> .env
+          echo "SOCKET_PORT=${{secrets.SOCKET_PORT}}" >> .env
+          echo "MONGODB_URI=${{secrets.MONGODB_URI}}" >> .env
+          echo "ACCESS_TOKEN=${{secrets.ACCESS_TOKEN}}" >> .env
+          echo "REFRESH_TOKEN=${{secrets.REFRESH_TOKEN}}" >> .env
+          echo "MAILER_USERNAME=${{secrets.MAILER_USERNAME}}" >> .env
+          echo "MAILER_PASSWORD=${{secrets.MAILER_PASSWORD}}" >> .env
+        working-directory: ./server/codec-api
+
+      - name: Install client dependencies
+        run: npm ci
+        working-directory: ./client/nextjs-codec
+
+      - name: Build client
+        run: npm run build
+        working-directory: ./client/nextjs-codec
+
+      - name: Restart codec-client pm2 process
+        run: pm2 restart codec-client --update-env
+        working-directory: ./client/nextjs-codec
+
+      - name: Install codec api dependencies
+        run: npm ci
+        working-directory: ./server/codec-api
+
+      - name: Restart codec-api pm2 process
+        run: pm2 restart codec-api --update-env
+        working-directory: ./server/codec-api

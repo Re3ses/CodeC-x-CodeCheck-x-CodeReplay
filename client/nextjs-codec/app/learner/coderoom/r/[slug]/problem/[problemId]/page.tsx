@@ -1,0 +1,523 @@
+'use client';
+
+import React, { useEffect, useState, useRef } from 'react';
+import { GetProblems } from '@/utilities/apiService';
+import {
+  getBatchSubmisisons,
+  getLanguage,
+  getLanguages,
+  getSubmission,
+  postBatchSubmissions,
+  postSubmission,
+} from '@/utilities/rapidApi';
+import { ProblemSchemaInferredType } from '@/lib/interface/problem';
+import Editor from '@monaco-editor/react';
+import { Button } from '@/components/ui/button';
+import { toast } from '@/components/ui/use-toast';
+import 'react-quill/dist/quill.core.css';
+import { Switch } from '@/components/ui/switch';
+import axios from 'axios';
+import { useParams } from 'next/navigation';
+import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
+import { getUser } from '@/lib/auth';
+import languagesCode from '@/utilities/languages_code.json';
+import SafeHtml from '@/components/SafeHtml';
+
+// Code Replay Imports
+import { editor as Monaco } from 'monaco-editor';
+import { isPagesAPIRouteMatch } from 'next/dist/server/future/route-matches/pages-api-route-match';
+import { ColumnSpacingIcon } from '@radix-ui/react-icons';
+
+// Add the CodeEditor component import
+import CodeEditor from '@/components/SolveProblem';
+
+type languageData = {
+  id: number;
+  name: string;
+};
+
+interface Data {
+  language_used: string;
+  code: string;
+  score: number;
+  score_overall_count: number;
+  verdict: string;
+  learner: string;
+  learner_id: string;
+  problem: string;
+  room: string;
+  attempt_count: number;
+  start_time: number;
+  end_time: number;
+  completion_time: number;
+}
+
+// Code Replay definitions
+interface CodeSnapshot {
+  code: string;
+  timestamp: string;
+  userId: string;
+  problemId?: string;
+  roomId?: string;
+  submissionId?: string;
+  version?: number;
+}
+
+interface EnhancedPasteInfo {
+  text: string;          // The pasted text
+  fullCode: string;      // Complete code after paste
+  timestamp: string;
+  length: number;
+  contextRange: {        // Range of the paste in the full code
+    startLine: number;
+    startColumn: number;
+    endLine: number;
+    endColumn: number;
+  };
+}
+
+
+export default function Page() {
+  const editorRef = useRef<Monaco.IStandaloneCodeEditor | null>(null);
+
+  const params = useParams<{ slug: string; problemId: string }>();
+  const [problem, setProblem] = useState<ProblemSchemaInferredType>();
+  const [editorValue, setEditorValue] = useState<any>("// Start coding here");
+  const [selectedLang, setSelectedLang] = useState<string>();
+  const [compileResult, setCompileResult] = useState<any>();
+  const [languages, setLanguages] = useState<languageData[]>();
+  const [inputVal, setInputVal] = useState<string>('');
+  const [showCustomInput, setShowCustomInput] = useState<boolean>(false);
+  const [score, setScore] = useState<any>();
+  const [batchResult, setBatchResult] = useState<any>();
+  const [learner, setLearner] = useState<string>();
+  const [learner_id, setLearnerId] = useState<string>();
+  const [attemptCount, setAttemptCount] = useState<number>(0);
+  const langCodes: LanguageCodes = languagesCode;
+
+  // Code Replay states
+  const [saveMode, setSaveMode] = useState<'manual' | 'auto'>('auto');
+  // const [code, setCode] = useState<any>('// Start coding here');
+  const [lastSaved, setLastSaved] = useState<string>(editorValue);
+  const [saving, setSaving] = useState(false);
+  const [snapshots, setSnapshots] = useState<CodeSnapshot[]>([]);
+  const [pasteCount, setPasteCount] = useState(0);
+  const [bigPasteCount, setBigPasteCount] = useState(0);
+  const [enhancedPastes, setEnhancedPastes] = useState<EnhancedPasteInfo[]>([]);
+
+
+  // for submission button
+  const [disabled, setDisabled] = useState(false);
+
+  useEffect(() => {
+    // set start time on mount
+    if (!localStorage.getItem(params.problemId + '_started')) {
+      localStorage.setItem(
+        params.problemId + '_started',
+        Date.now().toString()
+      );
+    }
+
+    const res: () => Promise<ProblemSchemaInferredType> = async () => {
+      return await GetProblems(params.problemId);
+    };
+    res().then((result) => setProblem(result));
+
+    const lang: () => Promise<languageData[]> = async () => {
+      return await getLanguages();
+    };
+    lang().then((result) => setLanguages(result));
+
+    const user: () => Promise<any> = async () => {
+      return await getUser();
+    };
+    user().then((result) => {
+      setLearner(result.auth.username);
+      setLearnerId(result.id);
+    });
+  }, [params.problemId]);
+
+  // function handleEditorDidMount(editor: any) {
+  //   editorRef.current = editor;
+  // }
+
+  /**
+   * @param input - standard input / custom input
+   * @param expected - expected return type
+   * @returns token, used for getting submissions from judge0
+   */
+  async function getToken(input: string = '', expected: null | string = null) {
+    const data = {
+      source_code: btoa(editorValue),
+      language_id: +selectedLang!,
+      stdin: input != null ? btoa(input) : input,
+      expected_output: typeof expected == 'string' ? btoa(expected) : expected,
+    };
+    const token = await postSubmission(data).then((res) => {
+      return res.token;
+    });
+    return token;
+  }
+
+  // TODO: Prevent spam
+  // Submits to db, checks for isTest flag
+  async function handleSubmit(isTest: boolean = true) {
+    if (editorValue == '' || selectedLang == undefined) {
+      toast({
+        title: 'Language and source code should not be empty...',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    var eval_problems;
+    if (isTest == false) {
+      eval_problems = problem?.test_cases.filter((item) => item.is_eval);
+    } else {
+      // evals should not be empty
+      eval_problems = problem?.test_cases.filter((item) => item.is_sample);
+    }
+    const payload: {
+      language_id: number;
+      source_code: string;
+      stdin: null | string;
+      expected_output: null | string;
+    }[] =
+      eval_problems?.map((val) => {
+        return {
+          language_id: +selectedLang!,
+          source_code: btoa(editorValue),
+          stdin: btoa(val.input),
+          expected_output: btoa(val.output),
+        };
+      }) || [];
+
+    if (payload.length == 0) {
+      toast({
+        title:
+          'Cannot test, problem setter did not provide any sample cases. Use custom input instead',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    const submission_message = isTest
+      ? 'Testing submission'
+      : 'Processing submission';
+    toast({ title: submission_message });
+    const submissions = await postBatchSubmissions(payload);
+    const tokens: { token: string }[] = submissions?.map((token: any) => {
+      return token.token;
+    });
+
+    // Submits to judge0 for eval
+    setTimeout(async () => {
+      try {
+        setAttemptCount(attemptCount + 1);
+        // Set completion time here, mark as valid if problem is completed
+
+        const batchSubmissions = await getBatchSubmisisons(tokens.join());
+        setBatchResult(batchSubmissions.submissions);
+
+        const accepted = batchSubmissions.submissions.filter(
+          (obj: any) => obj.status.description === 'Accepted'
+        );
+
+        const score = {
+          accepted_count: accepted.length,
+          overall_count: batchSubmissions.submissions.length,
+        };
+        setScore(score);
+
+        const status_message = isTest
+          ? 'Test program posted'
+          : 'Submission posted';
+        toast({ title: status_message });
+
+        const language_used = await getLanguage(+selectedLang);
+
+        if (score.accepted_count == score.overall_count) {
+          toast({ title: 'Congrats! All test case passed!' });
+          localStorage.setItem(
+            params.problemId + '_ended',
+            Date.now().toString()
+          );
+        }
+
+        // if not test, submit and post attempt to db
+        if (!isTest) {
+          let start_time: number = 0;
+          let end_time: number = 0;
+
+          try {
+            if (localStorage.getItem(params.problemId + '_started') !== null) {
+              start_time = parseInt(
+                localStorage.getItem(params.problemId + '_started')!
+              );
+
+              // == debug ==
+              console.log('start_time', start_time);
+              // == end debug ==
+            }
+
+            if (localStorage.getItem(params.problemId + '_ended') !== null) {
+              end_time = parseInt(
+                localStorage.getItem(params.problemId + '_ended')!
+              );
+
+              // == debug ==
+              console.log('end_time', end_time);
+              // == end debug ==
+            }
+          } catch (e) {
+            console.error('local storage problem', e);
+            alert('Local storage not supported, contact support for help...');
+            return;
+          }
+
+          console.log('hello');
+          console.log('enhancedPastes', enhancedPastes);
+          console.log('enhancedPastes', JSON.stringify(enhancedPastes));
+          const data = {
+            language_used: language_used.name,
+            code: editorValue,
+            score: score.accepted_count,
+            score_overall_count: score.overall_count,
+            verdict:
+              score.overall_count == score.accepted_count
+                ? 'ACCEPTED'
+                : 'REJECTED',
+            learner: learner,
+            learner_id: learner_id,
+            problem: params.problemId,
+            room: params.slug,
+            attempt_count: attemptCount + 1,
+            start_time: start_time,
+            end_time: end_time,
+            paste_history: JSON.stringify(enhancedPastes),
+            completion_time: end_time > 0 ? end_time - start_time : 0,
+          };
+
+          const formData = new FormData();
+
+          Object.keys(data).forEach((key) => {
+            formData.append(key, data[key as keyof Data] as string | Blob);
+          });
+
+          // === debug ===
+          console.log(data);
+          // === end debug ===
+
+          const url = `/api/userSubmissions/`;
+          console.log('url', url);
+
+          await fetch(url, {
+            method: 'POST',
+            body: formData,
+          });
+        }
+      } catch (e) {
+        console.error('error occured posting to db', e);
+      }
+    }, 3000);
+  }
+
+  // against custom input
+  async function handleTry() {
+    if (showCustomInput && inputVal == '') {
+      toast({ title: 'No input detected...', variant: 'destructive' });
+      return;
+    }
+
+    if (showCustomInput) {
+      // handle with custom input
+      const token = await getToken(inputVal);
+
+      toast({ title: 'Try submitted, please wait for result' });
+
+      setTimeout(async () => {
+        const compileResult = await getSubmission(token);
+        setCompileResult(compileResult);
+        toast({ title: 'Successfully compiled!' });
+      }, 3000);
+    } else {
+      // handle submit as test input
+      handleSubmit(true);
+    }
+  }
+
+  function disableSubmissionButtonTemporarily() {
+    setDisabled(true);
+    setTimeout(() => {
+      setDisabled(false);
+    }, 5000);
+  }
+
+  // CODE REPLAY FEATURE
+
+  // Auto-save function
+  const autoSaveCode = async (codeToSave: string) => {
+    if (codeToSave === lastSaved) return;
+    setSaving(true);
+    try {
+      console.log('Auto-saving...');
+      // const userId = await getUserId();
+
+      // Find the last version from existing snapshots
+      const lastVersion = snapshots.length > 0
+        ? Math.max(...snapshots.map(snapshot => snapshot.version || 0))
+        : 0;
+
+      // Increment the last version by 1
+      const nextVersion = lastVersion + 1;
+
+      const saveResponse = await fetch('/api/codereplayV3/code-snapshots', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          code: codeToSave,
+          userId: learner_id,
+          problemId: params.problemId,
+          roomId: params.slug,
+          submissionId: `submission-${Date.now()}`,
+          version: nextVersion // Explicitly pass the next version
+          }),
+        });
+
+        if(saveResponse.ok) {
+          const savedData = await saveResponse.json();
+      if (savedData.snippet) {
+        // Update snapshots while maintaining order
+        setSnapshots(prevSnapshots => {
+          const updatedSnapshots = [...prevSnapshots, savedData.snippet];
+          return updatedSnapshots.sort((a, b) => {
+            if (a.version && b.version) {
+              return a.version - b.version;
+            }
+            return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
+          });
+        });
+
+        setLastSaved(codeToSave);
+
+        // // Recalculate sequential similarities
+        // await calculateSequentialSimilarities([...snapshots, savedData.snippet]);
+        console.log("snapshots: ", snapshots);
+      }
+    }
+
+
+    } catch (error) {
+    console.error('Auto-save error:', error);
+  } finally {
+    setSaving(false);
+  }
+};
+
+// Function to check if code has significant changes
+const hasSignificantChanges = (newCode: string, oldCode: string) => {
+  const lengthDiff = Math.abs(newCode.length - oldCode.length);
+  return lengthDiff > 50; // Consider changes significant if more than 50 characters are added/removed
+};
+
+// Auto-save effect
+useEffect(() => {
+  if (saveMode !== 'auto') return;
+
+  let autoSaveTimer: NodeJS.Timeout;
+
+  const handleVisibilityChange = () => {
+    if (document.hidden && editorValue !== lastSaved) {
+      autoSaveCode(editorValue);
+    }
+  };
+
+  const handleBeforeUnload = () => {
+    if (editorValue !== lastSaved) {
+      autoSaveCode(editorValue);
+    }
+  };
+
+  // Save on significant changes or every 10 seconds
+  if (editorValue !== '// Start coding here' &&
+    (hasSignificantChanges(editorValue, lastSaved) || editorValue !== lastSaved)) {
+    autoSaveTimer = setTimeout(() => {
+      autoSaveCode(editorValue);
+    }, 10000);
+  }
+
+  // Add event listeners for tab/window changes
+  document.addEventListener('visibilitychange', handleVisibilityChange);
+  window.addEventListener('beforeunload', handleBeforeUnload);
+
+  return () => {
+    clearTimeout(autoSaveTimer);
+    document.removeEventListener('visibilitychange', handleVisibilityChange);
+    window.removeEventListener('beforeunload', handleBeforeUnload);
+  };
+}, [editorValue, saveMode, lastSaved]);
+
+// Updated handleEditorMount with enhanced paste tracking
+const handleEditorMount = (editor: Monaco.IStandaloneCodeEditor) => {
+  editorRef.current = editor;
+
+  editor.onDidPaste((event) => {
+    try {
+      console.log("PASTE EVENT:", event);
+      const model = editor.getModel();
+      if (!model) return;
+
+      // Get the pasted content and its range
+      const pastedText = model.getValueInRange(event.range);
+      const fullCode = model.getValue();
+
+      // Create enhanced paste info
+      const newPaste: EnhancedPasteInfo = {
+        text: pastedText,
+        fullCode: fullCode,
+        timestamp: new Date().toISOString(),
+        length: pastedText.length,
+        contextRange: {
+          startLine: event.range.startLineNumber,
+          startColumn: event.range.startColumn,
+          endLine: event.range.endLineNumber,
+          endColumn: event.range.endColumn
+        }
+      };
+
+      // Update paste tracking state
+      setEnhancedPastes(prev => [...prev, newPaste]);
+      setPasteCount(prev => prev + 1);
+      if (pastedText.length > 200) {
+        setBigPasteCount(prev => prev + 1);
+      }
+
+      // Optional: Automatically save after a paste
+      // if (saveMode === 'auto') {
+      //   autoSaveCode(fullCode);
+      // }
+
+    } catch (error) {
+      console.error('Error handling paste event:', error);
+    }
+  });
+};
+
+useEffect(() => {
+  console.log("Paste History: ", enhancedPastes);
+}, [enhancedPastes]);
+
+
+return (
+  <>
+    {/* Add the CodeEditor component */}
+    <CodeEditor
+      userType="learner"
+      roomId={params.slug}
+      problemId={params.problemId}
+    />
+
+
+  </>
+);
+}

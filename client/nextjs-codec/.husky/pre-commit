@@ -1,0 +1,6 @@
+echo "Running formatter and linter"
+
+npm run format
+npm run lint
+
+echo "=== Finished running formatter and linter, code should be uniform now. Happy coding! ==="

@@ -1,0 +1,78 @@
+'use client';
+
+import { useContext, useEffect, useState } from 'react';
+import { UserContext } from './contexts';
+import { UserSchemaInferredType } from '../../lib/interface/user';
+
+export default function Page() {
+  const user: any = useContext(UserContext)!;
+
+  const [studentCount, setStudentCount] = useState<number>();
+  const [coderoomsCount, setCoderoomsCount] = useState<number>();
+  const [problemCount, setProblemCount] = useState<number>();
+  const [solvedProblemsCount, setSolvedProblemsCount] = useState<number>();
+  const [joinedRooms, setJoinedRoomsCount] = useState<number>();
+
+  useEffect(() => {
+    const res = async () => {
+      await fetch(`/api/metrics?user_id=${user._id}`).then(async (value) => {
+        if (user.type === 'Mentor') {
+          const { created_coderooms_count, created_problems_count } =
+            await value.json();
+          setCoderoomsCount(created_coderooms_count);
+          setProblemCount(created_problems_count);
+        }
+
+        if (user.type === 'Learner') {
+          const { joined_rooms_count, solved_problems_count } =
+            await value.json();
+          setJoinedRoomsCount(joined_rooms_count);
+          setSolvedProblemsCount(solved_problems_count);
+        }
+      });
+    };
+
+    res();
+  });
+
+  return (
+    <div className="m-4 flex gap-4 ">
+      {/* Classroom */}
+      <div className="w-fit rounded-xl border border-[gray]/50 bg-card text-card-foreground shadow">
+        <div className="p-6 flex flex-row items-center justify-between space-y-0 pb-2">
+          <h3 className="tracking-tight text-sm font-medium">
+            {user.type === 'Learner' ? 'Coderooms Joined' : 'Coderooms Created'}
+          </h3>
+        </div>
+        <div className="p-6 pt-0">
+          {user.type === 'Learner' ? joinedRooms : coderoomsCount}
+        </div>
+      </div>
+
+      {/* Students */}
+
+      {/* <div className="w-fit rounded-xl border border-[gray]/50 bg-card text-card-foreground shadow">
+        <div className="p-6 flex flex-row items-center justify-between space-y-0 pb-2">
+          <h3 className="tracking-tight text-sm font-medium">
+            Students managed
+          </h3>
+        </div>
+        <div className="p-6 pt-0">
+          <div className="text-2xl font-bold">0</div>
+        </div>
+      </div> */}
+
+      {/* Problems created */}
+      <div className="w-fit rounded-xl border border-[gray]/50 bg-card text-card-foreground shadow">
+        <div className="p-6 flex flex-row items-center justify-between space-y-0 pb-2">
+          <h3 className="tracking-tight text-sm font-medium">
+            {user.type === 'Learner' ? 'Problems Solved' : 'Problems Created'}
+          </h3>
+        </div>
+        <div className="p-6 pt-0">
+          {user.type === 'Learner' ? solvedProblemsCount : problemCount}
+        </div>
+      </div>
+    </div>
+  );
+}
