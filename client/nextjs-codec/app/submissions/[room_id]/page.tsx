@@ -1,6 +1,5 @@
 'use client';
 
-// Add this import at the top
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -23,88 +22,69 @@ import Nav from '@/app/dashboard/nav';
 import { useParams, useRouter } from 'next/navigation';
 import { getUser } from '@/lib/auth';
 
+// First, add the proper interface for submissions
+interface Submission {
+  _id: string;
+  learner: string;
+  completion_time: number;
+  score: number;
+  score_overall_count: number;
+  verdict: string;
+  code: string;
+  language: string;
+}
+
 export default function Page() {
   const router = useRouter();
   const { room_id } = useParams();
-  const [selectedSubmissionId, setSelectedSubmissionId] = useState(null);
+  const [selectedSubmissionId, setSelectedSubmissionId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(true);
-  const [user, setUser] = useState();
-
-  // Mock data for demonstration
-  const mockSubmissions = {
-    submission: [
-      {
-        _id: '1',
-        learner: 'John Doe',
-        completion_time: 3600000,
-        score: 10,
-        score_overall_count: 10,
-        verdict: 'ACCEPTED',
-        code: 'function example() {\n  return "Hello World";\n}',
-        language: 'javascript'
-      },
-      {
-        _id: '2',
-        learner: 'Jane Smith',
-        completion_time: 2800000,
-        score: 8,
-        score_overall_count: 10,
-        verdict: 'ACCEPTED',
-        code: 'def example():\n    return "Hello World"',
-        language: 'python'
-      },
-      {
-        _id: '3',
-        learner: 'Mike Johnson',
-        completion_time: 4200000,
-        score: 6,
-        score_overall_count: 10,
-        verdict: 'REJECTED',
-        code: 'public class Example {\n    public static void main(String[] args) {\n        System.out.println("Hello World");\n    }\n}',
-        language: 'java'
-      }
-    ]
-  };
+  const [user, setUser] = useState<any>();
+  const [submissions, setSubmissions] = useState<Submission[]>([]);
 
   useEffect(() => {
-    const req = async () => {
+    const fetchData = async () => {
       try {
         setIsLoading(true);
+        
+        // Get user data
         const val = await getUser();
         setUser(val);
         if (val.error || val.message === 'Authentication failed: [JWT MALFORMED]') {
           router.push('/login');
+          return;
         }
+
+        // Fetch submissions data
+        const response = await fetch(`/api/userSubmissions?room_id=${room_id}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch submissions');
+        }
+        const data = await response.json();
+        setSubmissions(data.submissions || []);
+
       } catch (error) {
-        console.error(error);
+        console.error('Error fetching data:', error);
+        toast({
+          title: 'Error fetching submissions',
+          description: 'Failed to load submission data',
+          variant: 'destructive',
+        });
       } finally {
         setIsLoading(false);
       }
     };
 
-        // Uncomment this block to fetch proper data, not mock data
-        // Fetch room data 
-        // const fetchData = async () => {
-        //   await fetch(`/api/userSubmissions?room_id=${room_id}`).then(
-        //     async (val) => {
-        //       await val.json().then((data) => {
-        //         setSubmissions(data);
-        //       });
-        //     }
-        //   );
-        // };
-    
-        // fetchData();
-
-    req();
+    fetchData();
   }, [room_id, router]);
 
-  const filteredSubmissions = mockSubmissions.submission.filter(submission =>
+  // Filter and get highest scores
+  const filteredSubmissions = submissions.filter(submission =>
     submission.learner.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const highestScores = filteredSubmissions.reduce((acc, curr) => {
+  const highestScores = filteredSubmissions.reduce<Record<string, Submission>>((acc, curr) => {
     if (!acc[curr.learner] || acc[curr.learner].score < curr.score) {
       acc[curr.learner] = curr;
     }

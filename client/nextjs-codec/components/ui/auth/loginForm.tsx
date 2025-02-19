@@ -41,7 +41,7 @@ export default function LoginForm({ type }: { type?: string }) {
       });
 
       // Use the path prop instead of localStorage
-      router.push(`/${path}/coderoom`);
+      router.push(`/dashboard`);
     } catch {
       form.setError('username', {
         message: 'Either username is taken or user does not exist',

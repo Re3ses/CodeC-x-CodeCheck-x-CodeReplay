@@ -53,10 +53,6 @@ export default function Page({ params }: { params: { slug: string } }) {
             <Users className="h-4 w-4" />
             Classmates
           </TabsTrigger>
-          <TabsTrigger value="overview" className="flex items-center gap-2">
-            <Layout className="h-4 w-4" />
-            Overview
-          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="problems" className="mt-0">
@@ -71,44 +67,6 @@ export default function Page({ params }: { params: { slug: string } }) {
           <Card>
             <CardContent className="p-6">
               <RoomEnroleeList params={params} />
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="overview" className="mt-0">
-          <Card>
-            <CardContent className="p-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-4">
-                  <h3 className="text-lg font-semibold">Room Details</h3>
-                  <div className="text-muted-foreground">
-                    {roomQuery.data?.description}
-                  </div>
-                </div>
-                <div className="space-y-4">
-                  <h3 className="text-lg font-semibold">Quick Stats</h3>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="p-4 bg-secondary rounded-lg">
-                      <div className="text-2xl font-bold">
-                        {/* Add actual stats here */}
-                        12
-                      </div>
-                      <div className="text-sm text-muted-foreground">
-                        Total Problems
-                      </div>
-                    </div>
-                    <div className="p-4 bg-secondary rounded-lg">
-                      <div className="text-2xl font-bold">
-                        {/* Add actual stats here */}
-                        24
-                      </div>
-                      <div className="text-sm text-muted-foreground">
-                        Active Users
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </CardContent>
           </Card>
         </TabsContent>

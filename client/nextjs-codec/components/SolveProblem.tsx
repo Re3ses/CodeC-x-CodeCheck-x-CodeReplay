@@ -59,11 +59,19 @@ interface CodeEditorProps {
   problemId: string;
 }
 
+interface TestCase {
+  input: string;
+  output: string;
+  is_sample: boolean;
+  score: number;
+}
+
 export default function CodeEditor({ userType, roomId, problemId }: CodeEditorProps) {
   const editorRef = useRef(null);
   
   // State management
   const [problem, setProblem] = useState<ProblemSchemaInferredType>();
+  const [startTime, setStartTime] = useState<number>(Date.now());
   const [editorValue, setEditorValue] = useState<string>(DEFAULT_TEMPLATE);
   const [selectedLang, setSelectedLang] = useState<string>(SUPPORTED_LANGUAGES.CPP);
   const [compileResult, setCompileResult] = useState<any>();
@@ -74,6 +82,7 @@ export default function CodeEditor({ userType, roomId, problemId }: CodeEditorPr
   const [batchResult, setBatchResult] = useState<any>();
   const [learner, setLearner] = useState<string>();
   const [isInitialized, setIsInitialized] = useState(false);
+  const [user, setUser] = useState<any>();
   
 
   useEffect(() => {
@@ -127,6 +136,7 @@ export default function CodeEditor({ userType, roomId, problemId }: CodeEditorPr
         Object.values(SUPPORTED_LANGUAGES).includes(lang.id.toString())
       );
 
+      setUser(userData);
       setProblem(problemData);
       setLanguages(filteredLanguages);
       setLearner(userData.id);
@@ -161,135 +171,64 @@ export default function CodeEditor({ userType, roomId, problemId }: CodeEditorPr
   }
 
   async function handleSubmit(isTest: boolean = true) {
-    if (!editorValue || !selectedLang) {
+    if (!problem?.test_cases || problem.test_cases.length === 0) {
       toast({
-        title: 'Language and source code should not be empty...',
+        title: 'No test cases available',
+        description: 'This problem has no test cases defined',
         variant: 'destructive',
       });
       return;
     }
-
-    const eval_problems = isTest
-      ? problem?.test_cases.filter((item) => item.is_sample)
-      : problem?.test_cases.filter((item) => item.is_eval);
-
-    if (!eval_problems?.length) {
+  
+    if (!user) {
       toast({
-        title: 'Cannot test, problem setter did not provide any sample cases. Use custom input instead',
+        title: 'Not authenticated',
+        description: 'Please login to submit your solution',
         variant: 'destructive',
       });
       return;
     }
-
-    const payload = eval_problems.map((val) => ({
-      language_id: +selectedLang!,
-      source_code: btoa(editorValue),
-      stdin: btoa(val.input),
-      expected_output: btoa(val.output),
-    }));
-
+  
+    const testCases = isTest 
+      ? problem.test_cases.filter(tc => tc.is_sample)
+      : problem.test_cases;
+  
     try {
-      toast({ title: isTest ? 'Testing submission' : 'Processing submission' });
-      const submissions = await postBatchSubmissions(payload);
-      const tokens = submissions?.map((token: any) => token.token);
-
-      const batchSubmissions = await getBatchSubmisisons(tokens.join());
-      setBatchResult(batchSubmissions.submissions);
-
-      const accepted = batchSubmissions.submissions.filter(
-        (obj: any) => obj.status.description === 'Accepted'
-      );
+      // Calculate total possible score from test cases
+      const totalPossibleScore = testCases.reduce((sum, tc) => sum + (tc.score || 0), 0);
       
-      const newScore = {
-        accepted_count: accepted.length,
-        overall_count: batchSubmissions.submissions.length,
-      };
-      setScore(newScore);
-
-      // Update the submission section in handleSubmit
-      if (!isTest) {
-        try {
-          const language_used = await getLanguage(+selectedLang);
-          
-          // Format dates consistently
-          const startTime = parseInt(localStorage.getItem(problemId + '_started') || Date.now().toString());
-          const endTime = Date.now();
-          
-          const submissionData = {
-            language_used: language_used.name,
-            code: editorValue,
-            score: newScore.accepted_count,
-            score_overall_count: newScore.overall_count,
-            verdict: newScore.overall_count === newScore.accepted_count ? 'ACCEPTED' : 'REJECTED',
-            learner: learner,
-            problem: problemId,
-            room: roomId,
-            attempt_count: 1,
-            start_time: startTime,
-            end_time: endTime,
-            completion_time: endTime - startTime,
-            user_type: userType
-          };
-
-          console.log('Sending submission data:', submissionData);
-
-          const url = `${process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost'}:${process.env.NEXT_PUBLIC_SERVER_PORT || '3000'}/api/userSubmissions`;
-          
-          const response = await fetch(url, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(submissionData)
-          });
-
-          // Log the raw response for debugging
-          const responseText = await response.text();
-          console.log('Raw response:', responseText);
-
-          if (!response.ok) {
-            // Try to parse error response
-            let errorMessage = 'Server error';
-            try {
-              const errorData = JSON.parse(responseText);
-              errorMessage = errorData.message || errorData.error || 'Unknown error';
-            } catch (e) {
-              errorMessage = responseText || `HTTP ${response.status}`;
-            }
-            throw new Error(errorMessage);
-          }
-
-          // Parse the success response
-          const result = JSON.parse(responseText);
-          
-          toast({ 
-            title: 'Submission saved successfully',
-            description: newScore.accepted_count === newScore.overall_count 
-              ? 'All test cases passed!' 
-              : `${newScore.accepted_count}/${newScore.overall_count} test cases passed`,
-          });
-
-        } catch (error) {
-          console.error('Submission error details:', {
-            error,
-            submissionData
-          });
-          
-          toast({
-            title: 'Failed to save submission',
-            description: error.message || 'Please try again',
-            variant: 'destructive'
-          });
-        }
-      } else {
-        toast({ title: 'Test completed' });
-      }
-
+      const formData = new FormData();
+      formData.append('language_used', selectedLang);
+      formData.append('code', editorValue);
+      formData.append('score', '0'); // Initial score
+      formData.append('score_overall_count', totalPossibleScore.toString());
+      formData.append('verdict', 'REJECTED'); // Use valid enum value
+      formData.append('learner', user.auth.username);
+      formData.append('learner_id', user.id);
+      formData.append('problem', problemId);
+      formData.append('room', roomId);
+      formData.append('attempt_count', '1');
+      formData.append('start_time', startTime?.toString() || Date.now().toString());
+      formData.append('end_time', Date.now().toString());
+      formData.append('completion_time', (Date.now() - (startTime || Date.now())).toString());
+  
+      const response = await fetch('/api/userSubmissions', {
+        method: 'POST',
+        body: formData
+      });
+  
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || 'Submission failed');
+  
+      toast({
+        title: 'Submission successful',
+        description: `Your solution has been submitted`,
+      });
+  
     } catch (error) {
-      console.error('Processing error:', error);
-      toast({ 
-        title: 'An error occurred while processing your submission',
-        description: 'Please try again',
+      toast({
+        title: 'Submission failed',
+        description: error instanceof Error ? error.message : 'Unknown error occurred',
         variant: 'destructive'
       });
     }
