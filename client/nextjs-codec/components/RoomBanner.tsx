@@ -1,22 +1,27 @@
 import React from 'react';
-
-import BorderedContainer from './ui/wrappers/BorderedContainer';
-import { RoomSchemaInferredType } from '@/lib/interface/room';
-import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
+import Link from 'next/link';
+import { RoomSchemaInferredType } from '@/lib/interface/room';
 import { GetRoom } from '@/utilities/apiService';
-import { Button, buttonVariants } from './ui/button';
+import { Button } from './ui/button';
 import { toast } from './ui/use-toast';
-import { CopyIcon } from '@radix-ui/react-icons';
-import LeaderboardTable from '../app/leaderboards/leaderboardTable';
+import { BookOpen, Users, ClipboardCopy, FileCode, History, Crown } from 'lucide-react';
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from './ui/dialog';
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Badge } from "@/components/ui/badge";
 
 export default function RoomBanner({
   room,
@@ -36,61 +41,111 @@ export default function RoomBanner({
       return res;
     },
   });
+
+  const handleCopyCode = () => {
+    navigator.clipboard.writeText(room?.slug);
+    toast({
+      title: "Invite Code Copied",
+      description: `Room code ${room?.slug} has been copied to your clipboard.`,
+    });
+  };
+
   return (
-    <BorderedContainer>
-      <div className="flex p-5 gap-2 bg-card justify-between">
-        <div className="my-auto flex gap-2">
-          <p className="my-auto">{username}</p>
-          <span className="bg-[gold] text-[black] text-sm px-4 h-fit my-auto w-fit rounded-lg">
+    <div className="space-y-4">
+      {/* Header Section */}
+      <div className="flex justify-between items-start">
+        <div className="space-y-1">
+          <h1 className="text-2xl font-bold tracking-tight">{room?.name}</h1>
+          <p className="text-muted-foreground">{room?.description}</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <Badge variant="outline" className="font-normal">
             {usertype}
-          </span>
-        </div>
-        <div className="text-right">
-          <p className="text-2xl mb-2 text-zinc-500">{room?.name}</p>
-          <div className="my-auto font-bold cursor-pointer hover:text-green-400 flex gap-2">
-            <small className="text-zinc-500 font-normal">Invite Code: </small>
-            <small
-              onClick={() => {
-                navigator.clipboard.writeText(room?.slug);
-                toast({
-                  title: `Room slug: ${room?.slug} copied to clipboard`,
-                });
-              }}
-            >
-              {room?.slug}
-            </small>
-            <CopyIcon />
-          </div>
-        </div>
-      </div>
-      <div className="flex flex-col text-center p-2 pt-4">
-        <p>{room?.description}</p>
-        <p className="text-sm text-zinc-500">{room?.type}</p>
-      </div>
-      <div className="flex justify-between p-5">
-        {usertype == 'Mentor' && (
-          <Link
-            href={`/mentor/coderoom/problem-creation/${roomQuery.data?.slug}`}
-            className={buttonVariants({ variant: 'default' })}
+          </Badge>
+          <Button
+            variant="outline"
+            size="sm"
+            className="gap-2"
+            onClick={handleCopyCode}
           >
-            Create problem
-          </Link>
+            <ClipboardCopy className="h-4 w-4" />
+            {room?.slug}
+          </Button>
+        </div>
+      </div>
+
+      {/* Stats Cards */}
+      <div className="grid gap-4 md:grid-cols-3">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Problems</CardTitle>
+            <BookOpen className="h-4 w-4 text-muted-foreground text-yellow-500" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{room?.problems?.length || 0}</div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Enrolled Students</CardTitle>
+            <Users className="h-4 w-4 text-muted-foreground text-yellow-500" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{room?.enrollees?.length || 0}</div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Room Type</CardTitle>
+            <Crown className="h-4 w-4 text-muted-foreground text-yellow-500" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{room?.type || "Standard"}</div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Action Buttons */}
+      <div className="flex gap-2">
+        {usertype === 'Mentor' && (
+          <Button className="gap-2" asChild>
+            <Link href={`/mentor/coderoom/problem-creation/${roomQuery.data?.slug}`}>
+              <FileCode className="h-4 w-4" />
+              Create Problem
+            </Link>
+          </Button>
         )}
-        <Link
-          href={`/submissions/${roomQuery.data?.slug}`}
-          className={
-            buttonVariants({ variant: 'ghost' }) + 'border border-zinc-700'
-          }
-        >
-          Show room submissions
-        </Link>
-        {/* For future implmentation */}
-        {/* <Link
+        <Button variant="outline" className="gap-2" asChild>
+          <Link href={`/submissions/${roomQuery.data?.slug}`}>
+            <History className="h-4 w-4" />
+            View Submissions
+          </Link>
+        </Button>
+        {/* <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline">More Actions</Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>Room Actions</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={handleCopyCode}>
+              Copy Invite Code
+            </DropdownMenuItem>
+            {usertype === 'Mentor' && (
+              <>
+                <DropdownMenuItem>Edit Room Details</DropdownMenuItem>
+                <DropdownMenuItem>Manage Access</DropdownMenuItem>
+              </>
+            )}
+          </DropdownMenuContent>
+        </DropdownMenu> */}
+      </div>
+      {/* For future implmentation */}
+      {/* <Link
           href={`/comparisons/coderoom/${roomQuery.data?.slug}`}
           className={buttonVariants({ variant: 'ghost' })}
         >View Code Comparisons
         </Link> */}
-      </div>
-    </BorderedContainer>
+    </div>
   );
 }

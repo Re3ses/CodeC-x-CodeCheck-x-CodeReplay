@@ -78,10 +78,6 @@ class CodeAnalyzer {
       const output = await hf.featureExtraction({
         model: 'microsoft/codebert-base',
         inputs: preprocessed,
-        options: {
-          wait_for_model: true,
-          output_hidden_states: true
-        }
       });
       console.log('HF API response type:', typeof output, 'Array?:', Array.isArray(output));
 

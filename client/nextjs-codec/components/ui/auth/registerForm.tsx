@@ -84,8 +84,8 @@ export default function RegisterForm() {
   }
 
   return (
-    <div className="bg-card p-4 rounded-md flex flex-col w-[25em] gap-4">
-      <div className="w-full flex flex-col justify-center align-middle p-5 text-center">
+    <div className="p-4 rounded-md flex flex-col w-[25em] gap-4">
+      {/* <div className="w-full flex flex-col justify-center align-middle p-5 text-center">
         <Image
           className="m-auto"
           src="images/CodeC.svg"
@@ -93,7 +93,7 @@ export default function RegisterForm() {
           width={120}
           height={120}
         />
-      </div>
+      </div> */}
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -105,9 +105,8 @@ export default function RegisterForm() {
             render={({ field }) => {
               return (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="youremail@here.sample" {...field} />
+                    <Input placeholder="Email" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -122,9 +121,8 @@ export default function RegisterForm() {
               render={({ field }) => {
                 return (
                   <FormItem>
-                    <FormLabel>Firstname</FormLabel>
                     <FormControl>
-                      <Input placeholder="firstname" {...field} />
+                      <Input placeholder="First Name" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -138,9 +136,8 @@ export default function RegisterForm() {
               render={({ field }) => {
                 return (
                   <FormItem>
-                    <FormLabel>Lastname</FormLabel>
                     <FormControl>
-                      <Input placeholder="lastname" {...field} />
+                      <Input placeholder="Last Name" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -155,9 +152,8 @@ export default function RegisterForm() {
             render={({ field }) => {
               return (
                 <FormItem>
-                  <FormLabel>Username</FormLabel>
                   <FormControl>
-                    <Input placeholder="username" {...field} />
+                    <Input placeholder="Username" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -171,10 +167,9 @@ export default function RegisterForm() {
             render={({ field }) => {
               return (
                 <FormItem>
-                  <FormLabel>Account type</FormLabel>
                   <Select onValueChange={field.onChange}>
                     <SelectTrigger className="w-[180px]">
-                      <SelectValue placeholder="Select account type" />
+                      <SelectValue placeholder="Account Type" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="Learner">Learner</SelectItem>
@@ -193,9 +188,8 @@ export default function RegisterForm() {
             render={({ field }) => {
               return (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input placeholder="password" type="password" {...field} />
+                    <Input placeholder="Password" type="password" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -211,7 +205,7 @@ export default function RegisterForm() {
                 <FormItem>
                   <FormControl>
                     <Input
-                      placeholder="confirm password"
+                      placeholder="Confirm Password"
                       type="password"
                       {...field}
                     />

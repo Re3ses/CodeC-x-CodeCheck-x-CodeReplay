@@ -72,5 +72,4 @@ server/codec-api/.env
 venv
 __pycache__
 bert_models
-
-*.old
+venv/

@@ -5,9 +5,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ChevronDown, ChevronUp, FileCode2, Network, GitBranch, Activity } from "lucide-react";
-import Editor from '@monaco-editor/react';
-import dbConnect from '../../lib/dbConnect';
-import { NextResponse } from 'next/server';
+import * as monaco from 'monaco-editor';
 import SimilarityLoading from './SimilarityLoading';
 import mongoose, { Model, Schema } from 'mongoose';
 import SimilarityNetwork from './SimilarityMatrix';
@@ -22,6 +20,14 @@ interface CodeSnapshot {
   submissionId?: string;
   version?: number;
 }
+
+interface SnippetInfo {
+  learner_id: string;
+  code: string;
+  timestamp: string;
+  fileName: string;
+}
+
 
 interface SnapshotSimilarity {
   fromIndex: number;
@@ -70,18 +76,7 @@ const codeSnippetSchema = new Schema<CodeSnippet>({
 
 const CodeSnippetModel = mongoose.model<CodeSnippet>('CodeSnippet', codeSnippetSchema);
 
-export async function GET() {
-  try {
-    await dbConnect();
-    const allSnippets = await CodeSnippetModel.find({}).lean();
-    return NextResponse.json({ success: true, snippets: allSnippets });
-  } catch (error) {
-    console.error('Error fetching snippets:', error);
-    return NextResponse.json({ success: false, error: 'Failed to fetch snippets' }, { status: 500 });
-  }
-}
-
-const getSimilarityColor = (similarity) => {
+const getSimilarityColor = (similarity: number) => {
   if (similarity >= 80) return 'bg-red-700 text-white';
   if (similarity >= 60) return 'bg-yellow-600 text-white';
   return 'bg-gray-700 text-white';
@@ -119,46 +114,7 @@ export default function CodeReplayApp() {
   const [pasteCount, setPasteCount] = useState(0);
   const [bigPasteCount, setBigPasteCount] = useState(0);
   const [enhancedPastes, setEnhancedPastes] = useState<EnhancedPasteInfo[]>([]);
-  const editorRef = useRef<Monaco.IStandaloneCodeEditor | null>(null);
-
-  const handleEditorMount = (editor: Monaco.IStandaloneCodeEditor, monaco: typeof Monaco) => {
-    editorRef.current = editor;
-
-    editor.onDidPaste((event) => {
-      try {
-        const model = editor.getModel();
-        if (!model) return;
-
-        const pastedText = model.getValueInRange(event.range);
-        const fullCode = model.getValue();
-
-        const newPaste: EnhancedPasteInfo = {
-          text: pastedText,
-          fullCode: fullCode,
-          timestamp: new Date().toISOString(),
-          length: pastedText.length,
-          contextRange: {
-            startLine: event.range.startLineNumber,
-            startColumn: event.range.startColumn,
-            endLine: event.range.endLineNumber,
-            endColumn: event.range.endColumn
-          }
-        };
-
-        setEnhancedPastes(prev => [...prev, newPaste]);
-        setPasteCount(prev => prev + 1);
-        if (pastedText.length > 200) {
-          setBigPasteCount(prev => prev + 1);
-        }
-
-        if (saveMode === 'auto') {
-          autoSaveCode(fullCode);
-        }
-      } catch (error) {
-        console.error('Error handling paste event:', error);
-      }
-    });
-  };
+  const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
 
   // Function to check if code has significant changes
   const hasSignificantChanges = (newCode: string, oldCode: string) => {
@@ -196,12 +152,9 @@ export default function CodeReplayApp() {
         if (savedData.snippet) {
           setSnapshots(prevSnapshots => {
             const updatedSnapshots = [...prevSnapshots, savedData.snippet];
-            return updatedSnapshots.sort((a, b) => {
-              if (a.version && b.version) {
-                return a.version - b.version;
-              }
-              return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
-            });
+            return updatedSnapshots.sort((a, b) =>
+              (a.version || 0) - (b.version || 0)
+            );
           });
           setLastSaved(codeToSave);
           await calculateSequentialSimilarities([...snapshots, savedData.snippet]);
@@ -239,49 +192,6 @@ export default function CodeReplayApp() {
       setIsFetchingSimilarity(false);
     }
   };
-
-  // // Function to check if code has significant changes
-  // const hasSignificantChanges = (newCode: string, oldCode: string) => {
-  //   const lengthDiff = Math.abs(newCode.length - oldCode.length);
-  //   return lengthDiff > 50; // Consider changes significant if more than 50 characters are added/removed
-  // };
-
-  // // Auto-save function
-  // const autoSaveCode = async (codeToSave: string) => {
-  //   if (codeToSave === lastSaved) return; // Don't save if code hasn't changed
-
-  //   setSaving(true);
-  //   try {
-  //     const learner_id = getUserId();
-  //     const saveResponse = await fetch('/api/codereplay', {
-  //       method: 'POST',
-  //       headers: { 'Content-Type': 'application/json' },
-  //       body: JSON.stringify({
-  //         code: codeToSave,
-  //         learner_id,
-  //         problemId: 'sorting-1',
-  //         roomId: 'room-1'
-  //       }),
-  //     });
-
-  //     if (saveResponse.ok) {
-  //       const savedData = await saveResponse.json();
-  //       if (savedData.snippet && 'code' in savedData.snippet) {
-  //         setSnippets(prevSnippets => [{
-  //           learner_id: savedData.snippet.learner_id,
-  //           code: savedData.snippet.code,
-  //           timestamp: savedData.snippet.timestamp,
-  //           fileName: savedData.snippet.fileName
-  //         }, ...prevSnippets]);
-  //         setLastSaved(codeToSave);
-  //       }
-  //     }
-  //   } catch (error) {
-  //     console.error('Auto-save error:', error);
-  //   } finally {
-  //     setSaving(false);
-  //   }
-  // };
 
   // Auto-save effect
   useEffect(() => {
@@ -496,7 +406,7 @@ export default function CodeReplayApp() {
   }, []);
 
   // Calculate statistics for each snippet
-  const calculateSnippetStats = (matrix, index) => {
+  const calculateSnippetStats = (matrix: number[][], index: number) => {
     if (!matrix || !matrix[index]) return null;
 
     const similarities = matrix[index].filter((_, i) => i !== index);
@@ -516,13 +426,12 @@ export default function CodeReplayApp() {
     };
   };
 
-  const getColorClass = (similarity) => {
+  const getColorClass = (similarity: number) => {
     if (similarity >= 80) return 'bg-red-700';
     if (similarity >= 60) return 'bg-yellow-600';
     return 'bg-gray-500';
   };
 
-  const [activeTab, setActiveTab] = useState<'network' | 'evolution'>('network');
   const [expandedCard, setExpandedCard] = useState<number | null>(null);
   const [advancedMetrics, setAdvancedMetrics] = useState<{ [key: string]: number }>({});
 
@@ -591,8 +500,8 @@ export default function CodeReplayApp() {
                           </div>
                           <div className="flex items-center gap-2 flex-shrink-0">
                             <Badge className={`${(advancedMetrics[snippet.learner_id]?.weightedPlagiarismScore || 0) >= 80 ? 'bg-red-600' :
-                                (advancedMetrics[snippet.learner_id]?.weightedPlagiarismScore || 0) >= 60 ? 'bg-yellow-600' :
-                                  'bg-gray-600'
+                              (advancedMetrics[snippet.learner_id]?.weightedPlagiarismScore || 0) >= 60 ? 'bg-yellow-600' :
+                                'bg-gray-600'
                               }`}>
                               {(advancedMetrics[snippet.learner_id]?.weightedPlagiarismScore || 0).toFixed(1)}%
                             </Badge>

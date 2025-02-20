@@ -20,14 +20,6 @@ interface CodeSnapshot {
   version?: number;
 }
 
-interface SnapshotSimilarity {
-  fromIndex: number;
-  toIndex: number;
-  learner_id: string;
-  similarity: number;
-  codebertScore: number;
-}
-
 interface EnhancedPasteInfo {
   learner_id: string;
   text: string;
@@ -118,7 +110,7 @@ export default function CodeReplayApp() {
       }
     };
     fetchUserSubmissions();
-  }, []);
+  }, [params.type, params.id]);
 
   // fetch snapshots
   useEffect(() => {
@@ -149,36 +141,36 @@ export default function CodeReplayApp() {
     fetchLearnerSnapshots();
   }, []);
 
-  const fetchSimilarityData = async () => {
-    try {
-      setIsMatrixLoading(true);
-
-      const queryParam = params.type === 'problem' ?
-        `problemId=${params.id}` :
-        `roomId=${params.id}`;
-
-      const response = await fetch(`http://localhost:5000/api/similarity/matrix?${queryParam}`, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' }
-      });
-
-      const data = await response.json();
-      console.log("matrix api data:", data);
-
-      if (data.success) {
-        setSimilarityMatrix({
-          matrix: data.matrix,
-          snippets: data.snippets
-        });
-      }
-    } catch (error) {
-      console.error('Fetch error:', error);
-    } finally {
-      setIsMatrixLoading(false);
-    }
-  };
-
   useEffect(() => {
+    const fetchSimilarityData = async () => {
+      try {
+        setIsMatrixLoading(true);
+
+        const queryParam = params.type === 'problem' ?
+          `problemId=${params.id}` :
+          `roomId=${params.id}`;
+
+        const response = await fetch(`http://localhost:5000/api/similarity/matrix?${queryParam}`, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' }
+        });
+
+        const data = await response.json();
+        console.log("matrix api data:", data);
+
+        if (data.success) {
+          setSimilarityMatrix({
+            matrix: data.matrix,
+            snippets: data.snippets
+          });
+        }
+      } catch (error) {
+        console.error('Fetch error:', error);
+      } finally {
+        setIsMatrixLoading(false);
+      }
+    };
+
     const fetchInitialData = async () => {
       try {
         const response = await fetch('/api/codereplay');
@@ -194,7 +186,7 @@ export default function CodeReplayApp() {
     };
 
     fetchInitialData();
-  }, []);
+  }, [params.id, params.type]);
 
   // Calculate statistics for each snippet
   const calculateSnippetStats = (matrix: number[][], index: number) => {
@@ -310,12 +302,6 @@ export default function CodeReplayApp() {
                         <SequentialSimilarityVisualization
                           snapshots={snapshots.filter(s => s.learner_id === snippet.learner_id)}
                           pastedSnippets={enhancedPastes.filter(s => s.learner_id === snippet.learner_id)}
-                        // onMetricsUpdate={(metrics) => {
-                        //   setAdvancedMetrics(prev => ({
-                        //     ...prev,
-                        //     [snippet.learner_id]: metrics
-                        //   }));
-                        // }}
                         />
                       </CardContent>
                     )}

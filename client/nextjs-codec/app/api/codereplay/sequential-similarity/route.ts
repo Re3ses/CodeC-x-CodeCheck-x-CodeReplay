@@ -81,10 +81,6 @@ class CodeAnalyzer {
       const output = await hf.featureExtraction({
         model: 'microsoft/codebert-base',
         inputs: preprocessed,
-        options: {
-          wait_for_model: true,
-          output_hidden_states: true
-        }
       });
 
       return this.applyMeanPooling(output);
@@ -220,7 +216,7 @@ class CodeAnalyzer {
         // Replace camelCase and snake_case with a standard format
         const standardizedName = varName
           .replace(/_/g, '')  // Remove underscores
-          .replace(/([A-Z])/g, (_, letter) => letter.toLowerCase());  // Convert camelCase to lowercase
+          .replace(/([A-Z])/g, (_: any, letter: string) => letter.toLowerCase());  // Convert camelCase to lowercase
         return `${keyword} ${standardizedName}`;
       });
 

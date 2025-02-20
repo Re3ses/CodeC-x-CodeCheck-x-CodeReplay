@@ -109,6 +109,8 @@ const SimilarityCard = React.memo(({ snippetId, similarity, onClick, snippet }: 
   );
 });
 
+SimilarityCard.displayName = 'SimilarityCard';
+
 const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snippets }) => {
   const [nodes, setNodes] = useState<NodeData[]>([]);
   const [links, setLinks] = useState<LinkData[]>([]);
@@ -449,7 +451,7 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
             {selectedNode !== null && !showHighSimilaritySection && (
               <div className="bg-gray-700 rounded-lg p-4">
                 <h4 className="font-medium mb-3">
-                  Connections for {snippets[selectedNode]?.learner}'s Submission
+                  Connections for {snippets[selectedNode]?.learner}&apos;s Submission
                 </h4>
                 <div className="grid grid-cols-2 gap-2 max-h-[300px] overflow-y-auto pr-2">
                   {selectedNodeConnections.map((conn, i) => (

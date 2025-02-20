@@ -2,33 +2,33 @@ import mongoose from "mongoose";
 
 // Types to ensure type safety
 interface CodeSnapshot {
-  code: string;
-  timestamp: string;
+    code: string;
+    timestamp: string;
 }
 
 interface SubmissionSeedData {
-  learner_id: mongoose.Types.ObjectId;
-  roomId: string;
-  problemId: string;
-  submissionId?: string;
-  snapshots: CodeSnapshot[];
+    learner_id: mongoose.Types.ObjectId;
+    roomId: string;
+    problemId: string;
+    submissionId?: string;
+    snapshots: CodeSnapshot[];
 }
 
 export const seedCodeSnapshots: SubmissionSeedData[] = [
-  {
-    learner_id: new mongoose.Types.ObjectId(),
-    roomId: 'algorithms_study_room',
-    problemId: 'bubble_sort',
-    submissionId: 'submission_bubble_sort_001',
-    snapshots: [
-      {
-        code: `def bubble_sort(arr):
+    {
+        learner_id: new mongoose.Types.ObjectId(),
+        roomId: 'algorithms_study_room',
+        problemId: 'bubble_sort',
+        submissionId: 'submission_bubble_sort_001',
+        snapshots: [
+            {
+                code: `def bubble_sort(arr):
     # Initial attempt - placeholder implementation
     return arr`,
-        timestamp: '2024-01-25T14:00:00Z'
-      },
-      {
-        code: `def bubble_sort(arr):
+                timestamp: '2024-01-25T14:00:00Z'
+            },
+            {
+                code: `def bubble_sort(arr):
     # Basic bubble sort implementation
     n = len(arr)
     for i in range(n):
@@ -36,10 +36,10 @@ export const seedCodeSnapshots: SubmissionSeedData[] = [
             if arr[j] > arr[j + 1]:
                 arr[j, arr[j + 1] = arr[j + 1], arr[j]
     return arr`,
-        timestamp: '2024-01-25T14:15:00Z'
-      },
-      {
-        code: `def bubble_sort(arr):
+                timestamp: '2024-01-25T14:15:00Z'
+            },
+            {
+                code: `def bubble_sort(arr):
     # Optimized bubble sort with early termination
     n = len(arr)
     for i in range(n):
@@ -51,10 +51,10 @@ export const seedCodeSnapshots: SubmissionSeedData[] = [
         if not swapped:
             break
     return arr`,
-        timestamp: '2024-01-25T14:30:00Z'
-      },
-      {
-        code: `def bubble_sort(arr):
+                timestamp: '2024-01-25T14:30:00Z'
+            },
+            {
+                code: `def bubble_sort(arr):
     # Added comments to explain the algorithm
     n = len(arr)
     for i in range(n):
@@ -69,10 +69,10 @@ export const seedCodeSnapshots: SubmissionSeedData[] = [
             # Exit early if no swaps were made
             break
     return arr`,
-        timestamp: '2024-01-25T14:45:00Z'
-      },
-      {
-        code: `def bubble_sort(arr):
+                timestamp: '2024-01-25T14:45:00Z'
+            },
+            {
+                code: `def bubble_sort(arr):
     # Refactored to make function more concise
     n = len(arr)
     for i in range(n):
@@ -84,10 +84,10 @@ export const seedCodeSnapshots: SubmissionSeedData[] = [
         if not swapped:
             break
     return arr`,
-        timestamp: '2024-01-25T15:00:00Z'
-      },
-      {
-        code: `def bubble_sort(arr):
+                timestamp: '2024-01-25T15:00:00Z'
+            },
+            {
+                code: `def bubble_sort(arr):
     # Added parameter checks for robustness
     if not isinstance(arr, list):
         raise TypeError("Input must be a list")
@@ -101,10 +101,10 @@ export const seedCodeSnapshots: SubmissionSeedData[] = [
         if not swapped:
             break
     return arr`,
-        timestamp: '2024-01-25T15:15:00Z'
-      },
-      {
-        code: `def bubble_sort(arr):
+                timestamp: '2024-01-25T15:15:00Z'
+            },
+            {
+                code: `def bubble_sort(arr):
     # Added input validation and edge case handling
     if not isinstance(arr, list):
         raise TypeError("Input must be a list")
@@ -120,10 +120,10 @@ export const seedCodeSnapshots: SubmissionSeedData[] = [
         if not swapped:
             break
     return arr`,
-        timestamp: '2024-01-25T15:30:00Z'
-      },
-      {
-        code: `def bubble_sort(arr):
+                timestamp: '2024-01-25T15:30:00Z'
+            },
+            {
+                code: `def bubble_sort(arr):
     # Improved comments for better readability
     if not isinstance(arr, list):
         raise TypeError("Input must be a list")
@@ -140,10 +140,10 @@ export const seedCodeSnapshots: SubmissionSeedData[] = [
         if not swapped:
             break  # List is already sorted
     return arr`,
-        timestamp: '2024-01-25T15:45:00Z'
-      },
-      {
-        code: `def bubble_sort(arr):
+                timestamp: '2024-01-25T15:45:00Z'
+            },
+            {
+                code: `def bubble_sort(arr):
     # Final version with detailed validation and efficiency notes
     if not isinstance(arr, list):
         raise TypeError("Input must be a list")
@@ -160,10 +160,10 @@ export const seedCodeSnapshots: SubmissionSeedData[] = [
         if not swapped:
             break  # Optimization: stop if no swaps were made
     return arr`,
-        timestamp: '2024-01-25T16:00:00Z'
-      },
-      {
-        code: `def bubble_sort(arr):
+                timestamp: '2024-01-25T16:00:00Z'
+            },
+            {
+                code: `def bubble_sort(arr):
     # Final polished version
     if not isinstance(arr, list):
         raise TypeError("Input must be a list")
@@ -179,9 +179,9 @@ export const seedCodeSnapshots: SubmissionSeedData[] = [
         if not swapped:
             break
     return arr`,
-        timestamp: '2024-01-25T16:15:00Z'
-      }
-    ]
-  }
+                timestamp: '2024-01-25T16:15:00Z'
+            }
+        ]
+    }
 ];
 

@@ -1,12 +1,19 @@
+import React, { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
 import { ProblemSchemaInferredType } from '@/lib/interface/problem';
 import { RoomSchemaInferredType } from '@/lib/interface/room';
 import { GetRoom } from '@/utilities/apiService';
-import { useQuery } from '@tanstack/react-query';
-import React, { useState } from 'react';
-import BorderedContainer from './ui/wrappers/BorderedContainer';
-import Link from 'next/link';
-import { Button, buttonVariants } from './ui/button';
 import { getUser } from '@/lib/auth';
+import { Button } from './ui/button';
+import { toast } from './ui/use-toast';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -14,16 +21,38 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from './ui/dialog';
-import { revalidatePath } from 'next/cache';
-import { usePathname, useRouter } from 'next/navigation';
-import { toast } from './ui/use-toast';
+  DialogFooter,
+  DialogClose,
+} from "./ui/dialog";
+import { Eye, CopyCheck, History, Trash2, Code, ChevronDown, ChevronUp, FileText } from 'lucide-react';
 
-export default function RoomProblemList({
-  params,
-}: {
-  params: { slug: string };
-}) {
+const CollapsibleDescription = ({ description }: { description: string }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  return (
+    <div className="space-y-1">
+      <button
+        onClick={() => setIsExpanded(!isExpanded)}
+        className="flex items-center gap-1 text-sm text-muted-foreground hover:text-primary transition-colors"
+      >
+        Description {isExpanded ?
+          <ChevronUp className="h-4 w-4" /> :
+          <ChevronDown className="h-4 w-4" />
+        }
+      </button>
+      <div
+        className={`overflow-hidden transition-all duration-300 ease-in-out ${isExpanded ? 'max-h-24' : 'max-h-0'
+          }`}
+      >
+        <p className="text-sm text-muted-foreground pt-2">
+          {description || "No description provided"}
+        </p>
+      </div>
+    </div>
+  );
+};
+
+export default function RoomProblemList({ params }: { params: { slug: string } }) {
   const pathname = usePathname();
   const router = useRouter();
 
@@ -43,138 +72,132 @@ export default function RoomProblemList({
     },
   });
 
-  const handleDelete = (problemId: string) => {
-    console.log('fadfsda');
-    fetch(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}${process.env.NEXT_PUBLIC_SERVER_PORT}/api/problems?problem_id=${problemId}`,
-      { method: 'DELETE' }
-    ).then(async (value) => {
-      const res = await value.json();
+  const handleDelete = async (problemId: string, problemName: string) => {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}${process.env.NEXT_PUBLIC_SERVER_PORT}/api/problems?problem_id=${problemId}`,
+        { method: 'DELETE' }
+      );
 
-      // force Refresh page
-      location.reload();
-
-      console.log(pathname, res);
-    });
+      if (response.ok) {
+        toast({
+          title: "Problem Deleted",
+          description: `"${problemName}" has been successfully deleted.`,
+        });
+        location.reload();
+      } else {
+        throw new Error('Failed to delete problem');
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to delete the problem. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
+  const isMentor = userQuery.data?.type === 'Mentor';
+
   return (
-    <div className="h-fit lg:grid sm:w-full sm:flex sm:flex-col grid-cols-4 gap-2">
-      {roomQuery.data?.problems.map(
-        (item: ProblemSchemaInferredType, index: number) => {
-          return (
-            <BorderedContainer customStyle="h-fit flex flex-col" key={index}>
-              <div className="text-md bg-zinc-900 p-5 flex justify-between align-middle">
-                <p className="self-center">{item.name}</p>
+    <div className="space-y-4">
+      {roomQuery.data?.problems.map((problem: ProblemSchemaInferredType, index: number) => (
+        <Card key={index}>
+          <CardHeader className="">
+            <div className="flex justify-between items-start gap-4">
+              <div className="flex-1 min-w-0">
+                <CardTitle className="text-lg font-bold">{problem.name}</CardTitle>
+                <CollapsibleDescription description={problem.description} />
               </div>
-              <div className="p-2 w-full">
-                {userQuery.data?.type === 'Mentor' ? (
-                  <div className="text-md p-2 flex justify-between align-middle flex-wrap gap-2">
-                    <Link
-                      href={`/mentor/coderoom/r/${params.slug}/problem/${item.slug}`}
-                      className={buttonVariants({
-                        variant: 'default',
-                      })}
-                    >
+              {isMentor ? (
+                <div className="grid grid-cols-2 gap-2 shrink-0">
+                  <Button variant="outline" size="sm" asChild>
+                    <Link href={`/mentor/coderoom/r/${params.slug}/problem/${problem.slug}`}>
+                      <Eye className="mr-2 h-4 w-4" />
                       View
                     </Link>
-
-                    {/* <Dialog>
-                      <DialogTrigger
-                        className={buttonVariants({ variant: 'default' })}
-                      >
-                        View Reports
-                      </DialogTrigger>
-                      <DialogContent>
-                        <DialogHeader>
-                          <DialogTitle>
-                            Choose which comparison type you would like to use.
-                          </DialogTitle>
-                          <DialogDescription>
-                            You can choose between the different comparison types
-                            to view the results.
-                          </DialogDescription>
-                        </DialogHeader>
-
-                        <Link
-                          href={`/comparisons/problem/${item.slug}/default`}
-                          className={buttonVariants({
-                            variant: 'default'
-                          })}
-                        >
-                          Default
-                        </Link>
-                        <Link
-                          href={`/comparisons/problem/${item.slug}/tree_no_preproc`}
-                          className={buttonVariants({
-                            variant: 'default'
-                          })}
-                        >
-                          Tree-sitter
-                        </Link>
-                        <Link
-                          href={`/comparisons/problem/${item.slug}/tree_preproc`}
-                          className={buttonVariants({
-                            variant: 'default'
-                          })}
-                        >
-                          Tree-sitter with preprocessing
-                        </Link>
-
-                      </DialogContent>
-                    </Dialog> */}
-
-                    <Link
-                      href={`/codeHistory/problem/${item.slug}`}
-                      className={buttonVariants({
-                        variant: 'default'
-                      })}
-                    >
-                      Submissions History
+                  </Button>
+                  <Button variant="outline" size="sm" asChild>
+                    <Link href={`/codeHistory/problem/${problem.slug}`}>
+                      <FileText className="mr-2 h-4 w-4" />
+                      Submissions
                     </Link>
-
-                    <Dialog>
-                      <DialogTrigger
-                        className={buttonVariants({ variant: 'destructive' })}
-                      >
-                        Delete
-                      </DialogTrigger>
-                      <DialogContent>
-                        <DialogHeader>
-                          <DialogTitle>Are you absolutely sure?</DialogTitle>
-                          <DialogDescription>
-                            This action cannot be undone. This will permanently
-                            delete the creted problem and remove the data from
-                            our servers.
-                          </DialogDescription>
-                        </DialogHeader>
-
-                        <Button
-                          variant="destructive"
-                          onClick={() => handleDelete(item._id!)}
-                        >
-                          Confirm deletion
+                  </Button>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button variant="outline" size="sm">
+                        <CopyCheck className="mr-2 h-4 w-4" />
+                        CodeCheck
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Choose Comparison Type</DialogTitle>
+                        <DialogDescription>
+                          Select the type of comparison analysis you want to view.
+                        </DialogDescription>
+                      </DialogHeader>
+                      <div className="grid grid-cols-1 gap-2">
+                        <Button variant="outline" asChild>
+                          <Link href={`/comparisons/problem/${problem.slug}/default`}>
+                            Default Comparison
+                          </Link>
                         </Button>
-                      </DialogContent>
-                    </Dialog>
-                  </div>
-                ) : (
-                  <div className="text-md p-2 flex justify-between align-middle">
-                    <Link
-                      href={`/learner/coderoom/r/${params.slug}/problem/${item.slug}`}
-                      className={buttonVariants({
-                        variant: 'default',
-                      })}
-                    >
-                      Solve
-                    </Link>
-                  </div>
-                )}
-              </div>
-            </BorderedContainer>
-          );
-        }
-      )}
+                        <Button variant="outline" asChild>
+                          <Link href={`/comparisons/problem/${problem.slug}/tree_no_preproc`}>
+                            Tree-sitter Analysis
+                          </Link>
+                        </Button>
+                        <Button variant="outline" asChild>
+                          <Link href={`/comparisons/problem/${problem.slug}/tree_preproc`}>
+                            Tree-sitter with Preprocessing
+                          </Link>
+                        </Button>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button variant="destructive" size="sm">
+                        <Trash2 className="mr-2 h-4 w-4" />
+                        Delete
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Delete Problem</DialogTitle>
+                        <DialogDescription>
+                          Are you sure you want to delete &quot;{problem.name}&quot;? This action cannot be undone.
+                        </DialogDescription>
+                      </DialogHeader>
+                      <DialogFooter>
+                        <DialogClose asChild>
+                          <Button variant="outline">Cancel</Button>
+                        </DialogClose>
+                        <DialogClose asChild>
+                          <Button
+                            variant="destructive"
+                            onClick={() => handleDelete(problem._id!, problem.name)}
+                          >
+                            Delete Problem
+                          </Button>
+                        </DialogClose>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
+                </div>
+              ) : (
+                <Button asChild>
+                  <Link href={`/learner/coderoom/r/${params.slug}/problem/${problem.slug}`}>
+                    <Code className="mr-2 h-4 w-4" />
+                    Solve Problem
+                  </Link>
+                </Button>
+              )}
+            </div>
+          </CardHeader>
+        </Card>
+      ))}
     </div>
   );
 }

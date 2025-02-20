@@ -23,7 +23,7 @@ import {
 interface CodeSnapshot {
   code: string;
   timestamp: string;
-  learner_id: string;
+  learner_id: string; // Use learner_id consistently
   problemId?: string;
   roomId?: string;
   submissionId?: string;
@@ -32,11 +32,10 @@ interface CodeSnapshot {
 interface SequentialSimilarity {
   fromIndex: number;
   toIndex: number;
-  learner_id: string;
+  learner_id: string; // Use learner_id consistently
   similarity: number;
   codebertScore: number;
 }
-
 interface EnhancedPasteInfo {
   learner_id: string;
   text: string;
@@ -64,26 +63,27 @@ interface AdvancedMetrics {
 interface SequentialSimilarityVisualizationProps {
   snapshots: CodeSnapshot[];
   pastedSnippets: EnhancedPasteInfo[];
-  // onMetricsUpdate?: (metrics: AdvancedMetrics) => void;
+  // onMetricsUpdate?: (metrics: AdvancedMetrics) => void; // Keep this comment if needed
 }
 
 const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizationProps> = ({
   snapshots,
   pastedSnippets,
-  // onMetricsUpdate
+  // onMetricsUpdate // Keep this comment if needed
 }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentSnapshotIndex, setCurrentSnapshotIndex] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [localPastedSnippets, setLocalPastedSnippets] = useState<EnhancedPasteInfo[]>([]);
   const [expandedCards, setExpandedCards] = useState<number[]>([]);
+  const [sequentialSimilarities, setSequentialSimilarities] = useState<SequentialSimilarity[]>([]);
   const [pasteCount, setPasteCount] = useState(0);
   const [bigPasteCount, setBigPasteCount] = useState(0);
-  const [sequentialSimilarities, setSequentialSimilarities] = useState<SequentialSimilarity[]>([]);
 
   useEffect(() => {
     console.log("Snapshots received: ", snapshots);
     console.log("Pasted Snippets received: ", pastedSnippets);
-  }, [snapshots]);
+  }, [snapshots, pastedSnippets]); // Added pastedSnippets to the dependency array
 
   useEffect(() => {
     const calculateSequentialSimilarities = async (snapshotsToCompare: CodeSnapshot[]) => {
@@ -110,7 +110,7 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
       }
     };
     calculateSequentialSimilarities(snapshots);
-  }, [])
+  }, [snapshots]); // snapshots dependency is already present
 
   const toggleCard = (index: number) => {
     setExpandedCards(prev =>
@@ -137,41 +137,53 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
 
   // Add useEffect to log and set local state for snippets
   useEffect(() => {
-    // console.log('Received Paste Snippets:', pastedSnippets);
+    console.log('Received Paste Snippets:', pastedSnippets);
     if (pastedSnippets && pastedSnippets.length > 0) {
       setLocalPastedSnippets(pastedSnippets);
       setPasteCount(pastedSnippets.length);
+      let count = 0; // Initialize count here
       for (let i = 0; i < pastedSnippets.length; i++) {
-        if (pastedSnippets[i].length > 200) {
-          setBigPasteCount(prev => prev + 1);
+        if (pastedSnippets[i].text.length > 200) { // Access .text for UIRework compatibility
+          count++;
         }
       }
+      setBigPasteCount(prevCount => prevCount + count);
     }
   }, [pastedSnippets]);
 
   // Compute advanced metrics
   const advancedMetrics = useMemo(() => {
-    console.log('Calculating metrics with similarities:', sequentialSimilarities);
+    console.log('Calculating metrics with similarities:', sequentialSimilarities); // Keep the console log
 
     if (sequentialSimilarities.length === 0) {
-      console.log('No sequential similarities available');
+      console.log('No sequential similarities available'); // Keep the console log
       return null;
     }
-    if (sequentialSimilarities.length === 0) return null;
 
     const cssValues = sequentialSimilarities.map(s => s.similarity);
-    const maxChange = Math.max(...cssValues.slice(1).map((val, i) => Math.abs(val - cssValues[i])));
-    const averageSimilarity = cssValues.reduce((a, b) => a + b, 0) / cssValues.length;
-    const minSimilarity = Math.min(...cssValues);
-    const mean = averageSimilarity;
-    const variance = Math.min(
-      cssValues.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / cssValues.length
-    );
-    const normalizedVariance = (variance / 2500) * 100;
-    const weightedScore = (maxChange) * 0.4 + (100 - averageSimilarity) * 0.2 +
-      (100 - minSimilarity) * 0.2 + (normalizedVariance) * 0.2;
 
-    console.log('Metrics:', {
+    // Max Change
+    const changes = cssValues.slice(1).map((val, i) => Math.abs(val - cssValues[i]));
+    const maxChange = Math.max(...changes);
+    const maxChangePct = (maxChange / Math.max(...cssValues)) * 100; // Keep maxChangePct
+
+    // Average Similarity
+    const averageSimilarity = cssValues.reduce((a, b) => a + b, 0) / cssValues.length;
+
+    // Minimum Similarity
+    const minSimilarity = Math.min(...cssValues);
+
+    // Variance Calculation
+    const mean = averageSimilarity;
+    const variance = cssValues.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / cssValues.length; // Corrected variance calculation
+    const normalizedVariance = (variance / 2500) * 100;
+    const weightedScore =
+      (maxChange) * 0.4 +
+      (100 - averageSimilarity) * 0.2 +
+      (100 - minSimilarity) * 0.2 +
+      (normalizedVariance) * 0.2;
+
+    console.log('Metrics:', { // Keep the console log
       maxChange,
       averageSimilarity,
       minSimilarity,
@@ -181,17 +193,18 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
 
     return {
       maxChange: Math.round(maxChange),
+      maxChangePct: Math.round(maxChangePct), // Keep maxChangePct
       averageSimilarity: Math.round(averageSimilarity),
       minSimilarity: Math.round(minSimilarity),
+      variance: Math.round(variance), // Keep variance
       normalizedVariance: Math.round(normalizedVariance),
       weightedPlagiarismScore: Math.round(weightedScore),
-      pasteCount,
-      bigPasteCount
+      pasteCount, // Keep pasteCount
+      bigPasteCount // Keep bigPasteCount
     };
-    // }, [sequentialSimilarities, pasteCount, bigPasteCount, onMetricsUpdate]);
-  }, [sequentialSimilarities, pasteCount, bigPasteCount]);
+  }, [sequentialSimilarities, pasteCount, bigPasteCount]); // Add pasteCount and bigPasteCount to dependencies
 
-  // Chart data preparation
+  // Prepare data for the chart
   const chartData = sequentialSimilarities.map((similarity, index) => ({
     name: `Snapshot ${similarity.fromIndex + 1} to ${similarity.toIndex + 1}`,
     similarity: similarity.similarity,
@@ -254,7 +267,39 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
   ));
 
   CustomSlider.displayName = "CustomSlider";
-  const MetricCard = ({ label, value, tooltipId, tooltipContent }) => (
+
+  // Determine plagiarism risk level and color
+  const getPlagiarismRiskDetails = (score: number) => {
+    if (score <= 40) return {
+      level: 'Low Probability',
+      color: 'bg-green-600 text-white',
+      textColor: 'text-green-600'
+    };
+    if (score <= 60) return {
+      level: 'Medium Probability',
+      color: 'bg-yellow-600 text-white',
+      textColor: 'text-yellow-600'
+    };
+    if (score <= 80) return {
+      level: 'High Probability',
+      color: 'bg-orange-600 text-white',
+      textColor: 'text-orange-600'
+    };
+    return {
+      level: 'Very High Probability',
+      color: 'bg-red-600 text-white',
+      textColor: 'text-red-600'
+    };
+  };
+
+  interface MetricCardProps {
+    label: string;
+    value: string | number;
+    tooltipId: string;
+    tooltipContent: string;
+  }
+
+  const MetricCard: React.FC<MetricCardProps> = ({ label, value, tooltipId, tooltipContent }) => (
     <div className="p-3 rounded-lg bg-gray-600 text-gray-200 flex flex-col justify-center items-center">
       <div className="font-semibold text-sm mb-1 flex items-center">
         {label}
@@ -269,7 +314,6 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
     </div>
   );
 
-
   return (
     <div className="bg-gray-800 rounded-lg p-4 space-y-6">
       {advancedMetrics && (
@@ -277,16 +321,24 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
           <h4 className="text-md font-semibold mb-4">Advanced Similarity Metrics</h4>
 
           <div className="grid grid-cols-3 gap-4 mb-4">
-            <div className={`
-              col-span-2 p-4 rounded-lg text-center 
-              ${advancedMetrics.weightedPlagiarismScore > 80 ? 'bg-red-600' :
-                advancedMetrics.weightedPlagiarismScore > 60 ? 'bg-orange-600' :
-                  advancedMetrics.weightedPlagiarismScore > 40 ? 'bg-yellow-600' :
-                    'bg-green-600'} text-white`}
-            >
-              <div className="text-xs uppercase tracking-wide mb-1">Plagiarism Risk</div>
-              <div className="text-4xl font-bold mb-2">{advancedMetrics.weightedPlagiarismScore}%</div>
-            </div>
+            {(() => {
+              const plagiarismRisk = getPlagiarismRiskDetails(advancedMetrics.weightedPlagiarismScore);
+              return (
+                <div className={`
+                  col-span-2 p-4 rounded-lg text-center 
+                  ${advancedMetrics.weightedPlagiarismScore > 80 ? 'bg-red-600' :
+                    advancedMetrics.weightedPlagiarismScore > 60 ? 'bg-orange-600' :
+                      advancedMetrics.weightedPlagiarismScore > 40 ? 'bg-yellow-600' :
+                        'bg-green-600'} text-white`}
+                >
+                  <div className="text-xs uppercase tracking-wide mb-1">Plagiarism Risk</div>
+                  <div className="text-4xl font-bold mb-2">{advancedMetrics.weightedPlagiarismScore}%</div>
+                  <div className="text-lg font-semibold">
+                    {plagiarismRisk.level}
+                  </div>
+                </div>
+              );
+            })()}
 
             <Dialog>
               <DialogTrigger asChild>
@@ -326,8 +378,12 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
                             options={{
                               readOnly: true,
                               minimap: { enabled: false },
+                              fontSize: 12,
                               scrollBeyondLastLine: false,
-                              wordWrap: 'on'
+                              wordWrap: 'on',
+                              renderLineHighlight: 'none',
+                              hideCursorInOverviewRuler: true,
+                              overviewRulerBorder: false,
                             }}
                             onMount={(editor) => {
                               const decoration = {
@@ -387,12 +443,6 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
               tooltipId="varianceTooltip"
               tooltipContent="Measure of similarity score fluctuation, higher values indicate higher plagiarism risk"
             />
-            {/* <MetricCard
-              label="Pastes"
-              value={pasteCount}
-              tooltipId="pastesTooltip"
-              tooltipContent="Number of paste operations detected"
-            /> */}
             <MetricCard
               label="Big Pastes"
               value={bigPasteCount}

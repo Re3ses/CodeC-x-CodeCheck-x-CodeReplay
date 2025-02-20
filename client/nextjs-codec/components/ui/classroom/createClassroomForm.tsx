@@ -83,9 +83,8 @@ export default function CreateClassroomForm() {
           render={({ field }) => {
             return (
               <FormItem>
-                <FormLabel>Room name</FormLabel>
                 <FormControl>
-                  <Input placeholder="Chomsky's room" {...field} />
+                  <Input placeholder="Room Name" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -98,10 +97,9 @@ export default function CreateClassroomForm() {
           render={({ field }) => {
             return (
               <FormItem>
-                <FormLabel>Description</FormLabel>
                 <FormControl>
                   <Textarea
-                    placeholder="Chomsky's room is about..."
+                    placeholder="Description"
                     {...field}
                   />
                 </FormControl>
