@@ -118,7 +118,7 @@ export default function RoomProblemList({ params }: { params: { slug: string } }
                     </Link>
                   </Button>
                   <Button variant="outline" size="sm" asChild>
-                    <Link href={`/codeHistory/problem/${problem.slug}`}>
+                    <Link href={`/submissions/${problem.slug}`}>
                       <FileText className="mr-2 h-4 w-4" />
                       Submissions
                     </Link>

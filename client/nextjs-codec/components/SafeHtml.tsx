@@ -4,7 +4,7 @@ import DOMPurify from 'isomorphic-dompurify';
 import { marked } from 'marked';
 
 interface SafeHtmlProps {
-  html: string;
+  html: string | undefined;
   className?: string;
 }
 

@@ -8,8 +8,8 @@ from trained_models import get_plagiarism_probability
 from codebert_analyzer import CodeBERTAnalyzer, SnippetInfo
 import traceback
 import time
-from pymongo import MongoClient
-from bson import ObjectId
+from pymongo import MongoClient  # type: ignore
+from bson import ObjectId  # type: ignore
 
 app = Flask(__name__)
 CORS(app)

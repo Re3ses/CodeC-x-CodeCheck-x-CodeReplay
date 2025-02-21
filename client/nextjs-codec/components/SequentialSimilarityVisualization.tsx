@@ -213,7 +213,7 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
 
   // Replay system logic
   useEffect(() => {
-    let interval;
+    let interval: string | number | NodeJS.Timeout | undefined;
     if (isPlaying && currentSnapshotIndex < snapshots.length - 1) {
       interval = setInterval(() => {
         setCurrentSnapshotIndex(prev => {
@@ -232,7 +232,7 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
     setIsPlaying(!isPlaying);
   };
 
-  const handleSliderChange = (value) => {
+  const handleSliderChange = (value: React.SetStateAction<number>[]) => {
     setCurrentSnapshotIndex(value[0]);
     setIsPlaying(false);
   };
@@ -260,7 +260,7 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
           </SliderPrimitive.Root>
         </TooltipTrigger>
         <TooltipContent>
-          {tooltipContent || `Snapshot ${props.value?.[0] + 1}`}
+          {tooltipContent || `Snapshot ${props.value?.[0] ? props.value?.[0] + 1 : null}`}
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>

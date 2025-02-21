@@ -22,12 +22,14 @@ import {
 import { ProblemSchemaInferredType } from '@/lib/interface/problem';
 import { getUser } from '@/lib/auth';
 
+// Code Replay Imports
+import { editor as Monaco } from 'monaco-editor';
+
 type LanguageData = {
   id: number;
   name: string;
 };
 
-// Add this type for better type safety
 type MonacoLanguageMap = {
   [key: string]: {
     language: string;
@@ -35,7 +37,6 @@ type MonacoLanguageMap = {
   };
 };
 
-// Add this after your type definitions
 const SUPPORTED_LANGUAGES = {
   CPP: '54',    // C++ (GCC 9.2.0)
   JAVA: '62',   // Java (OpenJDK 13.0.1)
@@ -53,7 +54,7 @@ interface CodeEditorProps {
 }
 
 export default function CodeEditor({ userType, roomId, problemId, autoSaveEnabled = false }: CodeEditorProps) {
-  const editorRef = useRef(null);
+  const editorRef = useRef<Monaco.IStandaloneCodeEditor>();
 
   // State management
   const [problem, setProblem] = useState<ProblemSchemaInferredType>();
@@ -243,11 +244,17 @@ export default function CodeEditor({ userType, roomId, problemId, autoSaveEnable
       const selectedLanguage = languageMap[selectedLang];
       if (selectedLanguage) {
         // Set the language
-        editor.getModel()?.setLanguage(selectedLanguage.language);
+        const model = editor.getModel();
+        if (model) {
+          Monaco.setModelLanguage(model, selectedLanguage.language);
+        }
         setIsInitialized(true);
       } else {
         // Fallback to plaintext if language not found
-        editor.getModel()?.setLanguage('cpp');
+        const model = editor.getModel();
+        if (model) {
+          Monaco.setModelLanguage(model, "plaintext");
+        }
       }
     }
   }, [selectedLang, isInitialized]);
@@ -409,12 +416,12 @@ export default function CodeEditor({ userType, roomId, problemId, autoSaveEnable
         } catch (error) {
           console.error('Submission error details:', {
             error,
-            submissionData
+            submissions
           });
 
           toast({
             title: 'Failed to save submission',
-            description: error.message || 'Please try again',
+            description: (error instanceof Error ? error.message : 'Please try again'),
             variant: 'destructive'
           });
         }
@@ -763,7 +770,7 @@ export default function CodeEditor({ userType, roomId, problemId, autoSaveEnable
                       {batchResult ? (
                         <Tabs defaultValue="case1" className="w-full">
                           <TabsList className="justify-start bg-transparent border-b border-gray-700">
-                            {batchResult.map((_, index) => (
+                            {batchResult.map((_: any, index: any) => (
                               <TabsTrigger
                                 key={index}
                                 value={`case${index + 1}`}
@@ -782,7 +789,7 @@ export default function CodeEditor({ userType, roomId, problemId, autoSaveEnable
                             ))}
                           </TabsList>
 
-                          {batchResult.map((result, index) => (
+                          {batchResult.map((result: any, index: any) => (
                             <TabsContent
                               key={index}
                               value={`case${index + 1}`}
