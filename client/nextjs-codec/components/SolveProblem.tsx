@@ -21,6 +21,7 @@ import {
 } from '@/utilities/rapidApi';
 import { ProblemSchemaInferredType } from '@/lib/interface/problem';
 import { getUser } from '@/lib/auth';
+import { useQueryClient, useQuery } from '@tanstack/react-query';
 
 type LanguageData = {
   id: number;
@@ -57,17 +58,13 @@ interface CodeEditorProps {
   userType: 'mentor' | 'learner';
   roomId: string;
   problemId: string;
+  room: any; // Add room prop
 }
 
-interface TestCase {
-  input: string;
-  output: string;
-  is_sample: boolean;
-  score: number;
-}
 
-export default function CodeEditor({ userType, roomId, problemId }: CodeEditorProps) {
+export default function CodeEditor({ userType, roomId, problemId, room }: CodeEditorProps) {
   const editorRef = useRef(null);
+  const queryClient = useQueryClient();
   
   // State management
   const [problem, setProblem] = useState<ProblemSchemaInferredType>();
@@ -83,6 +80,7 @@ export default function CodeEditor({ userType, roomId, problemId }: CodeEditorPr
   const [learner, setLearner] = useState<string>();
   const [isInitialized, setIsInitialized] = useState(false);
   const [user, setUser] = useState<any>();
+  const [submitting, setSubmitting] = useState(false);
   
 
   useEffect(() => {
@@ -170,67 +168,125 @@ export default function CodeEditor({ userType, roomId, problemId }: CodeEditorPr
     return await postSubmission(data).then((res) => res.token);
   }
 
-  async function handleSubmit(isTest: boolean = true) {
-    if (!problem?.test_cases || problem.test_cases.length === 0) {
-      toast({
-        title: 'No test cases available',
-        description: 'This problem has no test cases defined',
-        variant: 'destructive',
-      });
-      return;
-    }
-  
-    if (!user) {
-      toast({
-        title: 'Not authenticated',
-        description: 'Please login to submit your solution',
-        variant: 'destructive',
-      });
-      return;
-    }
-  
-    const testCases = isTest 
-      ? problem.test_cases.filter(tc => tc.is_sample)
-      : problem.test_cases;
-  
-    try {
-      // Calculate total possible score from test cases
-      const totalPossibleScore = testCases.reduce((sum, tc) => sum + (tc.score || 0), 0);
+  const isAfterDueDate = room?.dueDate ? new Date() > new Date(room.dueDate) : false;
+
+  async function getSubmissionResult(token: string): Promise<any> {
+    let result;
+    let attempts = 0;
+    const maxAttempts = 999;
+    
+    while (attempts < maxAttempts) {
+      result = await getSubmission(token);
       
+      // Check if processing is complete
+      if (result.status.id !== 1 && result.status.id !== 2) { // Not in queue or processing
+        return result;
+      }
+      
+      // Wait before next attempt
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      attempts++;
+    }
+    
+    throw new Error('Submission processing timeout');
+  }
+
+  async function handleSubmit() {
+    try {
+      setSubmitting(true);
+      
+      // Validate required user data
+      if (!user?.auth?.username || !user?.id || !problemId || !roomId) {
+        throw new Error('Missing required user data');
+      }
+  
+      const testResults = [];
+      let totalScore = 0;
+  
+      // Run test cases and calculate score
+      for (let i = 0; i < problem.test_cases.length; i++) {
+        const testCase = problem.test_cases[i];
+        const token = await getToken(testCase.input, testCase.output);
+        const result = await getSubmissionResult(token);
+        
+        // Compare output exactly with proper trimming
+        const userOutput = result.stdout ? atob(result.stdout).trim().replace(/\r\n/g, '\n') : '';
+        const expectedOutput = testCase.output.trim().replace(/\r\n/g, '\n');
+        const isAccepted = userOutput === expectedOutput;
+        
+        const testResult = {
+          ...result,
+          status: {
+            ...result.status,
+            description: isAccepted ? "Accepted" : "Wrong Answer"
+          },
+          score: isAccepted ? Number(testCase.score) : 0
+        };
+        
+        testResults.push(testResult);
+        
+        if (isAccepted) {
+          totalScore += Number(testCase.score) || 0;
+        }
+      }
+  
+      // Calculate perfect score from test cases
+      const perfectScore = problem.test_cases.reduce((sum, test) => sum + (test.score || 0), 0);
+  
+      const submissionData = {
+        language_used: selectedLang,
+        code: editorValue,
+        score: totalScore,
+        score_overall_count: totalScore,
+        verdict: totalScore > 0 ? 'ACCEPTED' : 'REJECTED',
+        learner: user.auth.username,
+        learner_id: user.id,
+        problem: problemId,
+        room: roomId,
+        start_time: Number(localStorage.getItem(problemId + '_started')),
+        end_time: Date.now(),
+        completion_time: Date.now() - Number(localStorage.getItem(problemId + '_started')),
+        attempt_count: 1
+      };
+  
       const formData = new FormData();
-      formData.append('language_used', selectedLang);
-      formData.append('code', editorValue);
-      formData.append('score', '0'); // Initial score
-      formData.append('score_overall_count', totalPossibleScore.toString());
-      formData.append('verdict', 'REJECTED'); // Use valid enum value
-      formData.append('learner', user.auth.username);
-      formData.append('learner_id', user.id);
-      formData.append('problem', problemId);
-      formData.append('room', roomId);
-      formData.append('attempt_count', '1');
-      formData.append('start_time', startTime?.toString() || Date.now().toString());
-      formData.append('end_time', Date.now().toString());
-      formData.append('completion_time', (Date.now() - (startTime || Date.now())).toString());
+      Object.entries(submissionData).forEach(([key, value]) => {
+        formData.append(key, String(value));
+      });
+  
+      formData.append('testResults', JSON.stringify(testResults));
+      formData.append('problemData', JSON.stringify({
+        ...problem,
+        perfect_score: perfectScore
+      }));
   
       const response = await fetch('/api/userSubmissions', {
         method: 'POST',
         body: formData
       });
   
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.message || 'Submission failed');
+      if (!response.ok) {
+        const responseData = await response.json();
+        throw new Error(responseData.error || 'Failed to create submission');
+      }
   
+      await queryClient.invalidateQueries({ 
+        queryKey: ['submissions', roomId, problemId] 
+      });
+      
       toast({
-        title: 'Submission successful',
-        description: `Your solution has been submitted`,
+        title: "Submission complete",
+        description: `Score: ${totalScore}/${perfectScore}`,
       });
   
-    } catch (error) {
+    } catch (error: any) {
       toast({
-        title: 'Submission failed',
-        description: error instanceof Error ? error.message : 'Unknown error occurred',
-        variant: 'destructive'
+        title: "Error",
+        description: error.message || "Failed to submit solution",
+        variant: "destructive",
       });
+    } finally {
+      setSubmitting(false);
     }
   }
 
@@ -357,6 +413,36 @@ async function handleTry() {
       </div>
     </PanelResizeHandle>
   );
+
+  const cn = (...args: (string | boolean)[]): string => {
+    return args.filter(Boolean).join(' ');
+  };
+
+  const submissionsQuery = useQuery({
+    queryKey: ['submissions', roomId, problemId],
+    queryFn: async () => {
+      if (!roomId || !problemId || !user?.id) {
+        throw new Error('Missing required parameters');
+      }
+  
+      const params = new URLSearchParams({
+        room_id: roomId,
+        problem: problemId,
+        learner_id: user.id
+      });
+  
+      console.log('Fetching submissions with params:', Object.fromEntries(params));
+  
+      const response = await fetch(`/api/userSubmissions?${params}`);
+      if (!response.ok) throw new Error('Failed to fetch submissions');
+      
+      const data = await response.json();
+      console.log('Submissions received:', data);
+      
+      return data.submissions;
+    },
+    enabled: !!roomId && !!problemId && !!user?.id
+  });
 
   return (
     <div className="h-screen bg-gray-900 text-white">
@@ -489,9 +575,12 @@ async function handleTry() {
                     handleSubmit(false);
                     setShowCustomInput(false);
                   }}
-                  className="bg-[#FFD700] text-black hover:bg-[#FFD700]/90"
+                  disabled={isAfterDueDate}
+                  className={cn(
+                    isAfterDueDate && "cursor-not-allowed opacity-50"
+                  )}
                 >
-                  Submit
+                  {isAfterDueDate ? "Submission Closed" : "Submit"}
                 </Button>
               </div>
             </div>

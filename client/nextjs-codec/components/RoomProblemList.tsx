@@ -24,7 +24,7 @@ import {
   DialogFooter,
   DialogClose,
 } from "./ui/dialog";
-import { Eye, CopyCheck, History, Trash2, Code, ChevronDown, ChevronUp, FileText } from 'lucide-react';
+import { Eye, CopyCheck, History, Trash2, Code, ChevronDown, ChevronUp, FileText, CheckCircle2 } from 'lucide-react';
 
 const CollapsibleDescription = ({ description }: { description: string }) => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -53,6 +53,16 @@ const CollapsibleDescription = ({ description }: { description: string }) => {
   );
 };
 
+interface UserSubmission {
+  problem: string;
+  score: number;
+  score_overall_count: number;
+}
+
+interface ProblemWithScore extends ProblemSchemaInferredType {
+  perfect_score: number;
+}
+
 export default function RoomProblemList({ params }: { params: { slug: string } }) {
   const pathname = usePathname();
   const router = useRouter();
@@ -71,6 +81,18 @@ export default function RoomProblemList({ params }: { params: { slug: string } }
       const res = await getUser();
       return res;
     },
+  });
+
+  const isMentor = userQuery.data?.type === 'Mentor';
+
+  const submissionsQuery = useQuery<UserSubmission[]>({
+    queryKey: ['submissions', params.slug],
+    queryFn: async () => {
+      const response = await fetch(`/api/userSubmissions?room_id=${params.slug}`);
+      const data = await response.json();
+      return data.submissions;
+    },
+    enabled: !isMentor // Only fetch for learners
   });
 
   const handleDelete = async (problemId: string, problemName: string) => {
@@ -98,8 +120,6 @@ export default function RoomProblemList({ params }: { params: { slug: string } }
     }
   };
 
-  const isMentor = userQuery.data?.type === 'Mentor';
-
   return (
     <div className="space-y-4">
       {roomQuery.data?.problems.map((problem: ProblemSchemaInferredType, index: number) => (
@@ -119,7 +139,7 @@ export default function RoomProblemList({ params }: { params: { slug: string } }
                     </Link>
                   </Button>
                   <Button variant="outline" size="sm" asChild>
-                    <Link href={`/submissions/${problem.slug}`}>
+                    <Link href={`/submissions/${params.slug}?problem=${problem.slug}`}>
                       <FileText className="mr-2 h-4 w-4" />
                       Submissions 
                     </Link>
@@ -188,12 +208,29 @@ export default function RoomProblemList({ params }: { params: { slug: string } }
                   </Dialog>
                 </div>
               ) : (
-                <Button asChild>
-                  <Link href={`/learner/coderoom/r/${params.slug}/problem/${problem.slug}`}>
-                    <Code className="mr-2 h-4 w-4" />
-                    Solve Problem
-                  </Link>
-                </Button>
+                <div className="flex items-center gap-4">
+                  {submissionsQuery.data?.find(sub => sub.problem === problem.slug) && (
+                    <div className="flex items-center gap-2 text-sm">
+                      <span className="text-muted-foreground">
+                        Score: {
+                          submissionsQuery.data.find(sub => sub.problem === problem.slug)?.score_overall_count
+                        }/{problem.perfect_score}
+                      </span>
+                      {submissionsQuery.data.find(sub => 
+                        sub.problem === problem.slug && 
+                        sub.score_overall_count === problem.perfect_score
+                      ) && (
+                        <CheckCircle2 className="h-4 w-4 text-green-500" />
+                      )}
+                    </div>
+                  )}
+                  <Button asChild>
+                    <Link href={`/learner/coderoom/r/${params.slug}/problem/${problem.slug}`}>
+                      <Code className="mr-2 h-4 w-4" />
+                      Solve Problem
+                    </Link>
+                  </Button>
+                </div>
               )}
             </div>
           </CardHeader>

@@ -19,56 +19,94 @@ import { Button } from '@/components/ui/button';
 import { Search, CheckCircle2, Code, AlertCircle, X } from 'lucide-react';
 import moment from 'moment';
 import Nav from '@/app/dashboard/nav';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { getUser } from '@/lib/auth';
 
 // First, add the proper interface for submissions
 interface Submission {
   _id: string;
-  learner: string;
-  completion_time: number;
+  language_used: string;  // Changed from language
+  code: string;
   score: number;
   score_overall_count: number;
   verdict: string;
-  code: string;
-  language: string;
+  learner: string;
+  learner_id: string;
+  problem: string;
+  room: string;
+  submission_date: Date;
+  completion_time: number;
+  start_time: number;
+  end_time: number;
+  paste_history: string;
+}
+
+interface Problem {
+  perfect_score: number; // Total possible score for the problem
 }
 
 export default function Page() {
   const router = useRouter();
   const { room_id } = useParams();
+  const searchParams = useSearchParams();
+  const problemSlug = searchParams.get('problem');
   const [selectedSubmissionId, setSelectedSubmissionId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState<any>();
   const [submissions, setSubmissions] = useState<Submission[]>([]);
+  const [problemData, setProblemData] = useState<Problem | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setIsLoading(true);
         
-        // Get user data
         const val = await getUser();
+        console.log('User data:', val); // Debug user data
+
         setUser(val);
-        if (val.error || val.message === 'Authentication failed: [JWT MALFORMED]') {
-          router.push('/login');
-          return;
+
+        if (!val || !problemSlug) {
+          console.log('Missing data:', { val, problemSlug });
+          throw new Error('Missing required data');
         }
 
-        // Fetch submissions data
-        const response = await fetch(`/api/userSubmissions?room_id=${room_id}`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch submissions');
+        console.log('Fetching with params:', {
+          room_id,
+          problemSlug
+        });
+
+        const problemResponse = await fetch(
+          `/api/problems/${problemSlug}`,
+          {
+            credentials: 'include',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+
+        if (!problemResponse.ok) {
+          throw new Error('Failed to fetch problem data');
         }
-        const data = await response.json();
+
+        const problemData = await problemResponse.json();
+        setProblemData(problemData);
+
+        // Fetch submissions
+        const data = await fetchSubmissions(room_id, problemSlug, val.id);
         setSubmissions(data.submissions || []);
 
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('Detailed fetch error:', {
+          error,
+          message: error.message,
+          stack: error.stack
+        });
         toast({
           title: 'Error fetching submissions',
-          description: 'Failed to load submission data',
+          description: error.message,
           variant: 'destructive',
         });
       } finally {
@@ -76,8 +114,36 @@ export default function Page() {
       }
     };
 
-    fetchData();
-  }, [room_id, router]);
+    if (room_id && problemSlug) {
+      fetchData();
+    }
+  }, [room_id, problemSlug, router]);
+
+  // Fetch submissions function
+  const fetchSubmissions = async (roomId: string, problemId: string, userId: string) => {
+    const params = new URLSearchParams({
+      room_id: roomId,
+      problem: problemId,
+      learner_id: userId
+    });
+
+    console.log('Fetching submissions with params:', Object.fromEntries(params));
+
+    const response = await fetch(`/api/userSubmissions?${params}`, {
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || 'Failed to fetch submissions');
+    }
+
+    const data = await response.json();
+    return data;
+  };
 
   // Filter and get highest scores
   const filteredSubmissions = submissions.filter(submission =>
@@ -155,11 +221,11 @@ export default function Page() {
                               </TableCell>
                               <TableCell>
                                 <Badge variant="outline" className="font-mono bg-gray-900/50">
-                                  {submission.score} / {submission.score_overall_count}
+                                  {submission.score} / {problemData?.perfect_score || 0}
                                 </Badge>
                               </TableCell>
                               <TableCell>
-                                {submission.score === submission.score_overall_count ? (
+                                {submission.score === problemData?.perfect_score ? (
                                   <Badge className="bg-green-900/30 text-green-300 border-green-500/20">
                                     <CheckCircle2 className="mr-1 h-4 w-4" />
                                     Perfect Score
@@ -219,7 +285,7 @@ export default function Page() {
                                       <div className="h-96">
                                         <Editor
                                           height="100%"
-                                          defaultLanguage={submission.language}
+                                          defaultLanguage={submission.language_used} // Changed from language
                                           defaultValue={submission.code}
                                           theme="vs-dark"
                                           options={{

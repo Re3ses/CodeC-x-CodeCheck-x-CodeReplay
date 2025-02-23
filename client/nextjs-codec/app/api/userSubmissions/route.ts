@@ -4,228 +4,163 @@ import UserSubmissions from '@/models/UserSubmissions';
 import mongoose from 'mongoose';
 
 export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-
-  const room_id = searchParams.get('room_id');
-  const problem_slug = searchParams.get('problem_slug');
-  const all: boolean = Boolean(searchParams.get('all')?.toLowerCase() === 'true');
-  const single: boolean = Boolean(searchParams.get('single')?.toLowerCase() === 'true');
-
   try {
     await dbConnect();
+    
+    const { searchParams } = new URL(request.url);
+    // Change room_id to room to match interface
+    const room = searchParams.get('room_id'); // Keep param name for backwards compatibility
+    const problem = searchParams.get('problem');
+    const learner_id = searchParams.get('learner_id');
 
-    const db = mongoose.connection;
+    // console.log('Search params received:', { room, problem, learner_id });
 
-    const userSubmissionCollection = db.collection('usersubmissions');
-
-    // All via room_id - ..?room_id=example_room_id_123
-    if (room_id !== null && !single) {
-      const submission = await userSubmissionCollection
-        .find({
-          room: room_id,
-        })
-        .toArray();
-
-      return NextResponse.json({
-        message: 'Success! all via room_id',
-        room_slug: room_id,
-        submission: submission,
-      });
+    const query: Record<string, any> = {};
+    
+    if (room) {
+      query.room = room; // Match the interface field name
     }
 
-    // All via room_id but only the first accepted submissions only per learner - ...?room_id=example_room_id_123?all=true&single=true
-    if (room_id !== null && all === true && single === true) {
-      const submissions = await userSubmissionCollection.aggregate([
-        {
-          $match: {
-            room: room_id,
-            verdict: "ACCEPTED"
-          }
-        },
-        {
-          $sort: {
-            submission_date: -1 // Sort by latest submission first
-          }
-        },
-        {
-          $group: {
-            _id: "$learner",
-            submission: { $first: "$$ROOT" } // Take the first (latest) submission for each learner
-          }
-        },
-        {
-          $replaceRoot: { newRoot: "$submission" } // Replace the root to get the original document structure
-        }
-      ]).toArray();
-
-      return NextResponse.json({
-        message: 'Success! one accepted submission per learner',
-        problem_slug: problem_slug,
-        submission: submissions,
-      });
+    if (problem) {
+      query.problem = problem;
     }
 
-    // All via problem_slug - ...?problem_slug=example_slug_123?all=True
-    if (problem_slug !== null && all === true && !single) {
-      const submission = await userSubmissionCollection
-        .find({
-          problem: problem_slug,
-        })
-        .toArray();
-
-      return NextResponse.json({
-        message: 'Success! all via problem_slug',
-        problem_slug: problem_slug,
-        submission: submission,
-      });
-    }
-
-    // All via problem_slug but only the first accepted submissions only per learner - ...?problem_slug=example_slug_123?all=true&single=true
-    if (problem_slug !== null && all === true && single === true) {
-      const submissions = await userSubmissionCollection.aggregate([
-        {
-          $match: {
-            problem: problem_slug,
-            verdict: "ACCEPTED"
-          }
-        },
-        {
-          $sort: {
-            submission_date: -1 // Sort by latest submission first
-          }
-        },
-        {
-          $group: {
-            _id: "$learner",
-            submission: { $first: "$$ROOT" } // Take the first (latest) submission for each learner
-          }
-        },
-        {
-          $replaceRoot: { newRoot: "$submission" } // Replace the root to get the original document structure
-        }
-      ]).toArray();
-
-      return NextResponse.json({
-        message: 'Success! one accepted submission per learner',
-        problem_slug: problem_slug,
-        submission: submissions,
-      });
-    }
-
-    // Individual via problem_slug - ...?problem_slug=example_slug_123
-    if (problem_slug !== null && !all) {
-      const submission = await userSubmissionCollection.findOne({
-        problem: problem_slug,
-      });
-
-      return NextResponse.json({
-        message: 'Success! individual via problem_slug',
-        problem_slug: problem_slug,
-        submission: submission,
-      });
-    }
-
-    // All but only the first accepted submissions only per learner - ...?problem_slug=example_slug_123?all=true&single=true
-    if (all === true && single === true) {
-      const submissions = await userSubmissionCollection.aggregate([
-        {
-          $match: {
-            verdict: "ACCEPTED"
-          }
-        },
-        {
-          $sort: {
-            submission_date: -1 // Sort by latest submission first
-          }
-        },
-        {
-          $group: {
-            _id: "$learner",
-            submission: { $first: "$$ROOT" } // Take the first (latest) submission for each learner
-          }
-        },
-        {
-          $replaceRoot: { newRoot: "$submission" } // Replace the root to get the original document structure
-        }
-      ]).toArray();
-
-      return NextResponse.json({
-        message: 'Success! one accepted submission per learner',
-        problem_slug: problem_slug,
-        submission: submissions,
-      });
-    }
-
-    // All - ...?all=true
-    if (all === true) {
-      const allSubmissions = await userSubmissionCollection.find({}).toArray();
-
-      return NextResponse.json({
-        message: 'Fetch all Success!',
-        slug: problem_slug,
-        all: all,
-        submissions: allSubmissions,
-      });
-    }
-
-    // If no query parameter is provided
-    if (all === false) {
-      return NextResponse.json({
-        message: 'Please provide a query parameter',
-        query_params: {
-          problem_slug,
-          all,
-          single
-        }
-      }, { status: 400 });
-    }
-
-  } catch (e) {
-    return NextResponse.json({
-      error: e,
-      message: "An error occurred",
-      query_params: {
-        problem_slug,
-        all,
-        single
+    if (learner_id) {
+      try {
+        query.learner_id = new mongoose.Types.ObjectId(learner_id);
+      } catch (error) {
+        console.warn('Invalid learner_id format:', learner_id);
       }
-    }, { status: 500 });
+    }
+
+    // Get submissions with populated problem data for perfect score
+    const submissions = await UserSubmissions
+      .find(query)
+      .sort({ submission_date: -1 })
+      .lean()
+      .exec();
+
+    // Log found submissions
+    // console.log('Submissions found:', submissions.length);
+    submissions.forEach((sub, i) => {
+      // console.log(`Submission ${i + 1}:`, {
+      //   problem: sub.problem,
+      //   score: sub.score,
+      //   overall: sub.score_overall_count
+      // });
+    }
+  );
+
+    return NextResponse.json({ 
+      success: true,
+      submissions: submissions.map(sub => ({
+        ...sub,
+        score: sub.score || 0, // Ensure score is not null
+        score_overall_count: sub.score_overall_count || 0
+      })),
+      count: submissions.length
+    });
+
+  } catch (error: any) {
+    console.error('Fetch error:', error);
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
 
 export async function POST(request: Request) {
   try {
     await dbConnect();
-
     const formData = await request.formData();
 
-    const userSubmission = new UserSubmissions({
+    // Parse and validate test results and problem data
+    const testResults = JSON.parse(formData.get('testResults') || '[]');
+    const problemData = JSON.parse(formData.get('problemData') || '{}');
+    
+    if (!testResults.length || !problemData.test_cases) {
+      throw new Error('Missing test results or problem data');
+    }
+
+    console.log('Processing submission:', {
+      testCases: problemData.test_cases.length,
+      testResults: testResults.length,
+      perfectScore: problemData.perfect_score
+    });
+
+    let totalScore = 0;
+    let overallScore = 0;
+
+    // Calculate scores from test case results
+    testResults.forEach((result: any, index: number) => {
+      const testCase = problemData.test_cases[index];
+      if (!testCase) {
+        console.warn(`No test case found for index ${index}`);
+        return;
+      }
+
+      if (result.status.description === "Accepted") {
+        const testCaseScore = Number(testCase.score) || 0;
+        totalScore += testCaseScore;
+        console.log(`Test case ${index + 1} passed: +${testCaseScore} points`);
+      }
+    });
+
+    // Get highest previous score
+    const existingSubmission = await UserSubmissions.findOne({
+      learner_id: formData.get('learner_id'),
+      problem: formData.get('problem')
+    }).sort({ score_overall_count: -1 });
+
+    // Update overall score if new score is higher
+    overallScore = Math.max(totalScore, existingSubmission?.score_overall_count || 0);
+
+    // Create submission with validated data
+    const submissionData = {
       language_used: formData.get('language_used'),
       code: formData.get('code'),
-      score: formData.get('score'),
-      score_overall_count: formData.get('score_overall_count'),
-      verdict: formData.get('verdict'),
+      score: totalScore,
+      score_overall_count: overallScore,
+      verdict: testResults.every(r => r.status.description === "Accepted") ? 'ACCEPTED' : 'REJECTED',
       learner: formData.get('learner'),
       learner_id: formData.get('learner_id'),
       problem: formData.get('problem'),
       room: formData.get('room'),
-      attempt_count: formData.get('attempt_count'),
-      start_time: formData.get('start_time'),
-      end_time: formData.get('end_time'),
-      completion_time: formData.get('completion_time'),
-      similarity_score: formData.get('similarity_score'),
-      most_similar: formData.get('most_similar'),
-      paste_history: formData.get('paste_history'), // Save the parsed array
-    });
+      start_time: Number(formData.get('start_time')) || Date.now(),
+      end_time: Number(formData.get('end_time')) || Date.now(),
+      completion_time: Number(formData.get('completion_time')) || 0,
+      attempt_count: existingSubmission ? (existingSubmission.attempt_count + 1) : 1
+    };
+
+    const userSubmission = new UserSubmissions(submissionData);
 
     await userSubmission.save();
 
-    return NextResponse.json({
-      message: 'User submission entry created!',
-      submission: userSubmission,
+    console.log('Submission saved:', {
+      totalScore,
+      overallScore,
+      perfectScore: problemData.perfect_score,
+      verdict: submissionData.verdict
     });
-  } catch (e) {
-    console.error("Error in POST route:", e); // Log the error for debugging
-    return NextResponse.json(e, { status: 500 });
+
+    return NextResponse.json({
+      message: 'Submission created successfully',
+      submission: userSubmission,
+      scores: {
+        current: totalScore,
+        overall: overallScore,
+        perfect: problemData.perfect_score
+      }
+    });
+
+  } catch (error: any) {
+    console.error('Submission error:', {
+      message: error.message,
+      stack: error.stack
+    });
+    return NextResponse.json({ 
+      error: 'Failed to create submission',
+      details: error.message 
+    }, { 
+      status: 500 
+    });
   }
 }

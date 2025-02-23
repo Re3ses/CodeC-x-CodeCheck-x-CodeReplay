@@ -70,11 +70,19 @@ const ProblemSchema = Schema({
         {
             input: {
                 type: String,
+                required: [true, 'Test case input is required'],
                 default: ""
             },
             output: {
                 type: String,
+                required: [true, 'Test case output is required'],
                 default: ""
+            },
+            score: {
+                type: Number,
+                required: [true, 'Test case score is required'],
+                min: [0, 'Score cannot be negative'],
+                default: 0
             },
             is_sample: {
                 type: Boolean,
@@ -91,6 +99,10 @@ const ProblemSchema = Schema({
             }
         }
     ],
+    perfect_score: {
+        type: Number,
+        default: 0
+    },
     is_archived: {
         type: Boolean,
         default: false
@@ -107,5 +119,12 @@ ProblemSchema.pre('validate', function(next) {
         
     next()
 })
+
+ProblemSchema.pre('save', function(next) {
+    if (this.test_cases && this.test_cases.length > 0) {
+        this.perfect_score = this.test_cases.reduce((sum, test) => sum + (test.score || 0), 0);
+    }
+    next();
+});
 
 module.exports = mongoose.model('Problem', ProblemSchema)

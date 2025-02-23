@@ -11,6 +11,11 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Users, Code, Layout } from 'lucide-react';
 
+interface SubmissionStats {
+  solvedProblems: number;
+  totalProblems: number;
+}
+
 export default function Page({ params }: { params: { slug: string } }) {
   const userQuery = useQuery({
     queryKey: ['user'],
@@ -28,6 +33,22 @@ export default function Page({ params }: { params: { slug: string } }) {
     },
   });
 
+  const submissionStatsQuery = useQuery<SubmissionStats>({
+    queryKey: ['submissionStats', params.slug],
+    queryFn: async () => {
+      const response = await fetch(`/api/userSubmissions/stats?room_id=${params.slug}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch submission stats');
+      }
+      const data = await response.json();
+      return {
+        solvedProblems: data.perfectScoreCount || 0,
+        totalProblems: roomQuery.data?.problems?.length || 0
+      };
+    },
+    enabled: !!roomQuery.data && userQuery.data?.type === 'Learner'
+  });
+
   return (
     <div className="container mx-auto p-6 space-y-6 max-w-7xl">
       {/* Room Banner Section */}
@@ -38,6 +59,7 @@ export default function Page({ params }: { params: { slug: string } }) {
             username={userQuery.data?.auth.username}
             usertype={userQuery.data?.type}
             params={params}
+            submissionStats={submissionStatsQuery.data}
           />
         </CardContent>
       </Card>

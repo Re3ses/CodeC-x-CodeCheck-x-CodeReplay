@@ -17,7 +17,7 @@ import { ChevronRight, AlertCircle, X } from 'lucide-react';
 import { getLanguages } from '@/utilities/rapidApi';
 import { Editor } from '@monaco-editor/react';
 import dynamic from 'next/dynamic';
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useState, useRef } from 'react';
 import 'react-quill/dist/quill.snow.css';
 import { Switch } from '@/components/ui/switch';
 import { useQuery } from '@tanstack/react-query';
@@ -35,6 +35,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import { useRouter } from 'next/navigation';
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
@@ -56,7 +60,42 @@ type TestCases = {
   score: number;
 };
 
-const TestCaseControls = ({ 
+interface ProblemData {
+  name: string;
+  description: string;
+  input_format: string;
+  output_format: string;
+  constraints: string;
+  languages: LangArray[];
+  test_cases: TestCases[];
+  mentor: string;
+  perfect_score: number;
+  release: Date;
+  deadline: Date;
+}
+
+const formSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  description: z.string().min(1, "Description is required"),
+  input_format: z.string().min(1, "Input format is required"),
+  output_format: z.string().min(1, "Output format is required"),
+  constraints: z.string().min(1, "Constraints are required"),
+  languages: z.array(z.object({
+    name: z.string(),
+    code_snippet: z.string(),
+    time_complexity: z.number(),
+    space_complexity: z.number()
+  })),
+  test_cases: z.array(z.object({
+    input: z.string().min(1, "Input is required"),
+    output: z.string().min(1, "Output is required"),
+    score: z.number().min(0, "Score must be non-negative"),
+    is_sample: z.boolean().default(false),
+    is_eval: z.boolean().default(false)
+  }))
+});
+
+const TestCaseControls = React.forwardRef(({ 
   onSampleChange, 
   onScoreChange,
   defaultScore = 10
@@ -64,12 +103,27 @@ const TestCaseControls = ({
   onSampleChange: (value: boolean) => void;
   onScoreChange: (value: number) => void;
   defaultScore?: number;
-}) => {
+}, ref) => {
   const [score, setScore] = useState(defaultScore);
+  const [isSampleChecked, setIsSampleChecked] = useState(false);
   
+  React.useImperativeHandle(ref, () => ({
+    resetControls: () => {
+      setScore(defaultScore);
+      setIsSampleChecked(false);
+      onSampleChange(false);
+      onScoreChange(defaultScore);
+    }
+  }));
+
   const handleScoreChange = (value: number[]) => {
     setScore(value[0]);
     onScoreChange?.(value[0]);
+  };
+
+  const handleSampleChange = (checked: boolean) => {
+    setIsSampleChecked(checked);
+    onSampleChange(checked);
   };
 
   return (
@@ -110,14 +164,17 @@ const TestCaseControls = ({
             </div>
           </div>
           <Switch
-            onCheckedChange={onSampleChange}
+            checked={isSampleChecked}
+            onCheckedChange={handleSampleChange}
             className="data-[state=checked]:bg-blue-600"
           />
         </div>
       </div>
     </div>
   );
-};
+});
+
+TestCaseControls.displayName = 'TestCaseControls';
 
 const SUPPORTED_LANGUAGES = [
   { id: 54, name: 'C++ (GCC 11.2.0)', extension: 'cpp' },
@@ -152,6 +209,22 @@ export default function Page({ params }: { params: { slug: string } }) {
   const [testCaseScore, setTestCaseScore] = useState<number>(10);
   const [testCases, setTestCases] = useState<TestCases[]>([]);
   const [problemName, setProblemName] = useState<string>('');
+  const [perfectScore, setPerfectScore] = useState<number>(0);
+  const testCaseControlsRef = useRef(null);
+  const router = useRouter();
+
+  const form = useForm({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: '',
+      description: '',
+      input_format: '',
+      output_format: '',
+      constraints: '',
+      languages: [],
+      test_cases: [],
+    }
+  });
 
   // const languages = useQuery({
   //   queryKey: ['languages'],
@@ -162,6 +235,10 @@ export default function Page({ params }: { params: { slug: string } }) {
     queryKey: ['user'],
     queryFn: async () => await getUser(),
   });
+
+  const calculatePerfectScore = (testCases: TestCases[]) => {
+    return testCases.reduce((total, testCase) => total + testCase.score, 0);
+  };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -193,7 +270,7 @@ export default function Page({ params }: { params: { slug: string } }) {
       return;
     }
 
-    const requestBody = {
+    const requestBody: ProblemData = {
       name: problemName,
       description: description,
       input_format: inputFormat,
@@ -204,6 +281,7 @@ export default function Page({ params }: { params: { slug: string } }) {
       languages: langArray,
       test_cases: testCases,
       mentor: user.data.auth.username,
+      perfect_score: perfectScore
     };
 
     try {
@@ -213,6 +291,9 @@ export default function Page({ params }: { params: { slug: string } }) {
         title: 'Problem created successfully!',
         variant: 'default',
       });
+
+      // Navigate back to the coderoom
+      router.push(`/mentor/coderoom/r/${params.slug}`);
     } catch (error) {
       toast({
         title: 'Error creating problem',
@@ -273,13 +354,20 @@ export default function Page({ params }: { params: { slug: string } }) {
       score: testCaseScore
     };
 
-    setTestCases([...testCases, newTestCase]);
+    const updatedTestCases = [...testCases, newTestCase];
+    setTestCases(updatedTestCases);
+    setPerfectScore(calculatePerfectScore(updatedTestCases));
     
     // Reset form
     setTestCaseInput('');
     setTestCaseOutput('');
     setIsSample(false);
     setTestCaseScore(10);
+
+    // Also reset the Switch in TestCaseControls
+    if (testCaseControlsRef.current) {
+      testCaseControlsRef.current.resetControls();
+    }
 
     toast({
       title: 'Test case added successfully!',
@@ -293,9 +381,11 @@ export default function Page({ params }: { params: { slug: string } }) {
   }
 
   function handleDeleteTestCase(item: TestCases) {
-    setTestCases((prevTestCases) => 
-      prevTestCases.filter((testCase) => testCase !== item)
-    );
+    setTestCases((prevTestCases) => {
+      const updatedTestCases = prevTestCases.filter((testCase) => testCase !== item);
+      setPerfectScore(calculatePerfectScore(updatedTestCases));
+      return updatedTestCases;
+    });
   }
 
   const sections = [
@@ -487,6 +577,13 @@ export default function Page({ params }: { params: { slug: string } }) {
 
               {/* Test Cases Panel */}
               <Tab.Panel className="rounded-xl bg-gray-900 p-6">
+                <div className="flex justify-between items-center mb-4">
+                  <h2 className="text-lg font-medium">Test Cases</h2>
+                  <div className="bg-gray-800 px-4 py-2 rounded-lg flex items-center gap-2">
+                    <span className="text-sm text-gray-400">Perfect Score:</span>
+                    <span className="text-lg font-bold text-green-400">{perfectScore}</span>
+                  </div>
+                </div>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   <div className="space-y-4">
                     <div>
@@ -510,6 +607,7 @@ export default function Page({ params }: { params: { slug: string } }) {
                     </div>
 
                     <TestCaseControls
+                      ref={testCaseControlsRef}
                       onSampleChange={setIsSample}
                       onScoreChange={setTestCaseScore}
                       defaultScore={10}

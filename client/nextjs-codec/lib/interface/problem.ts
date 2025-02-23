@@ -29,6 +29,38 @@ export const ProblemSchema = z.object({
   mentor: z.string(),
   code: z.string(),
   slug: z.string(),
+  perfect_score: z.coerce.number(),
 });
 
 export type ProblemSchemaInferredType = z.infer<typeof ProblemSchema>;
+
+export interface TestCase {
+  input: string;
+  output: string;
+  score: number;
+  is_sample: boolean;
+  is_eval: boolean;
+  strength: number;
+}
+
+export interface Problem {
+  _id?: string;
+  name: string;
+  description: string;
+  input_format: string;
+  output_format: string;
+  constraints: string;
+  release: Date;
+  deadline: Date;
+  languages: {
+    name: string;
+    code_snippet: string;
+    time_complexity: number;
+    space_complexity: number;
+  }[];
+  test_cases: TestCase[];
+  mentor: string;
+  code: string;
+  slug: string;
+  perfect_score: number;
+}

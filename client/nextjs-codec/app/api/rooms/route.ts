@@ -77,3 +77,35 @@ export async function GET(request: Request) {
     );
   }
 }
+
+export async function POST(request: Request) {
+  try {
+    await dbConnect();
+
+    const data = await request.json();
+    
+    // Parse the date strings into Date objects
+    const roomData = {
+      ...data,
+      releaseDate: new Date(data.releaseDate),
+      dueDate: new Date(data.dueDate),
+      slug: `${data.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${nanoid(6)}`,
+    };
+
+    console.log('Creating room with data:', roomData); // Debug log
+
+    const room = await Room.create(roomData);
+
+    return NextResponse.json({
+      message: 'Room created successfully',
+      room
+    });
+
+  } catch (error: any) {
+    console.error('Room creation error:', error);
+    return NextResponse.json(
+      { error: error.message || 'Failed to create room' },
+      { status: 500 }
+    );
+  }
+}
