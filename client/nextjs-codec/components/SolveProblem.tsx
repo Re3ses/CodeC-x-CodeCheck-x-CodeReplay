@@ -22,6 +22,13 @@ import {
 import { ProblemSchemaInferredType } from '@/lib/interface/problem';
 import { getUser } from '@/lib/auth';
 import { useQueryClient, useQuery } from '@tanstack/react-query';
+// import confetti from 'canvas-confetti';
+// // Trigger confetti
+// confetti({
+//   particleCount: 100,
+//   spread: 70,
+//   origin: { y: 0.6 }
+// });
 
 type LanguageData = {
   id: number;
@@ -194,7 +201,7 @@ export default function CodeEditor({ userType, roomId, problemId, room }: CodeEd
   async function handleSubmit() {
     try {
       setSubmitting(true);
-      
+  
       // Validate required user data
       if (!user?.auth?.username || !user?.id || !problemId || !roomId) {
         throw new Error('Missing required user data');
@@ -202,18 +209,19 @@ export default function CodeEditor({ userType, roomId, problemId, room }: CodeEd
   
       const testResults = [];
       let totalScore = 0;
+      let correctTestCases = 0;
   
       // Run test cases and calculate score
       for (let i = 0; i < problem.test_cases.length; i++) {
         const testCase = problem.test_cases[i];
         const token = await getToken(testCase.input, testCase.output);
         const result = await getSubmissionResult(token);
-        
+  
         // Compare output exactly with proper trimming
         const userOutput = result.stdout ? atob(result.stdout).trim().replace(/\r\n/g, '\n') : '';
         const expectedOutput = testCase.output.trim().replace(/\r\n/g, '\n');
         const isAccepted = userOutput === expectedOutput;
-        
+  
         const testResult = {
           ...result,
           status: {
@@ -222,11 +230,12 @@ export default function CodeEditor({ userType, roomId, problemId, room }: CodeEd
           },
           score: isAccepted ? Number(testCase.score) : 0
         };
-        
+  
         testResults.push(testResult);
-        
+  
         if (isAccepted) {
           totalScore += Number(testCase.score) || 0;
+          correctTestCases++;
         }
       }
   
@@ -273,11 +282,26 @@ export default function CodeEditor({ userType, roomId, problemId, room }: CodeEd
       await queryClient.invalidateQueries({ 
         queryKey: ['submissions', roomId, problemId] 
       });
-      
+  
+      // Display toast message with correct test cases
       toast({
         title: "Submission complete",
-        description: `Score: ${totalScore}/${perfectScore}`,
+        description: (
+          <div>
+            <p>Score: {totalScore}/{perfectScore}</p>
+            <p>Correct Test Cases: {correctTestCases}/{problem.test_cases.length}</p>
+          </div>
+        ),
       });
+  
+      // Activate confetti if the score is perfect
+      // if (totalScore === perfectScore) {
+      //   confetti({
+      //     particleCount: 100,
+      //     spread: 70,
+      //     origin: { y: 0.6 }
+      //   });
+      // }
   
     } catch (error: any) {
       toast({
@@ -383,7 +407,7 @@ async function handleTry() {
 
         toast({ 
           title: newScore.accepted_count === newScore.overall_count 
-            ? 'All test cases passed!' 
+            ? 'All sample test cases passed!' 
             : `${newScore.accepted_count}/${newScore.overall_count} test cases passed`,
           variant: newScore.accepted_count === newScore.overall_count ? 'default' : 'destructive'
         });
@@ -418,31 +442,6 @@ async function handleTry() {
     return args.filter(Boolean).join(' ');
   };
 
-  const submissionsQuery = useQuery({
-    queryKey: ['submissions', roomId, problemId],
-    queryFn: async () => {
-      if (!roomId || !problemId || !user?.id) {
-        throw new Error('Missing required parameters');
-      }
-  
-      const params = new URLSearchParams({
-        room_id: roomId,
-        problem: problemId,
-        learner_id: user.id
-      });
-  
-      console.log('Fetching submissions with params:', Object.fromEntries(params));
-  
-      const response = await fetch(`/api/userSubmissions?${params}`);
-      if (!response.ok) throw new Error('Failed to fetch submissions');
-      
-      const data = await response.json();
-      console.log('Submissions received:', data);
-      
-      return data.submissions;
-    },
-    enabled: !!roomId && !!problemId && !!user?.id
-  });
 
   return (
     <div className="h-screen bg-gray-900 text-white">
