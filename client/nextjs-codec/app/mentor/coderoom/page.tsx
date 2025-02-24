@@ -43,7 +43,7 @@ export default function ClassroomManagement() {
     },
   });
 
-  function handleRoomDeletion(id) {
+  function handleRoomDeletion(id: any) {
     const deleteRoom = async () => {
       try {
         const response = await fetch(`/api/rooms?room_id=${id}`, { method: 'DELETE' });
@@ -70,10 +70,10 @@ export default function ClassroomManagement() {
         </div>
         <Modal
           label={
-            <Button className="gap-2">
+            <div className='flex gap-2 items-center'>
               <Plus className="h-4 w-4" />
               New Classroom
-            </Button>
+            </div>
           }
           title="Create Classroom"
           description="Create a room where you can host your lectures, courses, or programming problems"
@@ -92,7 +92,7 @@ export default function ClassroomManagement() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {roomsQuery.data?.map((room) => (
+              {roomsQuery.data?.map((room: any) => (
                 <TableRow key={room.id}>
                   <TableCell className="font-medium">{room.name}</TableCell>
                   <TableCell className="text-muted-foreground">{room.description}</TableCell>

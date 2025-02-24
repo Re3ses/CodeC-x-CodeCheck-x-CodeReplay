@@ -22,6 +22,7 @@ import moment from 'moment';
 import Nav from '@/app/dashboard/nav';
 import { useParams, useRouter } from 'next/navigation';
 import { getUser } from '@/lib/auth';
+import { SubmissionSchemaInferredType } from '@/lib/interface/submissions';
 
 export default function Page() {
   const router = useRouter();
@@ -29,7 +30,15 @@ export default function Page() {
   const [selectedSubmissionId, setSelectedSubmissionId] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(true);
-  const [user, setUser] = useState();
+  const [submissions, setSubmissions] = useState<SubmissionSchemaInferredType>([]);
+  interface User {
+    type: string;
+    auth: {
+      username: string;
+    };
+  }
+
+  const [user, setUser] = useState<User | null>(null);
 
   // Mock data for demonstration
   const mockSubmissions = {
@@ -83,28 +92,24 @@ export default function Page() {
       }
     };
 
-        // Uncomment this block to fetch proper data, not mock data
-        // Fetch room data 
-        // const fetchData = async () => {
-        //   await fetch(`/api/userSubmissions?room_id=${room_id}`).then(
-        //     async (val) => {
-        //       await val.json().then((data) => {
-        //         setSubmissions(data);
-        //       });
-        //     }
-        //   );
-        // };
-    
-        // fetchData();
+    // Uncomment this block to fetch proper data, not mock data
+    // Fetch room data 
+    const fetchData = async () => {
+      await fetch(`/api/userSubmissions?room_id=${room_id}`).then(
+        async (val) => {
+          await val.json().then((data) => {
+            setSubmissions(data);
+          });
+        }
+      );
+    };
+
+    fetchData();
 
     req();
   }, [room_id, router]);
 
-  const filteredSubmissions = mockSubmissions.submission.filter(submission =>
-    submission.learner.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  const highestScores = filteredSubmissions.reduce((acc, curr) => {
+  const highestScores = submissions.reduce((acc: any, curr: any) => {
     if (!acc[curr.learner] || acc[curr.learner].score < curr.score) {
       acc[curr.learner] = curr;
     }

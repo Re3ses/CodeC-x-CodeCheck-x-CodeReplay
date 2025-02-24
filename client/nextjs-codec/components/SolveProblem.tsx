@@ -733,7 +733,7 @@ export default function CodeEditor({ userType, roomId, problemId, autoSaveEnable
                 </div>
               </Panel>
 
-              <VerticalResizeHandle />
+              {/* <VerticalResizeHandle /> */}
 
               {/* Results Panel */}
               <Panel defaultSize={30} minSize={20}>

@@ -17,7 +17,7 @@ export default function Modal({
   description,
 }: {
   children: React.ReactNode;
-  label: string;
+  label: string | React.ReactNode;
   title?: string | null;
   description?: string | null;
 }) {
