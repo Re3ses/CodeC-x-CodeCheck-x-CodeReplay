@@ -1,5 +1,6 @@
 {
   "devDependencies": {
+    "@types/canvas-confetti": "^1.9.0",
     "@types/next": "^8.0.7"
   },
   "dependencies": {

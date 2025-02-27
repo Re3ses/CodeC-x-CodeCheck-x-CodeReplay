@@ -22,13 +22,9 @@ import {
 import { ProblemSchemaInferredType } from '@/lib/interface/problem';
 import { getUser } from '@/lib/auth';
 import { useQueryClient, useQuery } from '@tanstack/react-query';
-// import confetti from 'canvas-confetti';
-// // Trigger confetti
-// confetti({
-//   particleCount: 100,
-//   spread: 70,
-//   origin: { y: 0.6 }
-// });
+import confetti from 'canvas-confetti';
+
+
 
 type LanguageData = {
   id: number;
@@ -197,12 +193,18 @@ export default function CodeEditor({ userType, roomId, problemId, room }: CodeEd
     
     throw new Error('Submission processing timeout');
   }
-
+  const launchConfetti = () => {
+    confetti({
+      particleCount: 100,
+      spread: 150,
+      origin: { y: 0.6 },
+    });
+  };
+  
   async function handleSubmit() {
     try {
       setSubmitting(true);
   
-      // Validate required user data
       if (!user?.auth?.username || !user?.id || !problemId || !roomId) {
         throw new Error('Missing required user data');
       }
@@ -211,13 +213,11 @@ export default function CodeEditor({ userType, roomId, problemId, room }: CodeEd
       let totalScore = 0;
       let correctTestCases = 0;
   
-      // Run test cases and calculate score
       for (let i = 0; i < problem.test_cases.length; i++) {
         const testCase = problem.test_cases[i];
         const token = await getToken(testCase.input, testCase.output);
         const result = await getSubmissionResult(token);
   
-        // Compare output exactly with proper trimming
         const userOutput = result.stdout ? atob(result.stdout).trim().replace(/\r\n/g, '\n') : '';
         const expectedOutput = testCase.output.trim().replace(/\r\n/g, '\n');
         const isAccepted = userOutput === expectedOutput;
@@ -239,7 +239,6 @@ export default function CodeEditor({ userType, roomId, problemId, room }: CodeEd
         }
       }
   
-      // Calculate perfect score from test cases
       const perfectScore = problem.test_cases.reduce((sum, test) => sum + (test.score || 0), 0);
   
       const submissionData = {
@@ -283,7 +282,11 @@ export default function CodeEditor({ userType, roomId, problemId, room }: CodeEd
         queryKey: ['submissions', roomId, problemId] 
       });
   
-      // Display toast message with correct test cases
+      // Trigger confetti if the user gets a perfect score
+      if (totalScore === perfectScore) {
+        launchConfetti();
+      }
+  
       toast({
         title: "Submission complete",
         description: (
@@ -293,15 +296,6 @@ export default function CodeEditor({ userType, roomId, problemId, room }: CodeEd
           </div>
         ),
       });
-  
-      // Activate confetti if the score is perfect
-      // if (totalScore === perfectScore) {
-      //   confetti({
-      //     particleCount: 100,
-      //     spread: 70,
-      //     origin: { y: 0.6 }
-      //   });
-      // }
   
     } catch (error: any) {
       toast({
@@ -313,6 +307,7 @@ export default function CodeEditor({ userType, roomId, problemId, room }: CodeEd
       setSubmitting(false);
     }
   }
+  
 
 async function handleTry() {
   if (!editorValue || !selectedLang) {
@@ -666,39 +661,47 @@ async function handleTry() {
                             ))}
                           </TabsList>
                           
-                          {batchResult.map((result, index) => (
-                          <TabsContent 
-                            key={index} 
-                            value={`case${index + 1}`} 
-                            className="space-y-4 mt-4"
-                          >
-                            <div className="space-y-2">
-                              <h4 className="text-sm font-medium text-gray-400">Your Output</h4>
-                              <pre className="bg-gray-900 p-3 rounded-md font-mono text-sm">
-                                {result.stdout ? atob(result.stdout) : 'No output'}
-                              </pre>
-                            </div>
-                            <div className="space-y-2">
-                              <h4 className="text-sm font-medium text-gray-400">Expected Output</h4>
-                              <pre className="bg-gray-900 p-3 rounded-md font-mono text-sm">
-                                {problem?.test_cases[index]?.output || (result.expected_output ? atob(result.expected_output) : 'No expected output')}
-                              </pre>
-                            </div>
-                            {/* Only show error section if there's a compilation error or runtime error */}
-                            {(result.status.id === 6 || // Compilation Error
-                              result.status.id === 11 || // Runtime Error
-                              result.status.id === 12 || // Time Limit Exceeded
-                              result.status.id === 13) && // Memory Limit Exceeded
-                              (result.stderr || result.compile_output) && (
+                          {batchResult.map((result, index) => {
+                            // Get only sample test cases
+                            const sampleCases = problem?.test_cases.filter(tc => tc.is_sample) || [];
+                            
+                            return (
+                              <TabsContent 
+                                key={index} 
+                                value={`case${index + 1}`} 
+                                className="space-y-4 mt-4"
+                              >
                                 <div className="space-y-2">
-                                  <h4 className="text-sm font-medium text-red-400">Error</h4>
-                                  <pre className="bg-gray-900 p-3 rounded-md font-mono text-sm text-red-400">
-                                    {result.stderr ? atob(result.stderr) : result.compile_output ? atob(result.compile_output) : 'No error details available'}
+                                  <h4 className="text-sm font-medium text-gray-400">Your Output</h4>
+                                  <pre className="bg-gray-900 p-3 rounded-md font-mono text-sm">
+                                    {result.stdout ? atob(result.stdout) : 'No output'}
                                   </pre>
                                 </div>
-                            )}
-                          </TabsContent>
-                        ))}
+                                <div className="space-y-2">
+                                  <h4 className="text-sm font-medium text-gray-400">Expected Output</h4>
+                                  <pre className="bg-gray-900 p-3 rounded-md font-mono text-sm">
+                                    {sampleCases[index]?.output || 
+                                     (result.expected_output ? atob(result.expected_output) : 'No expected output')}
+                                  </pre>
+                                </div>
+                                {/* Error section remains the same */}
+                                {(result.status.id === 6 || 
+                                  result.status.id === 11 || 
+                                  result.status.id === 12 || 
+                                  result.status.id === 13) && 
+                                  (result.stderr || result.compile_output) && (
+                                    <div className="space-y-2">
+                                      <h4 className="text-sm font-medium text-red-400">Error</h4>
+                                      <pre className="bg-gray-900 p-3 rounded-md font-mono text-sm text-red-400">
+                                        {result.stderr ? atob(result.stderr) : 
+                                         result.compile_output ? atob(result.compile_output) : 
+                                         'No error details available'}
+                                      </pre>
+                                    </div>
+                                )}
+                              </TabsContent>
+                            );
+                          })}
                         </Tabs>
                       ) : (
                         <div className="text-center text-gray-400 py-8">
