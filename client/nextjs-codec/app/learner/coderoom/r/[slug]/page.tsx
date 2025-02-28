@@ -11,6 +11,11 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Users, Code, Layout } from 'lucide-react';
 
+interface SubmissionStats {
+  solvedProblems: number;
+  totalProblems: number;
+}
+
 export default function Page({ params }: { params: { slug: string } }) {
   const userQuery = useQuery({
     queryKey: ['user'],
@@ -28,6 +33,22 @@ export default function Page({ params }: { params: { slug: string } }) {
     },
   });
 
+  const submissionStatsQuery = useQuery<SubmissionStats>({
+    queryKey: ['submissionStats', params.slug],
+    queryFn: async () => {
+      const response = await fetch(`/api/userSubmissions/stats?room_id=${params.slug}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch submission stats');
+      }
+      const data = await response.json();
+      return {
+        solvedProblems: data.perfectScoreCount || 0,
+        totalProblems: roomQuery.data?.problems?.length || 0
+      };
+    },
+    enabled: !!roomQuery.data && userQuery.data?.type === 'Learner'
+  });
+
   return (
     <div className="container mx-auto p-6 space-y-6 max-w-7xl">
       {/* Room Banner Section */}
@@ -38,6 +59,7 @@ export default function Page({ params }: { params: { slug: string } }) {
             username={userQuery.data?.auth.username}
             usertype={userQuery.data?.type}
             params={params}
+            submissionStats={submissionStatsQuery.data}
           />
         </CardContent>
       </Card>
@@ -53,10 +75,6 @@ export default function Page({ params }: { params: { slug: string } }) {
             <Users className="h-4 w-4" />
             Classmates
           </TabsTrigger>
-          <TabsTrigger value="overview" className="flex items-center gap-2">
-            <Layout className="h-4 w-4" />
-            Overview
-          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="problems" className="mt-0">
@@ -71,44 +89,6 @@ export default function Page({ params }: { params: { slug: string } }) {
           <Card>
             <CardContent className="p-6">
               <RoomEnroleeList params={params} />
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="overview" className="mt-0">
-          <Card>
-            <CardContent className="p-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-4">
-                  <h3 className="text-lg font-semibold">Room Details</h3>
-                  <div className="text-muted-foreground">
-                    {roomQuery.data?.description}
-                  </div>
-                </div>
-                <div className="space-y-4">
-                  <h3 className="text-lg font-semibold">Quick Stats</h3>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="p-4 bg-secondary rounded-lg">
-                      <div className="text-2xl font-bold">
-                        {/* Add actual stats here */}
-                        12
-                      </div>
-                      <div className="text-sm text-muted-foreground">
-                        Total Problems
-                      </div>
-                    </div>
-                    <div className="p-4 bg-secondary rounded-lg">
-                      <div className="text-2xl font-bold">
-                        {/* Add actual stats here */}
-                        24
-                      </div>
-                      <div className="text-sm text-muted-foreground">
-                        Active Users
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </CardContent>
           </Card>
         </TabsContent>

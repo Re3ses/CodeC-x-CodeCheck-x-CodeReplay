@@ -75,7 +75,13 @@ export default function ClassroomDetail({ params }: { params: { slug: string } }
         <TabsContent value="problems">
           <Card>
             <CardContent className="p-6">
-              <RoomProblemList params={params} />
+              {roomQuery.data?.problems?.length === 0 ? (
+                <p className='text-sm text-gray-500'>Create problems to solve for your students.</p>
+              )
+                : (
+                  <RoomProblemList params={params} />
+                )
+              }
             </CardContent>
           </Card>
         </TabsContent>
@@ -83,7 +89,12 @@ export default function ClassroomDetail({ params }: { params: { slug: string } }
         <TabsContent value="students">
           <Card>
             <CardContent className="p-6">
-              <RoomEnroleeList params={params} />
+              {roomQuery.data?.enrollees?.length === 0 ? (
+                <p className='text-sm text-gray-500'>No students have enrolled in this room yet.</p>
+              ) : (
+                <RoomEnroleeList params={params} />
+              )
+              }
             </CardContent>
           </Card>
         </TabsContent>

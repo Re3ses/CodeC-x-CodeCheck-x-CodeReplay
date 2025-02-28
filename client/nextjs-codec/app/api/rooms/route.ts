@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '../../../lib/dbConnect';
 import mongoose from 'mongoose';
 import { ObjectId } from 'mongodb';
+import { nanoid } from 'nanoid'
+import { CreateRoom } from '@/utilities/apiService';
 
 export async function DELETE(request: NextRequest) {
   console.log('DELETE request received');
@@ -18,7 +20,7 @@ export async function DELETE(request: NextRequest) {
   try {
     await dbConnect();
     console.log('Database connected successfully');
-    
+
     const db = mongoose.connection;
     const rooms = db.collection('coderooms');
 
@@ -47,6 +49,7 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
 
   const room_id: string = searchParams.get('room_id')!;
+  const slug: string = searchParams.get('slug')!;
 
   try {
     await dbConnect();
@@ -55,15 +58,30 @@ export async function GET(request: Request) {
 
     const roomsCollection = db.collection('coderooms');
 
-    if (room_id !== '') {
+    if (room_id !== null) {
       const room = await roomsCollection.findOne({
         _id: new ObjectId(room_id),
       });
 
       return NextResponse.json(
         {
-          message: 'Success!',
+          message: 'Success! Get via room_id.',
           room: room,
+          params: { room_id: room_id, slug: slug },
+        },
+        { status: 200 }
+      );
+    }
+    if (slug !== null) {
+      const room = await roomsCollection.findOne({
+        slug: slug,
+      });
+
+      return NextResponse.json(
+        {
+          message: 'Success! Get via slug.',
+          room: room,
+          params: { room_id: room_id, slug: slug },
         },
         { status: 200 }
       );
@@ -73,6 +91,47 @@ export async function GET(request: Request) {
       {
         message: `Failed to fetch room data with room id of: ${room_id}`,
       },
+      { status: 500 }
+    );
+  }
+}
+
+export async function POST(request: Request) {
+  try {
+    await dbConnect();
+
+    const data = await request.json();
+
+    // Validate required fields
+    if (!data.name || !data.releaseDate || !data.dueDate) {
+      return NextResponse.json(
+        { error: 'Missing required fields: name, releaseDate, dueDate' },
+        { status: 400 }
+      );
+    }
+
+    // Parse the date strings into Date objects
+    const roomData = {
+      ...data,
+      releaseDate: new Date(data.releaseDate),
+      dueDate: new Date(data.dueDate),
+      slug: `${data.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${nanoid(6)}`,
+    };
+
+    console.log('Creating room with data:', roomData); // Debug log
+
+    const res = await CreateRoom(roomData);
+
+    return NextResponse.json({
+      title: 'Room created successfully',
+      description: 'You can see the invite code in the room itself',
+      room: res,
+    }, { status: 201 });
+
+  } catch (error: any) {
+    console.error('Room creation error:', error);
+    return NextResponse.json(
+      { error: error.message || 'Failed to create room' },
       { status: 500 }
     );
   }

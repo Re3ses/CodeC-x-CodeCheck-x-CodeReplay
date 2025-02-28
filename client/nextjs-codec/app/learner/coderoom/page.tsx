@@ -25,7 +25,7 @@ export default function Joined() {
   });
 
   return (
-    <Card className="mx-4 my-6">
+    <Card className="w-full max-w-6xl mx-auto my-8">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-7">
         <div>
           <CardTitle className="text-2xl font-bold">Joined Rooms</CardTitle>

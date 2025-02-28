@@ -11,13 +11,13 @@ import {
 } from '@/components/ui/select';
 import { toast } from '@/components/ui/use-toast';
 import { CreateProblem, PostProblem } from '@/utilities/apiService';
-import { Tab } from '@headlessui/react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { motion } from 'framer-motion';
 import { ChevronRight, AlertCircle, X } from 'lucide-react';
 import { getLanguages } from '@/utilities/rapidApi';
 import { Editor } from '@monaco-editor/react';
 import dynamic from 'next/dynamic';
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useState, useRef } from 'react';
 import 'react-quill/dist/quill.snow.css';
 import { Switch } from '@/components/ui/switch';
 import { useQuery } from '@tanstack/react-query';
@@ -35,6 +35,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import { useRouter } from 'next/navigation';
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
@@ -57,7 +61,42 @@ type TestCases = {
   score: number;
 };
 
-const TestCaseControls = ({
+interface ProblemData {
+  name: string;
+  description: string;
+  input_format: string;
+  output_format: string;
+  constraints: string;
+  languages: LangArray[];
+  test_cases: TestCases[];
+  mentor: string;
+  perfect_score: number;
+  release: Date;
+  deadline: Date;
+}
+
+const formSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  description: z.string().min(1, "Description is required"),
+  input_format: z.string().min(1, "Input format is required"),
+  output_format: z.string().min(1, "Output format is required"),
+  constraints: z.string().min(1, "Constraints are required"),
+  languages: z.array(z.object({
+    name: z.string(),
+    code_snippet: z.string(),
+    time_complexity: z.number(),
+    space_complexity: z.number()
+  })),
+  test_cases: z.array(z.object({
+    input: z.string().min(1, "Input is required"),
+    output: z.string().min(1, "Output is required"),
+    score: z.number().min(0, "Score must be non-negative"),
+    is_sample: z.boolean().default(false),
+    is_eval: z.boolean().default(false)
+  }))
+});
+
+const TestCaseControls = React.forwardRef(({
   onSampleChange,
   onScoreChange,
   defaultScore = 10
@@ -65,12 +104,27 @@ const TestCaseControls = ({
   onSampleChange: (value: boolean) => void;
   onScoreChange: (value: number) => void;
   defaultScore?: number;
-}) => {
+}, ref) => {
   const [score, setScore] = useState(defaultScore);
+  const [isSampleChecked, setIsSampleChecked] = useState(false);
+
+  React.useImperativeHandle(ref, () => ({
+    resetControls: () => {
+      setScore(defaultScore);
+      setIsSampleChecked(false);
+      onSampleChange(false);
+      onScoreChange(defaultScore);
+    }
+  }));
 
   const handleScoreChange = (value: number[]) => {
     setScore(value[0]);
     onScoreChange?.(value[0]);
+  };
+
+  const handleSampleChange = (checked: boolean) => {
+    setIsSampleChecked(checked);
+    onSampleChange(checked);
   };
 
   return (
@@ -111,14 +165,17 @@ const TestCaseControls = ({
             </div>
           </div>
           <Switch
-            onCheckedChange={onSampleChange}
+            checked={isSampleChecked}
+            onCheckedChange={handleSampleChange}
             className="data-[state=checked]:bg-blue-600"
           />
         </div>
       </div>
     </div>
   );
-};
+});
+
+TestCaseControls.displayName = 'TestCaseControls';
 
 const SUPPORTED_LANGUAGES = [
   { id: 54, name: 'C++ (GCC 11.2.0)', extension: 'cpp' },
@@ -154,11 +211,31 @@ export default function Page({ params }: { params: { slug: string } }) {
   const [testCaseScore, setTestCaseScore] = useState<number>(10);
   const [testCases, setTestCases] = useState<TestCases[]>([]);
   const [problemName, setProblemName] = useState<string>('');
+  const [perfectScore, setPerfectScore] = useState<number>(0);
+  const testCaseControlsRef = useRef<{ resetControls: () => void }>(null);
+  const router = useRouter();
+
+  const form = useForm({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: '',
+      description: '',
+      input_format: '',
+      output_format: '',
+      constraints: '',
+      languages: [],
+      test_cases: [],
+    }
+  });
 
   const user = useQuery({
     queryKey: ['user'],
     queryFn: async () => await getUser(),
   });
+
+  const calculatePerfectScore = (testCases: TestCases[]) => {
+    return testCases.reduce((total, testCase) => total + testCase.score, 0);
+  };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -190,7 +267,7 @@ export default function Page({ params }: { params: { slug: string } }) {
       return;
     }
 
-    const requestBody = {
+    const requestBody: ProblemData = {
       name: problemName,
       description: description,
       input_format: inputFormat,
@@ -201,6 +278,7 @@ export default function Page({ params }: { params: { slug: string } }) {
       languages: langArray,
       test_cases: testCases,
       mentor: user.data.auth.username,
+      perfect_score: perfectScore
     };
 
     try {
@@ -210,6 +288,9 @@ export default function Page({ params }: { params: { slug: string } }) {
         title: 'Problem created successfully!',
         variant: 'default',
       });
+
+      // Navigate back to the coderoom
+      router.push(`/mentor/coderoom/r/${params.slug}`);
     } catch (error) {
       toast({
         title: 'Error creating problem',
@@ -271,13 +352,20 @@ export default function Page({ params }: { params: { slug: string } }) {
       is_eval: false,
     };
 
-    setTestCases([...testCases, newTestCase]);
+    const updatedTestCases = [...testCases, newTestCase];
+    setTestCases(updatedTestCases);
+    setPerfectScore(calculatePerfectScore(updatedTestCases));
 
     // Reset form
     setTestCaseInput('');
     setTestCaseOutput('');
     setIsSample(false);
     setTestCaseScore(10);
+
+    // Also reset the Switch in TestCaseControls
+    if (testCaseControlsRef.current) {
+      testCaseControlsRef.current.resetControls();
+    }
 
     toast({
       title: 'Test case added successfully!',
@@ -291,9 +379,11 @@ export default function Page({ params }: { params: { slug: string } }) {
   }
 
   function handleDeleteTestCase(item: TestCases) {
-    setTestCases((prevTestCases) =>
-      prevTestCases.filter((testCase) => testCase !== item)
-    );
+    setTestCases((prevTestCases) => {
+      const updatedTestCases = prevTestCases.filter((testCase) => testCase !== item);
+      setPerfectScore(calculatePerfectScore(updatedTestCases));
+      return updatedTestCases;
+    });
   }
 
   const sections = [
@@ -304,281 +394,280 @@ export default function Page({ params }: { params: { slug: string } }) {
   ];
 
   return (
-    <div className="container max-w-7xl mx-auto p-6">
-      <div className="bg-gray-800 rounded-xl shadow-xl p-6">
+    <div className="container max-w-7xl mx-auto p-6 flex items-center justify-center">
+      <div className="bg-gray-800 rounded-xl shadow-xl p-6 min-w-fit">
         <h1 className="text-2xl font-bold mb-6">Create New Problem</h1>
 
         <form onSubmit={handleSubmit}>
-          <Tab.Group>
-            <Tab.List className="flex space-x-2 rounded-xl bg-gray-700 p-1 mb-6">
+          <Tabs
+            defaultValue='Basic Info'>
+            <TabsList className="flex flex-wrap h-auto space-x-2 rounded-xl bg-gray-700 p-1 mb-6">
               {sections.map((section) => (
-                <Tab
-                  key={section.name}
-                  className={({ selected }) =>
-                    classNames(
-                      'w-full rounded-lg py-2.5 text-sm font-medium leading-5',
-                      'ring-white ring-opacity-60 ring-offset-2 ring-offset-gray-400 focus:outline-none',
-                      selected
-                        ? 'bg-gray-900 shadow text-white'
-                        : 'text-gray-300 hover:bg-gray-600 hover:text-white'
-                    )
-                  }
+                <TabsTrigger
+                  value={section.name}
+                  className="flex items-center gap-2"
                 >
-                  <div className="flex items-center justify-center gap-2">
+                  <div className="flex items-center justify-center gap-2 text-wrap">
                     <span className="w-6 h-6 flex items-center justify-center rounded-full bg-gray-700">
                       {section.icon}
                     </span>
                     {section.name}
                   </div>
-                </Tab>
+                </TabsTrigger>
               ))}
-            </Tab.List>
+            </TabsList>
 
-            <Tab.Panels className="mt-2">
-              {/* Basic Info Panel */}
-              <Tab.Panel className="rounded-xl bg-gray-900 p-6">
-                <div className="space-y-6">
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Problem Name</label>
-                    <input
-                      type="text"
-                      name="name"
-                      value={problemName}
-                      onChange={(e) => setProblemName(e.target.value)}
-                      className="w-full rounded-lg bg-gray-800 border border-gray-700 p-2"
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Problem Description</label>
-                    <ReactQuill
-                      value={description}
-                      onChange={setDescription}
-                      className="bg-gray-800 rounded-lg [&_.ql-toolbar]:bg-gray-700 [&_.ql-container]:bg-gray-800 [&_.ql-editor]:min-h-[200px] [&_.ql-editor]:text-white [&_.ql-toolbar_svg]:text-white [&_.ql-toolbar_button]:text-white [&_.ql-toolbar_.ql-stroke]:stroke-white [&_.ql-toolbar_.ql-fill]:fill-white [&_.ql-toolbar_.ql-picker-label]:text-white"
-                      preserveWhitespace={true}
-                    />
-                  </div>
-                </div>
-              </Tab.Panel>
-
-              {/* Code Template Panel */}
-              <Tab.Panel className="rounded-xl bg-gray-900 p-6">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  <div className="space-y-4">
-                    <div className="space-y-2">
-                      <label htmlFor="prog-language" className="block text-sm font-medium">Language</label>
-                      <Select
-                        name="prog-language"
-                        onValueChange={(val: string) => {
-                          setSelectedLang(val);
-                          setCodeSnippet(DEFAULT_SNIPPETS[val as keyof typeof DEFAULT_SNIPPETS]);
-                        }}
-                        value={selectedLang}
-                      >
-                        <SelectTrigger className="w-full bg-gray-800 border-gray-700">
-                          <SelectValue placeholder="Select a language" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-gray-800 border-gray-700">
-                          {SUPPORTED_LANGUAGES.map((lang) => (
-                            <SelectItem
-                              key={lang.name}
-                              value={lang.name}
-                              className="hover:bg-gray-700 focus:bg-gray-700"
-                            >
-                              {lang.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium mb-2">Code Snippet</label>
-                      <Editor
-                        height="200px"
-                        theme="vs-dark"
-                        defaultLanguage={SUPPORTED_LANGUAGES.find(lang => lang.name === selectedLang)?.extension || 'cpp'}
-                        value={codeSnippet}
-                        onChange={(value) => setCodeSnippet(value || '')}
-                        className="rounded-lg overflow-hidden"
-                        options={{
-                          minimap: { enabled: false },
-                          fontSize: 14,
-                          lineNumbers: 'on',
-                          automaticLayout: true,
-                          scrollBeyondLastLine: false
-                        }}
-                      />
-                    </div>
-
-                    <button
-                      type="button"
-                      onClick={handleAddSnippet}
-                      className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-lg py-2"
-                    >
-                      Add Code Snippet
-                    </button>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Added Snippets</label>
-                    <div className="bg-gray-800 rounded-lg p-4 min-h-[200px] border border-gray-700">
-                      <div className="flex flex-wrap gap-2">
-                        {langArray.map((lang) => (
-                          <motion.div
-                            key={lang.name}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            className="bg-gray-700 rounded-lg p-2 flex items-center gap-2"
-                          >
-                            <span>{lang.name}</span>
-                            <button
-                              onClick={() => handleRemoveLangArrayItem(lang.code_snippet)}
-                              className="text-red-400 hover:text-red-300"
-                            >
-                              ×
-                            </button>
-                          </motion.div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </Tab.Panel>
-
-              {/* Format & Constraints Panel */}
-              <Tab.Panel className="rounded-xl bg-gray-900 p-6">
-                <div className="mb-6">
-                  <label className="block text-sm font-medium mb-2">Constraints</label>
-                  <ReactQuill
-                    value={constraints}
-                    onChange={setConstraints}
-                    className="bg-gray-800 rounded-lg [&_.ql-toolbar]:bg-gray-700 [&_.ql-container]:bg-gray-800 [&_.ql-editor]:min-h-[200px] [&_.ql-editor]:text-white [&_.ql-toolbar_svg]:text-white [&_.ql-toolbar_button]:text-white [&_.ql-toolbar_.ql-stroke]:stroke-white [&_.ql-toolbar_.ql-fill]:fill-white [&_.ql-toolbar_.ql-picker-label]:text-white"
+            {/* Basic Info Panel */}
+            <TabsContent value="Basic Info" className="rounded-xl bg-gray-900 p-6">
+              <div className="space-y-6">
+                <div>
+                  <label className="block text-sm font-medium mb-2">Problem Name</label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={problemName}
+                    onChange={(e) => setProblemName(e.target.value)}
+                    className="w-full rounded-lg bg-gray-800 border border-gray-700 p-2"
+                    required
                   />
                 </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  <div className="space-y-6">
-                    <div>
-                      <label className="block text-sm font-medium mb-2">Input Format</label>
-                      <ReactQuill
-                        value={inputFormat}
-                        onChange={setInputFormat}
-                        className="bg-gray-800 rounded-lg [&_.ql-toolbar]:bg-gray-700 [&_.ql-container]:bg-gray-800 [&_.ql-editor]:min-h-[200px] [&_.ql-editor]:text-white [&_.ql-toolbar_svg]:text-white [&_.ql-toolbar_button]:text-white [&_.ql-toolbar_.ql-stroke]:stroke-white [&_.ql-toolbar_.ql-fill]:fill-white [&_.ql-toolbar_.ql-picker-label]:text-white"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="space-y-6">
-                    <div>
-                      <label className="block text-sm font-medium mb-2">Output Format</label>
-                      <ReactQuill
-                        value={outputFormat}
-                        onChange={setOutputFormat}
-                        className="bg-gray-800 rounded-lg [&_.ql-toolbar]:bg-gray-700 [&_.ql-container]:bg-gray-800 [&_.ql-editor]:min-h-[200px] [&_.ql-editor]:text-white [&_.ql-toolbar_svg]:text-white [&_.ql-toolbar_button]:text-white [&_.ql-toolbar_.ql-stroke]:stroke-white [&_.ql-toolbar_.ql-fill]:fill-white [&_.ql-toolbar_.ql-picker-label]:text-white"
-                      />
-                    </div>
-                  </div>
+                <div>
+                  <label className="block text-sm font-medium mb-2">Problem Description</label>
+                  <ReactQuill
+                    value={description}
+                    onChange={setDescription}
+                    className="min-h-[10vh] bg-gray-800 rounded-lg [&_.ql-toolbar]:bg-gray-700 [&_.ql-container]:bg-gray-800 [&_.ql-editor]:min-h-[200px] [&_.ql-editor]:text-white [&_.ql-toolbar_svg]:text-white [&_.ql-toolbar_button]:text-white [&_.ql-toolbar_.ql-stroke]:stroke-white [&_.ql-toolbar_.ql-fill]:fill-white [&_.ql-toolbar_.ql-picker-label]:text-white"
+                    preserveWhitespace={true}
+                  />
                 </div>
-              </Tab.Panel>
+              </div>
+            </TabsContent>
 
-              {/* Test Cases Panel */}
-              <Tab.Panel className="rounded-xl bg-gray-900 p-6">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  <div className="space-y-4">
-                    <div>
-                      <label className="block text-sm font-medium mb-2">Test Case Input</label>
-                      <textarea
-                        value={testCaseInput}
-                        onChange={(e) => setTestCaseInput(e.target.value)}
-                        className="w-full rounded-lg bg-gray-800 border border-gray-700 p-2 min-h-[150px]"
-                        placeholder="Enter input for this test case"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium mb-2">Test Case Output</label>
-                      <textarea
-                        value={testCaseOutput}
-                        onChange={(e) => setTestCaseOutput(e.target.value)}
-                        className="w-full rounded-lg bg-gray-800 border border-gray-700 p-2 min-h-[150px]"
-                        placeholder="Enter expected output for this test case"
-                      />
-                    </div>
-
-                    <TestCaseControls
-                      onSampleChange={setIsSample}
-                      onScoreChange={setTestCaseScore}
-                      defaultScore={10}
-                    />
-
-                    <button
-                      type="button"
-                      onClick={handleAddTestCase}
-                      className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-lg py-2 flex items-center justify-center gap-2"
+            {/* Code Template Panel */}
+            <TabsContent value="Code Template" className="rounded-xl bg-gray-900 p-6">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <label htmlFor="prog-language" className="block text-sm font-medium">Language</label>
+                    <Select
+                      name="prog-language"
+                      onValueChange={(val: string) => {
+                        setSelectedLang(val);
+                        setCodeSnippet(DEFAULT_SNIPPETS[val as keyof typeof DEFAULT_SNIPPETS]);
+                      }}
+                      value={selectedLang}
                     >
-                      <span>Add Test Case</span>
-                      <ChevronRight className="w-4 h-4" />
-                    </button>
+                      <SelectTrigger className="w-full bg-gray-800 border-gray-700">
+                        <SelectValue placeholder="Select a language" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-gray-800 border-gray-700">
+                        {SUPPORTED_LANGUAGES.map((lang) => (
+                          <SelectItem
+                            key={lang.name}
+                            value={lang.name}
+                            className="hover:bg-gray-700 focus:bg-gray-700"
+                          >
+                            {lang.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium mb-2">Added Test Cases</label>
-                    <div className="bg-gray-800 rounded-lg p-4 min-h-[400px] border border-gray-700 overflow-y-auto">
-                      <div className="space-y-2">
-                        {testCases.map((testCase, index) => (
-                          <motion.div
-                            key={index}
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            className="bg-gray-700 rounded-lg p-3"
+                    <label className="block text-sm font-medium mb-2">Code Snippet</label>
+                    <Editor
+                      height="200px"
+                      theme="vs-dark"
+                      defaultLanguage={SUPPORTED_LANGUAGES.find(lang => lang.name === selectedLang)?.extension || 'cpp'}
+                      value={codeSnippet}
+                      onChange={(value) => setCodeSnippet(value || '')}
+                      className="rounded-lg overflow-hidden"
+                      options={{
+                        minimap: { enabled: false },
+                        fontSize: 14,
+                        lineNumbers: 'on',
+                        automaticLayout: true,
+                        scrollBeyondLastLine: false
+                      }}
+                    />
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={handleAddSnippet}
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-lg py-2"
+                  >
+                    Add Code Snippet
+                  </button>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-2">Added Snippets</label>
+                  <div className="bg-gray-800 rounded-lg p-4 min-h-[200px] border border-gray-700">
+                    <div className="flex flex-wrap gap-2">
+                      {langArray.map((lang) => (
+                        <motion.div
+                          key={lang.name}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="bg-gray-700 rounded-lg p-2 flex items-center gap-2"
+                        >
+                          <span>{lang.name}</span>
+                          <button
+                            onClick={() => handleRemoveLangArrayItem(lang.code_snippet)}
+                            className="text-red-400 hover:text-red-300"
                           >
-                            <div className="flex justify-between items-start mb-2">
-                              <div className="space-y-1">
-                                <span className="text-sm font-medium">Test Case #{index + 1}</span>
-                                <div className="flex gap-2">
-                                  {testCase.is_sample && (
-                                    <span className="text-xs bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded">
-                                      Sample
-                                    </span>
-                                  )}
-                                  {testCase.is_eval && (
-                                    <span className="text-xs bg-green-500/20 text-green-300 px-2 py-0.5 rounded">
-                                      Evaluation
-                                    </span>
-                                  )}
-                                  <span className="text-xs bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded">
-                                    Score: {testCase.score}
-                                  </span>
-                                </div>
-                              </div>
-                              <button
-                                onClick={() => handleDeleteTestCase(testCase)}
-                                className="text-red-400 hover:text-red-300 p-1 rounded-lg hover:bg-red-400/10"
-                              >
-                                <X className="w-4 h-4" />
-                              </button>
-                            </div>
-                            <div className="text-sm space-y-2">
-                              <div className="bg-gray-800 p-2 rounded">
-                                <div className="text-gray-400">Input:</div>
-                                <div className="font-mono">{testCase.input}</div>
-                              </div>
-                              <div className="bg-gray-800 p-2 rounded">
-                                <div className="text-gray-400">Output:</div>
-                                <div className="font-mono">{testCase.output}</div>
-                              </div>
-                            </div>
-                          </motion.div>
-                        ))}
-                      </div>
+                            ×
+                          </button>
+                        </motion.div>
+                      ))}
                     </div>
                   </div>
                 </div>
-              </Tab.Panel>
-            </Tab.Panels>
-          </Tab.Group>
+              </div>
+            </TabsContent>
+
+            {/* Format & Constraints Panel */}
+            <TabsContent value="Format & Constraints" className="rounded-xl bg-gray-900 p-6">
+              <div className="mb-6">
+                <label className="block text-sm font-medium mb-2">Constraints</label>
+                <ReactQuill
+                  value={constraints}
+                  onChange={setConstraints}
+                  className="bg-gray-800 rounded-lg [&_.ql-toolbar]:bg-gray-700 [&_.ql-container]:bg-gray-800 [&_.ql-editor]:min-h-[200px] [&_.ql-editor]:text-white [&_.ql-toolbar_svg]:text-white [&_.ql-toolbar_button]:text-white [&_.ql-toolbar_.ql-stroke]:stroke-white [&_.ql-toolbar_.ql-fill]:fill-white [&_.ql-toolbar_.ql-picker-label]:text-white"
+                />
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div className="space-y-6">
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Input Format</label>
+                    <ReactQuill
+                      value={inputFormat}
+                      onChange={setInputFormat}
+                      className="bg-gray-800 rounded-lg [&_.ql-toolbar]:bg-gray-700 [&_.ql-container]:bg-gray-800 [&_.ql-editor]:min-h-[200px] [&_.ql-editor]:text-white [&_.ql-toolbar_svg]:text-white [&_.ql-toolbar_button]:text-white [&_.ql-toolbar_.ql-stroke]:stroke-white [&_.ql-toolbar_.ql-fill]:fill-white [&_.ql-toolbar_.ql-picker-label]:text-white"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-6">
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Output Format</label>
+                    <ReactQuill
+                      value={outputFormat}
+                      onChange={setOutputFormat}
+                      className="bg-gray-800 rounded-lg [&_.ql-toolbar]:bg-gray-700 [&_.ql-container]:bg-gray-800 [&_.ql-editor]:min-h-[200px] [&_.ql-editor]:text-white [&_.ql-toolbar_svg]:text-white [&_.ql-toolbar_button]:text-white [&_.ql-toolbar_.ql-stroke]:stroke-white [&_.ql-toolbar_.ql-fill]:fill-white [&_.ql-toolbar_.ql-picker-label]:text-white"
+                    />
+                  </div>
+                </div>
+              </div>
+            </TabsContent>
+
+            {/* Test Cases Panel */}
+            <TabsContent value="Test Cases" className="rounded-xl bg-gray-900 p-6">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-lg font-medium">Test Cases</h2>
+                <div className="bg-gray-800 px-4 py-2 rounded-lg flex items-center gap-2">
+                  <span className="text-sm text-gray-400">Perfect Score:</span>
+                  <span className="text-lg font-bold text-green-400">{perfectScore}</span>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Test Case Input</label>
+                    <textarea
+                      value={testCaseInput}
+                      onChange={(e) => setTestCaseInput(e.target.value)}
+                      className="w-full rounded-lg bg-gray-800 border border-gray-700 p-2 min-h-[150px]"
+                      placeholder="Enter input for this test case"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Test Case Output</label>
+                    <textarea
+                      value={testCaseOutput}
+                      onChange={(e) => setTestCaseOutput(e.target.value)}
+                      className="w-full rounded-lg bg-gray-800 border border-gray-700 p-2 min-h-[150px]"
+                      placeholder="Enter expected output for this test case"
+                    />
+                  </div>
+
+                  <TestCaseControls
+                    ref={testCaseControlsRef}
+                    onSampleChange={setIsSample}
+                    onScoreChange={setTestCaseScore}
+                    defaultScore={10}
+                  />
+
+                  <button
+                    type="button"
+                    onClick={handleAddTestCase}
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-lg py-2 flex items-center justify-center gap-2"
+                  >
+                    <span>Add Test Case</span>
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-2">Added Test Cases</label>
+                  <div className="bg-gray-800 rounded-lg p-4 min-h-[400px] border border-gray-700 overflow-y-auto">
+                    <div className="space-y-2">
+                      {testCases.map((testCase, index) => (
+                        <motion.div
+                          key={index}
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          className="bg-gray-700 rounded-lg p-3"
+                        >
+                          <div className="flex justify-between items-start mb-2">
+                            <div className="space-y-1">
+                              <span className="text-sm font-medium">Test Case #{index + 1}</span>
+                              <div className="flex gap-2">
+                                {testCase.is_sample && (
+                                  <span className="text-xs bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded">
+                                    Sample
+                                  </span>
+                                )}
+                                {testCase.is_eval && (
+                                  <span className="text-xs bg-green-500/20 text-green-300 px-2 py-0.5 rounded">
+                                    Evaluation
+                                  </span>
+                                )}
+                                <span className="text-xs bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded">
+                                  Score: {testCase.score}
+                                </span>
+                              </div>
+                            </div>
+                            <button
+                              onClick={() => handleDeleteTestCase(testCase)}
+                              className="text-red-400 hover:text-red-300 p-1 rounded-lg hover:bg-red-400/10"
+                            >
+                              <X className="w-4 h-4" />
+                            </button>
+                          </div>
+                          <div className="text-sm space-y-2">
+                            <div className="bg-gray-800 p-2 rounded">
+                              <div className="text-gray-400">Input:</div>
+                              <div className="font-mono">{testCase.input}</div>
+                            </div>
+                            <div className="bg-gray-800 p-2 rounded">
+                              <div className="text-gray-400">Output:</div>
+                              <div className="font-mono">{testCase.output}</div>
+                            </div>
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </TabsContent>
+          </Tabs>
 
           <div className="mt-6 flex justify-end">
             <button
@@ -591,6 +680,6 @@ export default function Page({ params }: { params: { slug: string } }) {
           </div>
         </form>
       </div>
-    </div>
+    </div >
   );
 }

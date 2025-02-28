@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 import { Editor } from '@monaco-editor/react';
 import { Button } from '@/components/ui/button';
@@ -21,9 +21,11 @@ import {
 } from '@/utilities/rapidApi';
 import { ProblemSchemaInferredType } from '@/lib/interface/problem';
 import { getUser } from '@/lib/auth';
+import { debounce } from 'lodash';
 
 // Code Replay Imports
 import { editor as Monaco } from 'monaco-editor';
+import { useQueryClient } from '@tanstack/react-query';
 
 type LanguageData = {
   id: number;
@@ -50,17 +52,25 @@ interface CodeEditorProps {
   userType: 'mentor' | 'learner';
   roomId: string;
   problemId: string;
-  autoSaveEnabled?: boolean; // New prop for toggling autosave
+  room: any;
 }
 
-export default function CodeEditor({ userType, roomId, problemId, autoSaveEnabled = false }: CodeEditorProps) {
+const DEFAULT_TEMPLATE = `#include <iostream>
+using namespace std;
+
+int main() {
+    // Your code here
+    return 0;
+}`;
+
+export default function CodeEditor({ userType, roomId, problemId, room }: CodeEditorProps) {
   const editorRef = useRef<Monaco.IStandaloneCodeEditor>();
+  const queryClient = useQueryClient();
 
   // State management
   const [problem, setProblem] = useState<ProblemSchemaInferredType>();
-  const [editorValue, setEditorValue] = useState<string>(
-    '#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}'
-  );
+  const [startTime, setStartTime] = useState<number>(Date.now());
+  const [editorValue, setEditorValue] = useState<string>(DEFAULT_TEMPLATE);
   const [selectedLang, setSelectedLang] = useState<string>(SUPPORTED_LANGUAGES.CPP);
   const [compileResult, setCompileResult] = useState<any>();
   const [languages, setLanguages] = useState<LanguageData[]>();
@@ -71,11 +81,24 @@ export default function CodeEditor({ userType, roomId, problemId, autoSaveEnable
   const [learner, setLearner] = useState<string>();
   const [isInitialized, setIsInitialized] = useState(false);
 
+  const [user, setUser] = useState<any>();
+  const [submitting, setSubmitting] = useState(false);
+
+  // LEARNER ID LOGGING
+  useEffect(() => {
+    console.log("LEARNER ID: ", learner);
+  }, [learner]);
+
   // Autosave states
   const [lastSaved, setLastSaved] = useState<string>('');
   const [saving, setSaving] = useState<boolean>(false);
   const [snapshots, setSnapshots] = useState<any[]>([]);
   const [enhancedPastes, setEnhancedPastes] = useState<EnhancedPasteInfo[]>([]);
+  const [autoSaveToggle, setAutoSaveToggle] = useState<boolean>(false);
+
+  useEffect(() => {
+    setAutoSaveToggle(userType ? userType === 'learner' : false);
+  }, [userType]);
 
   type EnhancedPasteInfo = {
     text: string;
@@ -90,101 +113,123 @@ export default function CodeEditor({ userType, roomId, problemId, autoSaveEnable
     };
   };
 
-  // Function to check if code has significant changes
-  const hasSignificantChanges = (newCode: string, oldCode: string) => {
-    const lengthDiff = Math.abs(newCode.length - oldCode.length);
-    return lengthDiff > 50; // Consider changes significant if more than 50 characters are added/removed
+  // // Function to check if code has significant changes
+  // const hasSignificantChanges = (newCode: string, oldCode: string) => {
+  //   const lengthDiff = Math.abs(newCode.length - oldCode.length);
+  //   return lengthDiff > 15; // Consider changes significant if more than 50 characters are added/removed
+  // };
+
+  // Define autoSaveCode 
+  const autoSaveCode = async (codeToSave: string) => {
+    if (codeToSave === lastSaved) return;
+    setSaving(true);
+    try {
+      console.log('Auto-saving...');
+
+      // Check if user is defined
+      if (!user) {
+        console.warn("User data not yet loaded, skipping auto-save.");
+        return; // Or handle this case appropriately (e.g., retry later)
+      }
+
+      // Find the last version from existing snapshots
+      const lastVersion = snapshots.length > 0
+        ? Math.max(...snapshots.map(snapshot => snapshot.version || 0))
+        : 0;
+
+      // Increment the last version by 1
+      const nextVersion = lastVersion + 1;
+
+      const saveResponse = await fetch('/api/codereplay/code-snapshots', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          code: codeToSave,
+          learner_id: user.id,
+          problemId: problemId,
+          roomId: roomId,
+          submissionId: `submission-${Date.now()}`,
+          version: nextVersion // Explicitly pass the next version
+        }),
+      });
+
+      if (saveResponse.ok) {
+        const savedData = await saveResponse.json();
+        if (savedData.snippet) {
+          // Update snapshots while maintaining order
+          setSnapshots(prevSnapshots => {
+            const updatedSnapshots = [...prevSnapshots, savedData.snippet];
+            return updatedSnapshots.sort((a, b) => {
+              if (a.version && b.version) {
+                return a.version - b.version;
+              }
+              return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
+            });
+          });
+
+          setLastSaved(codeToSave);
+        }
+      } else {
+        console.error('Auto-save failed:', saveResponse.statusText);
+      }
+    } catch (error) {
+      console.error('Auto-save error:', error);
+    } finally {
+      setSaving(false);
+    }
   };
+
+  const debouncedAutoSave = useCallback(
+    debounce((codeToSave: string) => {
+      if (codeToSave === lastSaved || !user) return;
+      console.log('Debounced auto-saving...');
+      autoSaveCode(codeToSave);
+    }, 10000),
+    [lastSaved, user, autoSaveCode]
+  );
+
 
   // Auto-save effect
   useEffect(() => {
-    if (!autoSaveEnabled) return;
+    if (!autoSaveToggle) return;
 
-    // Autosave Functions
-    const autoSaveCode = async (codeToSave: string) => {
-      if (codeToSave === lastSaved) return;
-      setSaving(true);
-      try {
-        console.log('Auto-saving...');
-
-        // Find the last version from existing snapshots
-        const lastVersion = snapshots.length > 0
-          ? Math.max(...snapshots.map(snapshot => snapshot.version || 0))
-          : 0;
-
-        // Increment the last version by 1
-        const nextVersion = lastVersion + 1;
-
-        const saveResponse = await fetch('/api/codereplay/code-snapshots', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            code: codeToSave,
-            learner_id: learner,
-            problemId: problemId,
-            roomId: roomId,
-            submissionId: `submission-${Date.now()}`,
-            version: nextVersion // Explicitly pass the next version
-          }),
-        });
-
-        if (saveResponse.ok) {
-          const savedData = await saveResponse.json();
-          if (savedData.snippet) {
-            // Update snapshots while maintaining order
-            setSnapshots(prevSnapshots => {
-              const updatedSnapshots = [...prevSnapshots, savedData.snippet];
-              return updatedSnapshots.sort((a, b) => {
-                if (a.version && b.version) {
-                  return a.version - b.version;
-                }
-                return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
-              });
-            });
-
-            setLastSaved(codeToSave);
-            console.log("snapshots: ", snapshots);
-          }
-        }
-      } catch (error) {
-        console.error('Auto-save error:', error);
-      } finally {
-        setSaving(false);
-      }
-    };
-
-    let autoSaveTimer: NodeJS.Timeout;
+    // Call the debounced function when editor value changes
+    if (editorValue !== lastSaved) {
+      debouncedAutoSave(editorValue);
+    }
 
     const handleVisibilityChange = () => {
-      if (document.hidden && editorValue !== lastSaved) {
+      if (document.hidden && editorValue !== lastSaved && user) {
+        // Cancel pending debounced saves and save immediately
+        debouncedAutoSave.cancel();
         autoSaveCode(editorValue);
       }
     };
 
     const handleBeforeUnload = () => {
-      if (editorValue !== lastSaved) {
+      if (editorValue !== lastSaved && user) {
+        // Cancel pending debounced saves and save immediately
+        debouncedAutoSave.cancel();
         autoSaveCode(editorValue);
       }
     };
 
-    // Save on significant changes or every 10 seconds
-    if (editorValue !== '// Start coding here' &&
-      (hasSignificantChanges(editorValue, lastSaved) || editorValue !== lastSaved)) {
-      autoSaveTimer = setTimeout(() => {
-        autoSaveCode(editorValue);
-      }, 10000);
-    }
-
-    // Add event listeners for tab/window changes
+    // Add event listeners
     document.addEventListener('visibilitychange', handleVisibilityChange);
     window.addEventListener('beforeunload', handleBeforeUnload);
 
     return () => {
-      clearTimeout(autoSaveTimer);
+      // Cancel pending debounced operations on cleanup
+      debouncedAutoSave.cancel();
       document.removeEventListener('visibilitychange', handleVisibilityChange);
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
-  }, [editorValue, autoSaveEnabled, lastSaved,]);
+  }, [editorValue, autoSaveToggle, lastSaved, debouncedAutoSave, autoSaveCode]);
+
+  // SNAPSHOTS LOG
+  useEffect(() => {
+    console.log("Snapshots: ", snapshots);
+  }, [snapshots]);
 
   // Replace the handleEditorDidMount function
   function handleEditorDidMount(editor: any) {
@@ -273,6 +318,7 @@ export default function CodeEditor({ userType, roomId, problemId, autoSaveEnable
     }
 
     const initializeData = async () => {
+      console.log('Initializing data...');
       await SilentLogin();
 
       const [problemData, languagesData, userData] = await Promise.all([
@@ -280,12 +326,16 @@ export default function CodeEditor({ userType, roomId, problemId, autoSaveEnable
         getLanguages(),
         getUser()
       ]);
+      console.log("Problem Data: ", problemData);
+      console.log("Languages Data: ", languagesData);
+      console.log("User Data: ", userData);
 
       // Filter only supported languages
       const filteredLanguages = languagesData.filter((lang: LanguageData) =>
-        Object.values(SUPPORTED_LANGUAGES).includes(lang.id.toString())
+        Object.values(SUPPORTED_LANGUAGES).includes(lang.id.toString() as "54" | "62" | "71" | "50" | "51" | "63")
       );
 
+      setUser(userData);
       setProblem(problemData);
       setLanguages(filteredLanguages);
       setLearner(userData.id);
@@ -304,138 +354,145 @@ export default function CodeEditor({ userType, roomId, problemId, autoSaveEnable
     return await postSubmission(data).then((res) => res.token);
   }
 
-  async function handleSubmit(isTest: boolean = true) {
-    if (!editorValue || !selectedLang) {
-      toast({
-        title: 'Language and source code should not be empty...',
-        variant: 'destructive',
-      });
-      return;
-    }
+  const isAfterDueDate = room?.dueDate ? new Date() > new Date(room.dueDate) : false;
 
-    const eval_problems = isTest
-      ? problem?.test_cases.filter((item) => item.is_sample)
-      : problem?.test_cases.filter((item) => item.is_eval);
+  async function getSubmissionResult(token: string): Promise<any> {
+    let result;
+    let attempts = 0;
+    const maxAttempts = 999;
 
-    if (!eval_problems?.length) {
-      toast({
-        title: 'Cannot test, problem setter did not provide any sample cases. Use custom input instead',
-        variant: 'destructive',
-      });
-      return;
-    }
+    while (attempts < maxAttempts) {
+      result = await getSubmission(token);
 
-    const payload = eval_problems.map((val) => ({
-      language_id: +selectedLang!,
-      source_code: btoa(editorValue),
-      stdin: btoa(val.input),
-      expected_output: btoa(val.output),
-    }));
-
-    try {
-      toast({ title: isTest ? 'Testing submission' : 'Processing submission' });
-      const submissions = await postBatchSubmissions(payload);
-      const tokens = submissions?.map((token: any) => token.token);
-
-      const batchSubmissions = await getBatchSubmisisons(tokens.join());
-      setBatchResult(batchSubmissions.submissions);
-
-      const accepted = batchSubmissions.submissions.filter(
-        (obj: any) => obj.status.description === 'Accepted'
-      );
-
-      const newScore = {
-        accepted_count: accepted.length,
-        overall_count: batchSubmissions.submissions.length,
-      };
-      setScore(newScore);
-
-      // Update the submission section in handleSubmit
-      if (!isTest) {
-        try {
-          const language_used = await getLanguage(+selectedLang);
-
-          // Format dates consistently
-          const startTime = parseInt(localStorage.getItem(problemId + '_started') || Date.now().toString());
-          const endTime = Date.now();
-
-          const submissionData = {
-            language_used: language_used.name,
-            code: editorValue,
-            score: newScore.accepted_count,
-            score_overall_count: newScore.overall_count,
-            verdict: newScore.overall_count === newScore.accepted_count ? 'ACCEPTED' : 'REJECTED',
-            learner: learner,
-            problem: problemId,
-            room: roomId,
-            attempt_count: 1,
-            start_time: startTime,
-            end_time: endTime,
-            completion_time: endTime - startTime,
-            user_type: userType
-          };
-
-          console.log('Sending submission data:', submissionData);
-
-          const url = `${process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost'}:${process.env.NEXT_PUBLIC_SERVER_PORT || '3000'}/api/userSubmissions`;
-
-          const response = await fetch(url, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(submissionData)
-          });
-
-          // Log the raw response for debugging
-          const responseText = await response.text();
-          console.log('Raw response:', responseText);
-
-          if (!response.ok) {
-            // Try to parse error response
-            let errorMessage = 'Server error';
-            try {
-              const errorData = JSON.parse(responseText);
-              errorMessage = errorData.message || errorData.error || 'Unknown error';
-            } catch (e) {
-              errorMessage = responseText || `HTTP ${response.status}`;
-            }
-            throw new Error(errorMessage);
-          }
-
-          // Parse the success response
-          const result = JSON.parse(responseText);
-
-          toast({
-            title: 'Submission saved successfully',
-            description: newScore.accepted_count === newScore.overall_count
-              ? 'All test cases passed!'
-              : `${newScore.accepted_count}/${newScore.overall_count} test cases passed`,
-          });
-
-        } catch (error) {
-          console.error('Submission error details:', {
-            error,
-            submissions
-          });
-
-          toast({
-            title: 'Failed to save submission',
-            description: (error instanceof Error ? error.message : 'Please try again'),
-            variant: 'destructive'
-          });
-        }
-      } else {
-        toast({ title: 'Test completed' });
+      // Check if processing is complete
+      if (result.status.id !== 1 && result.status.id !== 2) { // Not in queue or processing
+        return result;
       }
 
-    } catch (error) {
-      console.error('Processing error:', error);
-      toast({
-        title: 'An error occurred while processing your submission',
-        description: 'Please try again',
-        variant: 'destructive'
+      // Wait before next attempt
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      attempts++;
+    }
+
+    throw new Error('Submission processing timeout');
+  }
+
+  async function handleSubmit() {
+    try {
+      setSubmitting(true);
+
+      // Validate required user data
+      if (!user?.auth?.username || !user?.id || !problemId || !roomId) {
+        throw new Error('Missing required user data');
+      }
+
+      const testResults = [];
+      let totalScore = 0;
+      let correctTestCases = 0;
+
+      // Run test cases and calculate score
+      if (!problem) {
+        throw new Error('Problem data is not loaded');
+      }
+      for (let i = 0; i < problem.test_cases.length; i++) {
+        const testCase = problem.test_cases[i];
+        const token = await getToken(testCase.input, testCase.output);
+        const result = await getSubmissionResult(token);
+
+        // Compare output exactly with proper trimming
+        const userOutput = result.stdout ? atob(result.stdout).trim().replace(/\r\n/g, '\n') : '';
+        const expectedOutput = testCase.output.trim().replace(/\r\n/g, '\n');
+        const isAccepted = userOutput === expectedOutput;
+
+        const testResult = {
+          ...result,
+          status: {
+            ...result.status,
+            description: isAccepted ? "Accepted" : "Wrong Answer"
+          },
+          score: isAccepted ? Number(testCase.score) : 0
+        };
+
+        testResults.push(testResult);
+
+        if (isAccepted) {
+          totalScore += Number(testCase.score) || 0;
+          correctTestCases++;
+        }
+      }
+
+      // Calculate perfect score from test cases
+      const perfectScore = problem.test_cases.reduce((sum, test) => sum + (test.score || 0), 0);
+
+      const submissionData = {
+        language_used: selectedLang,
+        code: editorValue,
+        score: totalScore,
+        score_overall_count: totalScore,
+        verdict: totalScore > 0 ? 'ACCEPTED' : 'REJECTED',
+        learner: user.auth.username,
+        learner_id: user.id,
+        problem: problemId,
+        room: roomId,
+        start_time: Number(localStorage.getItem(problemId + '_started')),
+        end_time: Date.now(),
+        completion_time: Date.now() - Number(localStorage.getItem(problemId + '_started')),
+        attempt_count: 1
+      };
+
+      const formData = new FormData();
+      Object.entries(submissionData).forEach(([key, value]) => {
+        formData.append(key, String(value));
       });
+
+      formData.append('testResults', JSON.stringify(testResults));
+      formData.append('problemData', JSON.stringify({
+        ...problem,
+        perfect_score: perfectScore
+      }));
+
+      const response = await fetch('/api/userSubmissions', {
+        method: 'POST',
+        body: formData
+      });
+
+      if (!response.ok) {
+        const responseData = await response.json();
+        throw new Error(responseData.error || 'Failed to create submission');
+      }
+
+      await queryClient.invalidateQueries({
+        queryKey: ['submissions', roomId, problemId]
+      });
+
+      // Display toast message with correct test cases
+      toast({
+        title: "Submission complete",
+        description: (
+          <div>
+            <p>Score: {totalScore}/{perfectScore}</p>
+            <p>Correct Test Cases: {correctTestCases}/{problem.test_cases.length}</p>
+          </div>
+        ),
+      });
+
+      // Activate confetti if the score is perfect
+      // if (totalScore === perfectScore) {
+      //   confetti({
+      //     particleCount: 100,
+      //     spread: 70,
+      //     origin: { y: 0.6 }
+      //   });
+      // }
+
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to submit solution",
+        variant: "destructive",
+      });
+    } finally {
+      setSubmitting(false);
     }
   }
 
@@ -532,7 +589,7 @@ export default function CodeEditor({ userType, roomId, problemId, autoSaveEnable
 
           toast({
             title: newScore.accepted_count === newScore.overall_count
-              ? 'All test cases passed!'
+              ? 'All sample test cases passed!'
               : `${newScore.accepted_count}/${newScore.overall_count} test cases passed`,
             variant: newScore.accepted_count === newScore.overall_count ? 'default' : 'destructive'
           });
@@ -562,6 +619,11 @@ export default function CodeEditor({ userType, roomId, problemId, autoSaveEnable
       </div>
     </PanelResizeHandle>
   );
+
+  const cn = (...args: (string | boolean)[]): string => {
+    return args.filter(Boolean).join(' ');
+  };
+
 
   return (
     <div className="h-screen bg-gray-900 text-white">
@@ -669,7 +731,7 @@ export default function CodeEditor({ userType, roomId, problemId, autoSaveEnable
                   onChange={(e) => setSelectedLang(e.target.value)}
                 >
                   {languages?.filter(lang =>
-                    Object.values(SUPPORTED_LANGUAGES).includes(lang.id.toString())
+                    Object.values(SUPPORTED_LANGUAGES).includes(lang.id.toString() as "54" | "62" | "71" | "50" | "51" | "63")
                   ).map((lang) => (
                     <option
                       key={lang.id}
@@ -698,12 +760,15 @@ export default function CodeEditor({ userType, roomId, problemId, autoSaveEnable
                 <Button
                   variant="default"
                   onClick={() => {
-                    handleSubmit(false);
+                    handleSubmit();
                     setShowCustomInput(false);
                   }}
-                  className="bg-[#FFD700] text-black hover:bg-[#FFD700]/90"
+                  disabled={isAfterDueDate}
+                  className={cn(
+                    isAfterDueDate && "cursor-not-allowed opacity-50"
+                  )}
                 >
-                  Submit
+                  {isAfterDueDate ? "Submission Closed" : "Submit"}
                 </Button>
               </div>
             </div>
@@ -733,7 +798,7 @@ export default function CodeEditor({ userType, roomId, problemId, autoSaveEnable
                 </div>
               </Panel>
 
-              {/* <VerticalResizeHandle /> */}
+              <VerticalResizeHandle />
 
               {/* Results Panel */}
               <Panel defaultSize={30} minSize={20}>
@@ -825,7 +890,7 @@ export default function CodeEditor({ userType, roomId, problemId, autoSaveEnable
                         </Tabs>
                       ) : (
                         <div className="text-center text-gray-400 py-8">
-                          No test results yet. Click &quot;Try&quot or &quotSubmit&quot; to run your code.
+                          No test results yet. Click &quot;Try&quot; or &quot;Submit&quot; to run your code.
                         </div>
                       )}
                     </div>

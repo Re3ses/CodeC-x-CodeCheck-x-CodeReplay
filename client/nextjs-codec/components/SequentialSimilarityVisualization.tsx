@@ -30,8 +30,8 @@ interface CodeSnapshot {
   version?: number;
 }
 interface SequentialSimilarity {
-  fromIndex: number;
-  toIndex: number;
+  from_index: number;
+  to_index: number;
   learner_id: string; // Use learner_id consistently
   similarity: number;
   codebertScore: number;
@@ -86,6 +86,10 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
   }, [snapshots, pastedSnippets]); // Added pastedSnippets to the dependency array
 
   useEffect(() => {
+    console.log("sequential similarities calculated: ", sequentialSimilarities);
+  }, [sequentialSimilarities]); // Added sequentialSimilarities to the dependency array
+
+  useEffect(() => {
     const calculateSequentialSimilarities = async (snapshotsToCompare: CodeSnapshot[]) => {
       try {
         const learnerId = snapshotsToCompare[0].learner_id;
@@ -137,7 +141,7 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
 
   // Add useEffect to log and set local state for snippets
   useEffect(() => {
-    console.log('Received Paste Snippets:', pastedSnippets);
+    // console.log('Received Paste Snippets:', pastedSnippets);
     if (pastedSnippets && pastedSnippets.length > 0) {
       setLocalPastedSnippets(pastedSnippets);
       setPasteCount(pastedSnippets.length);
@@ -153,7 +157,7 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
 
   // Compute advanced metrics
   const advancedMetrics = useMemo(() => {
-    console.log('Calculating metrics with similarities:', sequentialSimilarities); // Keep the console log
+    // console.log('Calculating metrics with similarities:', sequentialSimilarities); // Keep the console log
 
     if (sequentialSimilarities.length === 0) {
       console.log('No sequential similarities available'); // Keep the console log
@@ -183,13 +187,13 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
       (100 - minSimilarity) * 0.2 +
       (normalizedVariance) * 0.2;
 
-    console.log('Metrics:', { // Keep the console log
-      maxChange,
-      averageSimilarity,
-      minSimilarity,
-      normalizedVariance,
-      weightedScore
-    });
+    // console.log('Metrics:', { // Keep the console log
+    //   maxChange,
+    //   averageSimilarity,
+    //   minSimilarity,
+    //   normalizedVariance,
+    //   weightedScore
+    // });
 
     return {
       maxChange: Math.round(maxChange),
@@ -206,7 +210,7 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
 
   // Prepare data for the chart
   const chartData = sequentialSimilarities.map((similarity, index) => ({
-    name: `Snapshot ${similarity.fromIndex + 1} to ${similarity.toIndex + 1}`,
+    name: `Snapshot ${Number.isFinite(similarity.from_index) ? similarity.from_index + 1 : '?'} to ${Number.isFinite(similarity.to_index) ? similarity.to_index + 1 : '?'}`,
     similarity: similarity.similarity,
     codebertScore: similarity.codebertScore
   }));
