@@ -80,6 +80,7 @@ def get_similarity_matrix():
     try:
         problem_id = request.args.get("problemId")
         room_id = request.args.get("roomId")
+        verdict = request.args.get("verdict")
 
         if not problem_id and not room_id:
             return (
@@ -89,13 +90,23 @@ def get_similarity_matrix():
                 400,
             )
 
-        query = {"verdict": "ACCEPTED"}
+        query = {"verdict": verdict or "ACCEPTED"}
         if problem_id:
             query["problem"] = problem_id
         if room_id:
             query["room"] = room_id
 
-        submissions = list(userSubmissionsCollection.find(query))
+        # To get the highest-scoring submission per learner:
+        submissions = list(
+            userSubmissionsCollection.aggregate(
+                [
+                    {"$match": query},
+                    {"$sort": {"score_overall_count": -1}},  # Sort by score descending
+                    {"$group": {"_id": "$learner_id", "doc": {"$first": "$$ROOT"}}},
+                    {"$replaceRoot": {"newRoot": "$doc"}},
+                ]
+            )
+        )
 
         for submission in submissions:
             submission["_id"] = str(submission["_id"])
