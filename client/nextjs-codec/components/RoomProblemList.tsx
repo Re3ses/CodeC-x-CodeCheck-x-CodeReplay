@@ -93,10 +93,6 @@ export default function RoomProblemList({ params }: { params: { slug: string } }
     enabled: !isMentor && !!userQuery.data?.id // Only fetch for learners and learners with an ID
   });
 
-  useEffect(() => {
-    console.log(submissionsQuery.data);
-  }, [submissionsQuery.data]);
-
 
 
   const handleDelete = async (problemId: string, problemName: string) => {

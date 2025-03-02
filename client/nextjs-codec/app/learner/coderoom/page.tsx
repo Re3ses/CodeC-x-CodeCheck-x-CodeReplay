@@ -53,19 +53,38 @@ export default function Joined() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {roomsQuery.data?.map((item: RoomSchemaInferredType) => (
-                <TableRow key={item.id}>
+              {roomsQuery.data?.map((room: RoomSchemaInferredType) => (
+                <TableRow key={room.id} className={`cursor-pointer hover:bg-muted/50 
+                  ${room.dueDate && new Date() > new Date(room.dueDate)
+                    ? "opacity-50"
+                    : ""
+                  }`} >
                   <TableCell className="font-medium">
                     <div className="flex items-center gap-2">
                       <Users className="h-4 w-4 text-muted-foreground" />
-                      {item.name}
+                      {room.name}
                     </div>
                   </TableCell>
                   <TableCell className="text-muted-foreground">
-                    {item.description}
+                    {room.dueDate && (
+                      <div className="flex items-center mt-2 text-sm">
+                        <span className="font-medium mr-2">Due:</span>
+                        <span className={`${new Date() > new Date(room.dueDate) ? "text-red-500" : "text-green-500"} font-medium`}>
+                          {new Date(room.dueDate).toLocaleDateString('en-US', {
+                            weekday: 'short',
+                            year: 'numeric',
+                            month: 'short',
+                            day: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                          })}
+                        </span>
+                      </div>
+                    )}
+                    {room.description}
                   </TableCell>
                   <TableCell className="text-right">
-                    <Link href={`/learner/coderoom/r/${item.slug}`}>
+                    <Link href={`/learner/coderoom/r/${room.slug}`}>
                       <Button variant="default" size="sm">
                         Enter Room
                       </Button>
@@ -77,6 +96,6 @@ export default function Joined() {
           </Table>
         </div>
       </CardContent>
-    </Card>
+    </Card >
   );
 }

@@ -32,7 +32,7 @@ export default function ChangePasswordForm() {
   };
 
   const validatePasswordLength = (value: string) => {
-    return value.length >= PASSWORD_MIN_LENGTH || 
+    return value.length >= PASSWORD_MIN_LENGTH ||
       `Password must be at least ${PASSWORD_MIN_LENGTH} characters`;
   };
 
@@ -74,7 +74,7 @@ export default function ChangePasswordForm() {
               id="old"
               type="password"
               placeholder="Enter current password"
-              {...register('old', { 
+              {...register('old', {
                 required: 'Current password is required'
               })}
               aria-invalid={errors.old ? 'true' : 'false'}
@@ -127,8 +127,8 @@ export default function ChangePasswordForm() {
             )}
           </div>
 
-          <Button 
-            type="submit" 
+          <Button
+            type="submit"
             className="w-full"
             disabled={isSubmitting}
           >

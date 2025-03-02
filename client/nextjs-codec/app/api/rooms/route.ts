@@ -6,12 +6,12 @@ import { nanoid } from 'nanoid'
 import { CreateRoom } from '@/utilities/apiService';
 
 export async function DELETE(request: NextRequest) {
-  console.log('DELETE request received');
+  // console.log('DELETE request received');
 
   const searchParams = request.nextUrl.searchParams;
   const room_id: string | null = searchParams.get('room_id');
 
-  console.log('room_id:', room_id);
+  // console.log('room_id:', room_id);
 
   if (!room_id) {
     return new NextResponse('Room ID is required', { status: 400 });
@@ -19,7 +19,7 @@ export async function DELETE(request: NextRequest) {
 
   try {
     await dbConnect();
-    console.log('Database connected successfully');
+    // console.log('Database connected successfully');
 
     const db = mongoose.connection;
     const rooms = db.collection('coderooms');
@@ -29,11 +29,11 @@ export async function DELETE(request: NextRequest) {
       return new NextResponse('Invalid Room ID', { status: 400 });
     }
 
-    console.log("room_id is a valid ObjectId");
-    console.log("Trying to delete room with id of:", room_id);
+    // console.log("room_id is a valid ObjectId");
+    // console.log("Trying to delete room with id of:", room_id);
 
     const result = await rooms.deleteOne({ _id: new ObjectId(room_id) });
-    console.log("result:", result);
+    // console.log("result:", result);
     if (result.deletedCount === 0) {
       return new NextResponse(`No room found with id: ${room_id}`, { status: 404 });
     }
@@ -118,7 +118,7 @@ export async function POST(request: Request) {
       slug: `${data.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${nanoid(6)}`,
     };
 
-    console.log('Creating room with data:', roomData); // Debug log
+    // console.log('Creating room with data:', roomData); // Debug log
 
     const res = await CreateRoom(roomData);
 

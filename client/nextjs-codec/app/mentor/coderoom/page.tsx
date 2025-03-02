@@ -85,25 +85,46 @@ export default function ClassroomManagement() {
         <div className="rounded-md border">
           <Table>
             <TableHeader>
-              <TableRow>
-                <TableHead className="w-[300px]">Name</TableHead>
-                <TableHead className="min-w-[300px]">Description</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
+              <TableRow className='grid grid-cols-12'>
+                <TableHead className="col-span-4 flex items-center w-[300px]">Name</TableHead>
+                <TableHead className="col-span-5 flex items-center min-w-[300px]">Description</TableHead>
+                <TableHead className="col-span-3 flex items-center justify-end">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {roomsQuery.data?.map((room: any) => (
-                <TableRow key={room.id} className="cursor-pointer hover:bg-muted/50">
+                <TableRow key={room.id} className={`cursor-pointer hover:bg-muted/50 
+                  ${room.dueDate && new Date() > new Date(room.dueDate)
+                    ? "opacity-50"
+                    : ""
+                  }`} >
                   <TableCell colSpan={3} className="p-0">
                     <Link
                       className="block w-full h-full"
                       href={`/mentor/coderoom/r/${room.slug}?${searchParams}`}
                       passHref
                     >
-                      <div className="grid grid-cols-12 w-full">
-                        <div className="col-span-4 p-4 font-medium flex items-center">{room.name}</div>
-                        <div className="col-span-5 p-4 text-muted-foreground flex items-center">{room.description}</div>
-                        <div className="col-span-3 p-4 flex justify-end items-center gap-2">
+                      <TableRow className="grid grid-cols-12 w-full">
+                        <TableCell className="col-span-4 p-4 font-medium flex items-center">{room.name}</TableCell>
+                        <TableCell className="col-span-5 p-4 text-muted-foreground flex items-start flex-col">
+                          {room.dueDate && (
+                            <div className="flex items-center mt-2 text-sm">
+                              <span className="font-medium mr-2">Due:</span>
+                              <span className={`${new Date() > new Date(room.dueDate) ? "text-red-500" : "text-green-500"} font-medium`}>
+                                {new Date(room.dueDate).toLocaleDateString('en-US', {
+                                  weekday: 'short',
+                                  year: 'numeric',
+                                  month: 'short',
+                                  day: 'numeric',
+                                  hour: '2-digit',
+                                  minute: '2-digit'
+                                })}
+                              </span>
+                            </div>
+                          )}
+                          {room.description}
+                        </TableCell>
+                        <TableCell className="col-span-3 p-4 flex justify-end items-center gap-2">
                           <Button variant="outline" size="sm" className="gap-2">
                             <LogIn className="h-4 w-4" />
                             Enter
@@ -138,8 +159,8 @@ export default function ClassroomManagement() {
                               </DialogFooter>
                             </DialogContent>
                           </Dialog>
-                        </div>
-                      </div>
+                        </TableCell>
+                      </TableRow>
                     </Link>
                   </TableCell>
                 </TableRow>
@@ -148,6 +169,6 @@ export default function ClassroomManagement() {
           </Table>
         </div>
       </CardContent>
-    </Card>
+    </Card >
   );
 }

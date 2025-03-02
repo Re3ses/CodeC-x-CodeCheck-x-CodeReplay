@@ -80,37 +80,37 @@ export default function Page() {
     fetchData();
   }, [params.type, params.id, params.query, router]);
 
-  const handleCompare = async () => {
-    setLoading(true);
-    try {
-
-      const res = await fetch("http://127.0.0.1:5000/compare", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          submissions: submissions,
-          query: {
-            model: params.query || "default", // "default", "ts_no-prep", "no-ts_prep", "no-ts_no-prep"
-            detection_type: "model" // Change this to "model" or "embeddings" to set the detection type
-          }
-        })
-      });
-      const data = await res.json();
-      setResults(data);
-    }
-    catch (e) {
-      console.error(e);
-    }
-    finally {
-      setLoading(false);
-    }
-  }
-
   useEffect(() => {
+    const handleCompare = async () => {
+      setLoading(true);
+      try {
+
+        const res = await fetch("http://127.0.0.1:5000/compare", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            submissions: submissions,
+            query: {
+              model: params.query || "default", // "default", "ts_no-prep", "no-ts_prep", "no-ts_no-prep"
+              detection_type: "model" // Change this to "model" or "embeddings" to set the detection type
+            }
+          })
+        });
+        const data = await res.json();
+        setResults(data);
+      }
+      catch (e) {
+        console.error(e);
+      }
+      finally {
+        setLoading(false);
+      }
+    }
+
     handleCompare();
-  }, [submissions]);
+  }, [submissions, params.query]);
 
   useEffect(() => {
     console.log("additionalInfo:", additionalInfo);

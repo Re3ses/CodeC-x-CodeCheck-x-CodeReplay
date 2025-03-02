@@ -404,6 +404,7 @@ export default function Page({ params }: { params: { slug: string } }) {
             <TabsList className="flex flex-wrap h-auto space-x-2 rounded-xl bg-gray-700 p-1 mb-6">
               {sections.map((section) => (
                 <TabsTrigger
+                  key={section.name}
                   value={section.name}
                   className="flex items-center gap-2"
                 >

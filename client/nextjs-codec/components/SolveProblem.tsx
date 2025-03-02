@@ -52,7 +52,7 @@ interface CodeEditorProps {
   userType: 'mentor' | 'learner';
   roomId: string;
   problemId: string;
-  room: any;
+  dueDate?: string;
 }
 
 const DEFAULT_TEMPLATE = `#include <iostream>
@@ -63,7 +63,7 @@ int main() {
     return 0;
 }`;
 
-export default function CodeEditor({ userType, roomId, problemId, room }: CodeEditorProps) {
+export default function CodeEditor({ userType, roomId, problemId, dueDate }: CodeEditorProps) {
   const editorRef = useRef<Monaco.IStandaloneCodeEditor>();
   const queryClient = useQueryClient();
 
@@ -85,9 +85,16 @@ export default function CodeEditor({ userType, roomId, problemId, room }: CodeEd
   const [submitting, setSubmitting] = useState(false);
 
   // LEARNER ID LOGGING
-  useEffect(() => {
-    console.log("LEARNER ID: ", learner);
-  }, [learner]);
+  // useEffect(() => {
+  //   // console.log("LEARNER ID: ", learner);
+  // }, [learner]);
+
+  // // In your SolveProblem.tsx component
+  // useEffect(() => {
+  //   console.log('Current date:', new Date());
+  //   console.log('Due date:', dueDate);
+  //   console.log('Is past due:', dueDate ? new Date() > new Date(dueDate) : false);
+  // }, [dueDate]);
 
   // Autosave states
   const [lastSaved, setLastSaved] = useState<string>('');
@@ -119,17 +126,16 @@ export default function CodeEditor({ userType, roomId, problemId, room }: CodeEd
   //   return lengthDiff > 15; // Consider changes significant if more than 50 characters are added/removed
   // };
 
-  // Define autoSaveCode 
-  const autoSaveCode = async (codeToSave: string) => {
+  const autoSaveCode = useCallback(async (codeToSave: string) => {
     if (codeToSave === lastSaved) return;
     setSaving(true);
     try {
-      console.log('Auto-saving...');
+      // console.log('Auto-saving...');
 
       // Check if user is defined
       if (!user) {
         console.warn("User data not yet loaded, skipping auto-save.");
-        return; // Or handle this case appropriately (e.g., retry later)
+        return;
       }
 
       // Find the last version from existing snapshots
@@ -177,17 +183,16 @@ export default function CodeEditor({ userType, roomId, problemId, room }: CodeEd
     } finally {
       setSaving(false);
     }
-  };
+  }, [lastSaved, user, snapshots, roomId, problemId]);
 
   const debouncedAutoSave = useCallback(
     debounce((codeToSave: string) => {
       if (codeToSave === lastSaved || !user) return;
-      console.log('Debounced auto-saving...');
+      // console.log('Debounced auto-saving...');
       autoSaveCode(codeToSave);
     }, 10000),
     [lastSaved, user, autoSaveCode]
   );
-
 
   // Auto-save effect
   useEffect(() => {
@@ -224,12 +229,7 @@ export default function CodeEditor({ userType, roomId, problemId, room }: CodeEd
       document.removeEventListener('visibilitychange', handleVisibilityChange);
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
-  }, [editorValue, autoSaveToggle, lastSaved, debouncedAutoSave, autoSaveCode]);
-
-  // SNAPSHOTS LOG
-  useEffect(() => {
-    console.log("Snapshots: ", snapshots);
-  }, [snapshots]);
+  }, [user, editorValue, autoSaveToggle, lastSaved, debouncedAutoSave, autoSaveCode]);
 
   // Replace the handleEditorDidMount function
   function handleEditorDidMount(editor: any) {
@@ -237,7 +237,8 @@ export default function CodeEditor({ userType, roomId, problemId, room }: CodeEd
 
     editor.onDidPaste((event: any) => {
       try {
-        console.log("PASTE EVENT:", event);
+        // console.log("PASTE EVENT:", event);
+
         const model = editor.getModel();
         if (!model) return;
 
@@ -267,10 +268,10 @@ export default function CodeEditor({ userType, roomId, problemId, room }: CodeEd
     });
   }
 
-  // UseEffect to log paste history
-  useEffect(() => {
-    console.log("Paste History: ", enhancedPastes);
-  }, [enhancedPastes]);
+  // // UseEffect to log paste history
+  // useEffect(() => {
+  //   console.log("Paste History: ", enhancedPastes);
+  // }, [enhancedPastes]);
 
 
   useEffect(() => {
@@ -318,7 +319,7 @@ export default function CodeEditor({ userType, roomId, problemId, room }: CodeEd
     }
 
     const initializeData = async () => {
-      console.log('Initializing data...');
+      // console.log('Initializing data...');
       await SilentLogin();
 
       const [problemData, languagesData, userData] = await Promise.all([
@@ -326,9 +327,9 @@ export default function CodeEditor({ userType, roomId, problemId, room }: CodeEd
         getLanguages(),
         getUser()
       ]);
-      console.log("Problem Data: ", problemData);
-      console.log("Languages Data: ", languagesData);
-      console.log("User Data: ", userData);
+      // console.log("Problem Data: ", problemData);
+      // console.log("Languages Data: ", languagesData);
+      // console.log("User Data: ", userData);
 
       // Filter only supported languages
       const filteredLanguages = languagesData.filter((lang: LanguageData) =>
@@ -354,7 +355,7 @@ export default function CodeEditor({ userType, roomId, problemId, room }: CodeEd
     return await postSubmission(data).then((res) => res.token);
   }
 
-  const isAfterDueDate = room?.dueDate ? new Date() > new Date(room.dueDate) : false;
+  const isAfterDueDate = dueDate ? new Date() > new Date(dueDate) : false;
 
   async function getSubmissionResult(token: string): Promise<any> {
     let result;
