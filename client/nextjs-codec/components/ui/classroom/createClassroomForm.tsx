@@ -29,6 +29,9 @@ import { useToast } from '@/components/ui/use-toast';
 import { useQueryClient } from '@tanstack/react-query';
 import { getSession } from '@/lib/auth';
 import { Textarea } from '../textarea';
+import { Calendar } from "@/components/ui/calendar";
+import { CalendarIcon } from "lucide-react";
+import { format } from "date-fns";
 
 export default function CreateClassroomForm() {
   const queryClient = useQueryClient();
@@ -41,6 +44,8 @@ export default function CreateClassroomForm() {
     resolver: zodResolver(ClassroomSchema),
     defaultValues: {
       type: 'Competitive',
+      releaseDate: new Date(),
+      dueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days from now
     },
   });
 
@@ -48,26 +53,39 @@ export default function CreateClassroomForm() {
     try {
       const session = await getSession();
       const username = await session.username;
+
+      // Ensure dates are properly formatted
       const payload = {
         name: data.name,
         description: data.description,
-        type: 'Cooperative' as 'Competitive' | 'Cooperative',
+        type: data.type,
         mentor: username,
+        releaseDate: new Date(data.releaseDate),
+        dueDate: new Date(data.dueDate),
       };
+
+      console.log('Submitting payload:', payload); // Debug log
+
       const res = await CreateRoom(payload);
 
-      setSuccess(res !== 'error');
+      if (res === 'error') {
+        throw new Error('Failed to create classroom');
+      }
 
-      console.log(res);
-
-      queryClient.refetchQueries({ queryKey: ['rooms'] });
+      setSuccess(true);
+      queryClient.refetchQueries({ queryKey: ['coderooms'] }); // Update query key
 
       toast({
         title: 'Coderoom created',
         description: 'You can see the invite code in the room itself',
       });
     } catch (e) {
-      console.log(e);
+      console.error('Create room error:', e);
+      toast({
+        title: 'Error',
+        description: 'Failed to create classroom',
+        variant: 'destructive',
+      });
     }
   };
 
@@ -83,9 +101,8 @@ export default function CreateClassroomForm() {
           render={({ field }) => {
             return (
               <FormItem>
-                <FormLabel>Room name</FormLabel>
                 <FormControl>
-                  <Input placeholder="Chomsky's room" {...field} />
+                  <Input placeholder="Room Name" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -98,10 +115,9 @@ export default function CreateClassroomForm() {
           render={({ field }) => {
             return (
               <FormItem>
-                <FormLabel>Description</FormLabel>
                 <FormControl>
                   <Textarea
-                    placeholder="Chomsky's room is about..."
+                    placeholder="Description"
                     {...field}
                   />
                 </FormControl>
@@ -110,6 +126,49 @@ export default function CreateClassroomForm() {
             );
           }}
         />
+        <div className="grid gap-4 md:grid-cols-2">
+          <FormField
+            control={form.control}
+            name="releaseDate"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Release Date</FormLabel>
+                <FormControl>
+                  <div className="flex items-center">
+                    <Input
+                      type="date"
+                      {...field}
+                      value={field.value ? format(field.value, 'yyyy-MM-dd') : ''}
+                      onChange={e => field.onChange(new Date(e.target.value))}
+                    />
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="dueDate"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Due Date</FormLabel>
+                <FormControl>
+                  <div className="flex items-center">
+                    <Input
+                      type="date"
+                      {...field}
+                      value={field.value ? format(field.value, 'yyyy-MM-dd') : ''}
+                      onChange={e => field.onChange(new Date(e.target.value))}
+                    />
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
         <Button type="submit" disabled={success}>
           Create room
         </Button>

@@ -70,7 +70,7 @@ export async function getUser() {
     });
     const data = await res.json();
 
-    console.log('user data: ', data);
+    // console.log('user data: ', data);
 
     return data;
   } catch (e) {

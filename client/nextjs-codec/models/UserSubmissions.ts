@@ -15,8 +15,7 @@ export interface UserSubmissions extends mongoose.Document {
   completion_time: number;
   start_time: number;
   end_time: number;
-  similarity_score: number;
-  most_similar: string;
+  paste_history: string;
 }
 
 const UserSubmissionsSchema = new mongoose.Schema<UserSubmissions>({
@@ -79,15 +78,10 @@ const UserSubmissionsSchema = new mongoose.Schema<UserSubmissions>({
     type: Number, // in ms
     default: 0,
   },
-  similarity_score: {
-    type: Number,
-    default: 0,
-  },
-  most_similar: {
+  paste_history: {
     type: String,
-    default: '',
-  },
+    default: "",
+  }
 });
 
-export default mongoose.models.UserSubmission ||
-  mongoose.model<UserSubmissions>('UserSubmission', UserSubmissionsSchema);
+export default mongoose.models.UserSubmission || mongoose.model<UserSubmissions>('UserSubmission', UserSubmissionsSchema);

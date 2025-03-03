@@ -8,7 +8,7 @@ interface ContainerProps {
 export default function BorderedContainer(props: ContainerProps) {
   return (
     <div
-      className={`min-w-[200px] rounded-md border border-zinc-800 ${props.customStyle}`}
+      className={`rounded-md border border-zinc-800 ${props.customStyle}`}
     >
       {props.children}
     </div>

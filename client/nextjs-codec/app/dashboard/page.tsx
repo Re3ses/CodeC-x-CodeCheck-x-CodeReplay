@@ -1,78 +1,48 @@
-'use client';
+import React from 'react';
+import { Trophy } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
 
-import { useContext, useEffect, useState } from 'react';
-import { UserContext } from './contexts';
-import { UserSchemaInferredType } from '../../lib/interface/user';
+const inspirationalQuotes = [
+  "Every coding challenge is an opportunity to grow and innovate together.",
+  "In the world of programming, persistence and creativity build excellence.",
+  "Great solutions emerge when we embrace challenges with curiosity.",
+  "Today's challenges are tomorrow's stepping stones to success.",
+];
 
 export default function Page() {
-  const user: any = useContext(UserContext)!;
-
-  const [studentCount, setStudentCount] = useState<number>();
-  const [coderoomsCount, setCoderoomsCount] = useState<number>();
-  const [problemCount, setProblemCount] = useState<number>();
-  const [solvedProblemsCount, setSolvedProblemsCount] = useState<number>();
-  const [joinedRooms, setJoinedRoomsCount] = useState<number>();
-
-  useEffect(() => {
-    const res = async () => {
-      await fetch(`/api/metrics?user_id=${user._id}`).then(async (value) => {
-        if (user.type === 'Mentor') {
-          const { created_coderooms_count, created_problems_count } =
-            await value.json();
-          setCoderoomsCount(created_coderooms_count);
-          setProblemCount(created_problems_count);
-        }
-
-        if (user.type === 'Learner') {
-          const { joined_rooms_count, solved_problems_count } =
-            await value.json();
-          setJoinedRoomsCount(joined_rooms_count);
-          setSolvedProblemsCount(solved_problems_count);
-        }
-      });
-    };
-
-    res();
-  });
+  const randomQuote = inspirationalQuotes[Math.floor(Math.random() * inspirationalQuotes.length)];
 
   return (
-    <div className="m-4 flex gap-4">
-      {/* Classroom */}
-      <div className="w-fit rounded-xl border border-[gray]/50 bg-card text-card-foreground shadow">
-        <div className="p-6 flex flex-row items-center justify-between space-y-0 pb-2">
-          <h3 className="tracking-tight text-sm font-medium">
-            {user.type === 'Learner' ? 'Coderooms Joined' : 'Coderooms Created'}
-          </h3>
-        </div>
-        <div className="p-6 pt-0">
-          {user.type === 'Learner' ? joinedRooms : coderoomsCount}
-        </div>
-      </div>
+    <div className="p-6">
+      <Card className="overflow-hidden max-w-4xl mx-auto">
+        <CardContent className="p-0">
+          <div className="bg-gray-900 p-6">
+            <div className="flex flex-col md:flex-row items-center gap-4">
+              {/* Trophy Section */}
+              <div className="flex-shrink-0">
+                <Trophy className="w-16 h-16 text-yellow-400 motion-safe:animate-pulse" />
+              </div>
 
-      {/* Students */}
+              {/* Inspirational Message Section */}
+              <div className="text-center md:text-left">
+                <h2 className="text-yellow-400 text-xl font-bold mb-2">
+                  Welcome to Your Coding Journey!
+                </h2>
+                <p className="text-white text-base font-medium leading-relaxed">
+                  {randomQuote}
+                </p>
+              </div>
+            </div>
+          </div>
 
-      {/* <div className="w-fit rounded-xl border border-[gray]/50 bg-card text-card-foreground shadow">
-        <div className="p-6 flex flex-row items-center justify-between space-y-0 pb-2">
-          <h3 className="tracking-tight text-sm font-medium">
-            Students managed
-          </h3>
-        </div>
-        <div className="p-6 pt-0">
-          <div className="text-2xl font-bold">0</div>
-        </div>
-      </div> */}
-
-      {/* Problems created */}
-      <div className="w-fit rounded-xl border border-[gray]/50 bg-card text-card-foreground shadow">
-        <div className="p-6 flex flex-row items-center justify-between space-y-0 pb-2">
-          <h3 className="tracking-tight text-sm font-medium">
-            {user.type === 'Learner' ? 'Problems Solved' : 'Problems Created'}
-          </h3>
-        </div>
-        <div className="p-6 pt-0">
-          {user.type === 'Learner' ? solvedProblemsCount : problemCount}
-        </div>
-      </div>
+          {/* Additional Encouraging Text */}
+          <div className="p-4 bg-white text-center border-t border-yellow-400">
+            <p className="text-gray-900 text-sm">
+              Ready to explore the world of programming? Each challenge brings new discoveries!
+            </p>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

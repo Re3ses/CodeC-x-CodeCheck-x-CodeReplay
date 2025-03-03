@@ -11,14 +11,16 @@ import {
 import { Input } from '@/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, buttonVariants } from '../button';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from '../use-toast';
 import Link from 'next/link';
 import { login } from '@/lib/auth';
 
-export default function LoginForm() {
+export default function LoginForm({ type }: { type?: string }) {
   const [status, setStatus] = useState<number>();
+  const router = useRouter();
+  const path = type?.toLowerCase() || 'learner'; // Default to learner if no type provided
 
   const form = useForm<LoginShemaInferredType>({
     resolver: zodResolver(LoginSchema),
@@ -32,10 +34,14 @@ export default function LoginForm() {
     try {
       const res = await login(data);
       setStatus(res);
+
       toast({
         title: 'Successfully logged in!',
         description: 'You can now access your account',
       });
+
+      // Use the path prop instead of localStorage
+      router.push(`/dashboard`);
     } catch {
       form.setError('username', {
         message: 'Either username is taken or user does not exist',
@@ -50,10 +56,6 @@ export default function LoginForm() {
       });
     }
   };
-
-  if (status === 200) {
-    redirect('/dashboard');
-  }
 
   return (
     <div className="flex flex-col gap-4">

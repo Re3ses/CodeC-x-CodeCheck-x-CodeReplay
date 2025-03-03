@@ -19,6 +19,8 @@ export const RoomSchema = z.object({
   date_created: z.string(),
   slug: z.string(),
   id: z.string(),
+  releaseDate: z.string(),
+  dueDate: z.string(),
 });
 
 export type RoomSchemaInferredType = z.infer<typeof RoomSchema>;

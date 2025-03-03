@@ -1,3 +1,4 @@
+import re
 from transformers import RobertaPreTrainedModel, RobertaModel, RobertaTokenizer
 import torch
 import torch.nn as nn
@@ -33,6 +34,37 @@ class CodeBERTForPlagiarism(RobertaPreTrainedModel):
             outputs = (loss,) + outputs
 
         return outputs
+    
+def tokenize_per_word(text: str) -> list:
+    """
+    Tokenize text into words, removing punctuation and converting to lowercase.
+    
+    Args:
+        text (str): Input text to tokenize
+        
+    Returns:
+        list: List of word tokens
+    """
+    # Remove special characters and convert to lowercase
+    cleaned_text = re.sub(r'[^\w\s]', '', text.lower())
+    
+    # Split into words and filter empty strings
+    tokens = [word for word in cleaned_text.split() if word]
+    
+    return tokens
+
+def tokenize_per_character(text: str) -> list:
+    """
+    Tokenize text into individual characters.
+    
+    Args:
+        text (str): Input text to tokenize
+        
+    Returns:
+        list: List of individual characters
+    """
+    # Remove whitespace and split into characters
+    return [char for char in text.strip() if char and not char.isspace()]
 
 def predict_plagiarism(model, tokenizer, code, tokenize_method='default'):
     """
@@ -85,12 +117,12 @@ def predict_plagiarism(model, tokenizer, code, tokenize_method='default'):
         print(f"Error processing code: {str(e)}")
         return False, 0.0  # Return not plagiarized on error
 
-def get_plagiarism_probability(submissions, model_type="default"):
+def get_plagiarism_probability(submissions, model_type="default", tokenizer="default"):
     """
     Process multiple submissions and check each for plagiarism.
     
     Args:
-        submissions (dict): Dictionary of {filename: code_content}
+        submissions (dict): Dictionary of {learner_id: {'code': code_content, 'language': language}}
         model_type (str): Type of model to use
         
     Returns:
@@ -98,11 +130,10 @@ def get_plagiarism_probability(submissions, model_type="default"):
     """
     # Select the appropriate model based on type
     model_paths = {
-        "default": "bert_models/codebert_plagiarism_model_default.pth",
-        "character": "bert_models/codebert_plagiarism_model_character.pth",
-        "tree_default": "bert_models/codebert_plagiarism_model_tree_sitter_default.pth",
-        "tree_word": "bert_models/codebert_plagiarism_model_tree_sitter_word.pth",
-        "tree_char": "bert_models/codebert_plagiarism_model_tree_sitter_character.pth"
+        "default": "bert_models/ts_prep.pth",
+        "ts_no-prep": "bert_models/ts_no-prep.pth",
+        "no-ts_prep": "bert_models/no-ts_prep.pth",
+        "no-ts_no-prep": "bert_models/no-ts_no-prep.pth"
     }
     
     if model_type not in model_paths:
@@ -114,12 +145,19 @@ def get_plagiarism_probability(submissions, model_type="default"):
     plagiarism_reports = []
     
     # Process each submission
-    for file_name, submission in submissions.items():
-        is_plagiarized, confidence = predict_plagiarism(model, tokenizer, submission)
+    for learner_id, submission_data in submissions.items():
+        # print(f"Processing submission for {learner_id}")
+        
+        # Extract code from the nested structure
+        code = submission_data['code']
+        # print("code:", code)
+        
+        is_plagiarized, confidence = predict_plagiarism(model=model, tokenizer=tokenizer, code=code)
         plagiarism_reports.append({
-            'file_name': file_name,
+            'file_name': learner_id,  # Using learner_id as file_name for consistency with frontend
             'is_plagiarized': is_plagiarized,
-            'confidence': confidence
+            'confidence': confidence,
+            'language': submission_data['language']  # Including language in the report
         })
     
     return plagiarism_reports

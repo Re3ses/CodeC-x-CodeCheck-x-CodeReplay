@@ -1,34 +1,64 @@
 import React from 'react';
-
-import BorderedContainer from './ui/wrappers/BorderedContainer';
-import { RoomSchemaInferredType } from '@/lib/interface/room';
-import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
+import Link from 'next/link';
+import { RoomSchemaInferredType } from '@/lib/interface/room';
 import { GetRoom } from '@/utilities/apiService';
-import { Button, buttonVariants } from './ui/button';
+import { Button } from './ui/button';
 import { toast } from './ui/use-toast';
-import { CopyIcon } from '@radix-ui/react-icons';
-import LeaderboardTable from '../app/leaderboards/leaderboardTable';
+import { BookOpen, Users, ClipboardCopy, FileCode, History, Crown } from 'lucide-react';
+import { Trophy, Star, Target } from 'lucide-react';
+import { Progress } from "@/components/ui/progress";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from './ui/dialog';
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Badge } from "@/components/ui/badge";
+import { format } from "date-fns";
+
+// Add this helper function at the top of the file
+function formatDate(date: string | Date | undefined) {
+  if (!date) return 'Not set';
+  try {
+    return format(new Date(date), "PPP");
+  } catch (error) {
+    return 'Invalid date';
+  }
+}
+
+interface SubmissionStats {
+  totalProblems: number;
+  solvedProblems: number;
+}
+
+interface RoomBannerProps {
+  room: RoomSchemaInferredType;
+  username: string;
+  usertype: string;
+  params: { slug: string };
+  submissionStats?: {
+    solvedProblems: number;
+    totalProblems: number;
+  };
+}
 
 export default function RoomBanner({
   room,
   username,
   usertype,
   params,
-}: {
-  room: RoomSchemaInferredType;
-  username: string;
-  usertype: string;
-  params: { slug: string };
-}) {
+  submissionStats
+}: RoomBannerProps) {
   const roomQuery = useQuery<RoomSchemaInferredType>({
     queryKey: ['room'],
     queryFn: async () => {
@@ -36,60 +66,113 @@ export default function RoomBanner({
       return res;
     },
   });
+
+  const submissionStatsQuery = useQuery<SubmissionStats>({
+    queryKey: ['submissionStats', params.slug],
+    queryFn: async () => {
+      const response = await fetch(`/api/userSubmissions/stats?room_id=${params.slug}`);
+      return response.json();
+    },
+    enabled: usertype === 'Learner'
+  });
+
+  const handleCopyCode = () => {
+    navigator.clipboard.writeText(room?.slug);
+    toast({
+      title: "Invite Code Copied",
+      description: `Room code ${room?.slug} has been copied to your clipboard.`,
+    });
+  };
+
+  // Use submissionStats in the progress calculation
+  const progressValue = submissionStats
+    ? (submissionStats.solvedProblems / (room?.problems?.length || 1)) * 100
+    : 0;
+
   return (
-    <BorderedContainer>
-      <div className="flex p-5 gap-2 bg-card justify-between">
-        <div className="my-auto flex gap-2">
-          <p className="my-auto">{username}</p>
-          <span className="bg-[gold] text-[black] text-sm px-4 h-fit my-auto w-fit rounded-lg">
-            {usertype}
-          </span>
-        </div>
-        <div className="text-right">
-          <p className="text-2xl mb-2 text-zinc-500">{room?.name}</p>
-          <div className="my-auto font-bold cursor-pointer hover:text-green-400 flex gap-2">
-            <small className="text-zinc-500 font-normal">Invite Code: </small>
-            <small
-              onClick={() => {
-                navigator.clipboard.writeText(room?.slug);
-                toast({
-                  title: `Room slug: ${room?.slug} copied to clipboard`,
-                });
-              }}
-            >
-              {room?.slug}
-            </small>
-            <CopyIcon />
+    <div className="space-y-4">
+      {/* Header Section */}
+      <div className="flex justify-between items-start">
+        <div className="space-y-1">
+          <h1 className="text-2xl font-bold tracking-tight">{room?.name}</h1>
+          <p className="text-muted-foreground">{room?.description}</p>
+          <div className="flex gap-2 text-xs text-muted-foreground mt-1">
+            <span>Opens: {formatDate(room?.releaseDate)}</span>
+            <span>•</span>
+            <span>Due: {formatDate(room?.dueDate)}</span>
           </div>
         </div>
-      </div>
-      <div className="flex flex-col text-center p-2 pt-4">
-        <p>{room?.description}</p>
-        <p className="text-sm text-zinc-500">{room?.type}</p>
-      </div>
-      <div className="flex justify-between p-5">
-        {usertype == 'Mentor' && (
-          <Link
-            href={`/mentor/coderoom/problem-creation/${roomQuery.data?.slug}`}
-            className={buttonVariants({ variant: 'default' })}
+        <div className="flex items-center gap-2">
+          <Badge variant="outline" className="font-normal">
+            {usertype}
+          </Badge>
+          <Button
+            variant="outline"
+            size="sm"
+            className="gap-2"
+            onClick={handleCopyCode}
           >
-            Create problem
-          </Link>
-        )}
-        <Link
-          href={`/submissions/${roomQuery.data?.slug}`}
-          className={
-            buttonVariants({ variant: 'ghost' }) + 'border border-zinc-700'
-          }
-        >
-          Show room submissions
-        </Link>
-        <Link
-          href={`/comparisons/coderoom/${roomQuery.data?.slug}`}
-          className={buttonVariants({ variant: 'ghost' })}
-        >View Code Comparisons
-        </Link>
+            <ClipboardCopy className="h-4 w-4" />
+            {room?.slug}
+          </Button>
+          {usertype === 'Mentor' && (
+            <Button size="sm" className="gap-2" asChild>
+              <Link href={`/mentor/coderoom/problem-creation/${roomQuery.data?.slug}`}>
+                <FileCode className="h-4 w-4" />
+                Create Problem
+              </Link>
+            </Button>
+          )}
+        </div>
       </div>
-    </BorderedContainer>
+
+      {/* Stats Cards */}
+      <div className="grid gap-4">
+        {usertype === 'Learner' ? (
+          <Card>
+            <CardHeader className="flex flex-row items-center gap-2 space-y-0 pb-2">
+              <Target className="h-4 w-4 text-blue-500" />
+              <CardTitle className="text-sm font-medium">Challenge Progress</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-center gap-4">
+                <div className="flex-1">
+                  <Progress
+                    value={progressValue}
+                    className="h-2"
+                  />
+                </div>
+                <div className="text-sm font-medium">
+                  {submissionStatsQuery.data?.solvedProblems || 0}/{room?.problems?.length || 0}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        ) : (
+          <div className="grid gap-4 md:grid-cols-2">
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Total Problems</CardTitle>
+                <BookOpen className="h-4 w-4 text-blue-500" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{room?.problems?.length || 0}</div>
+                <p className="text-xs text-muted-foreground">Problems in this room</p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Enrolled Students</CardTitle>
+                <Users className="h-4 w-4 text-yellow-500" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{room?.enrollees?.length || 0}</div>
+              </CardContent>
+            </Card>
+          </div>
+        )}
+      </div>
+    </div>
   );
 }

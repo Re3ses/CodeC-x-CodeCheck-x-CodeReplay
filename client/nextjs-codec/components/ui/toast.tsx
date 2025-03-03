@@ -40,8 +40,7 @@ const toastVariants = cva(
 
 const Toast = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Root>,
-  React.ComponentPropsWithoutRef<typeof ToastPrimitives.Root> &
-    VariantProps<typeof toastVariants>
+  ToastProps
 >(({ className, variant, ...props }, ref) => {
   return (
     <ToastPrimitives.Root
@@ -49,8 +48,8 @@ const Toast = React.forwardRef<
       className={cn(toastVariants({ variant }), className)}
       {...props}
     />
-  );
-});
+  )
+})
 Toast.displayName = ToastPrimitives.Root.displayName;
 
 const ToastAction = React.forwardRef<
@@ -86,16 +85,22 @@ const ToastClose = React.forwardRef<
 ));
 ToastClose.displayName = ToastPrimitives.Close.displayName;
 
+interface ToastTitleProps extends React.ComponentPropsWithoutRef<typeof ToastPrimitives.Title> {
+  icon?: React.ReactNode;
+}
 const ToastTitle = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Title>,
-  React.ComponentPropsWithoutRef<typeof ToastPrimitives.Title>
->(({ className, ...props }, ref) => (
-  <ToastPrimitives.Title
-    ref={ref}
-    className={cn('text-sm font-semibold', className)}
-    {...props}
-  />
-));
+  ToastTitleProps
+>(({ className, icon, ...props }, ref) => (
+  <div className="flex items-center gap-2">
+    {icon && <span className="flex-shrink-0">{icon}</span>}
+    <ToastPrimitives.Title
+      ref={ref}
+      className={cn("text-sm font-semibold", className)}
+      {...props}
+    />
+  </div>
+))
 ToastTitle.displayName = ToastPrimitives.Title.displayName;
 
 const ToastDescription = React.forwardRef<
@@ -110,7 +115,10 @@ const ToastDescription = React.forwardRef<
 ));
 ToastDescription.displayName = ToastPrimitives.Description.displayName;
 
-type ToastProps = React.ComponentPropsWithoutRef<typeof Toast>;
+interface ToastProps extends React.ComponentPropsWithoutRef<typeof ToastPrimitives.Root>,
+  VariantProps<typeof toastVariants> {
+  // Add any additional props here
+}
 
 type ToastActionElement = React.ReactElement<typeof ToastAction>;
 

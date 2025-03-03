@@ -24,11 +24,44 @@ export const ProblemSchema = z.object({
       is_sample: z.boolean(),
       is_eval: z.boolean(),
       strength: z.coerce.number(),
+      score: z.coerce.number(),
     })
   ),
   mentor: z.string(),
   code: z.string(),
   slug: z.string(),
+  perfect_score: z.coerce.number(),
 });
 
 export type ProblemSchemaInferredType = z.infer<typeof ProblemSchema>;
+
+export interface TestCase {
+  input: string;
+  output: string;
+  score: number;
+  is_sample: boolean;
+  is_eval: boolean;
+  strength: number;
+}
+
+export interface Problem {
+  _id?: string;
+  name: string;
+  description: string;
+  input_format: string;
+  output_format: string;
+  constraints: string;
+  release: Date;
+  deadline: Date;
+  languages: {
+    name: string;
+    code_snippet: string;
+    time_complexity: number;
+    space_complexity: number;
+  }[];
+  test_cases: TestCase[];
+  mentor: string;
+  code: string;
+  slug: string;
+  perfect_score: number;
+}

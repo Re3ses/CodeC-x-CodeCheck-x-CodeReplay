@@ -1,12 +1,18 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Inter, Poppins } from 'next/font/google';
 import './globals.css';
 import ReactQueryProvider from '@/components/providers/ReactQueryProvider';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Toaster } from '@/components/ui/toaster';
 import { cn } from '@/lib/utils';
 import { ThemeProvider } from '@/components/providers/ThemeProvider';
+
 const inter = Inter({ subsets: ['latin'] });
+const poppins = Poppins({
+  weight: ['400', '500', '600', '700'],
+  subsets: ['latin'],
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   title: 'CodeC',
@@ -24,7 +30,7 @@ export default function RootLayout({
         <body
           className={cn(
             'min-h-screen bg-background font-sans antialiased',
-            inter
+            poppins.className
           )}
         >
           <ThemeProvider

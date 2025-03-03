@@ -1,30 +1,37 @@
 'use client';
-
-import { Button, buttonVariants } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import CreateClassroomForm from '@/components/ui/classroom/createClassroomForm';
+import React from 'react';
+import { Button } from "@/components/ui/button";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
-import { toast } from '@/components/ui/use-toast';
-import BorderedContainer from '@/components/ui/wrappers/BorderedContainer';
+  DialogClose,
+} from "@/components/ui/dialog";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
+import { Plus, Trash2, LogIn } from 'lucide-react';
+import CreateClassroomForm from '@/components/ui/classroom/createClassroomForm';
 import Modal from '@/components/ui/wrappers/Modal';
-import { RoomSchemaInferredType } from '@/lib/interface/room';
-import { GetMentorRooms } from '@/utilities/apiService';
-import { useQuery } from '@tanstack/react-query';
-import { revalidatePath } from 'next/cache';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
+import { useQuery } from '@tanstack/react-query';
+import { GetMentorRooms } from '@/utilities/apiService';
+import { toast } from '@/components/ui/use-toast';
 
-export default function Page() {
+export default function ClassroomManagement() {
   const searchParams = useSearchParams();
+
   const roomsQuery = useQuery({
     queryKey: ['rooms', 1],
     queryFn: async () => {
@@ -36,123 +43,132 @@ export default function Page() {
     },
   });
 
-  function makeid(length: number) {
-    let result = '';
-    const characters =
-      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    const charactersLength = characters.length;
-    let counter = 0;
-    while (counter < length) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-      counter += 1;
-    }
-    return result;
-  }
-
-    function handleRoomDeletion(id: string) {
+  function handleRoomDeletion(id: any) {
     const deleteRoom = async () => {
       try {
         const response = await fetch(`/api/rooms?room_id=${id}`, { method: 'DELETE' });
         if (!response.ok) {
-          throw new Error(`Failed to delete room with id: ${id}. Status: ${response.status}`);
+          throw new Error(`Failed to delete room with id: ${id}`);
         }
-        toast({ title: `Room with id of: ${id} successfully deleted` });
+        toast({ title: `Room successfully deleted` });
       } catch (e) {
         console.error('Failed to delete room: ', e);
-        toast({ title: `Failed to delete room with id of: ${id}`});
+        toast({ title: `Failed to delete room`, variant: "destructive" });
       }
     };
-  
+
     deleteRoom();
     roomsQuery.refetch();
   }
 
   return (
-    <BorderedContainer customStyle="flex flex-col m-4 text-card-foreground min-w-[580px]">
-      <div className="p-4 flex flex-col gap-2 justify-between items-center sm:flex-row">
-        <div className="flex flex-col justify-center gap-1 items-center sm:items-start">
-          <h2 className="text-2xl font-bold">Created rooms</h2>
-          <p className="text-muted-foreground">List of created classrooms</p>
+    <Card className="w-full max-w-6xl mx-auto my-8">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-7">
+        <div>
+          <CardTitle className="text-2xl font-bold">Classrooms</CardTitle>
+          <CardDescription>Manage your virtual classrooms and courses</CardDescription>
         </div>
-        <div className="space-x-2">
-          {/* <Modal
-            label="Host live session"
-            title="Host session"
-            description="Host live session for demoing a problem created in a room. Learners and Mentors can code along as well as perform collaborative code writing"
-          >
-            <Link
-              href={{
-                pathname: '/mentor/live-code',
-                query: { room_id: makeid(5) },
-              }}
-              className={buttonVariants({ variant: 'default' })}
-            >
-              Host live session
-            </Link>
-          </Modal> */}
-          <Modal
-            label="Create classroom"
-            title="Create rooms"
-            description="Create a room where you can host your lectures, courses, or programming problems"
-          >
-            <CreateClassroomForm />
-          </Modal>
+        <Modal
+          label={
+            <div className='flex gap-2 items-center'>
+              <Plus className="h-4 w-4" />
+              New Classroom
+            </div>
+          }
+          title="Create Classroom"
+          description="Create a room where you can host your lectures, courses, or programming problems"
+        >
+          <CreateClassroomForm />
+        </Modal>
+      </CardHeader>
+      <CardContent>
+        <div className="rounded-md border">
+          <Table>
+            <TableHeader>
+              <TableRow className='grid grid-cols-12'>
+                <TableHead className="col-span-4 flex items-center w-[300px]">Name</TableHead>
+                <TableHead className="col-span-5 flex items-center min-w-[300px]">Description</TableHead>
+                <TableHead className="col-span-3 flex items-center justify-end">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {roomsQuery.data?.map((room: any) => (
+                <TableRow key={room.id} className={`cursor-pointer hover:bg-muted/50 
+                  ${room.dueDate && new Date() > new Date(room.dueDate)
+                    ? "opacity-50"
+                    : ""
+                  }`} >
+                  <TableCell colSpan={3} className="p-0">
+                    <Link
+                      className="block w-full h-full"
+                      href={`/mentor/coderoom/r/${room.slug}?${searchParams}`}
+                      passHref
+                    >
+                      <TableRow className="grid grid-cols-12 w-full">
+                        <TableCell className="col-span-4 p-4 font-medium flex items-center">{room.name}</TableCell>
+                        <TableCell className="col-span-5 p-4 text-muted-foreground flex items-start flex-col">
+                          {room.dueDate && (
+                            <div className="flex items-center mt-2 text-sm">
+                              <span className="font-medium mr-2">Due:</span>
+                              <span className={`${new Date() > new Date(room.dueDate) ? "text-red-500" : "text-green-500"} font-medium`}>
+                                {new Date(room.dueDate).toLocaleDateString('en-US', {
+                                  weekday: 'short',
+                                  year: 'numeric',
+                                  month: 'short',
+                                  day: 'numeric',
+                                  hour: '2-digit',
+                                  minute: '2-digit'
+                                })}
+                              </span>
+                            </div>
+                          )}
+                          {room.description}
+                        </TableCell>
+                        <TableCell className="col-span-3 p-4 flex justify-end items-center gap-2">
+                          <Button variant="outline" size="sm" className="gap-2">
+                            <LogIn className="h-4 w-4" />
+                            Enter
+                          </Button>
+                          <Dialog>
+                            <DialogTrigger asChild>
+                              <Button variant="destructive" size="sm" className="gap-2">
+                                <Trash2 className="h-4 w-4" />
+                                Delete
+                              </Button>
+                            </DialogTrigger>
+                            <DialogContent>
+                              <DialogHeader>
+                                <DialogTitle>Delete Classroom</DialogTitle>
+                                <DialogDescription>
+                                  This action cannot be undone. This will permanently delete the classroom
+                                  and all associated data from our servers.
+                                </DialogDescription>
+                              </DialogHeader>
+                              <DialogFooter>
+                                <DialogClose asChild>
+                                  <Button variant="outline">Cancel</Button>
+                                </DialogClose>
+                                <DialogClose asChild>
+                                  <Button
+                                    variant="destructive"
+                                    onClick={() => handleRoomDeletion(room._id)}
+                                  >
+                                    Delete Classroom
+                                  </Button>
+                                </DialogClose>
+                              </DialogFooter>
+                            </DialogContent>
+                          </Dialog>
+                        </TableCell>
+                      </TableRow>
+                    </Link>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         </div>
-      </div>
-      <div className="flex flex-col gap-2 p-5 sm:grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
-        {roomsQuery.data?.map((item: RoomSchemaInferredType) => {
-          return (
-            <BorderedContainer
-              key={item.id}
-              customStyle="bg-card text-card-foreground flex flex-col gap-4 justify-center items-center p-4"
-            >
-              <div className="flex flex-col">
-                <span className="text-lg font-bold my-auto text-center">
-                  {item.name}
-                </span>
-                <span className="text-sm text-muted-foreground text-center">
-                  {item.description}
-                </span>
-              </div>
-              <div className="flex justify-between gap-2 w-full">
-                <Link
-                  href={`/mentor/coderoom/r/${item.slug}?${searchParams}`}
-                  className={`${buttonVariants({ variant: 'default' })} w-full`}
-                >
-                  Enter
-                </Link>
-                <Dialog>
-                  <DialogTrigger>
-                    <small className="bg-red-600 text-white p-1 rounded-sm block">
-                      Delete
-                    </small>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>Are you absolutely sure?</DialogTitle>
-                      <DialogDescription>
-                        This action cannot be undone. This will permanently
-                        delete the room and the data within this room from our
-                        servers.
-                      </DialogDescription>
-                    </DialogHeader>
-                    <DialogFooter>
-                      <DialogClose>
-                        <Button
-                          className={buttonVariants({ variant: 'destructive' })}
-                          onClick={() => handleRoomDeletion(item._id)}
-                        >
-                          Delete room
-                        </Button>
-                      </DialogClose>
-                    </DialogFooter>
-                  </DialogContent>
-                </Dialog>
-              </div>
-            </BorderedContainer>
-          );
-        })}
-      </div>
-    </BorderedContainer>
+      </CardContent>
+    </Card >
   );
 }
