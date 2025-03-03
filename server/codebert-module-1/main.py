@@ -3,8 +3,9 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import json
 import numpy as np
-from detector_functions import EnhancedCodeSimilarityDetector
-from trained_models import get_plagiarism_probability
+
+# from detector_functions import EnhancedCodeSimilarityDetector
+# from trained_models import get_plagiarism_probability
 from codebert_analyzer import CodeBERTAnalyzer, SnippetInfo
 import traceback
 import time
@@ -21,57 +22,57 @@ userSubmissionsCollection = db["usersubmissions"]
 snapshotsCollection = db["codesnapshots"]
 
 # Initialize detectors as global variables
-token_detector = EnhancedCodeSimilarityDetector()
+# token_detector = EnhancedCodeSimilarityDetector()
 codebert_detector = CodeBERTAnalyzer()
 
 
-@app.route("/compare", methods=["POST"])
-def compare_submissions():
-    start_time = time.time()
-    try:
-        print("compare request received")
-        if request.json is None:
-            return jsonify({"error": "No JSON payload received"}), 400
+# @app.route("/compare", methods=["POST"])
+# def compare_submissions():
+#     start_time = time.time()
+#     try:
+#         print("compare request received")
+#         if request.json is None:
+#             return jsonify({"error": "No JSON payload received"}), 400
 
-        data = request.json
-        if "submissions" not in data:
-            return jsonify({"error": "No submissions field in payload"}), 400
+#         data = request.json
+#         if "submissions" not in data:
+#             return jsonify({"error": "No submissions field in payload"}), 400
 
-        submissions = data["submissions"]
-        query = data["query"]
-        model = query.get("model", "default")
-        detection_type = query.get("detection_type", "token")
+#         submissions = data["submissions"]
+#         query = data["query"]
+#         model = query.get("model", "default")
+#         detection_type = query.get("detection_type", "token")
 
-        # Convert submissions format
-        converted_submissions = {}
-        for submission in submissions:
-            file_name = submission.get("learner", "unknown_learner")
-            code = submission.get("code", "")
-            language = submission.get("language_used", "unknown_language")
-            converted_submissions[file_name] = {"code": code, "language": language}
+#         # Convert submissions format
+#         converted_submissions = {}
+#         for submission in submissions:
+#             file_name = submission.get("learner", "unknown_learner")
+#             code = submission.get("code", "")
+#             language = submission.get("language_used", "unknown_language")
+#             converted_submissions[file_name] = {"code": code, "language": language}
 
-        if detection_type == "token":
-            comparison_results = token_detector.compare_files(
-                converted_submissions, query
-            )
-        elif detection_type == "model":
-            comparison_results = get_plagiarism_probability(
-                submissions=converted_submissions, model_type=model
-            )
-        elif detection_type == "codebert":
-            comparison_results = compute_codebert_similarities(submissions)
+#         if detection_type == "token":
+#             comparison_results = token_detector.compare_files(
+#                 converted_submissions, query
+#             )
+#         elif detection_type == "model":
+#             comparison_results = get_plagiarism_probability(
+#                 submissions=converted_submissions, model_type=model
+#             )
+#         elif detection_type == "codebert":
+#             comparison_results = compute_codebert_similarities(submissions)
 
-        return jsonify(comparison_results)
+#         return jsonify(comparison_results)
 
-    except Exception as e:
-        tb_str = traceback.format_exc()
-        print(tb_str)
-        return (
-            jsonify({"error": str(e), "traceback": tb_str, "request": request.json}),
-            500,
-        )
-    finally:
-        print(f"Total time taken: {time.time() - start_time} seconds")
+#     except Exception as e:
+#         tb_str = traceback.format_exc()
+#         print(tb_str)
+#         return (
+#             jsonify({"error": str(e), "traceback": tb_str, "request": request.json}),
+#             500,
+#         )
+#     finally:
+#         print(f"Total time taken: {time.time() - start_time} seconds")
 
 
 @app.route("/api/similarity/matrix", methods=["GET"])
@@ -241,80 +242,80 @@ def get_sequential_similarity():
         print(f"Total time taken: {time.time() - start_time} seconds")
 
 
-@app.route("/api/test", methods=["POST"])
-def test_endpoint():
-    try:
-        # problem_id = request.args.get("problemId")
-        # room_id = request.args.get("roomId")
+# @app.route("/api/test", methods=["POST"])
+# def test_endpoint():
+#     try:
+#         # problem_id = request.args.get("problemId")
+#         # room_id = request.args.get("roomId")
 
-        # if not problem_id and not room_id:
-        #     return (
-        #         jsonify(
-        #             {"success": False, "message": "No problemId or roomId provided"}
-        #         ),
-        #         400,
-        #     )
+#         # if not problem_id and not room_id:
+#         #     return (
+#         #         jsonify(
+#         #             {"success": False, "message": "No problemId or roomId provided"}
+#         #         ),
+#         #         400,
+#         #     )
 
-        # # submissions = list(
-        # #     userSubmissionsCollection.find({"problem": problem_id, "room": room_id})
-        # # )
+#         # # submissions = list(
+#         # #     userSubmissionsCollection.find({"problem": problem_id, "room": room_id})
+#         # # )
 
-        snapshots = list(snapshotsCollection.find({}))
-        # Convert ObjectId to string
-        for snapshot in snapshots:
-            snapshot["_id"] = str(snapshot["_id"])
-            snapshot["learner_id"] = str(snapshot["learner_id"])
-        return jsonify(snapshots)
-    except Exception as e:
-        tb_str = traceback.format_exc()
-        return (
-            jsonify(
-                {
-                    "success": False,
-                    "error": str(e),
-                    "traceback": tb_str,
-                    "matrix": [],
-                    "snippets": [],
-                }
-            ),
-            500,
-        )
+#         snapshots = list(snapshotsCollection.find({}))
+#         # Convert ObjectId to string
+#         for snapshot in snapshots:
+#             snapshot["_id"] = str(snapshot["_id"])
+#             snapshot["learner_id"] = str(snapshot["learner_id"])
+#         return jsonify(snapshots)
+#     except Exception as e:
+#         tb_str = traceback.format_exc()
+#         return (
+#             jsonify(
+#                 {
+#                     "success": False,
+#                     "error": str(e),
+#                     "traceback": tb_str,
+#                     "matrix": [],
+#                     "snippets": [],
+#                 }
+#             ),
+#             500,
+#         )
 
 
-def compute_codebert_similarities(submissions):
-    """Compute similarities using CodeBERT for the existing comparison endpoint."""
-    try:
-        n = len(submissions)
-        matrix = [[0.0] * n for _ in range(n)]
+# def compute_codebert_similarities(submissions):
+#     """Compute similarities using CodeBERT for the existing comparison endpoint."""
+#     try:
+#         n = len(submissions)
+#         matrix = [[0.0] * n for _ in range(n)]
 
-        for i in range(n):
-            for j in range(i, n):
-                if i == j:
-                    similarity = 1.0
-                else:
-                    similarity = codebert_detector.calculate_similarity(
-                        submissions[i]["code"], submissions[j]["code"]
-                    )
-                matrix[i][j] = matrix[j][i] = similarity
+#         for i in range(n):
+#             for j in range(i, n):
+#                 if i == j:
+#                     similarity = 1.0
+#                 else:
+#                     similarity = codebert_detector.calculate_similarity(
+#                         submissions[i]["code"], submissions[j]["code"]
+#                     )
+#                 matrix[i][j] = matrix[j][i] = similarity
 
-        # Format results to match your existing output structure
-        results = {
-            "similarity_matrix": matrix,
-            "submission_info": [
-                {
-                    "learner": sub["learner"],
-                    "language": sub.get("language_used", "unknown"),
-                    "code_length": len(sub["code"]),
-                }
-                for sub in submissions
-            ],
-        }
+#         # Format results to match your existing output structure
+#         results = {
+#             "similarity_matrix": matrix,
+#             "submission_info": [
+#                 {
+#                     "learner": sub["learner"],
+#                     "language": sub.get("language_used", "unknown"),
+#                     "code_length": len(sub["code"]),
+#                 }
+#                 for sub in submissions
+#             ],
+#         }
 
-        return results
+#         return results
 
-    except Exception as e:
-        print(f"Error in CodeBERT similarity computation: {e}")
-        raise
+#     except Exception as e:
+#         print(f"Error in CodeBERT similarity computation: {e}")
+#         raise
 
 
 if __name__ == "__main__":
