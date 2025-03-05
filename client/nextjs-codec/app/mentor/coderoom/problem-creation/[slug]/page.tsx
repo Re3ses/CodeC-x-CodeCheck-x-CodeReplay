@@ -182,7 +182,8 @@ const SUPPORTED_LANGUAGES = [
   { id: 62, name: 'Java (OpenJDK 17.0.6)', extension: 'java' },
   { id: 71, name: 'Python (3.11.2)', extension: 'py' },
   { id: 50, name: 'C (GCC 11.2.0)', extension: 'c' },
-  { id: 88, name: 'C# (Mono 6.12.0)', extension: 'cs' }
+  { id: 88, name: 'C# (Mono 6.12.0)', extension: 'cs' },
+  { id: 63, name: 'Javascript (Node.js 16.13.0)', extension: 'js' }
 ];
 
 const DEFAULT_SNIPPETS = {

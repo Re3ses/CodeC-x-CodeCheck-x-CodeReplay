@@ -157,7 +157,7 @@ export default function RoomProblemList({ params }: { params: { slug: string } }
                       </Link>
                     </Button>
 
-                    <Dialog>
+                    {/* <Dialog>
                       <DialogTrigger asChild>
                         <Button variant="outline" size="sm">
                           <CopyCheck className="mr-2 h-4 w-4" />
@@ -189,7 +189,7 @@ export default function RoomProblemList({ params }: { params: { slug: string } }
                           </Button>
                         </div>
                       </DialogContent>
-                    </Dialog>
+                    </Dialog> */}
                     <Dialog>
                       <DialogTrigger asChild>
                         <Button variant="destructive" size="sm">
