@@ -15,15 +15,19 @@ export default function Modal({
   label,
   title,
   description,
+  open,
+  onOpenChange,
 }: {
   children: React.ReactNode;
   label: string | React.ReactNode;
   title?: string | null;
   description?: string | null;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }) {
   return (
     <div className={buttonVariants({ variant: 'default' })}>
-      <Dialog>
+      <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogTrigger>{label}</DialogTrigger>
         <DialogContent className="bg-card text-card-foreground">
           <DialogHeader>
