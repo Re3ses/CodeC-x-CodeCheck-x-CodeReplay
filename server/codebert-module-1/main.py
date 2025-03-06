@@ -9,8 +9,8 @@ import numpy as np
 from codebert_analyzer import CodeBERTAnalyzer, SnippetInfo
 import traceback
 import time
-from pymongo import MongoClient  # type: ignore
-from bson import ObjectId  # type: ignore
+from pymongo import MongoClient
+from bson import ObjectId
 
 app = Flask(__name__)
 CORS(app)
