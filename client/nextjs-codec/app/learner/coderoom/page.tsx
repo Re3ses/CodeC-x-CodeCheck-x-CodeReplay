@@ -46,28 +46,34 @@ export default function Joined() {
         <div className="rounded-md border">
           <Table>
             <TableHeader>
-              <TableRow>
-                <TableHead className="w-[300px]">Room Name</TableHead>
-                <TableHead className="max-w-[500px]">Description</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
+              <TableRow className="grid grid-cols-12 w-full">
+                <TableHead className="col-span-4 flex items-center">Name</TableHead>
+                <TableHead className="col-span-5 flex items-center">Description</TableHead>
+                <TableHead className="col-span-3 flex items-center justify-end">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {roomsQuery.data?.map((room: RoomSchemaInferredType) => (
-                <TableRow key={room.id} className={`cursor-pointer hover:bg-muted/50 
-                  ${room.dueDate && new Date() > new Date(room.dueDate)
-                    ? "opacity-50"
-                    : ""
-                  }`} >
-                  <TableCell className="font-medium">
-                    <div className="flex items-center gap-2">
-                      <Users className="h-4 w-4 text-muted-foreground" />
-                      {room.name}
-                    </div>
+                <TableRow
+                  key={room.id}
+                  className={`grid grid-cols-12 w-full hover:bg-muted/50 relative
+            ${room.dueDate && new Date() > new Date(room.dueDate) ? "opacity-50" : ""}`}
+                >
+                  {/* Invisible link covering the whole row except the action button area */}
+                  <Link
+                    className="absolute inset-0 w-9/12 cursor-pointer"
+                    href={`/learner/coderoom/r/${room.slug}`}
+                    passHref
+                    aria-label={`Enter ${room.name}`}
+                  />
+
+                  <TableCell className="col-span-4 p-4 font-medium flex items-center z-10 pointer-events-none">
+                    {room.name}
                   </TableCell>
-                  <TableCell className="text-muted-foreground">
+
+                  <TableCell className="col-span-5 p-4 text-muted-foreground flex items-start flex-col z-10 pointer-events-none">
                     {room.dueDate && (
-                      <div className="flex items-center mt-2 text-sm">
+                      <div className="flex items-center mb-2 text-sm">
                         <span className="font-medium mr-2">Due:</span>
                         <span className={`${new Date() > new Date(room.dueDate) ? "text-red-500" : "text-green-500"} font-medium`}>
                           {new Date(room.dueDate).toLocaleDateString('en-US', {
@@ -83,8 +89,13 @@ export default function Joined() {
                     )}
                     {room.description}
                   </TableCell>
-                  <TableCell className="text-right">
-                    <Link href={`/learner/coderoom/r/${room.slug}`}>
+
+                  <TableCell className="col-span-3 p-4 flex justify-end items-center z-20">
+                    <Link
+                      href={`/learner/coderoom/r/${room.slug}`}
+                      className="pointer-events-auto"
+                      onClick={(e) => e.stopPropagation()}
+                    >
                       <Button variant="default" size="sm">
                         Enter Room
                       </Button>
