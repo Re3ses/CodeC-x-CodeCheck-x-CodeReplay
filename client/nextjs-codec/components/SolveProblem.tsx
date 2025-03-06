@@ -606,16 +606,16 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
   }
 
   const VerticalResizeHandle = () => (
-    <PanelResizeHandle className="h-2 group hover:h-2 bg-gray-700 hover:bg-[#FFD700] transition-colors cursor-row-resize data-[resize-handle-active]:bg-[#FFD700] flex items-center justify-center">
-      <div className="absolute flex items-center justify-center h-6 w-12 bg-gray-700 group-hover:bg-[#FFD700] rounded-md transition-colors">
+    <PanelResizeHandle className="h-1 group hover:h-2 bg-gray-700 hover:bg-[#FFD700] transition-colors cursor-row-resize data-[resize-handle-active]:bg-[#FFD700] flex items-center justify-center z-50">
+      <div className="absolute flex items-center justify-center h-4 w-9 bg-gray-700 group-hover:bg-[#FFD700] rounded-md transition-colors">
         <GripHorizontal className="w-4 h-4 text-gray-400 group-hover:text-gray-900" />
       </div>
     </PanelResizeHandle>
   );
 
   const HorizontalResizeHandle = () => (
-    <PanelResizeHandle className="w-2 group hover:w-2 bg-gray-700 hover:bg-[#FFD700] transition-colors cursor-col-resize data-[resize-handle-active]:bg-[#FFD700] flex items-center justify-center">
-      <div className="absolute flex items-center justify-center w-6 h-12 bg-gray-700 group-hover:bg-[#FFD700] rounded-md transition-colors">
+    <PanelResizeHandle className="w-1 group hover:w-2 bg-gray-700 hover:bg-[#FFD700] transition-colors cursor-col-resize data-[resize-handle-active]:bg-[#FFD700] flex items-center justify-center z-50">
+      <div className="absolute flex items-center justify-center w-4 h-9 bg-gray-700 group-hover:bg-[#FFD700] rounded-md transition-colors">
         <GripVertical className="w-4 h-4 text-gray-400 group-hover:text-gray-900" />
       </div>
     </PanelResizeHandle>
