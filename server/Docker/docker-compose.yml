@@ -73,4 +73,5 @@ services:
 volumes:
   postgres-data:
   redis-data:
-  mongodb-data:  # Add volume for MongoDB data persistence
+  # mongodb-data:  # Add volume for MongoDB data persistence
+  huggingface_cache:

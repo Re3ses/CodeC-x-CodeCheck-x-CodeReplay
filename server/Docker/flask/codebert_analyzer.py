@@ -46,19 +46,28 @@ class CodeBERTAnalyzer:
     def __init__(self, model_path: Optional[str] = None):
         """Initialize the CodeBERT analyzer with local model."""
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        self.tokenizer = RobertaTokenizer.from_pretrained("microsoft/codebert-base")
-        self.model = RobertaModel.from_pretrained("microsoft/codebert-base")
-        self.model.to(self.device)
-        self.model.eval()
         self.embedding_cache = {}
         self.SIMILARITY_THRESHOLD = 0.7
+        self.tokenizer = None
+        self.model = None
+
+    def _ensure_model_loaded(self):
+        """Lazy load models only when needed"""
+        if self.tokenizer is None:
+            self.tokenizer = RobertaTokenizer.from_pretrained("microsoft/codebert-base")
+        if self.model is None:
+            self.model = RobertaModel.from_pretrained("microsoft/codebert-base")
+            self.model.to(self.device)
+            self.model.eval()
 
     def preprocess_code(self, code: str) -> str:
         """Preprocess code for CodeBERT analysis."""
         code = re.sub(r"/\*[\s\S]*?\*/|//.*$", "", code, flags=re.MULTILINE)
         code = re.sub(r"\s+", " ", code).replace("\n", " ").replace("\t", " ")
         code = re.sub(
-            r'(["\'])(.*?)\1', lambda m: f"'{m.group(2).replace("'", "\\'")}'", code
+            r'(["\'])(.*?)\1',
+            lambda m: "'" + m.group(2).replace("'", "\\'") + "'",
+            code,
         )
         code = re.sub(r"\b0+(\d+)", r"\1", code)
         code = re.sub(r"(\d+\.\d*?)0+$", r"\1", code)
@@ -67,6 +76,7 @@ class CodeBERTAnalyzer:
 
     def get_embedding(self, code: str) -> np.ndarray:
         """Get code embedding using CodeBERT."""
+        self._ensure_model_loaded()
         cache_key = hash(code)
         if cache_key in self.embedding_cache:
             return self.embedding_cache[cache_key]
