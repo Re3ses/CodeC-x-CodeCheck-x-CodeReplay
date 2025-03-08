@@ -83,6 +83,7 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
 
   const [user, setUser] = useState<any>();
   const [submitting, setSubmitting] = useState(false);
+  const [trying, setTrying] = useState(false);
 
   // LEARNER ID LOGGING
   // useEffect(() => {
@@ -102,6 +103,7 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
   const [snapshots, setSnapshots] = useState<any[]>([]);
   const [enhancedPastes, setEnhancedPastes] = useState<EnhancedPasteInfo[]>([]);
   const [autoSaveToggle, setAutoSaveToggle] = useState<boolean>(false);
+  const [previousSaved, setPreviousSaved] = useState<string>('');
 
   useEffect(() => {
     setAutoSaveToggle(userType ? userType === 'learner' : false);
@@ -128,9 +130,13 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
 
   const autoSaveCode = useCallback(async (codeToSave: string) => {
     if (codeToSave === lastSaved) return;
-    setSaving(true);
     try {
       // console.log('Auto-saving...');
+
+      // Skip saving if the code is the same as the last saved code
+      if (codeToSave === previousSaved) {
+        return
+      }
 
       // Check if user is defined
       if (!user) {
@@ -160,6 +166,7 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
       });
 
       if (saveResponse.ok) {
+        setPreviousSaved(codeToSave);
         const savedData = await saveResponse.json();
         if (savedData.snippet) {
           // Update snapshots while maintaining order
@@ -183,6 +190,7 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
     } finally {
       setSaving(false);
     }
+    setSaving(false);
   }, [lastSaved, user, snapshots, roomId, problemId]);
 
   const debouncedAutoSave = useCallback(
@@ -260,8 +268,6 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
           }
         };
 
-        // Update paste tracking state
-        setEnhancedPastes(prev => [...prev, newPaste]);
       } catch (error) {
         console.error('Error handling paste event:', error);
       }
@@ -381,11 +387,14 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
   async function handleSubmit() {
     try {
       setSubmitting(true);
+      setSaving(true);
 
       // Validate required user data
       if (!user?.auth?.username || !user?.id || !problemId || !roomId) {
         throw new Error('Missing required user data');
       }
+
+      await autoSaveCode(editorValue);
 
       const testResults = [];
       let totalScore = 0;
@@ -494,114 +503,126 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
       });
     } finally {
       setSubmitting(false);
+      setSaving(false);
     }
   }
 
   async function handleTry() {
-    if (!editorValue || !selectedLang) {
-      toast({
-        title: 'Language and source code should not be empty...',
-        variant: 'destructive',
-      });
-      return;
-    }
+    try {
+      setTrying(true);
+      setSaving(true);
 
-    if (showCustomInput) {
-      // Handle custom input case
-      if (!inputVal) {
+      if (!editorValue || !selectedLang) {
         toast({
-          title: 'No input detected...',
-          variant: 'destructive'
-        });
-        return;
-      }
-
-      try {
-        toast({ title: 'Compiling your code...' });
-
-        const data = {
-          source_code: btoa(editorValue),
-          language_id: +selectedLang!,
-          stdin: btoa(inputVal),
-        };
-
-        const result = await postSubmission(data);
-
-        setTimeout(async () => {
-          const submission = await getSubmission(result.token);
-          setCompileResult(submission);
-
-          if (submission.status.id === 3) {
-            toast({ title: 'Successfully compiled!' });
-          } else {
-            toast({
-              title: 'Compilation error',
-              description: submission.status.description,
-              variant: 'destructive'
-            });
-          }
-        }, 3000);
-      } catch (error) {
-        toast({
-          title: 'Error compiling code',
-          description: 'Please try again',
-          variant: 'destructive',
-        });
-      }
-    } else {
-      // Handle test cases
-      const sample_cases = problem?.test_cases.filter((item) => item.is_sample);
-
-      if (!sample_cases?.length) {
-        toast({
-          title: 'No sample test cases available',
-          description: 'Use custom input instead',
+          title: 'Language and source code should not be empty...',
           variant: 'destructive',
         });
         return;
       }
 
-      toast({ title: 'Testing your code...' });
+      await autoSaveCode(editorValue);
 
-      try {
-        const payload = sample_cases.map((test) => ({
-          language_id: +selectedLang!,
-          source_code: btoa(editorValue),
-          stdin: btoa(test.input),
-          expected_output: btoa(test.output),
-        }));
-
-        const submissions = await postBatchSubmissions(payload);
-        const tokens = submissions?.map((token: any) => token.token);
-
-        setTimeout(async () => {
-          const batchSubmissions = await getBatchSubmisisons(tokens.join());
-          setBatchResult(batchSubmissions.submissions);
-
-          const accepted = batchSubmissions.submissions.filter(
-            (obj: any) => obj.status.description === 'Accepted'
-          );
-
-          const newScore = {
-            accepted_count: accepted.length,
-            overall_count: batchSubmissions.submissions.length,
-          };
-          setScore(newScore);
-
+      if (showCustomInput) {
+        // Handle custom input case
+        if (!inputVal) {
           toast({
-            title: newScore.accepted_count === newScore.overall_count
-              ? 'All sample test cases passed!'
-              : `${newScore.accepted_count}/${newScore.overall_count} test cases passed`,
-            variant: newScore.accepted_count === newScore.overall_count ? 'default' : 'destructive'
+            title: 'No input detected...',
+            variant: 'destructive'
           });
-        }, 3000);
-      } catch (error) {
-        toast({
-          title: 'Error testing code',
-          description: 'Please try again',
-          variant: 'destructive',
-        });
+          return;
+        }
+
+        try {
+          toast({ title: 'Compiling your code...' });
+
+          const data = {
+            source_code: btoa(editorValue),
+            language_id: +selectedLang!,
+            stdin: btoa(inputVal),
+          };
+
+          const result = await postSubmission(data);
+
+          setTimeout(async () => {
+            const submission = await getSubmission(result.token);
+            setCompileResult(submission);
+
+            if (submission.status.id === 3) {
+              toast({ title: 'Successfully compiled!' });
+            } else {
+              toast({
+                title: 'Compilation error',
+                description: submission.status.description,
+                variant: 'destructive'
+              });
+            }
+          }, 3000);
+        } catch (error) {
+          toast({
+            title: 'Error compiling code',
+            description: 'Please try again',
+            variant: 'destructive',
+          });
+        }
+      } else {
+        // Handle test cases
+        const sample_cases = problem?.test_cases.filter((item) => item.is_sample);
+
+        if (!sample_cases?.length) {
+          toast({
+            title: 'No sample test cases available',
+            description: 'Use custom input instead',
+            variant: 'destructive',
+          });
+          return;
+        }
+
+        toast({ title: 'Testing your code...' });
+
+        try {
+          const payload = sample_cases.map((test) => ({
+            language_id: +selectedLang!,
+            source_code: btoa(editorValue),
+            stdin: btoa(test.input),
+            expected_output: btoa(test.output),
+          }));
+
+          const submissions = await postBatchSubmissions(payload);
+          const tokens = submissions?.map((token: any) => token.token);
+
+          setTimeout(async () => {
+            const batchSubmissions = await getBatchSubmisisons(tokens.join());
+            setBatchResult(batchSubmissions.submissions);
+
+            const accepted = batchSubmissions.submissions.filter(
+              (obj: any) => obj.status.description === 'Accepted'
+            );
+
+            const newScore = {
+              accepted_count: accepted.length,
+              overall_count: batchSubmissions.submissions.length,
+            };
+            setScore(newScore);
+
+            toast({
+              title: newScore.accepted_count === newScore.overall_count
+                ? 'All sample test cases passed!'
+                : `${newScore.accepted_count}/${newScore.overall_count} test cases passed`,
+              variant: newScore.accepted_count === newScore.overall_count ? 'default' : 'destructive'
+            });
+          }, 3000);
+        } catch (error) {
+          toast({
+            title: 'Error testing code',
+            description: 'Please try again',
+            variant: 'destructive',
+          });
+        }
       }
+    }
+    finally {
+      setTrying(false);
+      setSaving(false);
     }
   }
 
@@ -624,7 +645,6 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
   const cn = (...args: (string | boolean)[]): string => {
     return args.filter(Boolean).join(' ');
   };
-
 
   return (
     <div className="h-screen bg-gray-900 text-white">
@@ -753,6 +773,7 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
                 <Button
                   variant="outline"
                   onClick={handleTry}
+                  disabled={trying}
                   className="flex items-center gap-2 border-[#FFD700] text-[#FFD700] hover:bg-[#FFD700] hover:text-black"
                 >
                   <Zap className="w-4 h-4" />
@@ -764,7 +785,7 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
                     handleSubmit();
                     setShowCustomInput(false);
                   }}
-                  disabled={isAfterDueDate}
+                  disabled={isAfterDueDate || submitting}
                   className={cn(
                     isAfterDueDate && "cursor-not-allowed opacity-50"
                   )}

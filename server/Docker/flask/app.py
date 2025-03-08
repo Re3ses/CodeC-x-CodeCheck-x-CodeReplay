@@ -28,7 +28,9 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__)
 
 # Configure CORS
-CORS(app, resources={r"/api/*": {"origins": os.getenv("ALLOWED_ORIGINS", "*")}})
+allowed_origins = os.getenv("ALLOWED_ORIGINS", "*").split(",")
+
+CORS(app, resources={r"/api/*": {"origins": allowed_origins}})
 
 # Configure rate limiting
 limiter = Limiter(
@@ -39,9 +41,10 @@ limiter = Limiter(
 )
 
 # Connect to the MongoDB server
-MONGO_URI = os.getenv("LOCAL_MONGO_URI", "mongodb://127.0.0.1:27017/codec-v3")
+MONGO_URI = os.getenv("MONGO_URI", "mongodb://127.0.0.1:27017/codec-v3")
+print("Connecting to MongoDB server at:", MONGO_URI)
 client = MongoClient(MONGO_URI)
-db = client["codec-v3"]
+db = client["codec"]
 userSubmissionsCollection = db["usersubmissions"]
 snapshotsCollection = db["codesnapshots"]
 
@@ -58,6 +61,7 @@ def health_check():
 @app.route("/api/similarity/matrix", methods=["GET"])
 @limiter.limit("10 per minute")
 def get_similarity_matrix():
+    print("Similarity matrix request received.")
     start_time = time.time()
     try:
         problem_id = request.args.get("problemId")
@@ -143,6 +147,7 @@ def get_similarity_matrix():
 @app.route("/api/similarity/sequential", methods=["GET"])
 @limiter.limit("10 per minute")
 def get_sequential_similarity():
+    print("Sequential similarity request received.")
     start_time = time.time()
     try:
         learner_id = request.args.get("learner_id")
