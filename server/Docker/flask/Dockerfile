@@ -1,8 +1,11 @@
-FROM python:3.9-slim
-
+FROM python:3.10-slim
 WORKDIR /app
 
-# Install dependencies
+# Install PyTorch first in its own layer
+COPY torch-requirements.txt .
+RUN pip install --no-cache-dir -r torch-requirements.txt
+
+# Then install other requirements
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 

@@ -39,7 +39,7 @@ limiter = Limiter(
 )
 
 # Connect to the MongoDB server
-MONGO_URI = os.getenv("MONGO_URI", "mongodb://127.0.0.1:27017/codec-v3")
+MONGO_URI = os.getenv("LOCAL_MONGO_URI", "mongodb://127.0.0.1:27017/codec-v3")
 client = MongoClient(MONGO_URI)
 db = client["codec-v3"]
 userSubmissionsCollection = db["usersubmissions"]

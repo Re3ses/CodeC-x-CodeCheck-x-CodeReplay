@@ -80,7 +80,9 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
         const problemId = snapshotsToCompare[0].problemId;
         const roomId = snapshotsToCompare[0].roomId;
 
-        const response = await fetch(`http://localhost:5000/api/similarity/sequential?learner_id=${learnerId}&problemId=${problemId}&roomId=${roomId}`, {
+        const API_URL = process.env.FLASK_API_URL || 'http://localhost:';
+        const API_PORT = process.env.FLASK_API_PORT || '5000';
+        const response = await fetch(`${API_URL}${API_PORT}/api/similarity/sequential?learner_id=${learnerId}&problemId=${problemId}&roomId=${roomId}`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
         });
