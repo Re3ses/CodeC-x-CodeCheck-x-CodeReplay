@@ -1,8 +1,6 @@
 # app.py
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import json
-import numpy as np
 import traceback
 import time
 from pymongo import MongoClient
