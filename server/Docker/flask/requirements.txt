@@ -6,9 +6,11 @@ click==8.1.7
 colorama==0.4.6
 dnspython==2.7.0
 filelock==3.16.1
+flask-limiter==3.5.0
 Flask==3.0.3
 Flask-Cors==5.0.0
 fsspec==2024.9.0
+gunicorn==21.2.0
 huggingface-hub==0.26.0
 idna==3.10
 itsdangerous==2.2.0
@@ -21,6 +23,7 @@ numpy==2.1.2
 packaging==24.1
 pymongo==4.11.2
 python-dateutil==2.9.0.post0
+python-dotenv==1.0.0
 PyYAML==6.0.2
 regex==2024.9.11
 requests==2.32.3
