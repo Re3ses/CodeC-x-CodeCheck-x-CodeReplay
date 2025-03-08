@@ -23,7 +23,7 @@ import {
 interface CodeSnapshot {
   code: string;
   timestamp: string;
-  learner_id: string; // Use learner_id consistently
+  learner_id: string;
   problemId?: string;
   roomId?: string;
   submissionId?: string;
@@ -32,7 +32,7 @@ interface CodeSnapshot {
 interface SequentialSimilarity {
   from_index: number;
   to_index: number;
-  learner_id: string; // Use learner_id consistently
+  learner_id: string;
   similarity: number;
   codebertScore: number;
 }
@@ -50,60 +50,44 @@ interface EnhancedPasteInfo {
   };
 }
 
-interface AdvancedMetrics {
-  maxChange: number;
-  averageSimilarity: number;
-  minSimilarity: number;
-  normalizedVariance: number;
-  weightedPlagiarismScore: number;
-  pasteCount: number;
-  bigPasteCount: number;
-}
-
 interface SequentialSimilarityVisualizationProps {
   snapshots: CodeSnapshot[];
   pastedSnippets: EnhancedPasteInfo[];
-  // onMetricsUpdate?: (metrics: AdvancedMetrics) => void; // Keep this comment if needed
 }
 
 const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizationProps> = ({
   snapshots,
   pastedSnippets,
-  // onMetricsUpdate // Keep this comment if needed
 }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentSnapshotIndex, setCurrentSnapshotIndex] = useState(0);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [localPastedSnippets, setLocalPastedSnippets] = useState<EnhancedPasteInfo[]>([]);
   const [expandedCards, setExpandedCards] = useState<number[]>([]);
   const [sequentialSimilarities, setSequentialSimilarities] = useState<SequentialSimilarity[]>([]);
   const [pasteCount, setPasteCount] = useState(0);
   const [bigPasteCount, setBigPasteCount] = useState(0);
 
-  useEffect(() => {
-    console.log("Snapshots received: ", snapshots);
-    console.log("Pasted Snippets received: ", pastedSnippets);
-  }, [snapshots, pastedSnippets]); // Added pastedSnippets to the dependency array
+  const hasSingleSnapshot = snapshots.length === 1;
 
   useEffect(() => {
-    console.log("sequential similarities calculated: ", sequentialSimilarities);
-  }, [sequentialSimilarities]); // Added sequentialSimilarities to the dependency array
+    if (hasSingleSnapshot) {
+      return;
+    }
 
-  useEffect(() => {
     const calculateSequentialSimilarities = async (snapshotsToCompare: CodeSnapshot[]) => {
       try {
         const learnerId = snapshotsToCompare[0].learner_id;
         const problemId = snapshotsToCompare[0].problemId;
         const roomId = snapshotsToCompare[0].roomId;
 
-        const response = await fetch(`http://localhost:5000/api/similarity/sequential?learner_id=${learnerId}&problemId=${problemId}&roomId=${roomId}`, {
+        const API_URL = process.env.FLASK_API_URL || 'http://localhost:';
+        const API_PORT = process.env.FLASK_API_PORT || '5000';
+        const response = await fetch(`${API_URL}${API_PORT}/api/similarity/sequential?learner_id=${learnerId}&problemId=${problemId}&roomId=${roomId}`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
         });
 
         const data = await response.json();
-        // console.log("sequential data: ", data);
-        // console.log("parameters:", { "learnerId": learnerId, "problemId": problemId, "roomId": roomId });
         if (response.ok) {
           if (Array.isArray(data.sequentialSimilarities)) {
             setSequentialSimilarities(data.sequentialSimilarities);
@@ -114,7 +98,7 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
       }
     };
     calculateSequentialSimilarities(snapshots);
-  }, [snapshots]); // snapshots dependency is already present
+  }, [snapshots, hasSingleSnapshot]);
 
   const toggleCard = (index: number) => {
     setExpandedCards(prev =>
@@ -157,10 +141,7 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
 
   // Compute advanced metrics
   const advancedMetrics = useMemo(() => {
-    // console.log('Calculating metrics with similarities:', sequentialSimilarities); // Keep the console log
-
-    if (sequentialSimilarities.length === 0) {
-      console.log('No sequential similarities available'); // Keep the console log
+    if (sequentialSimilarities.length === 0 || hasSingleSnapshot) {
       return null;
     }
 
@@ -187,14 +168,6 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
       (100 - minSimilarity) * 0.2 +
       (normalizedVariance) * 0.2;
 
-    // console.log('Metrics:', { // Keep the console log
-    //   maxChange,
-    //   averageSimilarity,
-    //   minSimilarity,
-    //   normalizedVariance,
-    //   weightedScore
-    // });
-
     return {
       maxChange: Math.round(maxChange),
       maxChangePct: Math.round(maxChangePct), // Keep maxChangePct
@@ -206,7 +179,7 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
       pasteCount, // Keep pasteCount
       bigPasteCount // Keep bigPasteCount
     };
-  }, [sequentialSimilarities, pasteCount, bigPasteCount]); // Add pasteCount and bigPasteCount to dependencies
+  }, [sequentialSimilarities, pasteCount, bigPasteCount, hasSingleSnapshot]);
 
   // Prepare data for the chart
   const chartData = sequentialSimilarities.map((similarity, index) => ({
@@ -320,7 +293,14 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
 
   return (
     <div className="bg-gray-800 rounded-lg p-4 space-y-6">
-      {advancedMetrics && (
+      {hasSingleSnapshot && (
+        <div className="bg-blue-900/30 border border-blue-700 text-blue-300 rounded-lg p-4 text-center">
+          <h4 className="text-md font-semibold">Single Snapshot Detected</h4>
+          <p>Similarity analysis requires multiple code snapshots. Only basic information is available.</p>
+        </div>
+      )}
+
+      {advancedMetrics && !hasSingleSnapshot && (
         <div className="bg-gray-700 rounded-lg p-4">
           <h4 className="text-md font-semibold mb-4">Advanced Similarity Metrics</h4>
 
@@ -458,27 +438,35 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
       )}
 
       <div className="grid grid-cols-2 gap-6">
-        <div className="bg-gray-700 rounded-lg p-4">
-          <h4 className="text-md font-semibold mb-4">Similarity Trends</h4>
-          <ResponsiveContainer width="100%" height={400}>
-            <LineChart data={chartData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-              <XAxis dataKey="name" stroke="#9CA3AF" />
-              <YAxis stroke="#9CA3AF" />
-              <RechartsTooltip
-                contentStyle={{ backgroundColor: '#1F2937', color: '#fff' }}
-                labelStyle={{ color: '#fff' }}
-              />
-              <Legend />
-              <Line
-                type="monotone"
-                dataKey="similarity"
-                stroke="#8884d8"
-                activeDot={{ r: 8 }}
-              />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
+        {!hasSingleSnapshot ? (
+          <div className="bg-gray-700 rounded-lg p-4">
+            <h4 className="text-md font-semibold mb-4">Similarity Trends</h4>
+            <ResponsiveContainer width="100%" height={400}>
+              <LineChart data={chartData}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                <XAxis dataKey="name" stroke="#9CA3AF" />
+                <YAxis stroke="#9CA3AF" />
+                <RechartsTooltip
+                  contentStyle={{ backgroundColor: '#1F2937', color: '#fff' }}
+                  labelStyle={{ color: '#fff' }}
+                />
+                <Legend />
+                <Line
+                  type="monotone"
+                  dataKey="similarity"
+                  stroke="#8884d8"
+                  activeDot={{ r: 8 }}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>) : (
+          <div className="bg-gray-700 rounded-lg p-4">
+            <h4 className="text-md font-semibold mb-4">Similarity Trends</h4>
+            <div className="flex items-center justify-center h-[400px] text-gray-400">
+              <p>At least two snapshots are required to calculate similarity trends.</p>
+            </div>
+          </div>
+        )}
 
         <div className="bg-gray-700 rounded-lg p-4">
           <h4 className="text-md font-semibold mb-4">Code Evolution Replay</h4>
@@ -502,11 +490,12 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
           <div className="space-y-4">
             <div className="flex items-center space-x-4 px-2">
               <div className="flex items-center space-x-2">
+                {/* Disable controls if only one snapshot */}
                 <Button
                   onClick={handlePrevious}
                   variant="outline"
                   size="icon"
-                  disabled={currentSnapshotIndex === 0}
+                  disabled={currentSnapshotIndex === 0 || hasSingleSnapshot}
                   className="h-8 w-8">
                   <ChevronLeft className="h-4 w-4" />
                 </Button>
@@ -515,6 +504,7 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
                   onClick={handlePlayPause}
                   variant="secondary"
                   size="sm"
+                  disabled={hasSingleSnapshot}
                   className="flex items-center space-x-2 px-3"
                 >
                   {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
@@ -525,7 +515,7 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
                   onClick={handleNext}
                   variant="outline"
                   size="icon"
-                  disabled={currentSnapshotIndex === snapshots.length - 1}
+                  disabled={currentSnapshotIndex === snapshots.length - 1 || hasSingleSnapshot}
                   className="h-8 w-8"
                 >
                   <ChevronRight className="h-4 w-4" />
@@ -538,12 +528,19 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
                   max={snapshots.length - 1}
                   step={1}
                   onValueChange={handleSliderChange}
+                  disabled={hasSingleSnapshot}
                 />
               </div>
             </div>
 
             <div className="text-center text-sm text-gray-400">
-              Snapshot {currentSnapshotIndex + 1} of {snapshots.length}
+              {hasSingleSnapshot ? (
+                "Only one snapshot available"
+              ) : (
+                <>
+                  Snapshot {currentSnapshotIndex + 1} of {snapshots.length}
+                </>
+              )}
               <br />
               {snapshots[currentSnapshotIndex]?.timestamp &&
                 new Date(snapshots[currentSnapshotIndex].timestamp).toLocaleString()}

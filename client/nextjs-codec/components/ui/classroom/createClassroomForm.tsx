@@ -33,7 +33,11 @@ import { Calendar } from "@/components/ui/calendar";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 
-export default function CreateClassroomForm() {
+interface CreateClassroomFormProps {
+  onFormSubmit: (submit: boolean) => void;
+}
+
+export default function CreateClassroomForm({ onFormSubmit }: CreateClassroomFormProps) {
   const queryClient = useQueryClient();
 
   const [success, setSuccess] = useState(false);
@@ -75,12 +79,15 @@ export default function CreateClassroomForm() {
       setSuccess(true);
       queryClient.refetchQueries({ queryKey: ['coderooms'] }); // Update query key
 
+      onFormSubmit(true);
+
       toast({
         title: 'Coderoom created',
         description: 'You can see the invite code in the room itself',
       });
     } catch (e) {
       console.error('Create room error:', e);
+      onFormSubmit(false);
       toast({
         title: 'Error',
         description: 'Failed to create classroom',

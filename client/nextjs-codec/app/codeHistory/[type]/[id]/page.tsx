@@ -150,7 +150,9 @@ export default function CodeReplayApp() {
           `problemId=${params.id}` :
           `roomId=${params.id}`;
 
-        const response = await fetch(`http://localhost:5000/api/similarity/matrix?${queryParam}`, {
+        const API_URL = process.env.FLASK_API_URL || 'http://localhost:';
+        const API_PORT = process.env.FLASK_API_PORT || '5000';
+        const response = await fetch(`${API_URL}${API_PORT}/api/similarity/matrix?${queryParam}`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' }
         });
@@ -277,17 +279,6 @@ export default function CodeReplayApp() {
                             <span className="truncate">{snippet.learner}</span>
                           </div>
                           <div className="flex items-center gap-2 flex-shrink-0">
-                            {/* {(() => {
-                              const score = advancedMetrics[String(snippet.learner_id)]?.weightedPlagiarismScore || 0;
-                              return (
-                                <Badge className={`${score >= 80 ? 'bg-red-600' :
-                                  score >= 60 ? 'bg-yellow-600' :
-                                    'bg-gray-600'
-                                  }`}>
-                                  {score.toFixed(1)}%
-                                </Badge>
-                              );
-                            })()} */}
                             {expandedCard === index ? (
                               <ChevronUp className="w-4 h-4" />
                             ) : (

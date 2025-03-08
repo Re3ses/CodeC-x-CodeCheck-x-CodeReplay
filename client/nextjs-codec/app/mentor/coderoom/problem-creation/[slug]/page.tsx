@@ -182,7 +182,8 @@ const SUPPORTED_LANGUAGES = [
   { id: 62, name: 'Java (OpenJDK 17.0.6)', extension: 'java' },
   { id: 71, name: 'Python (3.11.2)', extension: 'py' },
   { id: 50, name: 'C (GCC 11.2.0)', extension: 'c' },
-  { id: 88, name: 'C# (Mono 6.12.0)', extension: 'cs' }
+  { id: 88, name: 'C# (Mono 6.12.0)', extension: 'cs' },
+  { id: 63, name: 'Javascript (Node.js 16.13.0)', extension: 'js' }
 ];
 
 const DEFAULT_SNIPPETS = {
@@ -204,7 +205,7 @@ export default function Page({ params }: { params: { slug: string } }) {
   const [langArray, setLangArray] = useState<LangArray[]>([]);
   const [timeComplexity, setTimeComplexity] = useState<number>();
   const [constraint, setConstraint] = useState<string>();
-  const [testCaseInput, setTestCaseInput] = useState<string>();
+  const [testCaseInput, setTestCaseInput] = useState<string>("");
   const [testCaseOutput, setTestCaseOutput] = useState<string>();
   const [isEval, setIsEval] = useState<boolean>(false);
   const [isSample, setIsSample] = useState<boolean>(false);
@@ -214,6 +215,16 @@ export default function Page({ params }: { params: { slug: string } }) {
   const [perfectScore, setPerfectScore] = useState<number>(0);
   const testCaseControlsRef = useRef<{ resetControls: () => void }>(null);
   const router = useRouter();
+  const [missingFieldsState, setMissingFieldsState] = useState({
+    problemName: false,
+    description: false,
+    inputFormat: false,
+    outputFormat: false,
+    constraints: false,
+    testCaseInput: false,
+    testCaseOutput: false,
+    codeSnippet: false,
+  });
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -240,28 +251,23 @@ export default function Page({ params }: { params: { slug: string } }) {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (!problemName || !description || !inputFormat || !outputFormat || !constraints) {
+    const missingFields = {
+      problemName: !problemName,
+      description: !description,
+      inputFormat: !inputFormat,
+      outputFormat: !outputFormat,
+      constraints: !constraints,
+      testCaseInput: testCases.length === 0,
+      testCaseOutput: testCases.length === 0,
+      codeSnippet: langArray.length === 0,
+    };
+
+    setMissingFieldsState(missingFields);
+
+    if (Object.values(missingFields).some(Boolean)) {
       toast({
         title: 'Missing required fields',
         description: 'Please fill in all required fields',
-        variant: 'destructive',
-      });
-      return;
-    }
-
-    if (langArray.length === 0) {
-      toast({
-        title: 'No code snippets added',
-        description: 'Please add at least one code snippet',
-        variant: 'destructive',
-      });
-      return;
-    }
-
-    if (testCases.length === 0) {
-      toast({
-        title: 'No test cases added',
-        description: 'Please add at least one test case',
         variant: 'destructive',
       });
       return;
@@ -335,10 +341,10 @@ export default function Page({ params }: { params: { slug: string } }) {
   }
 
   function handleAddTestCase() {
-    if (!testCaseInput || !testCaseOutput) {
+    if (!testCaseOutput) {
       toast({
         title: 'Missing test case details',
-        description: 'Please provide both input and output for the test case',
+        description: 'Please provide output for the test case',
         variant: 'destructive',
       });
       return;
@@ -422,22 +428,38 @@ export default function Page({ params }: { params: { slug: string } }) {
             <TabsContent value="Basic Info" className="rounded-xl bg-gray-900 p-6">
               <div className="space-y-6">
                 <div>
-                  <label className="block text-sm font-medium mb-2">Problem Name</label>
+                  <label className="block text-sm font-medium mb-2">Problem Name
+                    {missingFieldsState.problemName &&
+                      <sup className="ml-1 text-xs text-red-400 font-normal">*required</sup>
+                    }
+                  </label>
                   <input
                     type="text"
                     name="name"
                     value={problemName}
-                    onChange={(e) => setProblemName(e.target.value)}
+                    onChange={(e) => {
+                      setProblemName(e.target.value);
+                      if (e.target.value) {
+                        setMissingFieldsState(prev => ({ ...prev, problemName: false }));
+                      }
+                    }}
                     className="w-full rounded-lg bg-gray-800 border border-gray-700 p-2"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-2">Problem Description</label>
+                  <label className="block text-sm font-medium mb-2">Problem Description
+                    {missingFieldsState.description &&
+                      <sup className="ml-1 text-xs text-red-400 font-normal">*required</sup>
+                    }
+                  </label>
                   <ReactQuill
                     value={description}
-                    onChange={setDescription}
+                    onChange={(e) => {
+                      setDescription(e);
+                      setMissingFieldsState(prev => ({ ...prev, description: false }));
+                    }}
                     className="min-h-[10vh] bg-gray-800 rounded-lg [&_.ql-toolbar]:bg-gray-700 [&_.ql-container]:bg-gray-800 [&_.ql-editor]:min-h-[200px] [&_.ql-editor]:text-white [&_.ql-toolbar_svg]:text-white [&_.ql-toolbar_button]:text-white [&_.ql-toolbar_.ql-stroke]:stroke-white [&_.ql-toolbar_.ql-fill]:fill-white [&_.ql-toolbar_.ql-picker-label]:text-white"
                     preserveWhitespace={true}
                   />
@@ -477,7 +499,11 @@ export default function Page({ params }: { params: { slug: string } }) {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium mb-2">Code Snippet</label>
+                    <label className="block text-sm font-medium mb-2">Code Snippet
+                      {missingFieldsState.codeSnippet &&
+                        <sup className="ml-1 text-xs text-red-400 font-normal">*required</sup>
+                      }
+                    </label>
                     <Editor
                       height="200px"
                       theme="vs-dark"
@@ -533,10 +559,17 @@ export default function Page({ params }: { params: { slug: string } }) {
             {/* Format & Constraints Panel */}
             <TabsContent value="Format & Constraints" className="rounded-xl bg-gray-900 p-6">
               <div className="mb-6">
-                <label className="block text-sm font-medium mb-2">Constraints</label>
+                <label className="block text-sm font-medium mb-2">Constraints
+                  {missingFieldsState.constraints &&
+                    <sup className="ml-1 text-xs text-red-400 font-normal">*required</sup>
+                  }
+                </label>
                 <ReactQuill
                   value={constraints}
-                  onChange={setConstraints}
+                  onChange={(e) => {
+                    setConstraints(e);
+                    setMissingFieldsState(prev => ({ ...prev, constraints: false }));
+                  }}
                   className="bg-gray-800 rounded-lg [&_.ql-toolbar]:bg-gray-700 [&_.ql-container]:bg-gray-800 [&_.ql-editor]:min-h-[200px] [&_.ql-editor]:text-white [&_.ql-toolbar_svg]:text-white [&_.ql-toolbar_button]:text-white [&_.ql-toolbar_.ql-stroke]:stroke-white [&_.ql-toolbar_.ql-fill]:fill-white [&_.ql-toolbar_.ql-picker-label]:text-white"
                 />
               </div>
@@ -544,10 +577,17 @@ export default function Page({ params }: { params: { slug: string } }) {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div className="space-y-6">
                   <div>
-                    <label className="block text-sm font-medium mb-2">Input Format</label>
+                    <label className="block text-sm font-medium mb-2">Input Format
+                      {missingFieldsState.inputFormat &&
+                        <sup className="ml-1 text-xs text-red-400 font-normal">*required</sup>
+                      }
+                    </label>
                     <ReactQuill
                       value={inputFormat}
-                      onChange={setInputFormat}
+                      onChange={(e) => {
+                        setInputFormat(e);
+                        setMissingFieldsState(prev => ({ ...prev, inputFormat: false }));
+                      }}
                       className="bg-gray-800 rounded-lg [&_.ql-toolbar]:bg-gray-700 [&_.ql-container]:bg-gray-800 [&_.ql-editor]:min-h-[200px] [&_.ql-editor]:text-white [&_.ql-toolbar_svg]:text-white [&_.ql-toolbar_button]:text-white [&_.ql-toolbar_.ql-stroke]:stroke-white [&_.ql-toolbar_.ql-fill]:fill-white [&_.ql-toolbar_.ql-picker-label]:text-white"
                     />
                   </div>
@@ -555,10 +595,17 @@ export default function Page({ params }: { params: { slug: string } }) {
 
                 <div className="space-y-6">
                   <div>
-                    <label className="block text-sm font-medium mb-2">Output Format</label>
+                    <label className="block text-sm font-medium mb-2">Output Format
+                      {missingFieldsState.outputFormat &&
+                        <sup className="ml-1 text-xs text-red-400 font-normal">*required</sup>
+                      }
+                    </label>
                     <ReactQuill
                       value={outputFormat}
-                      onChange={setOutputFormat}
+                      onChange={(e) => {
+                        setOutputFormat(e);
+                        setMissingFieldsState(prev => ({ ...prev, outputFormat: false }));
+                      }}
                       className="bg-gray-800 rounded-lg [&_.ql-toolbar]:bg-gray-700 [&_.ql-container]:bg-gray-800 [&_.ql-editor]:min-h-[200px] [&_.ql-editor]:text-white [&_.ql-toolbar_svg]:text-white [&_.ql-toolbar_button]:text-white [&_.ql-toolbar_.ql-stroke]:stroke-white [&_.ql-toolbar_.ql-fill]:fill-white [&_.ql-toolbar_.ql-picker-label]:text-white"
                     />
                   </div>
@@ -578,20 +625,34 @@ export default function Page({ params }: { params: { slug: string } }) {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium mb-2">Test Case Input</label>
+                    <label className="block text-sm font-medium mb-2">Test Case Input
+                      {missingFieldsState.testCaseOutput &&
+                        <sup className="ml-1 text-xs text-red-400 font-normal">*required</sup>
+                      }
+                    </label>
                     <textarea
                       value={testCaseInput}
-                      onChange={(e) => setTestCaseInput(e.target.value)}
+                      onChange={(e) => {
+                        setTestCaseInput(e.target.value);
+                        setMissingFieldsState(prev => ({ ...prev, testCaseOutput: false }));
+                      }}
                       className="w-full rounded-lg bg-gray-800 border border-gray-700 p-2 min-h-[150px]"
                       placeholder="Enter input for this test case"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium mb-2">Test Case Output</label>
+                    <label className="block text-sm font-medium mb-2">Test Case Output
+                      {missingFieldsState.testCaseOutput &&
+                        <sup className="ml-1 text-xs text-red-400 font-normal">*required</sup>
+                      }
+                    </label>
                     <textarea
                       value={testCaseOutput}
-                      onChange={(e) => setTestCaseOutput(e.target.value)}
+                      onChange={(e) => {
+                        setTestCaseOutput(e.target.value);
+                        setMissingFieldsState(prev => ({ ...prev, testCaseOutput: false }));
+                      }}
                       className="w-full rounded-lg bg-gray-800 border border-gray-700 p-2 min-h-[150px]"
                       placeholder="Enter expected output for this test case"
                     />
