@@ -142,5 +142,5 @@ export async function logoutUser() {
 
 export async function deleteCookies() {
   cookies().delete('access_token');
-  cookies().delete('refresh_token');
+  // cookies().delete('refresh_token');
 }

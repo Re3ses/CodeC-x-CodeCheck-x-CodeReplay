@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { NextRequest } from 'next/server';
-import { getSession, getUser } from './lib/auth';
+import { deleteCookies, getSession, getUser } from './lib/auth';
 
 // Ensure environment variables are set
 if (!process.env.SERVER_URL || !process.env.API_PORT) {
@@ -25,6 +25,25 @@ export async function middleware(request: NextRequest) {
     user = await getUser();
   }
 
+
+  // DEBUG LOGS
+  const accessToken = request.cookies.get('access_token')?.value;
+  const refreshToken = request.cookies.get('refresh_token')?.value;
+
+  if (!refreshToken) {
+    throw new Error("No refresh token found in middleware.ts .");
+  }
+  if (!accessToken) {
+    throw new Error("No refresh token found in middleware.ts .");
+  }
+
+  if (accessToken && refreshToken) {
+    console.log("Access token found in middleware.ts: ", accessToken);
+    console.log("Refresh token found in middleware.ts: ", refreshToken);
+  }
+
+  // END DEBUG LOGS
+
   // Prevent infinite redirect loop
   if (!session && request.nextUrl.pathname !== '/login') {
     console.log("No session found, redirecting to /login");
@@ -36,11 +55,15 @@ export async function middleware(request: NextRequest) {
   }
 
   if (request.nextUrl.pathname === '/login') {
-    const response = NextResponse.redirect(new URL('/login', request.url));
-    response.cookies.set('access_token', '', { expires: new Date(0) });
-    response.cookies.set('refresh_token', '', { expires: new Date(0) });
-    return response;
+    // Only clear tokens when coming from another page, not when refreshing login
+    const referer = request.headers.get('referer');
+    if (referer && !referer.includes('/login')) {
+      await deleteCookies();
+    }
+    // Always allow access to login page without further checks
+    return NextResponse.next();
   }
+
 
   if (session) {
     if (request.nextUrl.pathname.startsWith('/pogi/secret/marco/handshake')) {
