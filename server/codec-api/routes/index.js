@@ -17,6 +17,8 @@ router.use('/attempts', require('./external/attempt-tracker'))
 
 // Health check route
 router.get('/health', (req, res) => {
+    // print to console that a health check was requested.
+    console.log('Health check requested')
     res.status(200).json({ status: 'ok', message: 'API is running' });
 });
 

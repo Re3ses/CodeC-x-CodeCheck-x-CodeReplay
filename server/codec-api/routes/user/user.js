@@ -20,6 +20,8 @@ router.get('/', authenticate, wrapper(async (req, res) => {
 }))
 
 router.get('/health', (req, res) => {
+    // print to console that a health check was requested.
+    console.log('Health check requested in user.js')
     res.status(200).json({ status: 'ok', message: 'API is running' });
 })
 
@@ -36,6 +38,8 @@ router.get('/validate', wrapper(async (req, res) => {
 }))
 
 router.get('/:username', authenticate, wrapper(async (req, res) => {
+    // Print to console that a user profile was requested.
+    console.log('User profile requested')
     if (!req.params.username)
         throw new APIError("Missing parameter: {username}", 400)
 
