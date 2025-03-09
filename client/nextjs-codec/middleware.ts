@@ -9,16 +9,27 @@ if (!process.env.SERVER_URL || !process.env.API_PORT) {
 
 async function testHealthEndpoint() {
   try {
-    const response = await fetch('http://157.245.207.155:8000/api/health'); // Replace with your actual endpoint
+    const response = await fetch('http://157.245.207.155:8000/api/health', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json', // Important for some servers
+        // Any other necessary headers
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
     const data = await response.json();
-    console.log('Health check response:', response.status, data);
+    console.log('Health check response:', data);
   } catch (error) {
     console.error('Health check error:', error);
   }
 }
 
 export async function middleware(request: NextRequest) {
-  testHealthEndpoint();
+  await testHealthEndpoint();
   try {
 
     let session;
