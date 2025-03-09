@@ -15,4 +15,9 @@ router.use('/users', require('./user/user'))
 // External-related routes
 router.use('/attempts', require('./external/attempt-tracker'))
 
+// Health check route
+router.get('/health', (req, res) => {
+    res.status(200).json({ status: 'ok', message: 'API is running' });
+});
+
 module.exports = router
