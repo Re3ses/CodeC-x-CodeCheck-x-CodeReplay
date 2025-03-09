@@ -47,14 +47,10 @@ export async function refreshToken() {
   }
 }
 
-export async function getSession(cookieHeader?: string) {
-  const cookies = new Map(
-    cookieHeader?.split('; ').map((c) => c.split('=') as [string, string]).filter(c => c.length === 2) || []
-  );
-  const token = cookies.get('refresh_token');
-
+export async function getSession() {
+  const token = cookies().get('refresh_token')?.value;
   if (!token) {
-    console.warn("No refresh token found.");
+    console.warn("No refresh token found in auth.ts.");
     return null;
   }
 
@@ -67,11 +63,11 @@ export async function getSession(cookieHeader?: string) {
   }
 }
 
-
 export async function getUser() {
   // bug at middleware
   await SilentLogin();
   const user = await getSession();
+  console.log("Session in auth.ts:", user);
   const url = `${process.env.SERVER_URL}${process.env.API_PORT}/api/users/${user?.username}`;
 
   console.log("Fetching user data from:", url);
@@ -142,5 +138,5 @@ export async function logoutUser() {
 
 export async function deleteCookies() {
   cookies().delete('access_token');
-  // cookies().delete('refresh_token');
+  cookies().delete('refresh_token');
 }
