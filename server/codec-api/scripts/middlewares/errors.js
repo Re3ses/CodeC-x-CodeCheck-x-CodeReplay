@@ -32,8 +32,9 @@ const handler = (err, req, res, next) => {
     res.status(err.code).json({ error: err, message: err.message })
 }
 
-module.exports.handler = (err, req, res, next) => {
-    console.error(err);  // Log error for debugging
-    const statusCode = err.status || 500;  // Default to 500 if no status
-    res.status(statusCode).json({ error: err.message || "Internal Server Error" });
-};
+module.exports = {
+    wrapper,
+    handler,
+    APIError,
+    DocumentNotFoundError
+}
