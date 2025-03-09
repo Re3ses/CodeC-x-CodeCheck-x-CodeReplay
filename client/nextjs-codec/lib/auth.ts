@@ -84,7 +84,7 @@ export async function getUser() {
     });
     const data = await res.json();
 
-    // console.log('user data: ', data);
+    console.log('Fetched user data in auth.ts: ', data);
 
     return data;
   } catch (e) {

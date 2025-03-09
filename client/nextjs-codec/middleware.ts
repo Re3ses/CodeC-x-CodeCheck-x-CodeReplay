@@ -4,12 +4,12 @@ import { deleteCookies, getSession, getUser } from './lib/auth';
 
 // Ensure environment variables are set
 if (!process.env.SERVER_URL || !process.env.API_PORT) {
-  throw new Error("❌ Missing environment variables: SERVER_URL or API_PORT");
+  throw new Error("Missing environment variables: SERVER_URL or API_PORT");
 }
 
 async function testHealthEndpoint() {
   try {
-    const response = await fetch('http://157.245.207.155:8000/api/health', {
+    const response = await fetch(`${process.env.SERVER_URL}${process.env.API_PORT}/api/health`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json', // Important for some servers
@@ -113,7 +113,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   } catch (error) {
     console.error("Middleware Error:", error); // Log the error
-    return NextResponse.json({ error: "Middleware failed" }, { status: 500 }); // Return a 500 response
+    // return NextResponse.json({ error: "Middleware failed" }, { status: 500 }); // Return a 500 response
   }
 }
 
