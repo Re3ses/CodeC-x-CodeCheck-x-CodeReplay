@@ -1,50 +1,51 @@
 import { NextResponse } from 'next/server';
 import { NextRequest } from 'next/server';
-import { getSession, getUser } from './lib/auth';
+import { deleteCookies, getSession, getUser } from './lib/auth';
+import { cookies } from 'next/headers';
 
+// todo: check routes if user is authenticated and if user is mentor or learner. Route accordingly...
+// todo: to do first todo, probably make another cookie that contains username and user type
 export async function middleware(request: NextRequest) {
-  let session = null;
-  let user = null;
+  let session;
+  let user;
 
   if (
     request.nextUrl.pathname !== '/' &&
     request.nextUrl.pathname !== '/login'
   ) {
-    session = await getSession(request);
-    user = await getUser(request);
+    session = await getSession();
+    user = await getUser();
   }
-
-  if (!session && request.nextUrl.pathname !== '/login') {
-    return NextResponse.redirect(new URL('/login', request.url));
-  }
-
   if (request.nextUrl.pathname === '/') {
     return NextResponse.redirect(new URL('/login', request.url));
   }
 
   if (request.nextUrl.pathname === '/login') {
-    const response = NextResponse.next();
-    response.cookies.set('access_token', '', { maxAge: -1 });
-    return response;
+    cookies().delete('access_token');
+    await deleteCookies();
   }
 
-  if (session && user) {
+  if (session) {
     if (request.nextUrl.pathname.startsWith('/pogi/secret/marco/handshake')) {
       return NextResponse.redirect(
         'https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley'
       );
     }
 
-    if (request.nextUrl.pathname.startsWith('/mentor') && user.type !== 'Mentor') {
-      return NextResponse.redirect(new URL('/dashboard', request.url));
+    if (request.nextUrl.pathname.startsWith('/mentor')) {
+      if (user.type !== 'Mentor') {
+        return NextResponse.redirect(new URL('/dashboard', request.url));
+      }
     }
 
-    if (request.nextUrl.pathname.startsWith('/learner') && user.type !== 'Learner') {
-      return NextResponse.redirect(new URL('/dashboard', request.url));
+    if (request.nextUrl.pathname.startsWith('/learner')) {
+      if (user.type !== 'Learner') {
+        return NextResponse.redirect(new URL('/dashboard', request.url));
+      }
     }
+  } else {
+    return NextResponse.redirect(new URL('/', request.url));
   }
-
-  return NextResponse.next();
 }
 
 export const config = {
