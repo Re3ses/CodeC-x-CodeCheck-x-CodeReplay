@@ -39,6 +39,16 @@ export async function middleware(request: NextRequest) {
     try {
       const user = await getUser();
 
+      // For debugging only - remove in production
+      console.log("Middleware running for path:", request.nextUrl.pathname);
+
+      // After session check
+      console.log("Session check result:", session ? "Session exists" : "No session");
+
+      // After user data fetch
+      console.log("User data:", user);
+
+
       // Easter egg route
       if (request.nextUrl.pathname.startsWith('/pogi/secret/marco/handshake')) {
         return NextResponse.redirect(
