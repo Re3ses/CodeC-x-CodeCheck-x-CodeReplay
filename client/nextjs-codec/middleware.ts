@@ -9,42 +9,52 @@ export async function middleware(request: NextRequest) {
   let session;
   let user;
 
-  if (
-    request.nextUrl.pathname !== '/' &&
-    request.nextUrl.pathname !== '/login'
-  ) {
-    session = await getSession();
-    user = await getUser();
-  }
-  if (request.nextUrl.pathname === '/') {
+  // For debugging only - remove in production
+  console.log('Environment check:', {
+    serverUrl: process.env.SERVER_URL,
+    apiPort: process.env.API_PORT
+  });
+
+  try {
+    if (request.nextUrl.pathname !== '/' && request.nextUrl.pathname !== '/login') {
+      session = await getSession();
+      if (session) {
+        user = await getUser();
+      } else {
+        return NextResponse.redirect(new URL('/login', request.url));
+      }
+    }
+
+    if (request.nextUrl.pathname === '/login') {
+      cookies().delete('access_token');
+      await deleteCookies();
+    }
+
+    if (session) {
+      if (request.nextUrl.pathname.startsWith('/pogi/secret/marco/handshake')) {
+        return NextResponse.redirect(
+          'https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley'
+        );
+      }
+
+      if (request.nextUrl.pathname.startsWith('/mentor')) {
+        if (user.type !== 'Mentor') {
+          return NextResponse.redirect(new URL('/dashboard', request.url));
+        }
+      }
+
+      if (request.nextUrl.pathname.startsWith('/learner')) {
+        if (user.type !== 'Learner') {
+          return NextResponse.redirect(new URL('/dashboard', request.url));
+        }
+      }
+    } else {
+      return NextResponse.redirect(new URL('/', request.url));
+    }
+  } catch (error) {
+    console.error('Middleware error:', error);
+    // Safely redirect to login on any error
     return NextResponse.redirect(new URL('/login', request.url));
-  }
-
-  if (request.nextUrl.pathname === '/login') {
-    cookies().delete('access_token');
-    await deleteCookies();
-  }
-
-  if (session) {
-    if (request.nextUrl.pathname.startsWith('/pogi/secret/marco/handshake')) {
-      return NextResponse.redirect(
-        'https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley'
-      );
-    }
-
-    if (request.nextUrl.pathname.startsWith('/mentor')) {
-      if (user.type !== 'Mentor') {
-        return NextResponse.redirect(new URL('/dashboard', request.url));
-      }
-    }
-
-    if (request.nextUrl.pathname.startsWith('/learner')) {
-      if (user.type !== 'Learner') {
-        return NextResponse.redirect(new URL('/dashboard', request.url));
-      }
-    }
-  } else {
-    return NextResponse.redirect(new URL('/', request.url));
   }
 }
 
