@@ -47,10 +47,26 @@ export async function refreshToken() {
   }
 }
 
-export async function getSession() {
-  const res = jwt.decode(cookies().get('refresh_token')?.value!);
-  return res ? JSON.parse(JSON.stringify(res)) : null;
+export async function getSession(cookieHeader?: string) {
+  const cookies = new Map(
+    cookieHeader?.split('; ').map((c) => c.split('=') as [string, string]).filter(c => c.length === 2) || []
+  );
+  const token = cookies.get('refresh_token');
+
+  if (!token) {
+    console.warn("No refresh token found.");
+    return null;
+  }
+
+  try {
+    const res = jwt.decode(token);
+    return res ? JSON.parse(JSON.stringify(res)) : null;
+  } catch (error) {
+    console.error("Error decoding JWT:", error);
+    return null;
+  }
 }
+
 
 export async function getUser() {
   // bug at middleware

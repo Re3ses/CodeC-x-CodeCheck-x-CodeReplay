@@ -1,10 +1,12 @@
 import { NextResponse } from 'next/server';
 import { NextRequest } from 'next/server';
-import { deleteCookies, getSession, getUser } from './lib/auth';
-import { cookies } from 'next/headers';
+import { getSession, getUser } from './lib/auth';
 
-// todo: check routes if user is authenticated and if user is mentor or learner. Route accordingly...
-// todo: to do first todo, probably make another cookie that contains username and user type
+// Ensure environment variables are set
+if (!process.env.SERVER_URL || !process.env.API_PORT) {
+  throw new Error("❌ Missing environment variables: SERVER_URL or API_PORT");
+}
+
 export async function middleware(request: NextRequest) {
   let session;
   let user;
@@ -22,13 +24,22 @@ export async function middleware(request: NextRequest) {
     session = await getSession();
     user = await getUser();
   }
+
+  // Prevent infinite redirect loop
+  if (!session && request.nextUrl.pathname !== '/login') {
+    console.log("No session found, redirecting to /login");
+    return NextResponse.redirect(new URL('/login', request.url));
+  }
+
   if (request.nextUrl.pathname === '/') {
     return NextResponse.redirect(new URL('/login', request.url));
   }
 
   if (request.nextUrl.pathname === '/login') {
-    cookies().delete('access_token');
-    await deleteCookies();
+    const response = NextResponse.redirect(new URL('/login', request.url));
+    response.cookies.set('access_token', '', { expires: new Date(0) });
+    response.cookies.set('refresh_token', '', { expires: new Date(0) });
+    return response;
   }
 
   if (session) {
@@ -49,9 +60,9 @@ export async function middleware(request: NextRequest) {
         return NextResponse.redirect(new URL('/dashboard', request.url));
       }
     }
-  } else {
-    return NextResponse.redirect(new URL('/', request.url));
   }
+
+  return NextResponse.next();
 }
 
 export const config = {
