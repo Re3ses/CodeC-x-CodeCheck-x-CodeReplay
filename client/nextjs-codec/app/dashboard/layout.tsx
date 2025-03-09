@@ -2,36 +2,31 @@
 import Nav from './nav';
 import { useQuery } from '@tanstack/react-query';
 import { getUser, refreshToken } from '@/lib/auth';
-import { createContext, useEffect } from 'react';
+import { createContext } from 'react';
 import { UserContext } from './contexts';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  useEffect(() => {
-    const res = async () => {
-      await refreshToken();
-    };
-    res();
-  }, []);
-
-  const userQuery = useQuery({
+  const { data: user, isLoading } = useQuery({
     queryKey: ['user', 1],
     queryFn: async () => {
-      const res = await getUser();
-      return res;
+      try {
+        await refreshToken();
+        const user = await getUser();
+        console.log("Fetched user:", user);
+        return user;
+      } catch (error) {
+        console.error("Error fetching user:", error);
+        return null;
+      }
     },
   });
 
   return (
-    <div className="h-screen flex flex-col gap-4 ">
-      <Nav name={userQuery.data?.auth?.username} type={userQuery.data?.type} />
+    <div className="h-screen flex flex-col gap-4">
+      <Nav name={user?.auth?.username} type={user?.type} />
 
-      {/* Data is undefined while fetching, if no data is loaded, it will stuck to waiting state */}
-      {userQuery.data !== undefined ? (
-        <>
-          <UserContext.Provider value={userQuery.data}>
-            {children}
-          </UserContext.Provider>
-        </>
+      {user !== undefined ? (
+        <UserContext.Provider value={user}>{children}</UserContext.Provider>
       ) : (
         <small>Waiting for data, please be patient...</small>
       )}

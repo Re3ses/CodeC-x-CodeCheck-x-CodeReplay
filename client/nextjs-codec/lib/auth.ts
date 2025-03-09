@@ -57,6 +57,7 @@ export async function getUser() {
   await SilentLogin();
   const user = await getSession();
   const url = `${process.env.SERVER_URL}${process.env.API_PORT}/api/users/${user?.username}`;
+
   console.log("Fetching user data from:", url);
 
   const access_token = cookies().get('access_token')?.value; // token expires in vanilla server: just a hunch
