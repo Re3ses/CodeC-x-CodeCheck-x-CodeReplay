@@ -7,39 +7,39 @@ if (!process.env.SERVER_URL || !process.env.API_PORT) {
   throw new Error("Missing environment variables: SERVER_URL or API_PORT");
 }
 
-async function testHealthEndpoint() {
-  try {
-    const response = await fetch(`${process.env.SERVER_URL}${process.env.API_PORT}/api/health`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json', // Important for some servers
-        // Any other necessary headers
-      },
-    });
+// async function testHealthEndpoint() {
+//   try {
+//     const response = await fetch(`${process.env.SERVER_URL}${process.env.API_PORT}/api/health`, {
+//       method: 'GET',
+//       headers: {
+//         'Content-Type': 'application/json', // Important for some servers
+//         // Any other necessary headers
+//       },
+//     });
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
+//     if (!response.ok) {
+//       throw new Error(`HTTP error! status: ${response.status}`);
+//     }
 
-    const data = await response.json();
-    console.log('Health check response:', data);
-  } catch (error) {
-    console.error('Health check error:', error);
-  }
-}
+//     const data = await response.json();
+//     console.log('Health check response:', data);
+//   } catch (error) {
+//     console.error('Health check error:', error);
+//   }
+// }
 
 export async function middleware(request: NextRequest) {
-  await testHealthEndpoint();
+  // await testHealthEndpoint();
   try {
 
     let session;
     let user;
 
-    // For debugging only - remove in production
-    console.log('Environment check:', {
-      serverUrl: process.env.SERVER_URL,
-      apiPort: process.env.API_PORT
-    });
+    // // For debugging only - remove in production
+    // console.log('Environment check:', {
+    //   serverUrl: process.env.SERVER_URL,
+    //   apiPort: process.env.API_PORT
+    // });
 
     if (
       request.nextUrl.pathname !== '/' &&
@@ -51,23 +51,23 @@ export async function middleware(request: NextRequest) {
     }
 
 
-    // DEBUG LOGS
-    const accessToken = request.cookies.get('access_token')?.value;
-    const refreshToken = request.cookies.get('refresh_token')?.value;
+    // // DEBUG LOGS
+    // const accessToken = request.cookies.get('access_token')?.value;
+    // const refreshToken = request.cookies.get('refresh_token')?.value;
 
-    if (!refreshToken) {
-      throw new Error("No refresh token found in middleware.ts .");
-    }
-    if (!accessToken) {
-      throw new Error("No refresh token found in middleware.ts .");
-    }
+    // if (!refreshToken) {
+    //   throw new Error("No refresh token found in middleware.ts .");
+    // }
+    // if (!accessToken) {
+    //   throw new Error("No refresh token found in middleware.ts .");
+    // }
 
-    if (accessToken && refreshToken) {
-      console.log("Access token found in middleware.ts: ", accessToken);
-      console.log("Refresh token found in middleware.ts: ", refreshToken);
-    }
+    // if (accessToken && refreshToken) {
+    //   console.log("Access token found in middleware.ts: ", accessToken);
+    //   console.log("Refresh token found in middleware.ts: ", refreshToken);
+    // }
 
-    // END DEBUG LOGS
+    // // END DEBUG LOGS
 
     // Prevent infinite redirect loop
     if (!session && request.nextUrl.pathname !== '/login') {
@@ -89,6 +89,9 @@ export async function middleware(request: NextRequest) {
       return NextResponse.next();
     }
 
+    if (request.nextUrl.pathname === '/') {
+      return NextResponse.redirect(new URL('/login', request.url));
+    }
 
     if (session) {
       if (request.nextUrl.pathname.startsWith('/pogi/secret/marco/handshake')) {

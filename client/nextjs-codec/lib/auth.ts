@@ -67,10 +67,10 @@ export async function getUser() {
   // bug at middleware
   await SilentLogin();
   const user = await getSession();
-  console.log("Session in auth.ts:", user);
+  // console.log("Session in auth.ts:", user);
   const url = `${process.env.SERVER_URL}${process.env.API_PORT}/api/users/${user?.username}`;
 
-  console.log("Fetching user data from:", url);
+  // console.log("Fetching user data from:", url);
 
   const access_token = cookies().get('access_token')?.value; // token expires in vanilla server: just a hunch
   const headers = {
@@ -84,7 +84,7 @@ export async function getUser() {
     });
     const data = await res.json();
 
-    console.log('Fetched user data in auth.ts: ', data);
+    // console.log('Fetched user data in auth.ts: ', data);
 
     return data;
   } catch (e) {
@@ -109,7 +109,7 @@ export async function login(payload: LoginShemaInferredType) {
     }
 
     const { access_token, refresh_token } = await res.json();
-    console.log(access_token);
+    // console.log(access_token);
 
     setSecureCookie(
       'access_token',
