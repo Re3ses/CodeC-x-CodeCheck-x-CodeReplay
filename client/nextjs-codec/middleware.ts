@@ -3,11 +3,11 @@ import { NextRequest } from 'next/server';
 import { deleteCookies, getSession, getUser } from './lib/auth';
 import { cookies } from 'next/headers';
 
-// todo: check routes if user is authenticated and if user is mentor or learner. Route accordingly...
-// todo: to do first todo, probably make another cookie that contains username and user type
 export async function middleware(request: NextRequest) {
-  let session;
-  let user;
+  // Handle root path - simple redirect to login
+  if (request.nextUrl.pathname === '/') {
+    return NextResponse.redirect(new URL('/login', request.url));
+  }
 
   // For debugging only - remove in production
   console.log('Environment check:', {
@@ -15,45 +15,56 @@ export async function middleware(request: NextRequest) {
     apiPort: process.env.API_PORT
   });
 
-  try {
-    if (request.nextUrl.pathname !== '/' && request.nextUrl.pathname !== '/login') {
-      session = await getSession();
-      if (session) {
-        user = await getUser();
-      } else {
-        return NextResponse.redirect(new URL('/login', request.url));
-      }
-    }
-
-    if (request.nextUrl.pathname === '/login') {
+  // Special handling for login page to prevent redirect loops
+  if (request.nextUrl.pathname === '/login') {
+    // Only clear tokens when coming from another page, not when refreshing login
+    const referer = request.headers.get('referer');
+    if (referer && !referer.includes('/login')) {
       cookies().delete('access_token');
       await deleteCookies();
     }
+    // Always allow access to login page without further checks
+    return NextResponse.next();
+  }
 
-    if (session) {
+  // For all protected routes (anything not / or /login)
+  try {
+    const session = await getSession();
+    if (!session) {
+      // No valid session, redirect to login
+      return NextResponse.redirect(new URL('/login', request.url));
+    }
+
+    // Session exists, try to get user data
+    try {
+      const user = await getUser();
+
+      // Easter egg route
       if (request.nextUrl.pathname.startsWith('/pogi/secret/marco/handshake')) {
         return NextResponse.redirect(
           'https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley'
         );
       }
 
-      if (request.nextUrl.pathname.startsWith('/mentor')) {
-        if (user.type !== 'Mentor') {
-          return NextResponse.redirect(new URL('/dashboard', request.url));
-        }
+      // Role-based access control
+      if (request.nextUrl.pathname.startsWith('/mentor') && user.type !== 'Mentor') {
+        return NextResponse.redirect(new URL('/dashboard', request.url));
       }
 
-      if (request.nextUrl.pathname.startsWith('/learner')) {
-        if (user.type !== 'Learner') {
-          return NextResponse.redirect(new URL('/dashboard', request.url));
-        }
+      if (request.nextUrl.pathname.startsWith('/learner') && user.type !== 'Learner') {
+        return NextResponse.redirect(new URL('/dashboard', request.url));
       }
-    } else {
-      return NextResponse.redirect(new URL('/', request.url));
+
+      // User is authenticated and authorized for this route
+      return NextResponse.next();
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+      // Problem with user data, redirect to login
+      return NextResponse.redirect(new URL('/login', request.url));
     }
   } catch (error) {
-    console.error('Middleware error:', error);
-    // Safely redirect to login on any error
+    console.error('Session verification error:', error);
+    // Problem with session, redirect to login
     return NextResponse.redirect(new URL('/login', request.url));
   }
 }
@@ -61,6 +72,7 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     '/',
+    '/login',
     '/mentor/:path*',
     '/learner/:path*',
     '/pogi/:path*',
