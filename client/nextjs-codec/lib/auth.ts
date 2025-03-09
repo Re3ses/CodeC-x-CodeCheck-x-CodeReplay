@@ -53,48 +53,28 @@ export async function getSession() {
 }
 
 export async function getUser() {
+  // bug at middleware
+  await SilentLogin();
+  const user = await getSession();
+  const url = `${process.env.SERVER_URL}${process.env.API_PORT}/api/users/${user?.username}`;
+  console.log("Fetching user data from:", url);
+
+  const access_token = cookies().get('access_token')?.value; // token expires in vanilla server: just a hunch
+  const headers = {
+    Authorization: `Bearer ${access_token}`,
+  };
+
   try {
-    await SilentLogin();
-    const userSession = await getSession();
-
-    if (!userSession?.username) {
-      console.error("No username found in session");
-      throw new Error('Invalid session data');
-    }
-
-    const baseUrl = process.env.SERVER_URL || '';
-    const apiPort = process.env.API_PORT || '';
-    const url = `${baseUrl}${apiPort}/api/users/${userSession.username}`;
-
-    console.log("Fetching user data from:", url);
-
-    const access_token = cookies().get('access_token')?.value;
-    if (!access_token) {
-      console.error("No access token available");
-      throw new Error('Missing access token');
-    }
-
-    const headers = {
-      Authorization: `Bearer ${access_token}`,
-    };
-
     const res = await fetch(url, {
       method: 'GET',
       headers: headers,
-      cache: 'no-store' // Prevent caching issues
     });
-
-    if (!res.ok) {
-      const errorText = await res.text();
-      console.error(`API error (${res.status}):`, errorText);
-      throw new Error(`API error: ${res.status} ${res.statusText}`);
-    }
-
     const data = await res.json();
-    console.log("User data fetched successfully");
+
+    // console.log('user data: ', data);
+
     return data;
   } catch (e) {
-    console.error("Detailed user fetch error:", e);
     throw new Error('Error getting user info');
   }
 }
