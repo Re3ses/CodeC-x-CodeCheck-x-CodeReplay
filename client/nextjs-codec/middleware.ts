@@ -9,7 +9,7 @@ if (!process.env.SERVER_URL || !process.env.API_PORT) {
 
 async function testHealthEndpoint() {
   try {
-    const response = await fetch('http://your-backend-ip-or-domain:8000/health'); // Replace with your actual endpoint
+    const response = await fetch('http://157.245.207.155:8000/api/health'); // Replace with your actual endpoint
     const data = await response.json();
     console.log('Health check response:', response.status, data);
   } catch (error) {
