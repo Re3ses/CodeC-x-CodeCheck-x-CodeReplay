@@ -2,10 +2,11 @@
 
 import { setSecureCookie, SilentLogin } from '@/utilities/apiService';
 import TimeToMS from '@/utilities/timeToMS';
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { LoginShemaInferredType } from './interface/login';
+import { NextRequest } from 'next/server';
 
 export async function refreshToken() {
   let refresh_token = cookies().get('refresh_token')?.value;
@@ -47,34 +48,40 @@ export async function refreshToken() {
   }
 }
 
-export async function getSession() {
-  const res = jwt.decode(cookies().get('refresh_token')?.value!);
-  return res ? JSON.parse(JSON.stringify(res)) : null;
+export async function getSession(request: NextRequest): Promise<JwtPayload | null> {
+  const refreshToken = request.cookies.get('refresh_token')?.value;
+  if (!refreshToken) return null;
+
+  try {
+    const decoded = jwt.decode(refreshToken);
+    if (typeof decoded === 'string') return null;
+    return decoded as JwtPayload;
+  } catch (error) {
+    console.error('JWT Decode Error:', error);
+    return null;
+  }
 }
+export async function getUser(request: NextRequest) {
+  const session = await getSession(request);
+  if (!session?.username) return null;
 
-export async function getUser() {
-  // bug at middleware
-  await SilentLogin();
-  const user = await getSession();
-  const url = `${process.env.SERVER_URL}${process.env.API_PORT}/api/users/${user?.username}`;
+  const url = `${process.env.SERVER_URL}${process.env.API_PORT}/api/users/${session.username}`;
+  const access_token = request.cookies.get('access_token')?.value;
 
-  const access_token = cookies().get('access_token')?.value; // token expires in vanilla server: just a hunch
-  const headers = {
-    Authorization: `Bearer ${access_token}`,
-  };
+  if (!access_token) return null;
 
   try {
     const res = await fetch(url, {
       method: 'GET',
-      headers: headers,
+      headers: { Authorization: `Bearer ${access_token}` },
     });
-    const data = await res.json();
 
-    // console.log('user data: ', data);
+    if (!res.ok) throw new Error('Failed to fetch user data');
 
-    return data;
-  } catch (e) {
-    throw new Error('Error getting user info');
+    return await res.json();
+  } catch (error) {
+    console.error('Error getting user info:', error);
+    return null;
   }
 }
 
@@ -114,7 +121,7 @@ export async function login(payload: LoginShemaInferredType) {
   }
 }
 
-export async function refresh() {}
+export async function refresh() { }
 
 export async function logoutUser() {
   cookies().delete('access_token');
