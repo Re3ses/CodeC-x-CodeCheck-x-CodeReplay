@@ -7,7 +7,18 @@ if (!process.env.SERVER_URL || !process.env.API_PORT) {
   throw new Error("❌ Missing environment variables: SERVER_URL or API_PORT");
 }
 
+async function testHealthEndpoint() {
+  try {
+    const response = await fetch('http://your-backend-ip-or-domain:8000/health'); // Replace with your actual endpoint
+    const data = await response.json();
+    console.log('Health check response:', response.status, data);
+  } catch (error) {
+    console.error('Health check error:', error);
+  }
+}
+
 export async function middleware(request: NextRequest) {
+  testHealthEndpoint();
   try {
 
     let session;
