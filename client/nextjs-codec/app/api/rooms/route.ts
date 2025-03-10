@@ -105,21 +105,3 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: error.message || 'Failed to create room' }, { status: 500 });
   }
 }
-
-export async function HEALTHCHECK(request: Request) {
-  try {
-    await dbConnect();
-
-    return NextResponse.json({
-      status: 'OK',
-      message: 'Server is running smoothly!',
-    }, { status: 200 });
-
-  } catch (error) {
-    console.error('Health check failed:', error);
-    return NextResponse.json({
-      status: 'FAIL',
-      message: 'Database connection failed',
-    }, { status: 500 });
-  }
-}
