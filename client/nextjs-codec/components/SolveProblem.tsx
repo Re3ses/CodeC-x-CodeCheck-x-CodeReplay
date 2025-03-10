@@ -341,30 +341,36 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
     }
 
     const initializeData = async () => {
-      // console.log('Initializing data...');
-      await SilentLogin();
-
-      const [problemData, languagesData, userData] = await Promise.all([
-        GetProblems(problemId),
-        getLanguages(),
-        getUser()
-      ]);
-      // console.log("Problem Data: ", problemData);
-      // console.log("Languages Data: ", languagesData);
-      // console.log("User Data: ", userData);
-
-      // Filter only supported languages
-      const filteredLanguages = languagesData.filter((lang: LanguageData) =>
-        Object.values(SUPPORTED_LANGUAGES).includes(lang.id.toString() as "54" | "62" | "71" | "50" | "51" | "63")
-      );
-
-      setUser(userData);
-      setProblem(problemData);
-      setLanguages(filteredLanguages);
-      setLearner(userData.id);
+      try {
+        // console.log('Initializing data...');
+        await SilentLogin();
+    
+        const [problemData, languagesData, userData] = await Promise.all([
+          GetProblems(problemId),
+          getLanguages(),
+          getUser()
+        ]);
+        console.log("Problem Data: ", problemData);
+        console.log("Languages Data: ", languagesData);
+        console.log("User Data: ", userData);
+    
+        // Filter only supported languages
+        const filteredLanguages = languagesData.filter((lang: LanguageData) =>
+          Object.values(SUPPORTED_LANGUAGES).includes(lang.id.toString() as "54" | "62" | "71" | "50" | "51" | "63")
+        );
+    
+        setUser(userData);
+        setProblem(problemData);
+        setLanguages(filteredLanguages);
+        setLearner(userData.id);
+    
+      } catch (error) {
+        console.error('Failed to initialize data:', error);
+      }
     };
+  
+  initializeData();
 
-    initializeData();
   }, [problemId]);
 
   async function getToken(input: string = '', expected: null | string = null) {
