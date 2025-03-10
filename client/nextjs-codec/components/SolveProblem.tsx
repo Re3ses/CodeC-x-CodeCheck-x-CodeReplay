@@ -67,18 +67,22 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
   const editorRef = useRef<Monaco.IStandaloneCodeEditor>();
   const queryClient = useQueryClient();
 
- // HEALTH CHECK TO BE REMOVED
+  // HEALTH CHECK TO BE REMOVED
   useEffect(() => {
     const checkHealth = async () => {
       try {
-        const res = await fetch('/api/healthcheck');
+        const res = await fetch('/api/healthcheck',
+          {
+            method: "GET",
+          }
+        );
         const data = await res.json();
         console.log(data);
       } catch (error) {
         console.error('Health check failed:', error);
       }
     };
-  
+
     checkHealth();
   }, []);
 
@@ -342,34 +346,38 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
 
     const initializeData = async () => {
       try {
-        // console.log('Initializing data...');
         await SilentLogin();
-    
+
         const [problemData, languagesData, userData] = await Promise.all([
           GetProblems(problemId),
           getLanguages(),
           getUser()
         ]);
-        console.log("Problem Data: ", problemData);
-        console.log("Languages Data: ", languagesData);
-        console.log("User Data: ", userData);
-    
-        // Filter only supported languages
-        const filteredLanguages = languagesData.filter((lang: LanguageData) =>
+
+        console.log("Problem data:", problemData);
+        console.log("Languages data:", languagesData);
+        console.log("User data:", userData);
+
+        // Set states with strict type checks and ensure new references
+        setProblem(prevState => problemData ? { ...problemData } : prevState);
+        setLanguages(prevState => languagesData ? [...languagesData.filter((lang: LanguageData) =>
           Object.values(SUPPORTED_LANGUAGES).includes(lang.id.toString() as "54" | "62" | "71" | "50" | "51" | "63")
-        );
-    
-        setUser(userData);
-        setProblem(problemData);
-        setLanguages(filteredLanguages);
-        setLearner(userData.id);
-    
+        )] : prevState);
+        setUser((prevState: any) => userData ? { ...userData } : prevState);
+        setLearner(userData?.id || '');
+
       } catch (error) {
         console.error('Failed to initialize data:', error);
+        // Optionally show an error toast
+        toast({
+          title: "Error loading data",
+          description: "Please refresh the page",
+          variant: "destructive",
+        });
       }
     };
-  
-  initializeData();
+
+    initializeData();
 
   }, [problemId]);
 
