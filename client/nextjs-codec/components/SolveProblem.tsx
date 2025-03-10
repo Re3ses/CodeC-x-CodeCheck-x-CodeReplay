@@ -354,10 +354,11 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
           getUser()
         ]);
 
+        // Debug logs remove later
         console.log("Problem data:", problemData);
         console.log("Languages data:", languagesData);
         console.log("User data:", userData);
-
+        
         // Set states with strict type checks and ensure new references
         setProblem(prevState => problemData ? { ...problemData } : prevState);
         setLanguages(prevState => languagesData ? [...languagesData.filter((lang: LanguageData) =>
