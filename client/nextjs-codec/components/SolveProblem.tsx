@@ -67,6 +67,22 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
   const editorRef = useRef<Monaco.IStandaloneCodeEditor>();
   const queryClient = useQueryClient();
 
+ // HEALTH CHECK TO BE REMOVED
+  useEffect(() => {
+    const checkHealth = async () => {
+      try {
+        const res = await fetch('/api/healthcheck');
+        const data = await res.json();
+        console.log(data);
+      } catch (error) {
+        console.error('Health check failed:', error);
+      }
+    };
+  
+    checkHealth();
+  }, []);
+
+
   // State management
   const [problem, setProblem] = useState<ProblemSchemaInferredType>();
   const [startTime, setStartTime] = useState<number>(Date.now());
