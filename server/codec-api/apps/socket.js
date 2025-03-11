@@ -19,6 +19,8 @@ const io = require('socket.io')(httpServer, {
   }
 })
 
+console.log("socket allowed origins:", process.env.ALLOWED_ORIGINS?.split(','))
+
 var mentor_id = ""
 var mentor_username = ""
 var mentor_firstname = ""
