@@ -61,10 +61,10 @@ services:
     build: ./flask  # Path to your Flask project containing the Dockerfile
     ports:
       - "5000:5000"
-    depends_on:
-      - db
-      - redis
-      - server
+    # depends_on:
+    #   - db
+    #   - redis
+    #   - server
       # - mongodb  # Add MongoDB as a dependency
     env_file: ./flask/.env 
     restart: always

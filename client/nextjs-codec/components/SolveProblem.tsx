@@ -71,7 +71,7 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
   useEffect(() => {
     const checkHealth = async () => {
       try {
-        const res = await fetch('/api/healthcheck',
+        const res = await fetch('/api/rooms/healthcheck',
           {
             method: "GET",
           }
@@ -358,7 +358,7 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
         console.log("Problem data:", problemData);
         console.log("Languages data:", languagesData);
         console.log("User data:", userData);
-        
+
         // Set states with strict type checks and ensure new references
         setProblem(prevState => problemData ? { ...problemData } : prevState);
         setLanguages(prevState => languagesData ? [...languagesData.filter((lang: LanguageData) =>
