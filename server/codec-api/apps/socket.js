@@ -15,7 +15,7 @@ const httpServer = http.createServer();
 // Attach the socket.io server to the HTTP server
 const io = require('socket.io')(httpServer, {
   cors: {
-    origin: "*"
+    origin: process.env.ALLOWED_ORIGINS?.split(',') || 'http://localhost:3000',
   }
 })
 

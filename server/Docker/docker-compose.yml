@@ -21,6 +21,7 @@ services:
     command: ["./scripts/workers"]
     volumes:
       - ./judge0.conf:/judge0.conf:ro
+      - /box:/box
     privileged: true
     <<: *default-logging
     restart: always
