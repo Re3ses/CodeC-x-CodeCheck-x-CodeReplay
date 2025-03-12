@@ -71,7 +71,7 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
   useEffect(() => {
     const checkHealth = async () => {
       try {
-        const res = await fetch('/api/healthcheck',
+        const res = await fetch('/api/rooms/healthcheck',
           {
             method: "GET",
           }

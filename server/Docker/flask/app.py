@@ -41,7 +41,7 @@ limiter = Limiter(
 )
 
 # Connect to the MongoDB server
-MONGO_URI = os.getenv("MONGO_URI", "mongodb://127.0.0.1:27017/codec-v3")
+MONGO_URI = os.getenv("MONGO_URI")
 # print("Connecting to MongoDB server at:", MONGO_URI)
 client = MongoClient(MONGO_URI)
 db = client["codec"]
