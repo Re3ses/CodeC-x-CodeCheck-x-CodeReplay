@@ -8,12 +8,13 @@ const express = require('express')
 const cors = require('cors')
 
 const app = express()
+const allowedOrigins = process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',') : "http://localhost:3000"
 
 // Middlewares
 app.use(express.json())
 app.use(cors({
     credentials: true,
-    origin: 'http://localhost:3000',
+    origin: allowedOrigins,
     methods: [
         'GET', 'POST', 'PATCH', 'DELETE'
     ]
