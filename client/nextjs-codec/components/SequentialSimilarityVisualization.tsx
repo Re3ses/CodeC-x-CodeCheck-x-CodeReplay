@@ -96,7 +96,7 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
         const problemId = snapshotsToCompare[0].problemId;
         const roomId = snapshotsToCompare[0].roomId;
 
-        const response = await fetch(`http://localhost:5000/api/similarity/sequential?learner_id=${learnerId}&problemId=${problemId}&roomId=${roomId}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_FLASK_SERVER_URL}${process.env.NEXT_PUBLIC_FLASK_SERVER_PORT}/api/similarity/sequential?learner_id=${learnerId}&problemId=${problemId}&roomId=${roomId}`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
         });

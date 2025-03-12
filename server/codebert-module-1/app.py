@@ -26,55 +26,6 @@ snapshotsCollection = db["codesnapshots"]
 codebert_detector = CodeBERTAnalyzer()
 
 
-# @app.route("/compare", methods=["POST"])
-# def compare_submissions():
-#     start_time = time.time()
-#     try:
-#         print("compare request received")
-#         if request.json is None:
-#             return jsonify({"error": "No JSON payload received"}), 400
-
-#         data = request.json
-#         if "submissions" not in data:
-#             return jsonify({"error": "No submissions field in payload"}), 400
-
-#         submissions = data["submissions"]
-#         query = data["query"]
-#         model = query.get("model", "default")
-#         detection_type = query.get("detection_type", "token")
-
-#         # Convert submissions format
-#         converted_submissions = {}
-#         for submission in submissions:
-#             file_name = submission.get("learner", "unknown_learner")
-#             code = submission.get("code", "")
-#             language = submission.get("language_used", "unknown_language")
-#             converted_submissions[file_name] = {"code": code, "language": language}
-
-#         if detection_type == "token":
-#             comparison_results = token_detector.compare_files(
-#                 converted_submissions, query
-#             )
-#         elif detection_type == "model":
-#             comparison_results = get_plagiarism_probability(
-#                 submissions=converted_submissions, model_type=model
-#             )
-#         elif detection_type == "codebert":
-#             comparison_results = compute_codebert_similarities(submissions)
-
-#         return jsonify(comparison_results)
-
-#     except Exception as e:
-#         tb_str = traceback.format_exc()
-#         print(tb_str)
-#         return (
-#             jsonify({"error": str(e), "traceback": tb_str, "request": request.json}),
-#             500,
-#         )
-#     finally:
-#         print(f"Total time taken: {time.time() - start_time} seconds")
-
-
 @app.route("/api/similarity/matrix", methods=["GET"])
 def get_similarity_matrix():
     start_time = time.time()
