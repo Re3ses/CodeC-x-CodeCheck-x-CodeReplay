@@ -51,22 +51,22 @@ class CodeBERTAnalyzer:
         self.model.to(self.device)
         self.model.eval()
         self.embedding_cache = {}
-        self.SIMILARITY_THRESHOLD = 0.7
+
+        
+        # Parameters for adjusting similarity calculation
+        self.scaling_exponent = 3.0  # Higher values make small differences more pronounced
+        self.amplification_factor = 5.0  # Amplifies differences in the transformed space
 
     def preprocess_code(self, code: str) -> str:
         """Preprocess code for CodeBERT analysis."""
-        code = re.sub(r"/\*[\s\S]*?\*/|//.*$", "", code, flags=re.MULTILINE)
-        code = re.sub(r"\s+", " ", code).replace("\n", " ").replace("\t", " ")
-        code = re.sub(
-            r'(["\'])(.*?)\1', lambda m: f"'{m.group(2).replace("'", "\\'")}'", code
-        )
-        code = re.sub(r"\b0+(\d+)", r"\1", code)
-        code = re.sub(r"(\d+\.\d*?)0+$", r"\1", code)
-        code = code.lower().strip()
+        # Normalize whitespace and remove newlines/tabs
+        code = re.sub(r"\s+", " ", code).replace("\n", " ").replace("\t", " ").strip()
+        
+        # Truncate to 512 tokens with proper word boundary
         return code[:509].rsplit(" ", 1)[0] + "..." if len(code) > 512 else code
 
     def get_embedding(self, code: str) -> np.ndarray:
-        """Get code embedding using CodeBERT."""
+        """Get code embedding using CodeBERT with mean pooling."""
         cache_key = hash(code)
         if cache_key in self.embedding_cache:
             return self.embedding_cache[cache_key]
@@ -83,19 +83,50 @@ class CodeBERTAnalyzer:
             )
             inputs = {k: v.to(self.device) for k, v in inputs.items()}
             outputs = self.model(**inputs)
+            
+            # Use mean pooling 
             embedding = outputs.last_hidden_state.mean(dim=1).cpu().numpy()[0]
+            
+            # Normalize the embedding
             embedding /= np.linalg.norm(embedding)
+            
             self.embedding_cache[cache_key] = embedding
             if len(self.embedding_cache) > 1000:
                 self.embedding_cache.pop(next(iter(self.embedding_cache)))
             return embedding
 
     def calculate_similarity(self, code1: str, code2: str) -> float:
-        """Calculate similarity between two code snippets using CodeBERT."""
+        """Calculate similarity between two code snippets with improved scaling."""
         emb1 = self.get_embedding(code1)
         emb2 = self.get_embedding(code2)
-        similarity = np.dot(emb1, emb2)
-        return float((similarity + 1) / 2)  # Scale to [0, 1]
+        
+        # Base similarity (cosine similarity)
+        cosine_sim = np.dot(emb1, emb2)
+                
+        # Apply non-linear transformation to emphasize differences
+        similarity = cosine_sim
+        
+        # Step 1: Convert to a distance measure (0 = identical, higher = more different)
+        distance = 1 - similarity
+        
+        # Ensure distance is non-negative
+        if distance < 0:
+            distance = 0
+        
+        # Step 2: Amplify the distance (makes small differences larger)
+        amplified_distance = distance * self.amplification_factor
+
+        # Ensure amplified_distance is non-negative
+        if amplified_distance < 0:
+            amplified_distance = 0
+        
+        # Step 3: Apply non-linear scaling (exponential) to further separate close values
+        scaled_distance = min(1, amplified_distance ** (1/self.scaling_exponent))
+        
+        # Step 4: Convert back to similarity score
+        transformed_similarity = 1 - scaled_distance
+        
+        return max(0, transformed_similarity)
 
     def compute_similarity_matrix(
         self, snippets: List[SnippetInfo]

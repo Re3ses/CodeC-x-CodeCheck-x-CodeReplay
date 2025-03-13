@@ -57,7 +57,7 @@ interface SimilarityDashboardProps {
 const getSimilarityColor = (similarity: number) => {
   if (similarity >= 80) return { bg: 'bg-red-600', text: 'text-white', hex: '#dc2626' };
   if (similarity >= 60) return { bg: 'bg-yellow-600', text: 'text-white', hex: '#ca8a04' };
-  return { bg: 'bg-blue-600', text: 'text-white', hex: '#2563eb' };
+  return { bg: 'bg-gray-400', text: 'text-white', hex: '#2563eb' };
 };
 
 const getColorForSimilarity = (similarity: number) => {
@@ -233,7 +233,7 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
     const linkData: LinkData[] = [];
     matrix.forEach((row, i) => {
       row.forEach((similarity, j) => {
-        if (i < j && similarity >= 60) {
+        if (i < j && similarity >= 0) {
           linkData.push({
             source: i,
             target: j,

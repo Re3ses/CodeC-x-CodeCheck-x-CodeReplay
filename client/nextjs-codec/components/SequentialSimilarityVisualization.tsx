@@ -182,10 +182,10 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
     const variance = cssValues.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / cssValues.length; // Corrected variance calculation
     const normalizedVariance = (variance / 2500) * 100;
     const weightedScore =
-      (maxChange) * 0.4 +
-      (100 - averageSimilarity) * 0.2 +
-      (100 - minSimilarity) * 0.2 +
-      (normalizedVariance) * 0.2;
+      (maxChange) * 0.05 +
+      (100 - averageSimilarity) * 0.3+
+      (100 - minSimilarity) * 0.6 +
+      (normalizedVariance) * 0.05;
 
     // console.log('Metrics:', { // Keep the console log
     //   maxChange,

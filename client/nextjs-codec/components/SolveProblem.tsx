@@ -148,70 +148,62 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
   //   return lengthDiff > 15; // Consider changes significant if more than 50 characters are added/removed
   // };
 
-  const autoSaveCode = useCallback(async (codeToSave: string) => {
-    if (codeToSave === lastSaved) return;
+  async function getLastVersion(learner_id: string, problemId: string, roomId: string) {
     try {
-      // console.log('Auto-saving...');
+      const response = await fetch(`/api/snapshots/last-version?learner_id=${learner_id}&problemId=${problemId}&roomId=${roomId}`);
+      const data = await response.json();
+      return data.lastVersion || 0;
+    } catch (error) {
+      console.error('Error fetching last version:', error);
+      return 0;
+    }
+  }
 
-      // Skip saving if the code is the same as the last saved code
+  // In your autoSaveCode function, modify it to use the last version:
+  const autoSaveCode = useCallback(async (codeToSave: string) => {
+    try {
       if (codeToSave === previousSaved) {
-        return
-      }
-
-      // Check if user is defined
-      if (!user) {
-        console.warn("User data not yet loaded, skipping auto-save.");
         return;
       }
 
-      // Find the last version from existing snapshots
-      const lastVersion = snapshots.length > 0
-        ? Math.max(...snapshots.map(snapshot => snapshot.version || 0))
-        : 0;
+      if (!user) {
+        return;
+      }
 
-      // Increment the last version by 1
-      const nextVersion = lastVersion + 1;
+      // Get the last version from MongoDB
+      const lastVersion = await getLastVersion(user.id, problemId, roomId);
+      const newVersion = lastVersion + 1;
 
-      const saveResponse = await fetch('/api/codereplay/code-snapshots', {
+      const snapshot = {
+        code: codeToSave,
+        timestamp: new Date().toISOString(),
+        learner_id: user.id,
+        problemId,
+        roomId,
+        submissionId: `submission-${Date.now()}`,
+        version: newVersion
+      };
+
+      const response = await fetch('/api/snapshots', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          code: codeToSave,
-          learner_id: user.id,
-          problemId: problemId,
-          roomId: roomId,
-          submissionId: `submission-${Date.now()}`,
-          version: nextVersion // Explicitly pass the next version
-        }),
+        body: JSON.stringify(snapshot)
       });
 
-      if (saveResponse.ok) {
-        setPreviousSaved(codeToSave);
-        const savedData = await saveResponse.json();
-        if (savedData.snippet) {
-          // Update snapshots while maintaining order
-          setSnapshots(prevSnapshots => {
-            const updatedSnapshots = [...prevSnapshots, savedData.snippet];
-            return updatedSnapshots.sort((a, b) => {
-              if (a.version && b.version) {
-                return a.version - b.version;
-              }
-              return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
-            });
-          });
-
-          setLastSaved(codeToSave);
-        }
-      } else {
-        console.error('Auto-save failed:', saveResponse.statusText);
+      if (!response.ok) {
+        throw new Error('Failed to save snapshot');
       }
+
+      setPreviousSaved(codeToSave);
+      setLastSaved(new Date());
+      
+      // Update local snapshots array
+      setSnapshots(prev => [...prev, snapshot]);
+
     } catch (error) {
-      console.error('Auto-save error:', error);
-    } finally {
-      setSaving(false);
+      console.error('Error saving code:', error);
     }
-    setSaving(false);
-  }, [lastSaved, user, snapshots, roomId, problemId]);
+  }, [user, problemId, roomId, previousSaved]);
 
   const debouncedAutoSave = useCallback(
     debounce((codeToSave: string) => {
