@@ -439,6 +439,7 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
         const testCase = problem.test_cases[i];
         const token = await getToken(testCase.input, testCase.output);
         const result = await getSubmissionResult(token);
+        console.log("Result from judge0 api: ", result);
 
         // Compare output exactly with proper trimming
         const userOutput = result.stdout ? atob(result.stdout).trim().replace(/\r\n/g, '\n') : '';
