@@ -291,8 +291,14 @@ export default function CodeReplayApp() {
                     {expandedCard === index && (
                       <CardContent className="p-4">
                         <SequentialSimilarityVisualization
-                          snapshots={snapshots.filter(s => s.learner_id === snippet.learner_id)}
+                          snapshots={snapshots.filter(s => 
+                            s.learner_id === snippet.learner_id && 
+                            (params.type === 'problem' ? s.problemId === params.id : true) &&
+                            (params.type === 'room' ? s.roomId === params.id : true)
+                          )}
                           pastedSnippets={enhancedPastes.filter(s => s.learner_id === snippet.learner_id)}
+                          // problemId={params.type === 'problem' ? params.id : ''}
+                          // roomId={params.type === 'room' ? params.id : ''}
                         />
                       </CardContent>
                     )}
