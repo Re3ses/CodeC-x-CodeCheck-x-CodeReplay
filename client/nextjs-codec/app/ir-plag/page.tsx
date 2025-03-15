@@ -168,32 +168,32 @@ export default function IRPlagValidation() {
           </CardContent>
         </Card>
   
-{/* Mean F1-Score Section */}
-{results && (
-  <Card className="bg-gray-800/50 border-0">
-    <CardHeader>
-      <CardTitle className="text-center">Overall Performance</CardTitle>
-    </CardHeader>
-    <CardContent>
-      <div className="flex flex-col items-center justify-center text-center">
-        {/* Mean Score (Center) */}
-        <div className="flex flex-col items-center mb-4">
-          <div className="text-5xl font-bold text-blue-400">
-            {((results.f1ScorePlagiarized + results.f1ScoreNonPlagiarized) / 2 * 100).toFixed(1)}%
-          </div>
-          <p className="text-lg text-gray-400 mt-1">Mean F1-Score</p>
-        </div>
-        
-        {/* Description Text (Center) */}
-        <div className="max-w-md mx-auto">
-          <p className="text-sm text-gray-500">
-            Balanced harmonic mean of precision and recall across both plagiarized and non-plagiarized submissions
-          </p>
-        </div>
-      </div>
-    </CardContent>
-  </Card>
-)}
+        {/* Mean F1-Score Section */}
+        {results && (
+        <Card className="bg-gray-800/50 border-0">
+            <CardHeader>
+            <CardTitle className="text-center">Overall Performance</CardTitle>
+            </CardHeader>
+            <CardContent>
+            <div className="flex flex-col items-center justify-center text-center">
+                {/* Mean Score (Center) */}
+                <div className="flex flex-col items-center mb-4">
+                <div className="text-5xl font-bold text-blue-400">
+                    {((results.f1ScorePlagiarized + results.f1ScoreNonPlagiarized) / 2 * 100).toFixed(1)}%
+                </div>
+                <p className="text-lg text-gray-400 mt-1">Mean F1-Score</p>
+                </div>
+                
+                {/* Description Text (Center) */}
+                <div className="max-w-md mx-auto">
+                <p className="text-sm text-gray-500">
+                    Balanced harmonic mean of precision and recall across both plagiarized and non-plagiarized submissions
+                </p>
+                </div>
+            </div>
+            </CardContent>
+        </Card>
+        )}
         
         {/* Results Section */}
         {results && (
@@ -271,25 +271,25 @@ export default function IRPlagValidation() {
         <div className="relative p-6">
           <div className="grid grid-cols-2 gap-4 max-w-lg mx-auto">
             {/* True Positive */}
-            <div className="flex flex-col items-center justify-center p-4 rounded-lg bg-green-900/20 border border-green-600/30">
+            <div className="flex flex-col items-center justify-center p-4 rounded-lg bg-green-900/20">
               <span className="text-3xl font-bold text-white">{results.confusionMatrixPlagiarized.truePositives}</span>
               <span className="text-xs text-green-400 font-medium mt-1">True Positive</span>
             </div>
             
             {/* False Negative */}
-            <div className="flex flex-col items-center justify-center p-4 rounded-lg bg-red-900/20 border border-red-600/30">
+            <div className="flex flex-col items-center justify-center p-4 rounded-lg bg-red-900/20">
               <span className="text-3xl font-bold text-white">{results.confusionMatrixPlagiarized.falseNegatives}</span>
               <span className="text-xs text-red-400 font-medium mt-1">False Negative</span>
             </div>
             
             {/* False Positive */}
-            <div className="flex flex-col items-center justify-center p-4 rounded-lg bg-red-900/20 border border-red-600/30">
+            <div className="flex flex-col items-center justify-center p-4 rounded-lg bg-red-900/20">
               <span className="text-3xl font-bold text-white">{results.confusionMatrixNonPlagiarized.falsePositives}</span>
               <span className="text-xs text-red-400 font-medium mt-1">False Positive</span>
             </div>
             
             {/* True Negative */}
-            <div className="flex flex-col items-center justify-center p-4 rounded-lg bg-green-900/20 border border-green-600/30">
+            <div className="flex flex-col items-center justify-center p-4 rounded-lg bg-green-900/20">
               <span className="text-3xl font-bold text-white">{results.confusionMatrixNonPlagiarized.trueNegatives}</span>
               <span className="text-xs text-green-400 font-medium mt-1">True Negative</span>
             </div>
@@ -300,19 +300,19 @@ export default function IRPlagValidation() {
         <div className="space-y-3">
           <div className="grid grid-cols-3 gap-4">
             {/* First Row */}
-            <div className="p-3 rounded-lg bg-gray-700/30 border border-gray-600/30 text-center">
+            <div className="p-3 rounded-lg bg-gray-700/30 text-center">
               <span className="text-xs text-gray-400 block mb-1">Predicted Plagiarized</span>
               <span className="text-lg font-semibold text-white">
                 {results.confusionMatrixPlagiarized.truePositives + results.confusionMatrixNonPlagiarized.falsePositives}
               </span>
             </div>
-            <div className="p-3 rounded-lg bg-gray-700/30 border border-gray-600/30 text-center">
+            <div className="p-3 rounded-lg bg-gray-700/30 text-center">
               <span className="text-xs text-gray-400 block mb-1">Predicted Non-Plagiarized</span>
               <span className="text-lg font-semibold text-white">
                 {results.confusionMatrixPlagiarized.falseNegatives + results.confusionMatrixNonPlagiarized.trueNegatives}
               </span>
             </div>
-            <div className="p-3 rounded-lg bg-blue-900/20 border border-blue-600/30 row-span-2 flex flex-col items-center justify-center">
+            <div className="p-3 rounded-lg bg-blue-900/20 row-span-2 flex flex-col items-center justify-center">
               <span className="text-xs text-blue-400">Total Analyzed Samples</span>
               <span className="text-lg font-semibold text-white mt-1">
                   {results.confusionMatrixPlagiarized.truePositives + 
@@ -323,13 +323,13 @@ export default function IRPlagValidation() {
             </div>
   
             {/* Second Row */}
-            <div className="p-3 rounded-lg bg-gray-700/30 border border-gray-600/30 text-center">
+            <div className="p-3 rounded-lg bg-gray-700/30 text-center">
               <span className="text-xs text-gray-400 block mb-1">Actual Plagiarized</span>
               <span className="text-lg font-semibold text-white">
                 {results.confusionMatrixPlagiarized.truePositives + results.confusionMatrixPlagiarized.falseNegatives}
               </span>
             </div>
-            <div className="p-3 rounded-lg bg-gray-700/30 border border-gray-600/30 text-center">
+            <div className="p-3 rounded-lg bg-gray-700/30 text-center">
               <span className="text-xs text-gray-400 block mb-1">Actual Non-Plagiarized</span>
               <span className="text-lg font-semibold text-white">
                 {results.confusionMatrixNonPlagiarized.falsePositives + results.confusionMatrixNonPlagiarized.trueNegatives}
@@ -344,11 +344,11 @@ export default function IRPlagValidation() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
             <div className="flex items-center gap-2">
-              <div className="w-4 h-4 bg-green-900/20 border border-green-600/30 rounded" />
+              <div className="p-3 bg-green-900/20 border border-green-600/30 rounded" />
               <span className="text-sm">Correct Classification</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-4 h-4 bg-red-900/20 border border-red-600/30 rounded" />
+              <div className="p-3 bg-red-900/20 border border-red-600/30 rounded" />
               <span className="text-sm">Incorrect Classification</span>
             </div>
           </div>
@@ -370,16 +370,16 @@ export default function IRPlagValidation() {
 }
 
 const MetricCard = ({ title, value, description }: { 
-  title: string; 
-  value: number; 
-  description: string; 
-}) => (
-  <div className="p-4 rounded-lg bg-gray-700/50">
-    <h3 className="text-sm font-medium text-gray-400">{title}</h3>
-    <p className="text-2xl font-bold">{value.toFixed(1)}%</p>
-    <p className="text-xs text-gray-500">{description}</p>
-  </div>
-);
+    title: string; 
+    value: number; 
+    description: string; 
+  }) => (
+    <div className={`p-4 rounded-lg ${title === "F1 Score" ? "bg-blue-900/20" : "bg-gray-700/50"}`}>
+      <h3 className="text-sm font-medium text-gray-400">{title}</h3>
+      <p className="text-2xl font-bold">{value.toFixed(1)}%</p>
+      <p className="text-xs text-gray-500">{description}</p>
+    </div>
+  );
 
 const MatrixCell = ({ value, label, type }: { 
   value: number; 
