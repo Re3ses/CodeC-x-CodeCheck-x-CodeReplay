@@ -1,8 +1,10 @@
 # main.py
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
 import json
 import numpy as np
+import matplotlib.pyplot as plt
+import io
 
 # from detector_functions import EnhancedCodeSimilarityDetector
 # from trained_models import get_plagiarism_probability
@@ -193,6 +195,35 @@ def get_sequential_similarity():
         print(f"Total time taken: {time.time() - start_time} seconds")
 
 
+@app.route("/api/similarity/calculate", methods=["POST"])
+def calculate_similarity():
+    try:
+        data = request.get_json()
+        code1 = data.get('code1', '')
+        code2 = data.get('code2', '')
+
+        if not code1 or not code2:
+            return jsonify({
+                "success": False,
+                "error": "Missing code samples"
+            }), 400
+
+        similarity = codebert_detector.calculate_similarity(code1, code2)
+        
+        return jsonify({
+            "success": True,
+            "similarity": float(similarity)  # Ensure number is returned
+        })
+
+    except Exception as e:
+        print(f"Similarity calculation error: {str(e)}")  # Debug log
+        return jsonify({
+            "success": False,
+            "error": str(e)
+        }), 500
+
+
+        
 # @app.route("/api/test", methods=["POST"])
 # def test_endpoint():
 #     try:
@@ -265,7 +296,7 @@ def get_sequential_similarity():
 #         return results
 
 #     except Exception as e:
-#         print(f"Error in CodeBERT similarity computation: {e}")
+        #         print(f"Error in CodeBERT similarity computation: {e}")
 #         raise
 
 
