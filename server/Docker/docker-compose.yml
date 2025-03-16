@@ -48,27 +48,10 @@ services:
     <<: *default-logging
     restart: always
 
-  # mongodb:
-  #   image: mongo:latest
-  #   ports:
-  #     - "27017:27017"
-  #   volumes:
-  #     - mongodb-data:/data/db
-  #   environment:
-  #     - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME:-admin}
-  #     - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD:-password}
-  #   <<: *default-logging
-  #   restart: always
-
   flask:
     build: ./flask  # Path to your Flask project containing the Dockerfile
     ports:
       - "5000:5000"
-    # depends_on:
-    #   - db
-    #   - redis
-    #   - server
-      # - mongodb  # Add MongoDB as a dependency
     env_file: ./flask/.env 
     restart: always
     <<: *default-logging
