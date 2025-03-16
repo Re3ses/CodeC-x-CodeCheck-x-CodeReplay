@@ -150,7 +150,7 @@ export default function CodeReplayApp() {
           `problemId=${params.id}` :
           `roomId=${params.id}`;
 
-        const API_URL = process.env.FLASK_API_URL || 'http://159.223.67.2:';
+        const API_URL = process.env.FLASK_API_URL || 'https://159.223.67.2:';
         const API_PORT = process.env.FLASK_API_PORT || '5000';
         console.log("API_URL:", API_URL, "API_PORT:", API_PORT);
         const response = await fetch(`${API_URL}${API_PORT}/api/similarity/matrix?${queryParam}`, {
