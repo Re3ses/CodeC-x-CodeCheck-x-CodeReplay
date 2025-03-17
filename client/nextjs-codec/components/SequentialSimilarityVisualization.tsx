@@ -80,10 +80,9 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
         const problemId = snapshotsToCompare[0].problemId;
         const roomId = snapshotsToCompare[0].roomId;
 
-        const API_URL = process.env.FLASK_API_URL || 'https://codecflaskapi.duckdns.org';
-        // const API_PORT = process.env.FLASK_API_PORT || '5000';
-        // const response = await fetch(`${API_URL}${API_PORT}/api/similarity/sequential?learner_id=${learnerId}&problemId=${problemId}&roomId=${roomId}`, {
-        const response = await fetch(`${API_URL}/api/similarity/sequential?learner_id=${learnerId}&problemId=${problemId}&roomId=${roomId}`, {
+        const API_URL = process.env.FLASK_API_URL || 'http://159.223.67.2:';
+        const API_PORT = process.env.FLASK_API_PORT || '5000';
+        const response = await fetch(`${API_URL}${API_PORT}/api/similarity/sequential?learner_id=${learnerId}&problemId=${problemId}&roomId=${roomId}`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
         });
