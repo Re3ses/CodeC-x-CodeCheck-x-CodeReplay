@@ -57,7 +57,7 @@ services:
     command: ["./scripts/workers"]
     volumes:
       - ./Docker/judge0.conf:/judge0.conf:ro
-    privileged: true
+    privileged: true  
     restart: always
     <<: *default-logging
 

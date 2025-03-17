@@ -3,6 +3,7 @@
 import axios from 'axios';
 
 const url = `${process.env.SERVER_URL}2358`;
+// fuck vercel free option
 
 export async function getAbout() {
   const options = {
