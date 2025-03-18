@@ -161,7 +161,8 @@ export async function POST(request: Request) {
       start_time: Number(formData.get('start_time')) || Date.now(),
       end_time: Number(formData.get('end_time')) || Date.now(),
       completion_time: Number(formData.get('completion_time')) || 0,
-      attempt_count: existingSubmission ? (existingSubmission.attempt_count + 1) : 1
+      attempt_count: existingSubmission ? (existingSubmission.attempt_count + 1) : 1,
+      paste_history: formData.get('paste_history'),
     };
 
     const userSubmission = new UserSubmissions(submissionData);

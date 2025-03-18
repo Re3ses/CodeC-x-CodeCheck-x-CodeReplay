@@ -122,6 +122,7 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
   const [saving, setSaving] = useState<boolean>(false);
   const [snapshots, setSnapshots] = useState<any[]>([]);
   const [enhancedPastes, setEnhancedPastes] = useState<EnhancedPasteInfo[]>([]);
+  const [pasteCount, setPasteCount] = useState(0);
   const [autoSaveToggle, setAutoSaveToggle] = useState<boolean>(false);
   const [previousSaved, setPreviousSaved] = useState<string>('');
 
@@ -265,7 +266,7 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
 
     editor.onDidPaste((event: any) => {
       try {
-        // console.log("PASTE EVENT:", event);
+        console.log("PASTE EVENT:", event);
 
         const model = editor.getModel();
         if (!model) return;
@@ -287,6 +288,11 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
             endColumn: event.range.endColumn
           }
         };
+        console.log("New Paste:", newPaste);
+
+        // Update paste tracking state
+        setEnhancedPastes(prev => [...prev, newPaste]);
+        setPasteCount(prev => prev + 1);
 
       } catch (error) {
         console.error('Error handling paste event:', error);
@@ -294,10 +300,10 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
     });
   }
 
-  // // UseEffect to log paste history
-  // useEffect(() => {
-  //   console.log("Paste History: ", enhancedPastes);
-  // }, [enhancedPastes]);
+  // UseEffect to log paste history
+  useEffect(() => {
+    console.log("Paste History: ", enhancedPastes);
+  }, [enhancedPastes]);
 
 
   useEffect(() => {
@@ -476,6 +482,7 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
         learner_id: user.id,
         problem: problemId,
         room: roomId,
+        paste_history: JSON.stringify(enhancedPastes),
         start_time: Number(localStorage.getItem(problemId + '_started')),
         end_time: Date.now(),
         completion_time: Date.now() - Number(localStorage.getItem(problemId + '_started')),
