@@ -150,7 +150,9 @@ export default function CodeReplayApp() {
           `problemId=${params.id}` :
           `roomId=${params.id}`;
 
-        const API_URL = process.env.FLASK_API_URL || 'https://codecflaskapi.duckdns.org';
+        // const API_URL = process.env.FLASK_API_URL || 'https://codecflaskapi.duckdns.org';
+        const API_URL = process.env.FLASK_API_URL || 'http://localhost:5000';
+        console.log("mongo API_URL:", process.env.MONGO_URI);
         // const API_PORT = process.env.FLASK_API_PORT || '5000';
         // console.log("API_URL:", API_URL, "API_PORT:", API_PORT);
         // const response = await fetch(`${API_URL}${API_PORT}/api/similarity/matrix?${queryParam}`, {
@@ -247,19 +249,6 @@ export default function CodeReplayApp() {
                     snippets={similarityMatrix.snippets}
                   /> : "similaritymatrix empty"
                 }
-
-                <div className="space-y-4">
-                  {similarityMatrix?.snippets.map((snippet, index) => {
-                    const stats = calculateSnippetStats(similarityMatrix.matrix, index);
-                    if (!stats) return null;
-
-                    return (
-                      <Card key={index} className="bg-gray-800/50 border-0 shadow-lg hover:bg-gray-800/70 transition-colors">
-                        {/* ... existing card content ... */}
-                      </Card>
-                    );
-                  })}
-                </div>
               </div>
             )}
           </TabsContent>

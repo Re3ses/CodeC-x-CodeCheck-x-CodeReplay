@@ -478,6 +478,7 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
         score: totalScore,
         score_overall_count: totalScore,
         verdict: totalScore > 0 ? 'ACCEPTED' : 'REJECTED',
+        user_type: user.type,
         learner: user.auth.username,
         learner_id: user.id,
         problem: problemId,

@@ -39,7 +39,7 @@ router.get('/validate', wrapper(async (req, res) => {
 
 router.get('/:username', authenticate, wrapper(async (req, res) => {
     // Print to console that a user profile was requested.
-    console.log('User profile requested')
+    // console.log('User profile requested')
     if (!req.params.username)
         throw new APIError("Missing parameter: {username}", 400)
 

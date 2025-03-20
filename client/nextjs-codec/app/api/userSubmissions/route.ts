@@ -154,6 +154,7 @@ export async function POST(request: Request) {
       score: totalScore,
       score_overall_count: overallScore,
       verdict: testResults.every((r: { status: { description: string } }) => r.status.description === "Accepted") ? 'ACCEPTED' : 'REJECTED',
+      user_type: formData.get('user_type'),
       learner: formData.get('learner'),
       learner_id: formData.get('learner_id'),
       problem: formData.get('problem'),
