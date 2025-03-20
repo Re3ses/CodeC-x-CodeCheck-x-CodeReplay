@@ -77,7 +77,7 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
           }
         );
         const data = await res.json();
-        console.log(data);
+        // console.log(data);
       } catch (error) {
         console.error('Health check failed:', error);
       }
@@ -266,7 +266,7 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
 
     editor.onDidPaste((event: any) => {
       try {
-        console.log("PASTE EVENT:", event);
+        // console.log("PASTE EVENT:", event);
 
         const model = editor.getModel();
         if (!model) return;
@@ -288,7 +288,7 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
             endColumn: event.range.endColumn
           }
         };
-        console.log("New Paste:", newPaste);
+        // console.log("New Paste:", newPaste);
 
         // Update paste tracking state
         setEnhancedPastes(prev => [...prev, newPaste]);
@@ -300,10 +300,10 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
     });
   }
 
-  // UseEffect to log paste history
-  useEffect(() => {
-    console.log("Paste History: ", enhancedPastes);
-  }, [enhancedPastes]);
+  // // UseEffect to log paste history
+  // useEffect(() => {
+  //   console.log("Paste History: ", enhancedPastes);
+  // }, [enhancedPastes]);
 
 
   useEffect(() => {
@@ -361,9 +361,9 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
         ]);
 
         // Debug logs remove later
-        console.log("Problem data:", problemData);
-        console.log("Languages data:", languagesData);
-        console.log("User data:", userData);
+        // console.log("Problem data:", problemData);
+        // console.log("Languages data:", languagesData);
+        // console.log("User data:", userData);
 
         // Set states with strict type checks and ensure new references
         setProblem(prevState => problemData ? { ...problemData } : prevState);
@@ -445,7 +445,7 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
         const testCase = problem.test_cases[i];
         const token = await getToken(testCase.input, testCase.output);
         const result = await getSubmissionResult(token);
-        console.log("Result from judge0 api: ", result);
+        // console.log("Result from judge0 api: ", result);
 
         // Compare output exactly with proper trimming
         const userOutput = result.stdout ? atob(result.stdout).trim().replace(/\r\n/g, '\n') : '';

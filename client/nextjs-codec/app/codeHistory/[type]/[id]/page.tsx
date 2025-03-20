@@ -138,7 +138,7 @@ export default function CodeReplayApp() {
         const data = await response.json();
 
         if (data.success && Array.isArray(data.snapshots)) {
-          console.log("snapshots successfuly fetched", data.success, data.snapshots);
+          // console.log("snapshots successfuly fetched", data.success, data.snapshots);
           const sortedSnapshots = data.snapshots.sort((a: CodeSnapshot, b: CodeSnapshot) => {
             if (a.version && b.version) {
               return a.version - b.version;
@@ -146,7 +146,7 @@ export default function CodeReplayApp() {
             return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
           });
 
-          console.log("sorted snapshots", sortedSnapshots);
+          // console.log("sorted snapshots", sortedSnapshots);
 
           setSnapshots(sortedSnapshots);
         }
@@ -170,10 +170,10 @@ export default function CodeReplayApp() {
         ...(filterOptions.highestScoringOnly && { highestScoringOnly: filterOptions.highestScoringOnly.toString() })
       }).toString();
 
-      console.log("Query params", queryParams);
+      // console.log("Query params", queryParams);
 
-      // const API_URL = process.env.FLASK_API_URL || 'https://codecflaskapi.duckdns.org';
-      const API_URL = process.env.FLASK_API_URL || 'http://localhost:5000';
+      const API_URL = process.env.FLASK_API_URL || 'https://codecflaskapi.duckdns.org';
+      // const API_URL = process.env.FLASK_API_URL || 'http://localhost:5000';
       const response = await fetch(`${API_URL}/api/similarity/matrix?${queryParams}`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' }
