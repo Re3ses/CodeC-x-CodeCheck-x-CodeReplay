@@ -71,6 +71,22 @@ export default function CodeReplayApp() {
   const [isMatrixLoading, setIsMatrixLoading] = useState(true);
   const [snapshots, setSnapshots] = useState<CodeSnapshot[]>([]);
   const [enhancedPastes, setEnhancedPastes] = useState<EnhancedPasteInfo[]>([]);
+  const [filters, setFilters] = useState({
+    verdict: '',
+    problemId: params.type === 'problem' ? params.id : '',
+    roomId: params.type === 'room' ? params.id : '',
+    acceptPartialSubmissions: false,
+    userType: '',
+    highestScoringOnly: false
+  });
+
+  const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    setFilters(prev => ({
+      ...prev,
+      [e.target.name]: e.target.type === "checkbox" ? e.target.checked : e.target.value,
+    }));
+  };
+
 
   // fetch user submissions
   useEffect(() => {
@@ -141,58 +157,46 @@ export default function CodeReplayApp() {
     fetchLearnerSnapshots();
   }, []);
 
-  useEffect(() => {
-    const fetchSimilarityData = async () => {
-      try {
-        setIsMatrixLoading(true);
+  const fetchSimilarityData = async (filterOptions = filters) => {
+    try {
+      setIsMatrixLoading(true);
 
-        const queryParam = params.type === 'problem' ?
-          `problemId=${params.id}` :
-          `roomId=${params.id}`;
+      const queryParams = new URLSearchParams({
+        ...(filterOptions.verdict && { verdict: filterOptions.verdict }),
+        ...(filterOptions.problemId && { problemId: filterOptions.problemId }),
+        ...(filterOptions.roomId && { roomId: filterOptions.roomId }),
+        ...(filterOptions.acceptPartialSubmissions && { acceptPartialSubmissions: filterOptions.acceptPartialSubmissions.toString() }),
+        ...(filterOptions.userType && { userType: filterOptions.userType }),
+        ...(filterOptions.highestScoringOnly && { highestScoringOnly: filterOptions.highestScoringOnly.toString() })
+      }).toString();
 
-        // const API_URL = process.env.FLASK_API_URL || 'https://codecflaskapi.duckdns.org';
-        const API_URL = process.env.FLASK_API_URL || 'http://localhost:5000';
-        console.log("mongo API_URL:", process.env.MONGO_URI);
-        // const API_PORT = process.env.FLASK_API_PORT || '5000';
-        // console.log("API_URL:", API_URL, "API_PORT:", API_PORT);
-        // const response = await fetch(`${API_URL}${API_PORT}/api/similarity/matrix?${queryParam}`, {
-        const response = await fetch(`${API_URL}/api/similarity/matrix?${queryParam}`, {
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' }
+      console.log("Query params", queryParams);
+
+      // const API_URL = process.env.FLASK_API_URL || 'https://codecflaskapi.duckdns.org';
+      const API_URL = process.env.FLASK_API_URL || 'http://localhost:5000';
+      const response = await fetch(`${API_URL}/api/similarity/matrix?${queryParams}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setSimilarityMatrix({
+          matrix: data.matrix,
+          snippets: data.snippets
         });
-
-        const data = await response.json();
-        console.log("matrix api data:", data);
-
-        if (data.success) {
-          setSimilarityMatrix({
-            matrix: data.matrix,
-            snippets: data.snippets
-          });
-        }
-      } catch (error) {
-        console.error('Fetch error:', error);
-      } finally {
-        setIsMatrixLoading(false);
       }
-    };
+    } catch (error) {
+      console.error('Fetch error:', error);
+    } finally {
+      setIsMatrixLoading(false);
+    }
+  };
 
-    const fetchInitialData = async () => {
-      try {
-        const response = await fetch('/api/codereplay');
-        if (response.ok) {
-          const data = await response.json();
-          if (data.success && Array.isArray(data.snippets)) {
-            await fetchSimilarityData(); // Fetch matrix immediately
-          }
-        }
-      } catch (error) {
-        console.error('Initial fetch error:', error);
-      }
-    };
-
-    fetchInitialData();
-  }, [params.id, params.type]);
+  useEffect(() => {
+    fetchSimilarityData();
+  }, []);
 
   // Calculate statistics for each snippet
   const calculateSnippetStats = (matrix: number[][], index: number) => {
@@ -243,6 +247,60 @@ export default function CodeReplayApp() {
               <SimilarityLoading />
             ) : (
               <div className="space-y-6">
+                <div className="bg-gray-800 p-4 rounded-lg">
+                  <h3 className="text-lg font-bold mb-2">Filters</h3>
+                  <div className="grid grid-cols-3 gap-4 items-center justify-center">
+                    <div className="col-span-1">
+                      <label className="text-sm text-gray-300">Verdict:</label>
+                      <select name="verdict" value={filters.verdict} onChange={handleFilterChange} className="w-full p-2 bg-gray-900 border border-gray-700 rounded">
+                        <option value="">All</option>
+                        <option value="ACCEPTED">Accepted</option>
+                        <option value="REJECTED">Rejected</option>
+                      </select>
+
+                      <label className="flex items-center space-x-2 text-gray-300">
+                        <input
+                          type="checkbox"
+                          name="acceptPartialSubmissions"
+                          checked={filters.acceptPartialSubmissions}
+                          onChange={handleFilterChange}
+                          className="w-4 h-4"
+                          title="This option overrides the verdict filter and includes all submissions with a score greater than 0."
+                        />
+                        <span>Accept Partial Submissions</span>
+                      </label>
+
+                    </div>
+
+                    <div className="col-span-1">
+                      <label className="text-sm text-gray-300">User Type:</label>
+                      <select name="userType" value={filters.userType} onChange={handleFilterChange} className="w-full p-2 bg-gray-900 border border-gray-700 rounded">
+                        <option value="Learner">Learners</option>
+                        <option value="Mentor">Mentors</option>
+                        <option value="All">All</option>
+                      </select>
+
+                      <label className="flex items-center space-x-2 text-gray-300">
+                        <input
+                          type="checkbox"
+                          name="highestScoringOnly"
+                          checked={filters.highestScoringOnly}
+                          onChange={handleFilterChange}
+                          className="w-4 h-4"
+                          title="This option overrides the 'Accept Partial Submissions' filter and includes only the highest scoring submission for each learner."
+                        />
+                        <span>Filter Highest Scoring Only</span>
+                      </label>
+                    </div>
+
+                    <div className="col-span-1">
+                      <button onClick={() => fetchSimilarityData(filters)} className="w-full bg-yellow-500 text-black p-2 rounded">
+                        Apply Filters
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
                 {similarityMatrix ?
                   <SimilarityDashboard
                     matrix={similarityMatrix.matrix}
