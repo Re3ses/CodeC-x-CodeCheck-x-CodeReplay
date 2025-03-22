@@ -17,6 +17,22 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   title: 'CodeC',
   description: 'The place where you can code',
+  icons: {
+    icon: [
+      {
+        url: '/icon.png',
+        href: '/icon.png',
+      }
+    ],
+    shortcut: ['/favicon.ico'],
+    apple: [
+      {
+        url: '/icon.png',
+        sizes: '512x512',
+        type: 'image/png',
+      }
+    ],
+  },
 };
 
 export default function RootLayout({
