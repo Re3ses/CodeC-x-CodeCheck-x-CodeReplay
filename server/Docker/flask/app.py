@@ -146,7 +146,16 @@ def get_similarity_matrix():
         logger.info(
             f"Similarity matrix computation completed in {time.time() - start_time:.2f} seconds"
         )
-        return jsonify({"success": True, "matrix": matrix, "snippets": snippet_info})
+
+        response = jsonify(
+            {"success": True, "matrix": matrix, "snippets": snippet_info}
+        )
+        response.headers.add("Access-Control-Allow-Origin", "*")
+        response.headers.add("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE")
+        response.headers.add("Access-Control-Allow-Headers", "Content-Type")
+        response.headers.add("Access-Control-Allow-Credentials", "true")
+
+        return response
 
     except Exception as e:
         tb_str = traceback.format_exc()
