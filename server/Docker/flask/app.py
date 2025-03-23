@@ -156,10 +156,10 @@ def get_similarity_matrix():
         response = jsonify(
             {"success": True, "matrix": matrix, "snippets": snippet_info}
         )
-        response.headers.add("Access-Control-Allow-Origin", "*")
-        response.headers.add("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE")
-        response.headers.add("Access-Control-Allow-Headers", "Content-Type")
-        response.headers.add("Access-Control-Allow-Credentials", "true")
+        # response.headers.add("Access-Control-Allow-Origin", "*")
+        # response.headers.add("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE")
+        # response.headers.add("Access-Control-Allow-Headers", "Content-Type")
+        # response.headers.add("Access-Control-Allow-Credentials", "true")
 
         return response
 
