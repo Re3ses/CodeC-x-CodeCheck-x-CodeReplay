@@ -2,7 +2,6 @@
 'use client'
 import { useState, useEffect, useRef } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ChevronDown, ChevronUp, FileCode2, Network, GitBranch, Activity } from "lucide-react";
 import SimilarityLoading from './SimilarityLoading';
@@ -52,15 +51,15 @@ interface SnippetInfo {
   timestamp: string;
   fileName: string;
 }
-interface AdvancedMetrics {
-  maxChange: number;
-  averageSimilarity: number;
-  minSimilarity: number;
-  normalizedVariance: number;
-  weightedPlagiarismScore: number;
-  pasteCount: number;
-  bigPasteCount: number;
-}
+// interface AdvancedMetrics {
+//   maxChange: number;
+//   averageSimilarity: number;
+//   minSimilarity: number;
+//   normalizedVariance: number;
+//   weightedPlagiarismScore: number;
+//   pasteCount: number;
+//   bigPasteCount: number;
+// }
 
 export default function CodeReplayApp() {
   const params = useParams<{ type: string, id: string }>();
@@ -80,12 +79,14 @@ export default function CodeReplayApp() {
     highestScoringOnly: false
   });
 
-  const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
+    const { name, type, value } = e.target;
     setFilters(prev => ({
       ...prev,
-      [e.target.name]: e.target.type === "checkbox" ? e.target.checked : e.target.value,
+      [name]: type === "checkbox" ? (e.target as HTMLInputElement).checked : value,
     }));
   };
+
 
 
   // fetch user submissions
@@ -220,7 +221,6 @@ export default function CodeReplayApp() {
   };
 
   const [expandedCard, setExpandedCard] = useState<number | null>(null);
-  // const [advancedMetrics, setAdvancedMetrics] = useState<{ [key: string]: AdvancedMetrics }>({});
 
   return (
     <div className="min-h-screen bg-gray-900 text-white p-4">
