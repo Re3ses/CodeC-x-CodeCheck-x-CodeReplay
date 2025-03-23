@@ -16,6 +16,7 @@ from codebert_analyzer import CodeBERTAnalyzer, SnippetInfo
 # Load environment variables
 load_dotenv()
 
+
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,
@@ -28,7 +29,10 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__)
 
 # Configure CORS
+print("Loaded ALLOWED_ORIGINS:", os.getenv("ALLOWED_ORIGINS"))
+
 allowed_origins = os.getenv("ALLOWED_ORIGINS", "*").split(",")
+print("Parsed allowed_origins:", allowed_origins)  # Debug print
 
 CORS(app, resources={r"/api/*": {"origins": allowed_origins}})
 
