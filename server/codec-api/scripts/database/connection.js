@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const { MONGODB_URI } = require('../../config')
 
 const connect = () => {
-    console.log('Attempting to connect to MongoDB...');
+    console.log('Attempting to connect to MongoDB...', MONGODB_URI);
     mongoose.set('strictQuery', true);
     mongoose.connect(MONGODB_URI, {
         useNewUrlParser: true,
