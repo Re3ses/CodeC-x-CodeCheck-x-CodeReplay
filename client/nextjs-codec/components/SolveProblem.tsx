@@ -854,8 +854,7 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
                       tabSize: 2,
                       wordWrap: 'on',
                       formatOnPaste: true,
-                      formatOnType: true,
-                      readOnly: submitting,
+                      formatOnType: true
                     }}
                   />
                 </div>

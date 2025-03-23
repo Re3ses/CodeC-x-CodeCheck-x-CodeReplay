@@ -14,7 +14,7 @@ from flask_limiter.util import get_remote_address
 from codebert_analyzer import CodeBERTAnalyzer, SnippetInfo
 
 # Load environment variables
-load_dotenv(".env")
+load_dotenv()
 
 # Configure logging
 logging.basicConfig(
@@ -42,7 +42,7 @@ limiter = Limiter(
 
 # Connect to the MongoDB server
 MONGO_URI = os.getenv("MONGO_URI")
-print("Connecting to MongoDB server at:", MONGO_URI)
+# print("Connecting to MongoDB server at:", MONGO_URI)
 client = MongoClient(MONGO_URI)
 db = client["codec"]
 userSubmissionsCollection = db["usersubmissions"]
@@ -66,12 +66,7 @@ def get_similarity_matrix():
     try:
         problem_id = request.args.get("problemId")
         room_id = request.args.get("roomId")
-        verdict = request.args.get("verdict")  # Can be "ACCEPTED", "REJECTED", or "All"
-        user_type = request.args.get("userType")
-        accept_partial_submissions = (
-            request.args.get("acceptPartialSubmissions") == "true"
-        )
-        highest_scoring_only = request.args.get("highestScoringOnly") == "true"
+        verdict = request.args.get("verdict")
 
         if not problem_id and not room_id:
             return (
@@ -81,48 +76,23 @@ def get_similarity_matrix():
                 400,
             )
 
-        query = {}
-
-        # 🛠 Handling Verdict & Partial Submissions
-        if accept_partial_submissions:
-            # Include all submissions with a score > 0 (accepted and partially accepted)
-            query["score"] = {"$gt": 0}
-        elif verdict == "ACCEPTED":
-            # Only include perfect scores (fully accepted)
-            query["verdict"] = "ACCEPTED"
-        elif verdict == "REJECTED":
-            # Exclude fully accepted submissions, only include rejected ones
-            query["verdict"] = "REJECTED"
-        else:
-            # Default behavior: only include accepted submissions
-            query["verdict"] = "ACCEPTED"
-
+        query = {"verdict": verdict or "ACCEPTED"}
         if problem_id:
             query["problem"] = problem_id
-
         if room_id:
             query["room"] = room_id
 
-        if user_type and user_type != "All":
-            query["user_type"] = user_type
-
-        print("query:", query)
-
-        aggregation_pipeline = [{"$match": query}]
-
-        # 🏆 Fix: Ensure only one unique highest-scoring submission per learner
-        if highest_scoring_only:
-            aggregation_pipeline += [
-                {
-                    "$sort": {"score": -1, "submission_date": -1}
-                },  # Sort by highest score, then latest submission
-                {
-                    "$group": {"_id": "$learner_id", "doc": {"$first": "$$ROOT"}}
-                },  # Keep the first (highest)
-                {"$replaceRoot": {"newRoot": "$doc"}},  # Flatten structure
-            ]
-
-        submissions = list(userSubmissionsCollection.aggregate(aggregation_pipeline))
+        # To get the highest-scoring submission per learner:
+        submissions = list(
+            userSubmissionsCollection.aggregate(
+                [
+                    {"$match": query},
+                    {"$sort": {"score_overall_count": -1}},  # Sort by score descending
+                    {"$group": {"_id": "$learner_id", "doc": {"$first": "$$ROOT"}}},
+                    {"$replaceRoot": {"newRoot": "$doc"}},
+                ]
+            )
+        )
 
         for submission in submissions:
             submission["_id"] = str(submission["_id"])
@@ -147,7 +117,7 @@ def get_similarity_matrix():
                     "success": True,
                     "matrix": [],
                     "snippets": [],
-                    "message": f"No snippets found for this query: {query}. Please check the provided IDs and try again.",
+                    "message": f"No snippets found for problemId: {problem_id} or roomId: {room_id}",
                 }
             )
 
@@ -162,7 +132,14 @@ def get_similarity_matrix():
         tb_str = traceback.format_exc()
         logger.error(f"Error in similarity matrix computation: {str(e)}\n{tb_str}")
         return (
-            jsonify({"success": False, "error": str(e), "matrix": [], "snippets": []}),
+            jsonify(
+                {
+                    "success": False,
+                    "error": str(e),
+                    "matrix": [],
+                    "snippets": [],
+                }
+            ),
             500,
         )
 
