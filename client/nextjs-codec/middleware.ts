@@ -46,7 +46,7 @@ export async function middleware(request: NextRequest) {
       request.nextUrl.pathname !== '/login'
     ) {
       session = await getSession();
-      // console.log("Session in middleware.ts:", session);
+      console.log("Session in middleware.ts:", session);
       user = await getUser();
     }
 
