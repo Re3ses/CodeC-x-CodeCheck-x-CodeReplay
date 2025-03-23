@@ -71,7 +71,7 @@ export async function middleware(request: NextRequest) {
 
     // Prevent infinite redirect loop
     if (!session && request.nextUrl.pathname !== '/login') {
-      console.log("No session found, redirecting to /login", session);
+      // console.log("No session found, redirecting to /login", session);
       return NextResponse.redirect(new URL('/login', request.url));
     }
 
