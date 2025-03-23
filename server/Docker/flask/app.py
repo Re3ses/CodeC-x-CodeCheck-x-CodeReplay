@@ -57,6 +57,12 @@ snapshotsCollection = db["codesnapshots"]
 codebert_detector = CodeBERTAnalyzer()
 
 
+@app.before_request
+def handle_options():
+    if request.method == "OPTIONS":
+        return "", 204  # Ensure Flask does not interfere with OPTIONS requests
+
+
 @app.route("/health", methods=["GET"])
 def health_check():
     """Simple health check endpoint"""
