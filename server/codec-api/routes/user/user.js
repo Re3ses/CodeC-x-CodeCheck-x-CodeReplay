@@ -47,7 +47,7 @@ router.get('/:username', authenticate, wrapper(async (req, res) => {
 
     if (!user)
         throw new DocumentNotFoundError(`User [${req.params.username}] not found`)
-
+    console.log("User profile found", user)
     res.status(200).json(user)
 }))
 
