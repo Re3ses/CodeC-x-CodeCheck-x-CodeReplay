@@ -80,3 +80,98 @@ const App = ({ codeSnippets }: attentionProps) => {
 };
 
 export default App;
+
+
+import React, { useState, useEffect } from 'react';
+import { Card, CardContent } from '@/components/ui/card';
+import './App.css';
+
+// const App = () => {
+//   const [code1, setCode1] = useState('def calculate_area(radius): return 3.14 * radius * radius');
+//   const [code2, setCode2] = useState('def compute_circle_area(r): return 3.14159 * r * r');
+//   const [similarities, setSimilarities] = useState([]);
+//   const [hoveredToken, setHoveredToken] = useState(null);
+
+//   const handleEditorChange1 = (value) => setCode1(value || '');
+//   const handleEditorChange2 = (value) => setCode2(value || '');
+
+//   const fetchSimilarities = async () => {
+//     try {
+//       const response = await fetch('http://localhost:5000/compare', {
+//         method: 'POST',
+//         headers: {
+//           'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify({ code1, code2 }),
+//       });
+
+//       if (response.ok) {
+//         const data = await response.json();
+//         setSimilarities(data);
+//       }
+//     } catch (error) {
+//       console.error('Error fetching similarity data:', error);
+//     }
+//   };
+
+//   useEffect(() => {
+//     fetchSimilarities();
+//   }, [code1, code2]);
+
+//   const highlightTokens = (code, tokens, isCode1 = true) => {
+//     let highlightedCode = code;
+//     tokens.forEach(({ token1, token2, similarity }) => {
+//       const targetToken = isCode1 ? token1 : token2;
+//       const regex = new RegExp(`\b${targetToken}\b`, 'g');
+//       highlightedCode = highlightedCode.replace(regex, (match) =>
+//         `<span class='highlight' data-token='${match}' data-similarity='${similarity}'>${match}</span>`
+//       );
+//     });
+//     return highlightedCode;
+//   };
+
+//   const handleMouseOver = (e) => {
+//     const token = e.target.getAttribute('data-token');
+//     const similarity = e.target.getAttribute('data-similarity');
+//     if (token && similarity) {
+//       setHoveredToken({ token, similarity });
+//     }
+//   };
+
+//   const handleMouseOut = () => {
+//     setHoveredToken(null);
+//   };
+
+//   return (
+//     <div className="min-h-screen bg-gray-100 p-8" onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>
+//       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+//         <Card>
+//           <CardContent>
+//             <div
+//               className="editor"
+//               dangerouslySetInnerHTML={{ __html: highlightTokens(code1, similarities, true) }}
+//             />
+//           </CardContent>
+//         </Card>
+
+//         <Card>
+//           <CardContent>
+//             <div
+//               className="editor"
+//               dangerouslySetInnerHTML={{ __html: highlightTokens(code2, similarities, false) }}
+//             />
+//           </CardContent>
+//         </Card>
+//       </div>
+
+//       {hoveredToken && (
+//         <div className="tooltip fixed bg-white p-2 border rounded shadow-lg">
+//           <strong>Token:</strong> {hoveredToken.token} <br />
+//           <strong>Similarity:</strong> {hoveredToken.similarity}
+//         </div>
+//       )}
+//     </div>
+//   );
+// };
+
+// export default App;
