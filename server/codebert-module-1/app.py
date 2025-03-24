@@ -1,31 +1,28 @@
 # main.py
 from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
+from analyzer import CombinedAnalyzer
+from analyzer.codebert_analyzer import SnippetInfo, SequentialSimilarity
+from analyzer.codebert_attention import CodeBERTAttentionAnalyzer
 import json
-import numpy as np
-import matplotlib.pyplot as plt
-import io
-
-# from detector_functions import EnhancedCodeSimilarityDetector
-# from trained_models import get_plagiarism_probability
-from codebert_analyzer import CodeBERTAnalyzer, SnippetInfo
+import logging
 import traceback
-import time
 from pymongo import MongoClient
 from bson import ObjectId
+import time
+
 
 app = Flask(__name__)
 CORS(app)
 
-# Connect to the MongoDB server
+# Initialize the combined analyzer
+codebert_detector = CombinedAnalyzer()
+
+# Connect to MongoDB
 client = MongoClient("mongodb://127.0.0.1:27017/codec-v3")
 db = client["codec-v3"]
 userSubmissionsCollection = db["usersubmissions"]
 snapshotsCollection = db["codesnapshots"]
-
-# Initialize detectors as global variables
-# token_detector = EnhancedCodeSimilarityDetector()
-codebert_detector = CodeBERTAnalyzer()
 
 
 @app.route("/api/similarity/matrix", methods=["GET"])
@@ -194,7 +191,6 @@ def get_sequential_similarity():
     finally:
         print(f"Total time taken: {time.time() - start_time} seconds")
 
-
 @app.route("/api/similarity/calculate", methods=["POST"])
 def calculate_similarity():
     try:
@@ -222,83 +218,133 @@ def calculate_similarity():
             "error": str(e)
         }), 500
 
+@app.route("/api/visualize-similarity", methods=["POST"])
+def visualize_similarity():
+    try:
+        data = request.get_json()
+        code1 = data.get('code1', '')
+        code2 = data.get('code2', '')
 
+        if not code1 or not code2:
+            return jsonify({
+                "success": False,
+                "error": "Missing code samples"
+            }), 400
+
+        print(f"Analyzing code samples: {len(code1)}, {len(code2)} chars")
         
-# @app.route("/api/test", methods=["POST"])
-# def test_endpoint():
-#     try:
-#         # problem_id = request.args.get("problemId")
-#         # room_id = request.args.get("roomId")
+        image, structures = codebert_detector.visualize_code_similarity(code1, code2)
+        
+        print(f"Analysis complete. Found {len(structures)} similar structures")
+        
+        return jsonify({
+            "success": True,
+            "image": image,
+            "structures": structures
+        })
 
-#         # if not problem_id and not room_id:
-#         #     return (
-#         #         jsonify(
-#         #             {"success": False, "message": "No problemId or roomId provided"}
-#         #         ),
-#         #         400,
-#         #     )
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+        
+@app.route("/api/analyze-gradients", methods=["POST"])
+def analyze_gradients():
+    try:
+        print("Starting gradient analysis endpoint...")
+        data = request.get_json()
+        
+        if not data:
+            print("Error: No data received")
+            return jsonify({"success": False, "error": "No data received"}), 400
+        
+        code1 = data.get('code1', '')
+        code2 = data.get('code2', '')
+        
+        print(f"Received code samples: {len(code1)} chars, {len(code2)} chars")
+        
+        if not code1 or not code2:
+            print("Error: Missing code samples")
+            return jsonify({
+                "success": False,
+                "error": "Missing code samples"
+            }), 400
 
-#         # # submissions = list(
-#         # #     userSubmissionsCollection.find({"problem": problem_id, "room": room_id})
-#         # # )
+        print("Initializing gradient analysis...")
+        analysis = codebert_detector.analyze_embedding_gradients(code1, code2)
+        
+        print("Gradient analysis complete:", {
+            "success": analysis.get("success"),
+            "has_analysis": bool(analysis.get("analysis")),
+            "error": analysis.get("error")
+        })
+        
+        return jsonify(analysis)
 
-#         snapshots = list(snapshotsCollection.find({}))
-#         # Convert ObjectId to string
-#         for snapshot in snapshots:
-#             snapshot["_id"] = str(snapshot["_id"])
-#             snapshot["learner_id"] = str(snapshot["learner_id"])
-#         return jsonify(snapshots)
-#     except Exception as e:
-#         tb_str = traceback.format_exc()
-#         return (
-#             jsonify(
-#                 {
-#                     "success": False,
-#                     "error": str(e),
-#                     "traceback": tb_str,
-#                     "matrix": [],
-#                     "snippets": [],
-#                 }
-#             ),
-#             500,
-#         )
+    except Exception as e:
+        print(f"Error in gradient analysis endpoint: {str(e)}")
+        traceback.print_exc()
+        return jsonify({
+            "success": False,
+            "error": str(e)
+        }), 500
+ 
+@app.route("/api/analyze/attention", methods=["POST"])
+def analyze_attention():
+    try:
+        print("Starting attention analysis...")
+        data = request.get_json()
+        
+        if not data:
+            print("No data received")
+            return jsonify({
+                "success": False,
+                "error": "No data received"
+            }), 400
+            
+        code1 = data.get('code1', '')
+        code2 = data.get('code2', '')
+        
+        print(f"Processing code snippets:\nCode 1 ({len(code1)} chars)\nCode 2 ({len(code2)} chars)")
+        
+        if not code1 or not code2:
+            print("Missing code snippets")
+            return jsonify({
+                "success": False,
+                "error": "Both code snippets are required"
+            }), 400
 
+        try:
+            # Get attention maps from the analyzer
+            attention_maps = codebert_detector.get_attention_maps(code1, code2)
+            if not attention_maps:
+                raise ValueError("No attention maps generated")
+                
+            print(f"Successfully generated attention maps for {len(attention_maps)} layers")
+            
+            # Structure the response to match frontend expectations
+            return jsonify({
+                "success": True,
+                "attention_data": {
+                    "all_attentions": attention_maps,
+                    "visualization": attention_maps.get('4', {}).get('3', {}).get('visualization', '')
+                }
+            })
 
-# def compute_codebert_similarities(submissions):
-#     """Compute similarities using CodeBERT for the existing comparison endpoint."""
-#     try:
-#         n = len(submissions)
-#         matrix = [[0.0] * n for _ in range(n)]
+        except Exception as e:
+            print(f"Error in attention analysis: {str(e)}")
+            print(traceback.format_exc())
+            return jsonify({
+                "success": False,
+                "error": str(e)
+            }), 500
 
-#         for i in range(n):
-#             for j in range(i, n):
-#                 if i == j:
-#                     similarity = 1.0
-#                 else:
-#                     similarity = codebert_detector.calculate_similarity(
-#                         submissions[i]["code"], submissions[j]["code"]
-#                     )
-#                 matrix[i][j] = matrix[j][i] = similarity
-
-#         # Format results to match your existing output structure
-#         results = {
-#             "similarity_matrix": matrix,
-#             "submission_info": [
-#                 {
-#                     "learner": sub["learner"],
-#                     "language": sub.get("language_used", "unknown"),
-#                     "code_length": len(sub["code"]),
-#                 }
-#                 for sub in submissions
-#             ],
-#         }
-
-#         return results
-
-#     except Exception as e:
-        #         print(f"Error in CodeBERT similarity computation: {e}")
-#         raise
-
-
+    except Exception as e:
+        print(f"Error processing request: {str(e)}")
+        print(traceback.format_exc())
+        return jsonify({
+            "success": False,
+            "error": str(e)
+        }), 500
+    
+        
 if __name__ == "__main__":
     app.run(debug=True)

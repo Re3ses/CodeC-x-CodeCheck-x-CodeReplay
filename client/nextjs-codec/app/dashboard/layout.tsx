@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getUser, refreshToken } from '@/lib/auth';
 import { createContext, useEffect } from 'react';
 import { UserContext } from './contexts';
+import LoadingAnimation from './loading';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   useEffect(() => {
@@ -33,7 +34,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </UserContext.Provider>
         </>
       ) : (
-        <small>Waiting for data, please be patient...</small>
+        <LoadingAnimation />
       )}
     </div>
   );

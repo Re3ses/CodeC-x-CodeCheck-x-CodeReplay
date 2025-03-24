@@ -15,7 +15,7 @@ try {
   console.error('Error accessing dataset:', error);
 }
 
-const SIMILARITY_THRESHOLD = 0.70;
+const SIMILARITY_THRESHOLD = 0.40;
 
 interface FileComparison {
   originalPath: string;

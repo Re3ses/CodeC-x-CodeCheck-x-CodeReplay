@@ -74,7 +74,7 @@ class CodeBERTAnalyzer:
     def preprocess_code(self, code: str) -> str:
         """Preprocess code for CodeBERT analysis."""
         # Normalize whitespace and remove newlines/tabs
-        code = re.sub(r"\s+", " ", code).replace("\n", " ").replace("\t", " ").strip()
+        code = re.sub(r"\s+", "", code).replace("\n", "").replace("\t", "").strip()
         
         # Truncate to 512 tokens with proper word boundary
         return code[:509].rsplit(" ", 1)[0] + "..." if len(code) > 512 else code
