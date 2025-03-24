@@ -7,50 +7,42 @@ class CodeSimilarityAnalyzer:
         self.model = RobertaModel.from_pretrained(model_name, output_attentions=True)
         self.tokenizer = RobertaTokenizer.from_pretrained(model_name)
 
-    def get_attention_matrix(self, code):
-        # Tokenize and encode the code
-        inputs = self.tokenizer(code, return_tensors="pt")
-        # Forward pass through the model
-        with torch.no_grad():
-            outputs = self.model(**inputs)
-        # Extract attention from the last layer
-        last_layer_attention = outputs.attentions[-1]
-        # Average over all heads
-        average_attention = last_layer_attention.mean(dim=1).squeeze(0)
-        # Normalize the attention scores
-        attention_matrix = average_attention / average_attention.sum(dim=-1, keepdim=True)
-        # Extract tokens
-        tokens = self.tokenizer.convert_ids_to_tokens(inputs['input_ids'].squeeze().tolist())
+    def get_attention_matrices(self, code_snippets):
+        """Tokenize together, get full attention for each layer"""
+        inputs = self.tokenizer(code_snippets, return_tensors="pt", padding=True)
 
-        return tokens, attention_matrix
+        with torch.no_grad():
+            outputs = self.model(**inputs, output_attentions=True)
+
+        if outputs.attentions is None:
+            raise ValueError("Model outputs do not contain attentions.")
+
+        attentions = torch.stack(
+            outputs.attentions
+        )  # Shape: (num_layers, num_heads, seq_len, seq_len)
+
+        # Get the input_ids and ensure it's a 1D tensor after squeezing
+        input_ids = inputs["input_ids"].squeeze()
+        if input_ids.ndim > 1:
+            # If it's still 2D (more than one code snippet), take the first one
+            input_ids = input_ids[0]
+
+        tokens = self.tokenizer.convert_ids_to_tokens(input_ids.tolist())
+
+        return tokens, attentions  # Return full attention data (layer-wise)
 
     def compare(self, code_snippets):
-        num_snippets = len(code_snippets)
-        similarity_results = []
+        tokens, attentions = self.get_attention_matrices(code_snippets)
 
-        # Precompute attention matrices and tokens for all snippets
-        attention_data = [self.get_attention_matrix(code) for code in code_snippets]
+        num_layers, batch_size, num_heads, seq_len, _ = attentions.shape
+        print(
+            f"Extracted {num_layers} layers, batch size {batch_size}, {num_heads} heads, sequence length {seq_len}"
+        )
+        print(f"Shape of attentions tensor: {attentions.shape}")
+        print(f"Length of tokens: {len(tokens)}")
 
-        # Perform 1-to-all comparison
-        for i, (tokens1, attention1) in enumerate(attention_data):
-            similarities = {}
-
-            for j, (tokens2, attention2) in enumerate(attention_data):
-                if i == j:  # Skip self-comparison
-                    continue
-
-                # Compare similarity using cosine similarity
-                similarity_matrix = torch.matmul(attention1, attention2.T)
-
-                # Map tokens to similarity scores
-                similarities[j] = {
-                    tokens1[idx1]: {
-                        tokens2[idx2]: similarity_matrix[idx1][idx2].item()
-                        for idx2 in range(len(tokens2))
-                    }
-                    for idx1 in range(len(tokens1))
-                }
-
-            similarity_results.append(similarities)
-
-        return similarity_results
+        attention_results = {
+            "tokens": tokens,
+            "layer_wise_attention": attentions[0].tolist(),
+        }
+        return attention_results
