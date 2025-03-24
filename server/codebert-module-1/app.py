@@ -4,6 +4,7 @@ from flask_cors import CORS
 from analyzer import CombinedAnalyzer
 from analyzer.codebert_analyzer import SnippetInfo, SequentialSimilarity
 from analyzer.codebert_attention import CodeBERTAttentionAnalyzer
+from analyzer.attention import CodeSimilarityAnalyzer
 import json
 import logging
 import traceback
@@ -345,6 +346,38 @@ def analyze_attention():
             "error": str(e)
         }), 500
     
+
+@app.route("/api/visualize/attention", methods=["POST"])
+def visualize_attention():
+    print("Received visualize attention request")
+    try:
+        # Extract code snippets from the request JSON body
+        data = request.get_json()
+        code_snippets = data.get("code_snippets", [])
         
+        if not code_snippets or len(code_snippets) == 0:
+            return jsonify({
+                "success": False,
+                "error": "No code snippets provided"
+            }), 400
+        
+        # Perform similarity analysis
+        similarity_results = analyzer.compare(code_snippets)
+        
+        # Return the results as JSON
+        return jsonify({
+            "success": True,
+            "similarities": similarity_results
+        })
+    except Exception as e:
+        print(f"Error processing request: {str(e)}")
+        print(traceback.format_exc())
+        return jsonify({
+            "success": False,
+            "error": str(e)
+        }), 500
+
+        
+
 if __name__ == "__main__":
     app.run(debug=True)
