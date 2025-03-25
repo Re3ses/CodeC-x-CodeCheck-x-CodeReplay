@@ -128,7 +128,7 @@ export default function CodeVisualizerPage() {
     };
 
     const prepareHighlightedCode = useCallback(() => {
-        if (!structures.length) return;
+        if (!structures.length || !code1 || !code2) return;
 
         const highlights1: HighlightInfo[] = [];
         const highlights2: HighlightInfo[] = [];
@@ -136,14 +136,21 @@ export default function CodeVisualizerPage() {
         // Sort structures by similarity (highest first) to handle overlaps
         const sortedStructures = [...structures].sort((a, b) => b.similarity - a.similarity);
 
-        sortedStructures.forEach(structure => {
+        console.log("Processing structures for highlighting:", sortedStructures.length);
+
+        sortedStructures.forEach((structure, idx) => {
             // Process each line group in the structure
             const lines1 = structure.code_a;
             const lines2 = structure.code_b;
 
+            console.log(`Structure ${idx} - type: ${structure.type}, similarity: ${structure.similarity}`);
+            console.log(`Lines in snippet 1: ${lines1.length}, snippet 2: ${lines2.length}`);
+
             // Find positions in original code
             let pos1 = findPositionInCode(code1, lines1);
             let pos2 = findPositionInCode(code2, lines2);
+
+            console.log(`Positions found - snippet 1: ${pos1 ? 'yes' : 'no'}, snippet 2: ${pos2 ? 'yes' : 'no'}`);
 
             if (pos1) {
                 highlights1.push({
@@ -166,6 +173,8 @@ export default function CodeVisualizerPage() {
             }
         });
 
+        console.log(`Highlights added - code1: ${highlights1.length}, code2: ${highlights2.length}`);
+
         setHighlightedCode1({ code: code1, highlights: highlights1 });
         setHighlightedCode2({ code: code2, highlights: highlights2 });
     }, [code1, code2, structures]);
@@ -174,63 +183,129 @@ export default function CodeVisualizerPage() {
         const codeLines = fullCode.split('\n');
         const searchLines = lines.map(line => line.trim());
 
-        for (let i = 0; i < codeLines.length; i++) {
+        // For empty arrays or invalid inputs
+        if (!searchLines.length || !fullCode) return null;
+
+        // Try to find exact match first
+        for (let i = 0; i <= codeLines.length - searchLines.length; i++) {
             let found = true;
             for (let j = 0; j < searchLines.length; j++) {
+                // Compare trimmed versions to handle whitespace differences
                 if (i + j >= codeLines.length || codeLines[i + j].trim() !== searchLines[j]) {
                     found = false;
                     break;
                 }
             }
+
             if (found) {
-                const start = codeLines.slice(0, i).join('\n').length + (i > 0 ? 1 : 0);
-                const end = start + lines.join('\n').length;
-                return { start, end };
+                // Calculate accurate position in the full text
+                let lineStart = 0;
+                for (let k = 0; k < i; k++) {
+                    lineStart += codeLines[k].length + 1; // +1 for newline
+                }
+
+                // Calculate the end position more accurately
+                let lineEnd = lineStart;
+                for (let k = 0; k < searchLines.length; k++) {
+                    // Use the original code line's length not the trimmed one
+                    lineEnd += codeLines[i + k].length + 1;
+                }
+
+                return { start: lineStart, end: lineEnd - 1 }; // -1 to not include the last newline
             }
         }
+
+        // Fallback: Try to find the first line and estimate the span
+        // This helps with slight variations in code
+        const firstLineIndex = codeLines.findIndex(line => line.trim() === searchLines[0]);
+        if (firstLineIndex >= 0) {
+            let lineStart = 0;
+            for (let k = 0; k < firstLineIndex; k++) {
+                lineStart += codeLines[k].length + 1;
+            }
+
+            // Estimate the end based on the number of lines in the search
+            let lineEnd = lineStart;
+            const endLineIndex = Math.min(firstLineIndex + searchLines.length, codeLines.length);
+            for (let k = firstLineIndex; k < endLineIndex; k++) {
+                lineEnd += codeLines[k].length + 1;
+            }
+
+            return { start: lineStart, end: lineEnd - 1 };
+        }
+
         return null;
     };
 
     // Improve the highlighting in renderHighlightedCode
     const renderHighlightedCode = (highlightedCode: { code: string, highlights: HighlightInfo[] }) => {
         const { code, highlights } = highlightedCode;
-        if (!highlights.length) return <span>{code}</span>;
+        if (!highlights.length || !code) return <span>{code}</span>;
 
         const segments: JSX.Element[] = [];
         let lastPos = 0;
 
-        // Sort highlights by position and similarity
-        const sortedHighlights = [...highlights].sort((a, b) => {
-            if (a.start === b.start) return b.similarity - a.similarity;
-            return a.start - b.start;
-        });
+        // Sort highlights by position
+        const sortedHighlights = [...highlights].sort((a, b) => a.start - b.start);
 
-        // Create a lookup for cluster colors
+        // Merge overlapping highlights to prevent issues
+        const mergedHighlights: HighlightInfo[] = [];
+        for (const highlight of sortedHighlights) {
+            if (mergedHighlights.length === 0) {
+                mergedHighlights.push(highlight);
+                continue;
+            }
+
+            const lastHighlight = mergedHighlights[mergedHighlights.length - 1];
+
+            // If current highlight overlaps with the last one, merge them
+            if (highlight.start <= lastHighlight.end) {
+                lastHighlight.end = Math.max(lastHighlight.end, highlight.end);
+                // Keep the higher similarity score and its cluster ID
+                if (highlight.similarity > lastHighlight.similarity) {
+                    lastHighlight.similarity = highlight.similarity;
+                    lastHighlight.clusterId = highlight.clusterId;
+                    lastHighlight.structureType = highlight.structureType;
+                }
+            } else {
+                mergedHighlights.push(highlight);
+            }
+        }
+
+        // Create a lookup for cluster colors - use more distinct colors
         const clusterColors = new Map<number, string>();
-        highlights.forEach(h => {
+        mergedHighlights.forEach(h => {
             if (!clusterColors.has(h.clusterId)) {
-                const colorIndex = h.clusterId % 5;
                 const colors = [
-                    'bg-blue-200 dark:bg-blue-800',
-                    'bg-green-200 dark:bg-green-800',
-                    'bg-yellow-200 dark:bg-yellow-800',
-                    'bg-purple-200 dark:bg-purple-800',
-                    'bg-orange-200 dark:bg-orange-800'
+                    'bg-blue-300 dark:bg-blue-700',
+                    'bg-green-300 dark:bg-green-700',
+                    'bg-yellow-300 dark:bg-yellow-700',
+                    'bg-purple-300 dark:bg-purple-700',
+                    'bg-orange-300 dark:bg-orange-700',
+                    'bg-red-300 dark:bg-red-700',
+                    'bg-indigo-300 dark:bg-indigo-700',
+                    'bg-pink-300 dark:bg-pink-700',
                 ];
+                const colorIndex = h.clusterId % colors.length;
                 clusterColors.set(h.clusterId, colors[colorIndex]);
             }
         });
 
-        sortedHighlights.forEach((highlight, idx) => {
+        mergedHighlights.forEach((highlight, idx) => {
+            // Add any text before this highlight
             if (highlight.start > lastPos) {
                 segments.push(
                     <span key={`plain-${idx}`}>{code.slice(lastPos, highlight.start)}</span>
                 );
             }
 
-            const baseColor = clusterColors.get(highlight.clusterId) || 'bg-gray-200 dark:bg-gray-800';
-            const opacity = Math.max(0.5, highlight.similarity);
+            // Get the color for this cluster
+            const baseColor = clusterColors.get(highlight.clusterId) || 'bg-gray-300 dark:bg-gray-700';
 
+            // Make all highlights more visible by not reducing opacity too much
+            const opacity = Math.max(0.7, highlight.similarity);
+
+            // Add the highlighted segment
             segments.push(
                 <span
                     key={`highlight-${idx}`}
@@ -258,6 +333,7 @@ export default function CodeVisualizerPage() {
             lastPos = highlight.end;
         });
 
+        // Add any remaining text after the last highlight
         if (lastPos < code.length) {
             segments.push(<span key="plain-end">{code.slice(lastPos)}</span>);
         }
