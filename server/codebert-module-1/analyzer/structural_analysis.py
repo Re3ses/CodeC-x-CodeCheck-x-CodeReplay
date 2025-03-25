@@ -184,8 +184,8 @@ class StructuralAnalysis:
             reducer = UMAP(
                 n_components=2,  # 2D visualization
                 n_neighbors=min(7, len(combined_embeddings) - 1), 
-                min_dist=2, 
-                spread=2,  # Increased spread for better visualization
+                min_dist=0.1, 
+                spread=1,  # Increased spread for better visualization
                 random_state=42,
                 n_jobs=1
             )
@@ -236,7 +236,7 @@ class StructuralAnalysis:
             plt.figure(figsize=(14, 12))
             
             # Create subplot layout with room for labels
-            gs = gridspec.GridSpec(1, 2, width_ratios=[3, 1])
+            gs = gridspec.GridSpec(1, 2, width_ratios=[2.5, 1])
             ax = plt.subplot(gs[0])
             legend_ax = plt.subplot(gs[1])
             legend_ax.axis('off')
