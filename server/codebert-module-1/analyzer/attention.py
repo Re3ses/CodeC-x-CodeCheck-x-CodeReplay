@@ -19,7 +19,7 @@ class CodeSimilarityAnalyzer:
 
         attentions = torch.stack(
             outputs.attentions
-        )  # Shape: (num_layers, num_heads, seq_len, seq_len)
+        )  # Shape: (num_layers, batch_size, num_heads, seq_len, seq_len)
 
         # Get the input_ids and ensure it's a 1D tensor after squeezing
         input_ids = inputs["input_ids"].squeeze()
@@ -43,6 +43,6 @@ class CodeSimilarityAnalyzer:
 
         attention_results = {
             "tokens": tokens,
-            "layer_wise_attention": attentions[0].tolist(),
+            "layer_wise_attention": attentions.tolist(),  # Return the full tensor
         }
         return attention_results

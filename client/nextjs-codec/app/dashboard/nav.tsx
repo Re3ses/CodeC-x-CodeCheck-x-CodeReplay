@@ -22,9 +22,10 @@ export default function Nav(props: { variant?: string; name?: string; type?: str
     // { id: 'codeReplay', label: 'CodeCheck', href: `/codereplay`, icon: Shield },
     // { id: 'codeReplayV3', label: 'CodeReplay', href: `/codereplayV3`, icon: Play },
     // { id: 'highlighting', label: 'Highlighting', href: `/highlighting`, icon: Highlighter },
+    { id: 'attention', label: 'Attention', href: `/attention`, icon: Shield },
     { id: 'ir-plag', label: 'IR-Plag', href: `/ir-plag`, icon: Shield },
     { id: 'visualizer', label: 'Visualizer', href: `/visualizer`, icon: Shield },
-    
+
   ];
 
   const handleNavigation = (href: string) => {
