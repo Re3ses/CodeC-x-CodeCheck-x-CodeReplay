@@ -36,7 +36,8 @@ allowed_origins = os.getenv("ALLOWED_ORIGINS", "*").split(",")
 print("Parsed allowed_origins:", allowed_origins)  # Debug print
 
 # CORS(app, resources={r"/api/*": {"origins": allowed_origins}})
-
+# FOR TESTING
+# CORS(app)
 # Configure rate limiting
 limiter = Limiter(
     get_remote_address,
@@ -83,7 +84,6 @@ def get_similarity_matrix():
             request.args.get("acceptPartialSubmissions") == "true"
         )
         highest_scoring_only = request.args.get("highestScoringOnly") == "true"
-
         if not problem_id and not room_id:
             return (
                 jsonify(
