@@ -97,7 +97,7 @@ export default function CodeReplayApp() {
         );
 
         const data = await response.json();
-        console.log("user submissions", data);
+        // console.log("user submissions", data);
 
         // Ensure that 'submissions' exists before calling map
         const enhancedPastes = data.submissions?.map((submission: any) => {
@@ -112,8 +112,8 @@ export default function CodeReplayApp() {
           }));
         }).flat();
 
-        // If no submissions are found, enhancedPastes will be an empty array
-        console.log("enhanced pastes", enhancedPastes);
+        // // If no submissions are found, enhancedPastes will be an empty array
+        // console.log("enhanced pastes", enhancedPastes);
         setEnhancedPastes(enhancedPastes);
 
       } catch (error) {
@@ -310,42 +310,45 @@ export default function CodeReplayApp() {
           <TabsContent value="evolution" className="mt-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 relative">
               {
-                similarityMatrix?.snippets.map((snippet, index) => (
-                  <div key={index} className={`${expandedCard === index ? 'col-span-full row-span-2' : ''
-                    } transition-all duration-300`}>
-                    <Card className="bg-gray-800/50 border-0 shadow-lg h-full">
-                      <CardHeader
-                        className="cursor-pointer p-4"
-                        onClick={() => setExpandedCard(expandedCard === index ? null : index)}
-                      >
-                        <CardTitle className="text-sm">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2 truncate">
-                              <FileCode2 className="w-4 h-4 flex-shrink-0" />
-                              <span className="truncate">{snippet.learner}</span>
+                similarityMatrix?.snippets
+                  .filter((snippet, index, self) =>
+                    index === self.findIndex((s) => s.learner_id === snippet.learner_id)
+                  )
+                  .map((snippet, index) => (
+                    <div key={index} className={`${expandedCard === index ? 'col-span-full row-span-2' : ''} transition-all duration-300`}>
+                      <Card className="bg-gray-800/50 border-0 shadow-lg h-full">
+                        <CardHeader
+                          className="cursor-pointer p-4"
+                          onClick={() => setExpandedCard(expandedCard === index ? null : index)}
+                        >
+                          <CardTitle className="text-sm">
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-2 truncate">
+                                <FileCode2 className="w-4 h-4 flex-shrink-0" />
+                                <span className="truncate">{snippet.learner}</span>
+                              </div>
+                              <div className="flex items-center gap-2 flex-shrink-0">
+                                {expandedCard === index ? (
+                                  <ChevronUp className="w-4 h-4" />
+                                ) : (
+                                  <ChevronDown className="w-4 h-4" />
+                                )}
+                              </div>
                             </div>
-                            <div className="flex items-center gap-2 flex-shrink-0">
-                              {expandedCard === index ? (
-                                <ChevronUp className="w-4 h-4" />
-                              ) : (
-                                <ChevronDown className="w-4 h-4" />
-                              )}
-                            </div>
-                          </div>
-                        </CardTitle>
-                      </CardHeader>
-                      {expandedCard === index && (
-                        <CardContent className="p-4">
-                          <SequentialSimilarityVisualization
-                            snapshots={snapshots.filter(s => s.learner_id === snippet.learner_id)}
-                            learnerId={snippet.learner_id}
-                            pastedSnippets={enhancedPastes.filter(s => s.learner_id === snippet.learner_id)}
-                          />
-                        </CardContent>
-                      )}
-                    </Card>
-                  </div>
-                ))
+                          </CardTitle>
+                        </CardHeader>
+                        {expandedCard === index && (
+                          <CardContent className="p-4">
+                            <SequentialSimilarityVisualization
+                              snapshots={snapshots.filter(s => s.learner_id === snippet.learner_id)}
+                              learnerId={snippet.learner_id}
+                              pastedSnippets={enhancedPastes.filter(s => s.learner_id === snippet.learner_id)}
+                            />
+                          </CardContent>
+                        )}
+                      </Card>
+                    </div>
+                  ))
               }
             </div>
           </TabsContent>

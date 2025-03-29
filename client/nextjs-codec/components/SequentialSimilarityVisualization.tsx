@@ -96,12 +96,12 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
         });
 
         const data = await response.json();
-        console.log("Sequential Similarities Response:", data);
+        // console.log("Sequential Similarities Response:", data);
         if (response.ok) {
           // console.log("Response OK");
           setSequentialSimilarities(data.sequentialSimilarities);
         }
-        console.log("Sequential Similarities:", sequentialSimilarities);
+        // console.log("Sequential Similarities:", sequentialSimilarities);
       } catch (error) {
         console.error('Sequential similarity calculation error:', error);
       }
@@ -110,13 +110,13 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
     calculateSequentialSimilarities(snapshots);
   }, [snapshots, notEnoughSnapshots]);
 
-  useEffect(() => {
-    console.log("Sequential similarities updated:", sequentialSimilarities);
-  }, [sequentialSimilarities]);
+  // useEffect(() => {
+  //   console.log("Sequential similarities updated:", sequentialSimilarities);
+  // }, [sequentialSimilarities]);
 
-  useEffect(() => {
-    console.log("Received Snapshots:", snapshots);
-  }, [snapshots]);
+  // useEffect(() => {
+  //   console.log("Received Snapshots:", snapshots);
+  // }, [snapshots]);
 
   const toggleCard = (index: number) => {
     setExpandedCards(prev =>
@@ -325,7 +325,7 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
         </div>
       )}
 
-      {loading ? (
+      {!loading ? (
         <div className='w-full h-full flex items-center justify-center'>Loading...</div>
       ) : (
         advancedMetrics && !notEnoughSnapshots && (
@@ -466,7 +466,7 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
         )
       )}
 
-      {loading ? (
+      {!loading ? (
         <div className='w-full h-full flex items-center justify-center'>Loading...</div>
       ) : (
         <div className="grid grid-cols-2 gap-6">
