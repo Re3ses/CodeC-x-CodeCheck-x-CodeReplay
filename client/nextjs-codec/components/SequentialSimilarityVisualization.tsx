@@ -466,118 +466,123 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
         )
       )}
 
-      <div className="grid grid-cols-2 gap-6">
-        {!notEnoughSnapshots ? (
-          <div className="bg-gray-700 rounded-lg p-4">
-            <h4 className="text-md font-semibold mb-4">Similarity Trends</h4>
+      {loading ? (
+        <div className='w-full h-full flex items-center justify-center'>Loading...</div>
+      ) : (
+        <div className="grid grid-cols-2 gap-6">
+          {!notEnoughSnapshots ? (
+            <div className="bg-gray-700 rounded-lg p-4">
+              <h4 className="text-md font-semibold mb-4">Similarity Trends</h4>
 
-            <ResponsiveContainer width="100%" height={400}>
-              <LineChart data={chartData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                <XAxis dataKey="name" stroke="#9CA3AF" />
-                <YAxis stroke="#9CA3AF" />
-                <RechartsTooltip
-                  contentStyle={{ backgroundColor: '#1F2937', color: '#fff' }}
-                  labelStyle={{ color: '#fff' }}
-                />
-                <Legend />
-                <Line
-                  type="monotone"
-                  dataKey="similarity"
-                  stroke="#8884d8"
-                  activeDot={{ r: 8 }}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>) : (
-          <div className="bg-gray-700 rounded-lg p-4">
-            <h4 className="text-md font-semibold mb-4">Similarity Trends</h4>
-            <div className="flex items-center justify-center h-[400px] text-gray-400">
-              <p>Not enough snapshots to calculate similarity trends.</p>
-            </div>
-          </div>
-        )}
-
-        <div className="bg-gray-700 rounded-lg p-4">
-          <h4 className="text-md font-semibold mb-4">Code Evolution Replay</h4>
-
-          <div className="h-64 mb-4">
-            <Editor
-              height="100%"
-              defaultLanguage="javascript"
-              value={snapshots[currentSnapshotIndex]?.code || ''}
-              theme="vs-dark"
-              options={{
-                readOnly: true,
-                minimap: { enabled: false },
-                fontSize: 12,
-                scrollBeyondLastLine: false,
-                wordWrap: 'on'
-              }}
-            />
-          </div>
-
-          <div className="space-y-4">
-            <div className="flex items-center space-x-4 px-2">
-              <div className="flex items-center space-x-2">
-                {/* Disable controls if only one snapshot */}
-                <Button
-                  onClick={handlePrevious}
-                  variant="outline"
-                  size="icon"
-                  disabled={currentSnapshotIndex === 0 || notEnoughSnapshots}
-                  className="h-8 w-8">
-                  <ChevronLeft className="h-4 w-4" />
-                </Button>
-
-                <Button
-                  onClick={handlePlayPause}
-                  variant="secondary"
-                  size="sm"
-                  disabled={notEnoughSnapshots}
-                  className="flex items-center space-x-2 px-3"
-                >
-                  {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
-                  <span className="hidden sm:inline">{isPlaying ? 'Pause' : 'Play'}</span>
-                </Button>
-
-                <Button
-                  onClick={handleNext}
-                  variant="outline"
-                  size="icon"
-                  disabled={currentSnapshotIndex === snapshots.length - 1 || notEnoughSnapshots}
-                  className="h-8 w-8"
-                >
-                  <ChevronRight className="h-4 w-4" />
-                </Button>
-              </div>
-
-              <div className="flex-1">
-                <CustomSlider
-                  value={[currentSnapshotIndex]}
-                  max={snapshots.length - 1}
-                  step={1}
-                  onValueChange={handleSliderChange}
-                  disabled={notEnoughSnapshots}
-                />
+              <ResponsiveContainer width="100%" height={400}>
+                <LineChart data={chartData}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                  <XAxis dataKey="name" stroke="#9CA3AF" />
+                  <YAxis stroke="#9CA3AF" />
+                  <RechartsTooltip
+                    contentStyle={{ backgroundColor: '#1F2937', color: '#fff' }}
+                    labelStyle={{ color: '#fff' }}
+                  />
+                  <Legend />
+                  <Line
+                    type="monotone"
+                    dataKey="similarity"
+                    stroke="#8884d8"
+                    activeDot={{ r: 8 }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>) : (
+            <div className="bg-gray-700 rounded-lg p-4">
+              <h4 className="text-md font-semibold mb-4">Similarity Trends</h4>
+              <div className="flex items-center justify-center h-[400px] text-gray-400">
+                <p>Not enough snapshots to calculate similarity trends.</p>
               </div>
             </div>
+          )}
 
-            <div className="text-center text-sm text-gray-400">
-              {notEnoughSnapshots ? (
-                "Not enough snapshots available"
-              ) : (
-                <>
-                  Snapshot {currentSnapshotIndex + 1} of {snapshots.length}
-                </>
-              )}
-              <br />
-              {snapshots[currentSnapshotIndex]?.timestamp &&
-                new Date(snapshots[currentSnapshotIndex].timestamp).toLocaleString()}
+          <div className="bg-gray-700 rounded-lg p-4">
+            <h4 className="text-md font-semibold mb-4">Code Evolution Replay</h4>
+
+            <div className="h-64 mb-4">
+              <Editor
+                height="100%"
+                defaultLanguage="javascript"
+                value={snapshots[currentSnapshotIndex]?.code || ''}
+                theme="vs-dark"
+                options={{
+                  readOnly: true,
+                  minimap: { enabled: false },
+                  fontSize: 12,
+                  scrollBeyondLastLine: false,
+                  wordWrap: 'on'
+                }}
+              />
+            </div>
+
+            <div className="space-y-4">
+              <div className="flex items-center space-x-4 px-2">
+                <div className="flex items-center space-x-2">
+                  {/* Disable controls if only one snapshot */}
+                  <Button
+                    onClick={handlePrevious}
+                    variant="outline"
+                    size="icon"
+                    disabled={currentSnapshotIndex === 0 || notEnoughSnapshots}
+                    className="h-8 w-8">
+                    <ChevronLeft className="h-4 w-4" />
+                  </Button>
+
+                  <Button
+                    onClick={handlePlayPause}
+                    variant="secondary"
+                    size="sm"
+                    disabled={notEnoughSnapshots}
+                    className="flex items-center space-x-2 px-3"
+                  >
+                    {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+                    <span className="hidden sm:inline">{isPlaying ? 'Pause' : 'Play'}</span>
+                  </Button>
+
+                  <Button
+                    onClick={handleNext}
+                    variant="outline"
+                    size="icon"
+                    disabled={currentSnapshotIndex === snapshots.length - 1 || notEnoughSnapshots}
+                    className="h-8 w-8"
+                  >
+                    <ChevronRight className="h-4 w-4" />
+                  </Button>
+                </div>
+
+                <div className="flex-1">
+                  <CustomSlider
+                    value={[currentSnapshotIndex]}
+                    max={snapshots.length - 1}
+                    step={1}
+                    onValueChange={handleSliderChange}
+                    disabled={notEnoughSnapshots}
+                  />
+                </div>
+              </div>
+
+              <div className="text-center text-sm text-gray-400">
+                {notEnoughSnapshots ? (
+                  "Not enough snapshots available"
+                ) : (
+                  <>
+                    Snapshot {currentSnapshotIndex + 1} of {snapshots.length}
+                  </>
+                )}
+                <br />
+                {snapshots[currentSnapshotIndex]?.timestamp &&
+                  new Date(snapshots[currentSnapshotIndex].timestamp).toLocaleString()}
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
+
 
       <ReactTooltip id="maxChangeTooltip" place="top" />
       <ReactTooltip id="averageSimilarityTooltip" place="top" />
