@@ -325,141 +325,145 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
         </div>
       )}
 
-      {advancedMetrics && !notEnoughSnapshots && (
-        <div className="bg-gray-700 rounded-lg p-4">
-          <h4 className="text-md font-semibold mb-4">Advanced Similarity Metrics</h4>
+      {loading ? (
+        <div className='w-full h-full flex items-center justify-center'>Loading...</div>
+      ) : (
+        advancedMetrics && !notEnoughSnapshots && (
+          <div className="bg-gray-700 rounded-lg p-4">
+            <h4 className="text-md font-semibold mb-4">Advanced Similarity Metrics</h4>
 
-          <div className="grid grid-cols-3 gap-4 mb-4">
-            {(() => {
-              const plagiarismRisk = getPlagiarismRiskDetails(advancedMetrics.weightedPlagiarismScore);
-              return (
-                <div className={`
+            <div className="grid grid-cols-3 gap-4 mb-4">
+              {(() => {
+                const plagiarismRisk = getPlagiarismRiskDetails(advancedMetrics.weightedPlagiarismScore);
+                return (
+                  <div className={`
                   col-span-2 p-4 rounded-lg text-center 
                   ${advancedMetrics.weightedPlagiarismScore > 80 ? 'bg-red-600' :
-                    advancedMetrics.weightedPlagiarismScore > 60 ? 'bg-orange-600' :
-                      advancedMetrics.weightedPlagiarismScore > 40 ? 'bg-yellow-600' :
-                        'bg-green-600'} text-white`}
-                >
-                  <div className="text-xs uppercase tracking-wide mb-1">Plagiarism Risk</div>
-                  <div className="text-4xl font-bold mb-2">{advancedMetrics.weightedPlagiarismScore}%</div>
-                  <div className="text-lg font-semibold">
-                    {plagiarismRisk.level}
-                  </div>
-                </div>
-              );
-            })()}
-
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button variant="secondary" className="w-full h-full">
-                  View Pasted Snippets ({pastedSnippets.length})
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
-                <DialogHeader>
-                  <DialogTitle>Pasted Code Snippets</DialogTitle>
-                </DialogHeader>
-                <div className="space-y-4">
-                  {pastedSnippets.map((snippet, index) => (
-                    <div key={index} className="bg-gray-800 rounded-lg">
-                      <button
-                        onClick={() => toggleCard(index)}
-                        className="w-full p-4 flex items-center justify-between text-left hover:bg-gray-700"
-                      >
-                        <div>
-                          <div className="font-semibold">Paste {index + 1}</div>
-                          <div className="text-sm text-gray-400">
-                            {new Date(snippet.timestamp).toLocaleString()}
-                          </div>
-                        </div>
-                        <div className="text-sm text-gray-400">
-                          {snippet.length} characters at line {snippet.contextRange.startLine}
-                        </div>
-                      </button>
-
-                      {expandedCards.includes(index) && (
-                        <div className="p-4 border-t border-gray-700">
-                          <Editor
-                            height="200px"
-                            defaultLanguage="javascript"
-                            value={snippet.fullCode}
-                            theme="vs-dark"
-                            options={{
-                              readOnly: true,
-                              minimap: { enabled: false },
-                              fontSize: 12,
-                              scrollBeyondLastLine: false,
-                              wordWrap: 'on',
-                              renderLineHighlight: 'none',
-                              hideCursorInOverviewRuler: true,
-                              overviewRulerBorder: false,
-                            }}
-                            onMount={(editor) => {
-                              const decoration = {
-                                range: new (window as any).monaco.Range(
-                                  snippet.contextRange.startLine,
-                                  snippet.contextRange.startColumn,
-                                  snippet.contextRange.endLine,
-                                  snippet.contextRange.endColumn
-                                ),
-                                options: {
-                                  inlineClassName: 'bg-yellow-500 bg-opacity-20',
-                                  isWholeLine: false,
-                                  overviewRuler: {
-                                    color: '#ffd700',
-                                    position: 1
-                                  }
-                                }
-                              };
-                              editor.createDecorationsCollection([decoration]);
-
-                              setTimeout(() => {
-                                editor.revealLineInCenter(snippet.contextRange.startLine);
-                              }, 100);
-                            }}
-                          />
-                        </div>
-                      )}
+                      advancedMetrics.weightedPlagiarismScore > 60 ? 'bg-orange-600' :
+                        advancedMetrics.weightedPlagiarismScore > 40 ? 'bg-yellow-600' :
+                          'bg-green-600'} text-white`}
+                  >
+                    <div className="text-xs uppercase tracking-wide mb-1">Plagiarism Risk</div>
+                    <div className="text-4xl font-bold mb-2">{advancedMetrics.weightedPlagiarismScore}%</div>
+                    <div className="text-lg font-semibold">
+                      {plagiarismRisk.level}
                     </div>
-                  ))}
-                </div>
-              </DialogContent>
-            </Dialog>
-          </div>
+                  </div>
+                );
+              })()}
 
-          <div className="grid grid-cols-5 gap-4">
-            <MetricCard
-              label="Max Change"
-              value={`${advancedMetrics.maxChange}%`}
-              tooltipId="maxChangeTooltip"
-              tooltipContent="Maximum difference in similarity between consecutive snapshots, higher values indicate higher plagiarism risk"
-            />
-            <MetricCard
-              label="Average Similarity"
-              value={`${advancedMetrics.averageSimilarity}%`}
-              tooltipId="averageSimilarityTooltip"
-              tooltipContent="Mean value of all similarity scores, lower values indicate higher plagiarism risk"
-            />
-            <MetricCard
-              label="Minimum Similarity"
-              value={`${advancedMetrics.minSimilarity}%`}
-              tooltipId="minSimilarityTooltip"
-              tooltipContent="Lowest similarity score observed, lower values indicate higher plagiarism risk"
-            />
-            <MetricCard
-              label="Variance"
-              value={`${advancedMetrics.normalizedVariance}%`}
-              tooltipId="varianceTooltip"
-              tooltipContent="Measure of similarity score fluctuation, higher values indicate higher plagiarism risk"
-            />
-            <MetricCard
-              label="Big Pastes"
-              value={bigPasteCount}
-              tooltipId="bigPastesTooltip"
-              tooltipContent="Number of large paste (More than 200 Characters) operations detected"
-            />
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button variant="secondary" className="w-full h-full">
+                    View Pasted Snippets ({pastedSnippets.length})
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+                  <DialogHeader>
+                    <DialogTitle>Pasted Code Snippets</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-4">
+                    {pastedSnippets.map((snippet, index) => (
+                      <div key={index} className="bg-gray-800 rounded-lg">
+                        <button
+                          onClick={() => toggleCard(index)}
+                          className="w-full p-4 flex items-center justify-between text-left hover:bg-gray-700"
+                        >
+                          <div>
+                            <div className="font-semibold">Paste {index + 1}</div>
+                            <div className="text-sm text-gray-400">
+                              {new Date(snippet.timestamp).toLocaleString()}
+                            </div>
+                          </div>
+                          <div className="text-sm text-gray-400">
+                            {snippet.length} characters at line {snippet.contextRange.startLine}
+                          </div>
+                        </button>
+
+                        {expandedCards.includes(index) && (
+                          <div className="p-4 border-t border-gray-700">
+                            <Editor
+                              height="200px"
+                              defaultLanguage="javascript"
+                              value={snippet.fullCode}
+                              theme="vs-dark"
+                              options={{
+                                readOnly: true,
+                                minimap: { enabled: false },
+                                fontSize: 12,
+                                scrollBeyondLastLine: false,
+                                wordWrap: 'on',
+                                renderLineHighlight: 'none',
+                                hideCursorInOverviewRuler: true,
+                                overviewRulerBorder: false,
+                              }}
+                              onMount={(editor) => {
+                                const decoration = {
+                                  range: new (window as any).monaco.Range(
+                                    snippet.contextRange.startLine,
+                                    snippet.contextRange.startColumn,
+                                    snippet.contextRange.endLine,
+                                    snippet.contextRange.endColumn
+                                  ),
+                                  options: {
+                                    inlineClassName: 'bg-yellow-500 bg-opacity-20',
+                                    isWholeLine: false,
+                                    overviewRuler: {
+                                      color: '#ffd700',
+                                      position: 1
+                                    }
+                                  }
+                                };
+                                editor.createDecorationsCollection([decoration]);
+
+                                setTimeout(() => {
+                                  editor.revealLineInCenter(snippet.contextRange.startLine);
+                                }, 100);
+                              }}
+                            />
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </DialogContent>
+              </Dialog>
+            </div>
+
+            <div className="grid grid-cols-5 gap-4">
+              <MetricCard
+                label="Max Change"
+                value={`${advancedMetrics.maxChange}%`}
+                tooltipId="maxChangeTooltip"
+                tooltipContent="Maximum difference in similarity between consecutive snapshots, higher values indicate higher plagiarism risk"
+              />
+              <MetricCard
+                label="Average Similarity"
+                value={`${advancedMetrics.averageSimilarity}%`}
+                tooltipId="averageSimilarityTooltip"
+                tooltipContent="Mean value of all similarity scores, lower values indicate higher plagiarism risk"
+              />
+              <MetricCard
+                label="Minimum Similarity"
+                value={`${advancedMetrics.minSimilarity}%`}
+                tooltipId="minSimilarityTooltip"
+                tooltipContent="Lowest similarity score observed, lower values indicate higher plagiarism risk"
+              />
+              <MetricCard
+                label="Variance"
+                value={`${advancedMetrics.normalizedVariance}%`}
+                tooltipId="varianceTooltip"
+                tooltipContent="Measure of similarity score fluctuation, higher values indicate higher plagiarism risk"
+              />
+              <MetricCard
+                label="Big Pastes"
+                value={bigPasteCount}
+                tooltipId="bigPastesTooltip"
+                tooltipContent="Number of large paste (More than 200 Characters) operations detected"
+              />
+            </div>
           </div>
-        </div>
+        )
       )}
 
       <div className="grid grid-cols-2 gap-6">
