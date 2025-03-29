@@ -169,8 +169,8 @@ export default function CodeReplayApp() {
 
       // console.log("Query params", queryParams);
 
-      // const API_URL = process.env.FLASK_API_URL || 'https://codecflaskapi.duckdns.org';
-      const API_URL = process.env.FLASK_API_URL || 'http://localhost:5000';
+      const API_URL = process.env.FLASK_API_URL || 'https://codecflaskapi.duckdns.org';
+      // const API_URL = process.env.FLASK_API_URL || 'http://localhost:5000';
       const response = await fetch(`${API_URL}/api/similarity/matrix?${queryParams}`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' }
