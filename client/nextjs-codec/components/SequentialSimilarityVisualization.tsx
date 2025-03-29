@@ -53,11 +53,13 @@ interface EnhancedPasteInfo {
 interface SequentialSimilarityVisualizationProps {
   snapshots: CodeSnapshot[];
   pastedSnippets: EnhancedPasteInfo[];
+  learnerId?: string;
 }
 
 const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizationProps> = ({
   snapshots,
   pastedSnippets,
+  learnerId,
 }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentSnapshotIndex, setCurrentSnapshotIndex] = useState(0);
@@ -66,39 +68,55 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
   const [sequentialSimilarities, setSequentialSimilarities] = useState<SequentialSimilarity[]>([]);
   const [pasteCount, setPasteCount] = useState(0);
   const [bigPasteCount, setBigPasteCount] = useState(0);
+  const [chartData, setChartData] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
 
-  const hasSingleSnapshot = snapshots.length === 1;
+  const notEnoughSnapshots = snapshots.length <= 2;
 
   useEffect(() => {
-    if (hasSingleSnapshot) {
+    if (notEnoughSnapshots) {
       return;
     }
 
     const calculateSequentialSimilarities = async (snapshotsToCompare: CodeSnapshot[]) => {
+      setLoading(true);
       try {
-        const learnerId = snapshotsToCompare[0].learner_id;
+        const learner_id = learnerId ? learnerId : snapshotsToCompare[0].learner_id;
         const problemId = snapshotsToCompare[0].problemId;
         const roomId = snapshotsToCompare[0].roomId;
 
-        const API_URL = process.env.FLASK_API_URL || 'https://codecflaskapi.duckdns.org';
-        // const API_URL = process.env.FLASK_API_URL || 'http://localhost:5000';
-        const response = await fetch(`${API_URL}/api/similarity/sequential?learner_id=${learnerId}&problemId=${problemId}&roomId=${roomId}`, {
-          method: 'GET',
+        // const API_URL = process.env.FLASK_API_URL || 'https://codecflaskapi.duckdns.org';
+        const API_URL = process.env.FLASK_API_URL || 'http://localhost:5000';
+        const response = await fetch(`${API_URL}/api/similarity/sequential?learner_id=${learner_id}&problemId=${problemId}&roomId=${roomId}`, {
+          method: 'POST',
           headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            snapshots
+          })
         });
 
         const data = await response.json();
+        console.log("Sequential Similarities Response:", data);
         if (response.ok) {
-          if (Array.isArray(data.sequentialSimilarities)) {
-            setSequentialSimilarities(data.sequentialSimilarities);
-          }
+          // console.log("Response OK");
+          setSequentialSimilarities(data.sequentialSimilarities);
         }
+        console.log("Sequential Similarities:", sequentialSimilarities);
       } catch (error) {
         console.error('Sequential similarity calculation error:', error);
       }
     };
+    setLoading(false);
     calculateSequentialSimilarities(snapshots);
-  }, [snapshots, hasSingleSnapshot]);
+  }, [snapshots, notEnoughSnapshots]);
+
+  useEffect(() => {
+    console.log("Sequential similarities updated:", sequentialSimilarities);
+  }, [sequentialSimilarities]);
+
+  useEffect(() => {
+    console.log("Received Snapshots:", snapshots);
+  }, [snapshots]);
 
   const toggleCard = (index: number) => {
     setExpandedCards(prev =>
@@ -125,7 +143,7 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
 
   // Add useEffect to log and set local state for snippets
   useEffect(() => {
-    // console.log('Received Paste Snippets:', pastedSnippets);
+    console.log('Received Paste Snippets:', pastedSnippets);
     if (pastedSnippets && pastedSnippets.length > 0) {
       setLocalPastedSnippets(pastedSnippets);
       setPasteCount(pastedSnippets.length);
@@ -141,7 +159,7 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
 
   // Compute advanced metrics
   const advancedMetrics = useMemo(() => {
-    if (sequentialSimilarities.length === 0 || hasSingleSnapshot) {
+    if (sequentialSimilarities.length === 0 || notEnoughSnapshots) {
       return null;
     }
 
@@ -179,14 +197,21 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
       pasteCount, // Keep pasteCount
       bigPasteCount // Keep bigPasteCount
     };
-  }, [sequentialSimilarities, pasteCount, bigPasteCount, hasSingleSnapshot]);
+  }, [sequentialSimilarities, pasteCount, bigPasteCount, notEnoughSnapshots]);
 
-  // Prepare data for the chart
-  const chartData = sequentialSimilarities.map((similarity, index) => ({
-    name: `Snapshot ${Number.isFinite(similarity.from_index) ? similarity.from_index + 1 : '?'} to ${Number.isFinite(similarity.to_index) ? similarity.to_index + 1 : '?'}`,
-    similarity: similarity.similarity,
-    codebertScore: similarity.codebertScore
-  }));
+
+  useEffect(() => {
+    // Prepare data for the chart
+    setChartData(sequentialSimilarities.map((similarity, index) => ({
+      name: `Snapshot ${Number.isFinite(similarity.from_index) ? similarity.from_index + 1 : '?'} to ${Number.isFinite(similarity.to_index) ? similarity.to_index + 1 : '?'}`,
+      similarity: similarity.similarity,
+      codebertScore: similarity.codebertScore
+    })));
+    console.log("Chart Data:", chartData);
+    console.log("chartData length:", chartData.length);
+    console.log("Sequential Similarities:", sequentialSimilarities);
+  }, [sequentialSimilarities]);
+
 
   // Replay system logic
   useEffect(() => {
@@ -293,14 +318,14 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
 
   return (
     <div className="bg-gray-800 rounded-lg p-4 space-y-6">
-      {hasSingleSnapshot && (
+      {notEnoughSnapshots && (
         <div className="bg-blue-900/30 border border-blue-700 text-blue-300 rounded-lg p-4 text-center">
-          <h4 className="text-md font-semibold">Single Snapshot Detected</h4>
+          <h4 className="text-md font-semibold">Not Enough Snapshots Detected</h4>
           <p>Similarity analysis requires multiple code snapshots. Only basic information is available.</p>
         </div>
       )}
 
-      {advancedMetrics && !hasSingleSnapshot && (
+      {advancedMetrics && !notEnoughSnapshots && (
         <div className="bg-gray-700 rounded-lg p-4">
           <h4 className="text-md font-semibold mb-4">Advanced Similarity Metrics</h4>
 
@@ -438,9 +463,10 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
       )}
 
       <div className="grid grid-cols-2 gap-6">
-        {!hasSingleSnapshot ? (
+        {!notEnoughSnapshots ? (
           <div className="bg-gray-700 rounded-lg p-4">
             <h4 className="text-md font-semibold mb-4">Similarity Trends</h4>
+
             <ResponsiveContainer width="100%" height={400}>
               <LineChart data={chartData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
@@ -463,7 +489,7 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
           <div className="bg-gray-700 rounded-lg p-4">
             <h4 className="text-md font-semibold mb-4">Similarity Trends</h4>
             <div className="flex items-center justify-center h-[400px] text-gray-400">
-              <p>At least two snapshots are required to calculate similarity trends.</p>
+              <p>Not enough snapshots to calculate similarity trends.</p>
             </div>
           </div>
         )}
@@ -495,7 +521,7 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
                   onClick={handlePrevious}
                   variant="outline"
                   size="icon"
-                  disabled={currentSnapshotIndex === 0 || hasSingleSnapshot}
+                  disabled={currentSnapshotIndex === 0 || notEnoughSnapshots}
                   className="h-8 w-8">
                   <ChevronLeft className="h-4 w-4" />
                 </Button>
@@ -504,7 +530,7 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
                   onClick={handlePlayPause}
                   variant="secondary"
                   size="sm"
-                  disabled={hasSingleSnapshot}
+                  disabled={notEnoughSnapshots}
                   className="flex items-center space-x-2 px-3"
                 >
                   {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
@@ -515,7 +541,7 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
                   onClick={handleNext}
                   variant="outline"
                   size="icon"
-                  disabled={currentSnapshotIndex === snapshots.length - 1 || hasSingleSnapshot}
+                  disabled={currentSnapshotIndex === snapshots.length - 1 || notEnoughSnapshots}
                   className="h-8 w-8"
                 >
                   <ChevronRight className="h-4 w-4" />
@@ -528,14 +554,14 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
                   max={snapshots.length - 1}
                   step={1}
                   onValueChange={handleSliderChange}
-                  disabled={hasSingleSnapshot}
+                  disabled={notEnoughSnapshots}
                 />
               </div>
             </div>
 
             <div className="text-center text-sm text-gray-400">
-              {hasSingleSnapshot ? (
-                "Only one snapshot available"
+              {notEnoughSnapshots ? (
+                "Not enough snapshots available"
               ) : (
                 <>
                   Snapshot {currentSnapshotIndex + 1} of {snapshots.length}
