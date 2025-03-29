@@ -58,10 +58,10 @@ snapshotsCollection = db["codesnapshots"]
 codebert_detector = CodeBERTAnalyzer()
 
 
-@app.before_request
-def handle_options():
-    if request.method == "OPTIONS":
-        return "", 204  # Ensure Flask does not interfere with OPTIONS requests
+# @app.before_request
+# def handle_options():
+#     if request.method == "OPTIONS":
+#         return "", 204  # Ensure Flask does not interfere with OPTIONS requests
 
 
 @app.route("/health", methods=["GET"])
@@ -185,12 +185,14 @@ def get_similarity_matrix():
         )
 
 
-@app.route("/api/similarity/sequential", methods=["GET"])
+@app.route("/api/similarity/sequential", methods=["POST"])
 @limiter.limit("10 per minute")
 def get_sequential_similarity():
     print("Sequential similarity request received.")
     start_time = time.time()
     try:
+        data = request.get_json()
+        snapshots = data.get("snapshots", [])
         learner_id = request.args.get("learner_id")
         problem_id = request.args.get("problemId")
         room_id = request.args.get("roomId")
@@ -206,16 +208,17 @@ def get_sequential_similarity():
                 400,
             )
 
-        # Query MongoDB for the snapshots
-        snapshots = list(
-            snapshotsCollection.find(
-                {
-                    "learner_id": ObjectId(learner_id),
-                    "problemId": problem_id,
-                    "roomId": room_id,
-                }
-            ).sort("submission_date", 1)
-        )  # Sort by timestamp ascending
+        # No snapshots passed, so fetch from DB
+        if not snapshots:
+            snapshots = list(
+                snapshotsCollection.find(
+                    {
+                        "learner_id": ObjectId(learner_id),
+                        "problemId": problem_id,
+                        "roomId": room_id,
+                    }
+                ).sort("submission_date", 1)
+            )  # Sort by timestamp ascending
 
         for snapshot in snapshots:
             snapshot["_id"] = str(snapshot["_id"])
@@ -254,6 +257,8 @@ def get_sequential_similarity():
             {
                 "success": True,
                 "sequentialSimilarities": similarities,
+                "snapshots": snapshots,
+                "formatted_snapshots": formatted_snapshots,
             }
         )
     except Exception as e:

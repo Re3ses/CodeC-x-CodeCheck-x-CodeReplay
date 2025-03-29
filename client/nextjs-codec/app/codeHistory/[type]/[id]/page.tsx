@@ -88,44 +88,39 @@ export default function CodeReplayApp() {
   };
 
 
-
-  // fetch user submissions
+  // Fetch user submissions
   useEffect(() => {
     const fetchUserSubmissions = async () => {
       try {
-        const query = {
-          [params.type === 'problem' ? 'problem_slug' : 'roomId']: params.id,
-          all: "True"
-        };
-
         const response = await fetch(
-          `/api/userSubmissions/?${new URLSearchParams(query).toString()}`
+          `/api/userSubmissions/?problem_slug=${params.id}`
         );
 
         const data = await response.json();
         // console.log("user submissions", data);
 
-        if (data.message === "Success! all via problem_slug" && Array.isArray(data.submission)) {
-          // console.log("user submissions", data.message, data.submission);
+        // Ensure that 'submissions' exists before calling map
+        const enhancedPastes = data.submissions?.map((submission: any) => {
+          const pasteHistory = JSON.parse(submission.paste_history);
+          return pasteHistory.map((paste: any) => ({
+            text: paste.text,
+            fullCode: paste.fullCode,
+            timestamp: paste.timestamp,
+            length: paste.length,
+            contextRange: paste.contextRange,
+            learner_id: submission.learner_id
+          }));
+        }).flat();
 
-          const enhancedPastes = data.submission.map((submission: any) => {
-            const pasteHistory = JSON.parse(submission.paste_history);
-            return pasteHistory.map((paste: any) => ({
-              text: paste.text,
-              fullCode: paste.fullCode,
-              timestamp: paste.timestamp,
-              length: paste.length,
-              contextRange: paste.contextRange,
-              learner_id: submission.learner_id
-            }));
-          }).flat();
-          // console.log("enhanced pastes", enhancedPastes);
-          setEnhancedPastes(enhancedPastes);
-        }
+        // // If no submissions are found, enhancedPastes will be an empty array
+        // console.log("enhanced pastes", enhancedPastes);
+        setEnhancedPastes(enhancedPastes);
+
       } catch (error) {
         console.error('Error fetching user submissions:', error);
       }
     };
+
     fetchUserSubmissions();
   }, [params.type, params.id]);
 
@@ -134,11 +129,12 @@ export default function CodeReplayApp() {
     const fetchLearnerSnapshots = async () => {
       try {
         const response = await fetch(
-          `/api/codereplay/code-snapshots`
+          `/api/codereplay/code-snapshots?problem_id=${params.id}`
         );
         const data = await response.json();
+        // console.log("Data received from code-snapshots API:", data);
 
-        if (data.success && Array.isArray(data.snapshots)) {
+        if (data.success) {
           // console.log("snapshots successfuly fetched", data.success, data.snapshots);
           const sortedSnapshots = data.snapshots.sort((a: CodeSnapshot, b: CodeSnapshot) => {
             if (a.version && b.version) {
@@ -313,41 +309,47 @@ export default function CodeReplayApp() {
 
           <TabsContent value="evolution" className="mt-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 relative">
-              {similarityMatrix?.snippets.map((snippet, index) => (
-                <div key={index} className={`${expandedCard === index ? 'col-span-full row-span-2' : ''
-                  } transition-all duration-300`}>
-                  <Card className="bg-gray-800/50 border-0 shadow-lg h-full">
-                    <CardHeader
-                      className="cursor-pointer p-4"
-                      onClick={() => setExpandedCard(expandedCard === index ? null : index)}
-                    >
-                      <CardTitle className="text-sm">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2 truncate">
-                            <FileCode2 className="w-4 h-4 flex-shrink-0" />
-                            <span className="truncate">{snippet.learner}</span>
-                          </div>
-                          <div className="flex items-center gap-2 flex-shrink-0">
-                            {expandedCard === index ? (
-                              <ChevronUp className="w-4 h-4" />
-                            ) : (
-                              <ChevronDown className="w-4 h-4" />
-                            )}
-                          </div>
-                        </div>
-                      </CardTitle>
-                    </CardHeader>
-                    {expandedCard === index && (
-                      <CardContent className="p-4">
-                        <SequentialSimilarityVisualization
-                          snapshots={snapshots.filter(s => s.learner_id === snippet.learner_id)}
-                          pastedSnippets={enhancedPastes.filter(s => s.learner_id === snippet.learner_id)}
-                        />
-                      </CardContent>
-                    )}
-                  </Card>
-                </div>
-              ))}
+              {
+                similarityMatrix?.snippets
+                  .filter((snippet, index, self) =>
+                    index === self.findIndex((s) => s.learner_id === snippet.learner_id)
+                  )
+                  .map((snippet, index) => (
+                    <div key={index} className={`${expandedCard === index ? 'col-span-full row-span-2' : ''} transition-all duration-300`}>
+                      <Card className="bg-gray-800/50 border-0 shadow-lg h-full">
+                        <CardHeader
+                          className="cursor-pointer p-4"
+                          onClick={() => setExpandedCard(expandedCard === index ? null : index)}
+                        >
+                          <CardTitle className="text-sm">
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-2 truncate">
+                                <FileCode2 className="w-4 h-4 flex-shrink-0" />
+                                <span className="truncate">{snippet.learner}</span>
+                              </div>
+                              <div className="flex items-center gap-2 flex-shrink-0">
+                                {expandedCard === index ? (
+                                  <ChevronUp className="w-4 h-4" />
+                                ) : (
+                                  <ChevronDown className="w-4 h-4" />
+                                )}
+                              </div>
+                            </div>
+                          </CardTitle>
+                        </CardHeader>
+                        {expandedCard === index && (
+                          <CardContent className="p-4">
+                            <SequentialSimilarityVisualization
+                              snapshots={snapshots.filter(s => s.learner_id === snippet.learner_id)}
+                              learnerId={snippet.learner_id}
+                              pastedSnippets={enhancedPastes.filter(s => s.learner_id === snippet.learner_id)}
+                            />
+                          </CardContent>
+                        )}
+                      </Card>
+                    </div>
+                  ))
+              }
             </div>
           </TabsContent>
         </Tabs>

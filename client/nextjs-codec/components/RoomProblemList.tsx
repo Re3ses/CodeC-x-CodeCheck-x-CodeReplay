@@ -65,9 +65,9 @@ export default function RoomProblemList({ params }: { params: { slug: string } }
     },
   });
 
-  useEffect(() => {
-    console.log(roomQuery.data);
-  }, [roomQuery.data]);
+  // useEffect(() => {
+  //   console.log(roomQuery.data);
+  // }, [roomQuery.data]);
 
   const userQuery = useQuery({
     queryKey: ['user'],
@@ -77,9 +77,9 @@ export default function RoomProblemList({ params }: { params: { slug: string } }
     },
   });
 
-  useEffect(() => {
-    console.log(userQuery.data);
-  }, [userQuery.data]);
+  // useEffect(() => {
+  //   console.log(userQuery.data);
+  // }, [userQuery.data]);
 
   const isMentor = userQuery.data?.type === 'Mentor';
 

@@ -21,6 +21,8 @@ const CodeSnapshots = mongoose.models.CodeSnapshots ||
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const learnerId = searchParams.get('learner_id');
+  const problemId = searchParams.get('problemId');
+  const roomId = searchParams.get('roomId');
 
   try {
     await dbConnect();
@@ -29,6 +31,12 @@ export async function GET(request: Request) {
     const query: { [key: string]: any } = {};
     if (learnerId) {
       query['learner_id'] = learnerId;
+    }
+    if (problemId) {
+      query['problemId'] = problemId;
+    }
+    if (roomId) {
+      query['roomId'] = roomId;
     }
 
     // Use a single query with conditional filtering

@@ -102,7 +102,7 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
   const [isInitialized, setIsInitialized] = useState(false);
 
   const [user, setUser] = useState<any>();
-  const [submitting, setSubmitting] = useState(false);
+  const [submitting, setSubmitting] = useState<boolean>(false);
   const [trying, setTrying] = useState(false);
 
   // LEARNER ID LOGGING
@@ -847,6 +847,7 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
                     onMount={handleEditorDidMount}
                     options={{
                       fontSize: 14,
+                      readOnly: submitting,
                       minimap: { enabled: false },
                       scrollBeyondLastLine: false,
                       lineNumbers: 'on',
