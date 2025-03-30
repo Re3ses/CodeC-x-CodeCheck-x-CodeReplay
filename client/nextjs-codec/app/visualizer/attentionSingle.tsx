@@ -550,7 +550,7 @@ const AttentionView: React.FC<AttentionViewProps> = ({ code1, code2 }) => {
                 {isLoading && <span className="text-blue-500">Loading...</span>}
                 {error && <span className="text-red-500">{error}</span>}
             </div>
-            <div className='flex-1 flex flex-row justify-around'>
+            <div className='flex-1 flex flex-col justify-around'>
                 <div className="flex-1 border border-gray-300 p-4 whitespace-pre-wrap font-mono max-h-fit">
                     <h2 className="text-lg font-semibold mb-2">Code Snippet 1</h2>
                     {isLoading ? (
