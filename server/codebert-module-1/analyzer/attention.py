@@ -1,48 +1,47 @@
-from transformers import RobertaModel, RobertaTokenizer
+from transformers import BertModel, BertTokenizer
 import torch
 
 
 class CodeSimilarityAnalyzer:
-    def __init__(self, model_name="microsoft/codebert-base"):
-        self.model = RobertaModel.from_pretrained(model_name, output_attentions=True)
-        self.tokenizer = RobertaTokenizer.from_pretrained(model_name)
+    def __init__(self, model_version="bert-base-uncased"):
+        self.model_version = model_version
+        self.model = None
+        self.tokenizer = None
+        self._load_model()
 
-    def get_attention_matrices(self, code_snippets):
-        """Tokenize together, get full attention for each layer"""
-        inputs = self.tokenizer(code_snippets, return_tensors="pt", padding=True)
+    def _load_model(self):
+        if self.model is None:
+            self.model = BertModel.from_pretrained(
+                self.model_version, output_attentions=True
+            )
+            print(
+                f"BERT Model loaded with output_attentions: {self.model.config.output_attentions}"
+            )
+        if self.tokenizer is None:
+            self.tokenizer = BertTokenizer.from_pretrained(
+                self.model_version, do_lower_case=True
+            )
 
-        with torch.no_grad():
-            outputs = self.model(**inputs, output_attentions=True)
-
-        if outputs.attentions is None:
-            raise ValueError("Model outputs do not contain attentions.")
-
-        attentions = torch.stack(
-            outputs.attentions
-        )  # Shape: (num_layers, batch_size, num_heads, seq_len, seq_len)
-
-        # Get the input_ids and ensure it's a 1D tensor after squeezing
-        input_ids = inputs["input_ids"].squeeze()
-        if input_ids.ndim > 1:
-            # If it's still 2D (more than one code snippet), take the first one
-            input_ids = input_ids[0]
-
-        tokens = self.tokenizer.convert_ids_to_tokens(input_ids.tolist())
-
-        return tokens, attentions  # Return full attention data (layer-wise)
-
-    def compare(self, code_snippets):
-        tokens, attentions = self.get_attention_matrices(code_snippets)
-
-        num_layers, batch_size, num_heads, seq_len, _ = attentions.shape
-        print(
-            f"Extracted {num_layers} layers, batch size {batch_size}, {num_heads} heads, sequence length {seq_len}"
+    def analyze_attention(self, code1, code2, layer=4, head=3):
+        inputs = self.tokenizer(
+            [code1, code2], return_tensors="pt", padding=True, truncation=True
         )
-        print(f"Shape of attentions tensor: {attentions.shape}")
-        print(f"Length of tokens: {len(tokens)}")
-
-        attention_results = {
-            "tokens": tokens,
-            "layer_wise_attention": attentions.tolist(),  # Return the full tensor
-        }
-        return attention_results
+        outputs = self.model(**inputs, output_attentions=True)  # Explicitly set here
+        # print("Outputs:", outputs)
+        # if outputs is not None:
+        #     print("Outputs.attentions:", outputs.attentions)
+        # else:
+        #     print("Outputs is None")
+        if outputs.attentions is not None:
+            attention_weights = (
+                outputs.attentions[layer][0, head].detach().numpy().tolist()
+            )
+            tokens1 = self.tokenizer.tokenize(code1)
+            tokens2 = self.tokenizer.tokenize(code2)
+            return {
+                "tokens1": tokens1,
+                "tokens2": tokens2,
+                "attention_weights": attention_weights,
+            }
+        else:
+            return {"error": "Attention weights not found in outputs"}

@@ -8,9 +8,11 @@ export default async function Layout({ children }: { children: React.ReactNode }
         redirect('/login');
     }
     return (
-        <div>
+        <div className='flex flex-col h-screen'>
             <Nav name={user?.auth.username} type={user?.type} />
-            {children}
+            <div className='grow flex-1'>
+                {children}
+            </div>
         </div>
     );
 }

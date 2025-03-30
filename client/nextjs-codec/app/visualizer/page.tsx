@@ -668,7 +668,7 @@ export default function CodeVisualizerPage() {
                             </TabsContent>
 
                             <TabsContent value="attention">
-                                <AttentionView codeSnippets={[code1, code2]} />
+                                <AttentionView code1={code1} code2={code2} />
                             </TabsContent>
                         </Tabs>
                     </div>
