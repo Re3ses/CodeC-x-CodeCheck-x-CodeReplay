@@ -160,6 +160,72 @@ class StructuralAnalysis:
         
         return np.array(embeddings), valid_lines
 
+    def get_line_positions(self, code: str) -> list[dict]:
+        """Get the start and end positions of each line in the code."""
+        positions = []
+        start = 0
+        lines = code.split('\n')
+        
+        for i, line in enumerate(lines):
+            line_length = len(line)
+            positions.append({
+                'line_number': i,
+                'start': start,
+                'end': start + line_length,
+                'content': line
+            })
+            start += line_length + 1  # +1 for newline character
+        
+        return positions
+
+    def enrich_similar_structures(self, code_a: str, code_b: str, similar_structures: list[dict]) -> list[dict]:
+        """Enrich similar structures with line positions and detailed similarity info."""
+        positions_a = self.get_line_positions(code_a)
+        positions_b = self.get_line_positions(code_b)
+        
+        enriched_structures = []
+        for structure in similar_structures:
+            # Get line positions for both code samples
+            lines_a = structure['code_a']
+            lines_b = structure['code_b']
+            
+            # Find positions in original code
+            matched_positions_a = []
+            matched_positions_b = []
+            
+            for line in lines_a:
+                for pos in positions_a:
+                    if pos['content'].strip() == line.strip():
+                        matched_positions_a.append(pos)
+            
+            for line in lines_b:
+                for pos in positions_b:
+                    if pos['content'].strip() == line.strip():
+                        matched_positions_b.append(pos)
+            
+            # Calculate line-by-line similarities
+            line_similarities = []
+            for line_a, pos_a in zip(lines_a, matched_positions_a):
+                line_sims = []
+                for line_b, pos_b in zip(lines_b, matched_positions_b):
+                    sim = self.calculate_similarity(line_a, line_b)
+                    line_sims.append({
+                        'similarity': float(sim),
+                        'position_a': pos_a,
+                        'position_b': pos_b
+                    })
+                line_similarities.append(line_sims)
+            
+            enriched_structures.append({
+                **structure,
+                'positions_a': matched_positions_a,
+                'positions_b': matched_positions_b,
+                'line_similarities': line_similarities,
+                'overall_similarity': float(structure['similarity'])
+            })
+        
+        return enriched_structures
+
     def visualize_code_similarity(self, code_snippet_a: str, code_snippet_b: str, dim: int = 2) -> tuple[str, list[dict]]:
         """Generate visualization for code similarity between two snippets with improved readability."""
         try:
@@ -281,15 +347,15 @@ class StructuralAnalysis:
             ax.set_ylabel('Semantic Distance (Dimension 2)', fontsize=10)
             
             # Add title and subtitle with colored similarity score
-            similarity_color = '#22c55e' if overall_similarity >= 0.7 else '#eab308' if overall_similarity >= 0.4 else '#ef4444'
-            plt.suptitle('Code Structure Comparison', fontsize=16, y=0.98)
-            ax.set_title(
-                f'Overall Similarity: {overall_similarity:.2%}',
-                fontsize=14,
-                color=similarity_color,
-                weight='bold',
-                pad=10
-            )
+            # similarity_color = '#22c55e' if overall_similarity >= 0.7 else '#eab308' if overall_similarity >= 0.4 else '#ef4444'
+            # plt.suptitle('Code Structure Comparison', fontsize=16, y=0.98)
+            # ax.set_title(
+            #     f'Overall Similarity: {overall_similarity:.2%}',
+            #     fontsize=14,
+            #     color=similarity_color,
+            #     weight='bold',
+            #     pad=10
+            # )
             
             # Create proper legend
             ax.legend(
@@ -332,7 +398,14 @@ class StructuralAnalysis:
             buf.seek(0)
             img_base64 = base64.b64encode(buf.read()).decode('utf-8')
             
-            return f"data:image/png;base64,{img_base64}", similar_structures
+            # Enrich the similar structures with position information
+            enriched_structures = self.enrich_similar_structures(
+                code_snippet_a, 
+                code_snippet_b, 
+                similar_structures
+            )
+            
+            return f"data:image/png;base64,{img_base64}", enriched_structures
             
         except Exception as e:
             print(f"Visualization error: {str(e)}")
