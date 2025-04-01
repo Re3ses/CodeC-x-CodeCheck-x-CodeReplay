@@ -14,39 +14,39 @@ import { SimilarStructure, HighlightedCode, HighlightInfo, GradientAnalysis } fr
 
 
 interface DimensionAnalysis {
-  dimension: number;
-  score: number;
-  tokens: string[];
-  contexts: string[];
-  activation_scores: number[];
+    dimension: number;
+    score: number;
+    tokens: string[];
+    contexts: string[];
+    activation_scores: number[];
 }
 
 
 export default function CodeVisualizerPage() {
-  const [code1, setCode1] = useState('');
-  const [code2, setCode2] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
-  const [structures, setStructures] = useState<SimilarStructure[]>([]);
-  const [error, setError] = useState<string | null>(null);
-  const [highlightedCode1, setHighlightedCode1] = useState<HighlightedCode>({ code: '', highlights: [] });
-  const [highlightedCode2, setHighlightedCode2] = useState<HighlightedCode>({ code: '', highlights: [] });
-  const [gradientAnalysis, setGradientAnalysis] = useState<GradientAnalysis | null>(null);
-  const [selectedAnalysis, setSelectedAnalysis] = useState<string[]>(['all']);
+    const [code1, setCode1] = useState('');
+    const [code2, setCode2] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [imageUrl, setImageUrl] = useState<string | null>(null);
+    const [structures, setStructures] = useState<SimilarStructure[]>([]);
+    const [error, setError] = useState<string | null>(null);
+    const [highlightedCode1, setHighlightedCode1] = useState<HighlightedCode>({ code: '', highlights: [] });
+    const [highlightedCode2, setHighlightedCode2] = useState<HighlightedCode>({ code: '', highlights: [] });
+    const [gradientAnalysis, setGradientAnalysis] = useState<GradientAnalysis | null>(null);
+    const [selectedAnalysis, setSelectedAnalysis] = useState<string[]>(['all']);
 
-  const analyzeCode = async () => {
-    setLoading(true);
-    setError(null);
-    console.log("Starting code analysis...");
+    const analyzeCode = async () => {
+        setLoading(true);
+        setError(null);
+        console.log("Starting code analysis...");
 
-    try {
-        if (!code1 || !code2) {
-            throw new Error('Please provide both code snippets');
-        }
+        try {
+            if (!code1 || !code2) {
+                throw new Error('Please provide both code snippets');
+            }
 
-        if (code1.length > 5000 || code2.length > 5000) {
-            throw new Error('Code snippets are too large. Please limit to 5000 characters each.');
-        }
+            if (code1.length > 5000 || code2.length > 5000) {
+                throw new Error('Code snippets are too large. Please limit to 5000 characters each.');
+            }
 
         // Structural Analysis
         if (selectedAnalysis.includes('all') || selectedAnalysis.includes('structural')) {
@@ -113,13 +113,13 @@ export default function CodeVisualizerPage() {
             }
         }
 
-    } catch (err) {
-        console.error('Analysis failed:', err);
-        setError(err instanceof Error ? err.message : 'Analysis failed');
-    } finally {
-        setLoading(false);
-    }
-};
+        } catch (err) {
+            console.error('Analysis failed:', err);
+            setError(err instanceof Error ? err.message : 'Analysis failed');
+        } finally {
+            setLoading(false);
+        }
+    };
 
 
 
@@ -136,37 +136,37 @@ const handleScroll = useCallback((sourceRef: React.RefObject<HTMLPreElement>, ta
 
 
 
-  // Add this effect to debug image data
-  useEffect(() => {
-      if (imageUrl) {
-          console.log("Image URL set:", imageUrl.substring(0, 100) + "...");
-          // Verify the image data is valid base64
-          if (imageUrl.startsWith('data:image/png;base64,')) {
-              console.log("Valid base64 image data detected");
-          }
-      }
-  }, [imageUrl]);
+    // Add this effect to debug image data
+    useEffect(() => {
+        if (imageUrl) {
+            console.log("Image URL set:", imageUrl.substring(0, 100) + "...");
+            // Verify the image data is valid base64
+            if (imageUrl.startsWith('data:image/png;base64,')) {
+                console.log("Valid base64 image data detected");
+            }
+        }
+    }, [imageUrl]);
 
-  // Add this effect to monitor state changes
-  useEffect(() => {
-      console.log("Current state:", {
-          hasImage: !!imageUrl,
-          hasStructures: structures.length > 0,
-          hasGradientAnalysis: !!gradientAnalysis,
-          selectedAnalysis
-      });
-  }, [imageUrl, structures, gradientAnalysis, selectedAnalysis]);
-
-  // Add debug logging for gradient analysis
-  useEffect(() => {
-    if (gradientAnalysis) {
-        console.log("Gradient Analysis State:", {
-            hasSimilarity: !!gradientAnalysis.similarity,
-            hasVisualization: !!gradientAnalysis.visualization,
-            dimensionsCount: gradientAnalysis.dimension_analysis?.length
+    // Add this effect to monitor state changes
+    useEffect(() => {
+        console.log("Current state:", {
+            hasImage: !!imageUrl,
+            hasStructures: structures.length > 0,
+            hasGradientAnalysis: !!gradientAnalysis,
+            selectedAnalysis
         });
-    }
-}, [gradientAnalysis]);
+    }, [imageUrl, structures, gradientAnalysis, selectedAnalysis]);
+
+    // Add debug logging for gradient analysis
+    useEffect(() => {
+        if (gradientAnalysis) {
+            console.log("Gradient Analysis State:", {
+                hasSimilarity: !!gradientAnalysis.similarity,
+                hasVisualization: !!gradientAnalysis.visualization,
+                dimensionsCount: gradientAnalysis.dimension_analysis?.length
+            });
+        }
+    }, [gradientAnalysis]);
 
 
 

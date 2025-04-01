@@ -4,19 +4,22 @@ import numpy as np
 from typing import List, Dict, Tuple, Optional
 import re
 from dataclasses import dataclass
-import matplotlib
-matplotlib.use('Agg')  # Add this near the top of the file, before importing pyplot
-import matplotlib.pyplot as plt
-import matplotlib.gridspec as gridspec  # Add this import
-from scipy.spatial import ConvexHull  # Add this import
-from umap import UMAP
-from sklearn.cluster import DBSCAN
-import pandas as pd
-import io
-import base64
-import json
-import traceback
-import logging
+
+# unused import statements
+# import matplotlib
+
+# matplotlib.use("Agg")  # Add this near the top of the file, before importing pyplot
+# import matplotlib.pyplot as plt
+# import matplotlib.gridspec as gridspec  # Add this import
+# from scipy.spatial import ConvexHull  # Add this import
+# from umap import UMAP
+# from sklearn.cluster import DBSCAN
+# import pandas as pd
+# import io
+# import base64
+# import json
+# import traceback
+# import logging
 
 
 @dataclass
@@ -64,12 +67,14 @@ class CodeBERTAnalyzer:
         self.model.to(self.device)
         self.model.eval()
         self.embedding_cache = {}
-        
 
-        
         # Parameters for adjusting similarity calculation
-        self.scaling_exponent = 3.0  # Higher values make small differences more pronounced
-        self.amplification_factor = 5.0  # Amplifies differences in the transformed space
+        self.scaling_exponent = (
+            3.0  # Higher values make small differences more pronounced
+        )
+        self.amplification_factor = (
+            5.0  # Amplifies differences in the transformed space
+        )
 
     def preprocess_code(self, code: str) -> str:
         """Preprocess code for CodeBERT analysis."""
@@ -103,13 +108,13 @@ class CodeBERTAnalyzer:
             )
             inputs = {k: v.to(self.device) for k, v in inputs.items()}
             outputs = self.model(**inputs)
-            
-            # Use mean pooling 
+
+            # Use mean pooling
             embedding = outputs.last_hidden_state.mean(dim=1).cpu().numpy()[0]
-            
+
             # Normalize the embedding
             embedding /= np.linalg.norm(embedding)
-            
+
             self.embedding_cache[cache_key] = embedding
             if len(self.embedding_cache) > 1000:
                 self.embedding_cache.pop(next(iter(self.embedding_cache)))
@@ -119,33 +124,33 @@ class CodeBERTAnalyzer:
         """Calculate similarity between two code snippets with improved scaling."""
         emb1 = self.get_embedding(code1)
         emb2 = self.get_embedding(code2)
-        
+
         # Base similarity (cosine similarity)
         cosine_sim = np.dot(emb1, emb2)
-                
+
         # Apply non-linear transformation to emphasize differences
         similarity = cosine_sim
-        
+
         # Step 1: Convert to a distance measure (0 = identical, higher = more different)
         distance = 1 - similarity
-        
+
         # Ensure distance is non-negative
         if distance < 0:
             distance = 0
-        
+
         # Step 2: Amplify the distance (makes small differences larger)
         amplified_distance = distance * self.amplification_factor
 
         # Ensure amplified_distance is non-negative
         if amplified_distance < 0:
             amplified_distance = 0
-        
+
         # Step 3: Apply non-linear scaling (exponential) to further separate close values
-        scaled_distance = min(1, amplified_distance ** (1/self.scaling_exponent))
-        
+        scaled_distance = min(1, amplified_distance ** (1 / self.scaling_exponent))
+
         # Step 4: Convert back to similarity score
         transformed_similarity = 1 - scaled_distance
-        
+
         return max(0, transformed_similarity)
 
     def compute_similarity_matrix(
@@ -195,4 +200,3 @@ class CodeBERTAnalyzer:
                 )
             )
         return similarities
-
