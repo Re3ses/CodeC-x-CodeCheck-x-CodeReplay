@@ -5,6 +5,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ChevronDown, ChevronUp, FileCode2, Network, GitBranch, Activity } from "lucide-react";
 import SimilarityLoading from './SimilarityLoading';
+import Loading from '@/components/loading';
 import SimilarityDashboard from './SimilarityMatrix';
 import SequentialSimilarityVisualization from '@/components/SequentialSimilarityVisualization';
 import { useParams } from 'next/navigation';
@@ -240,7 +241,7 @@ export default function CodeReplayApp() {
 
           <TabsContent value="network" className="mt-6">
             {isMatrixLoading ? (
-              <SimilarityLoading />
+              <Loading message="Loading similarity matrix..." />
             ) : (
               <div className="space-y-6">
                 <div className="bg-gray-800 p-4 rounded-lg">
