@@ -11,3 +11,5 @@ export default function Loading() {
     </div>
   );
 }
+
+// This is the old loading screen for this page.
