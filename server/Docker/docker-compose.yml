@@ -1,11 +1,9 @@
-version: '2'
-
-x-logging:
-  &default-logging
+x-logging: &default-logging
   logging:
     driver: json-file
     options:
-      max-size: 100m
+      max-size: "10m"
+      max-file: "5"
 
 services:
   server:
@@ -17,12 +15,15 @@ services:
     privileged: true
     <<: *default-logging
     restart: always
+    environment:
+      - DOCKER_CGROUP_DRIVER=cgroupfs
 
   workers:
     image: judge0/judge0:1.13.0
     command: ["./scripts/workers"]
     volumes:
       - ./judge0.conf:/judge0.conf:ro
+      - /box:/box
     privileged: true
     <<: *default-logging
     restart: always
@@ -47,6 +48,16 @@ services:
     <<: *default-logging
     restart: always
 
+  flask:
+    build: ./flask  # Path to your Flask project containing the Dockerfile
+    ports:
+      - "5000:5000"
+    env_file: ./flask/.env 
+    restart: always
+    <<: *default-logging
+
 volumes:
   postgres-data:
   redis-data:
+  # mongodb-data:  # Add volume for MongoDB data persistence
+  # huggingface_cache:

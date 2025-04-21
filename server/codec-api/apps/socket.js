@@ -15,9 +15,11 @@ const httpServer = http.createServer();
 // Attach the socket.io server to the HTTP server
 const io = require('socket.io')(httpServer, {
   cors: {
-    origin: "*"
+    origin: process.env.ALLOWED_ORIGINS?.split(',') || 'http://localhost:3000',
   }
 })
+
+console.log("socket allowed origins:", process.env.ALLOWED_ORIGINS?.split(','))
 
 var mentor_id = ""
 var mentor_username = ""

@@ -32,6 +32,7 @@ yarn-error.log*
 
 # env files
 .env
+.env.prod
 
 # vercel
 .vercel
@@ -73,3 +74,5 @@ venv
 __pycache__
 bert_models
 venv/
+
+

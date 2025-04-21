@@ -154,6 +154,7 @@ export async function POST(request: Request) {
       score: totalScore,
       score_overall_count: overallScore,
       verdict: testResults.every((r: { status: { description: string } }) => r.status.description === "Accepted") ? 'ACCEPTED' : 'REJECTED',
+      user_type: formData.get('user_type'),
       learner: formData.get('learner'),
       learner_id: formData.get('learner_id'),
       problem: formData.get('problem'),
@@ -161,7 +162,8 @@ export async function POST(request: Request) {
       start_time: Number(formData.get('start_time')) || Date.now(),
       end_time: Number(formData.get('end_time')) || Date.now(),
       completion_time: Number(formData.get('completion_time')) || 0,
-      attempt_count: existingSubmission ? (existingSubmission.attempt_count + 1) : 1
+      attempt_count: existingSubmission ? (existingSubmission.attempt_count + 1) : 1,
+      paste_history: formData.get('paste_history'),
     };
 
     const userSubmission = new UserSubmissions(submissionData);

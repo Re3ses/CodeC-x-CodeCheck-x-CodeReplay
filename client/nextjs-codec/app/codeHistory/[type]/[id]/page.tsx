@@ -2,10 +2,10 @@
 'use client'
 import { useState, useEffect, useRef } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ChevronDown, ChevronUp, FileCode2, Network, GitBranch, Activity } from "lucide-react";
 import SimilarityLoading from './SimilarityLoading';
+import Loading from '@/components/loading';
 import SimilarityDashboard from './SimilarityMatrix';
 import SequentialSimilarityVisualization from '@/components/SequentialSimilarityVisualization';
 import { useParams } from 'next/navigation';
@@ -52,15 +52,15 @@ interface SnippetInfo {
   timestamp: string;
   fileName: string;
 }
-interface AdvancedMetrics {
-  maxChange: number;
-  averageSimilarity: number;
-  minSimilarity: number;
-  normalizedVariance: number;
-  weightedPlagiarismScore: number;
-  pasteCount: number;
-  bigPasteCount: number;
-}
+// interface AdvancedMetrics {
+//   maxChange: number;
+//   averageSimilarity: number;
+//   minSimilarity: number;
+//   normalizedVariance: number;
+//   weightedPlagiarismScore: number;
+//   pasteCount: number;
+//   bigPasteCount: number;
+// }
 
 export default function CodeReplayApp() {
   const params = useParams<{ type: string, id: string }>();
@@ -71,44 +71,57 @@ export default function CodeReplayApp() {
   const [isMatrixLoading, setIsMatrixLoading] = useState(true);
   const [snapshots, setSnapshots] = useState<CodeSnapshot[]>([]);
   const [enhancedPastes, setEnhancedPastes] = useState<EnhancedPasteInfo[]>([]);
+  const [filters, setFilters] = useState({
+    verdict: '',
+    problemId: params.type === 'problem' ? params.id : '',
+    roomId: params.type === 'room' ? params.id : '',
+    acceptPartialSubmissions: false,
+    userType: '',
+    highestScoringOnly: false
+  });
 
-  // fetch user submissions
+  const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
+    const { name, type, value } = e.target;
+    setFilters(prev => ({
+      ...prev,
+      [name]: type === "checkbox" ? (e.target as HTMLInputElement).checked : value,
+    }));
+  };
+
+
+  // Fetch user submissions
   useEffect(() => {
     const fetchUserSubmissions = async () => {
       try {
-        const query = {
-          [params.type === 'problem' ? 'problem_slug' : 'roomId']: params.id,
-          all: "True"
-        };
-
         const response = await fetch(
-          `/api/userSubmissions/?${new URLSearchParams(query).toString()}`
+          `/api/userSubmissions/?problem_slug=${params.id}`
         );
 
         const data = await response.json();
         // console.log("user submissions", data);
 
-        if (data.message === "Success! all via problem_slug" && Array.isArray(data.submission)) {
-          // console.log("user submissions", data.message, data.submission);
+        // Ensure that 'submissions' exists before calling map
+        const enhancedPastes = data.submissions?.map((submission: any) => {
+          const pasteHistory = JSON.parse(submission.paste_history);
+          return pasteHistory.map((paste: any) => ({
+            text: paste.text,
+            fullCode: paste.fullCode,
+            timestamp: paste.timestamp,
+            length: paste.length,
+            contextRange: paste.contextRange,
+            learner_id: submission.learner_id
+          }));
+        }).flat();
 
-          const enhancedPastes = data.submission.map((submission: any) => {
-            const pasteHistory = JSON.parse(submission.paste_history);
-            return pasteHistory.map((paste: any) => ({
-              text: paste.text,
-              fullCode: paste.fullCode,
-              timestamp: paste.timestamp,
-              length: paste.length,
-              contextRange: paste.contextRange,
-              learner_id: submission.learner_id
-            }));
-          }).flat();
-          // console.log("enhanced pastes", enhancedPastes);
-          setEnhancedPastes(enhancedPastes);
-        }
+        // // If no submissions are found, enhancedPastes will be an empty array
+        // console.log("enhanced pastes", enhancedPastes);
+        setEnhancedPastes(enhancedPastes);
+
       } catch (error) {
         console.error('Error fetching user submissions:', error);
       }
     };
+
     fetchUserSubmissions();
   }, [params.type, params.id]);
 
@@ -117,12 +130,13 @@ export default function CodeReplayApp() {
     const fetchLearnerSnapshots = async () => {
       try {
         const response = await fetch(
-          `/api/codereplay/code-snapshots`
+          `/api/codereplay/code-snapshots?problem_id=${params.id}`
         );
         const data = await response.json();
+        // console.log("Data received from code-snapshots API:", data);
 
-        if (data.success && Array.isArray(data.snapshots)) {
-          console.log("snapshots successfuly fetched", data.success, data.snapshots);
+        if (data.success) {
+          // console.log("snapshots successfuly fetched", data.success, data.snapshots);
           const sortedSnapshots = data.snapshots.sort((a: CodeSnapshot, b: CodeSnapshot) => {
             if (a.version && b.version) {
               return a.version - b.version;
@@ -130,7 +144,7 @@ export default function CodeReplayApp() {
             return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
           });
 
-          console.log("sorted snapshots", sortedSnapshots);
+          // console.log("sorted snapshots", sortedSnapshots);
 
           setSnapshots(sortedSnapshots);
         }
@@ -141,54 +155,46 @@ export default function CodeReplayApp() {
     fetchLearnerSnapshots();
   }, []);
 
-  useEffect(() => {
-    const fetchSimilarityData = async () => {
-      try {
-        setIsMatrixLoading(true);
+  const fetchSimilarityData = async (filterOptions = filters) => {
+    try {
+      setIsMatrixLoading(true);
 
-        const queryParam = params.type === 'problem' ?
-          `problemId=${params.id}` :
-          `roomId=${params.id}`;
+      const queryParams = new URLSearchParams({
+        ...(filterOptions.verdict && { verdict: filterOptions.verdict }),
+        ...(filterOptions.problemId && { problemId: filterOptions.problemId }),
+        ...(filterOptions.roomId && { roomId: filterOptions.roomId }),
+        ...(filterOptions.acceptPartialSubmissions && { acceptPartialSubmissions: filterOptions.acceptPartialSubmissions.toString() }),
+        ...(filterOptions.userType && { userType: filterOptions.userType }),
+        ...(filterOptions.highestScoringOnly && { highestScoringOnly: filterOptions.highestScoringOnly.toString() })
+      }).toString();
 
-        const API_URL = process.env.NEXT_PUBLIC_FLASK_API_URL || 'http://localhost:';
-        const API_PORT = process.env.NEXT_PUBLIC_FLASK_API_PORT || '5000';
-        const response = await fetch(`${API_URL}${API_PORT}/api/similarity/matrix?${queryParam}`, {
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' }
+      // console.log("Query params", queryParams);
+
+      const API_URL = process.env.FLASK_API_URL || 'https://codecflaskapi.duckdns.org';
+      // const API_URL = process.env.FLASK_API_URL || 'http://localhost:5000';
+      const response = await fetch(`${API_URL}/api/similarity/matrix?${queryParams}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setSimilarityMatrix({
+          matrix: data.matrix,
+          snippets: data.snippets
         });
-
-        const data = await response.json();
-        console.log("matrix api data:", data);
-
-        if (data.success) {
-          setSimilarityMatrix({
-            matrix: data.matrix,
-            snippets: data.snippets
-          });
-        }
-      } catch (error) {
-        console.error('Fetch error:', error);
-      } finally {
-        setIsMatrixLoading(false);
       }
-    };
+    } catch (error) {
+      console.error('Fetch error:', error);
+    } finally {
+      setIsMatrixLoading(false);
+    }
+  };
 
-    const fetchInitialData = async () => {
-      try {
-        const response = await fetch('/api/codereplay');
-        if (response.ok) {
-          const data = await response.json();
-          if (data.success && Array.isArray(data.snippets)) {
-            await fetchSimilarityData(); // Fetch matrix immediately
-          }
-        }
-      } catch (error) {
-        console.error('Initial fetch error:', error);
-      }
-    };
-
-    fetchInitialData();
-  }, [params.id, params.type]);
+  useEffect(() => {
+    fetchSimilarityData();
+  }, []);
 
   // Calculate statistics for each snippet
   const calculateSnippetStats = (matrix: number[][], index: number) => {
@@ -212,7 +218,6 @@ export default function CodeReplayApp() {
   };
 
   const [expandedCard, setExpandedCard] = useState<number | null>(null);
-  // const [advancedMetrics, setAdvancedMetrics] = useState<{ [key: string]: AdvancedMetrics }>({});
 
   return (
     <div className="min-h-screen bg-gray-900 text-white p-4">
@@ -236,75 +241,116 @@ export default function CodeReplayApp() {
 
           <TabsContent value="network" className="mt-6">
             {isMatrixLoading ? (
-              <SimilarityLoading />
+              <Loading message="Loading similarity matrix..." />
             ) : (
               <div className="space-y-6">
+                <div className="bg-gray-800 p-4 rounded-lg">
+                  <h3 className="text-lg font-bold mb-2">Filters</h3>
+                  <div className="grid grid-cols-3 gap-4 items-center justify-center">
+                    <div className="col-span-1">
+                      <label className="text-sm text-gray-300">Verdict:</label>
+                      <select name="verdict" value={filters.verdict} onChange={handleFilterChange} className="w-full p-2 bg-gray-900 border border-gray-700 rounded">
+                        <option value="">All</option>
+                        <option value="ACCEPTED">Accepted</option>
+                        <option value="REJECTED">Rejected</option>
+                      </select>
+
+                      <label className="flex items-center space-x-2 text-gray-300">
+                        <input
+                          type="checkbox"
+                          name="acceptPartialSubmissions"
+                          checked={filters.acceptPartialSubmissions}
+                          onChange={handleFilterChange}
+                          className="w-4 h-4"
+                          title="This option overrides the verdict filter and includes all submissions with a score greater than 0."
+                        />
+                        <span>Accept Partial Submissions</span>
+                      </label>
+
+                    </div>
+
+                    <div className="col-span-1">
+                      <label className="text-sm text-gray-300">User Type:</label>
+                      <select name="userType" value={filters.userType} onChange={handleFilterChange} className="w-full p-2 bg-gray-900 border border-gray-700 rounded">
+                        <option value="Learner">Learners</option>
+                        <option value="Mentor">Mentors</option>
+                        <option value="All">All</option>
+                      </select>
+
+                      <label className="flex items-center space-x-2 text-gray-300">
+                        <input
+                          type="checkbox"
+                          name="highestScoringOnly"
+                          checked={filters.highestScoringOnly}
+                          onChange={handleFilterChange}
+                          className="w-4 h-4"
+                          title="This option overrides the 'Accept Partial Submissions' filter and includes only the highest scoring submission for each learner."
+                        />
+                        <span>Filter Highest Scoring Only</span>
+                      </label>
+                    </div>
+
+                    <div className="col-span-1">
+                      <button onClick={() => fetchSimilarityData(filters)} className="w-full bg-yellow-500 text-black p-2 rounded">
+                        Apply Filters
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
                 {similarityMatrix ?
                   <SimilarityDashboard
                     matrix={similarityMatrix.matrix}
                     snippets={similarityMatrix.snippets}
                   /> : "similaritymatrix empty"
                 }
-
-                <div className="space-y-4">
-                  {similarityMatrix?.snippets.map((snippet, index) => {
-                    const stats = calculateSnippetStats(similarityMatrix.matrix, index);
-                    if (!stats) return null;
-
-                    return (
-                      <Card key={index} className="bg-gray-800/50 border-0 shadow-lg hover:bg-gray-800/70 transition-colors">
-                        {/* ... existing card content ... */}
-                      </Card>
-                    );
-                  })}
-                </div>
               </div>
             )}
           </TabsContent>
 
           <TabsContent value="evolution" className="mt-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 relative">
-              {similarityMatrix?.snippets.map((snippet, index) => (
-                <div key={index} className={`${expandedCard === index ? 'col-span-full row-span-2' : ''
-                  } transition-all duration-300`}>
-                  <Card className="bg-gray-800/50 border-0 shadow-lg h-full">
-                    <CardHeader
-                      className="cursor-pointer p-4"
-                      onClick={() => setExpandedCard(expandedCard === index ? null : index)}
-                    >
-                      <CardTitle className="text-sm">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2 truncate">
-                            <FileCode2 className="w-4 h-4 flex-shrink-0" />
-                            <span className="truncate">{snippet.learner}</span>
-                          </div>
-                          <div className="flex items-center gap-2 flex-shrink-0">
-                            {expandedCard === index ? (
-                              <ChevronUp className="w-4 h-4" />
-                            ) : (
-                              <ChevronDown className="w-4 h-4" />
-                            )}
-                          </div>
-                        </div>
-                      </CardTitle>
-                    </CardHeader>
-                    {expandedCard === index && (
-                      <CardContent className="p-4">
-                        <SequentialSimilarityVisualization
-                          snapshots={snapshots.filter(s => 
-                            s.learner_id === snippet.learner_id && 
-                            (params.type === 'problem' ? s.problemId === params.id : true) &&
-                            (params.type === 'room' ? s.roomId === params.id : true)
-                          )}
-                          pastedSnippets={enhancedPastes.filter(s => s.learner_id === snippet.learner_id)}
-                          // problemId={params.type === 'problem' ? params.id : ''}
-                          // roomId={params.type === 'room' ? params.id : ''}
-                        />
-                      </CardContent>
-                    )}
-                  </Card>
-                </div>
-              ))}
+              {
+                similarityMatrix?.snippets
+                  .filter((snippet, index, self) =>
+                    index === self.findIndex((s) => s.learner_id === snippet.learner_id)
+                  )
+                  .map((snippet, index) => (
+                    <div key={index} className={`${expandedCard === index ? 'col-span-full row-span-2' : ''} transition-all duration-300`}>
+                      <Card className="bg-gray-800/50 border-0 shadow-lg h-full">
+                        <CardHeader
+                          className="cursor-pointer p-4"
+                          onClick={() => setExpandedCard(expandedCard === index ? null : index)}
+                        >
+                          <CardTitle className="text-sm">
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-2 truncate">
+                                <FileCode2 className="w-4 h-4 flex-shrink-0" />
+                                <span className="truncate">{snippet.learner}</span>
+                              </div>
+                              <div className="flex items-center gap-2 flex-shrink-0">
+                                {expandedCard === index ? (
+                                  <ChevronUp className="w-4 h-4" />
+                                ) : (
+                                  <ChevronDown className="w-4 h-4" />
+                                )}
+                              </div>
+                            </div>
+                          </CardTitle>
+                        </CardHeader>
+                        {expandedCard === index && (
+                          <CardContent className="p-4">
+                            <SequentialSimilarityVisualization
+                              snapshots={snapshots.filter(s => s.learner_id === snippet.learner_id)}
+                              learnerId={snippet.learner_id}
+                              pastedSnippets={enhancedPastes.filter(s => s.learner_id === snippet.learner_id)}
+                            />
+                          </CardContent>
+                        )}
+                      </Card>
+                    </div>
+                  ))
+              }
             </div>
           </TabsContent>
         </Tabs>

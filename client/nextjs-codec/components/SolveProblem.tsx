@@ -77,7 +77,7 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
           }
         );
         const data = await res.json();
-        console.log(data);
+        // console.log(data);
       } catch (error) {
         console.error('Health check failed:', error);
       }
@@ -102,7 +102,7 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
   const [isInitialized, setIsInitialized] = useState(false);
 
   const [user, setUser] = useState<any>();
-  const [submitting, setSubmitting] = useState(false);
+  const [submitting, setSubmitting] = useState<boolean>(false);
   const [trying, setTrying] = useState(false);
 
   // LEARNER ID LOGGING
@@ -122,6 +122,7 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
   const [saving, setSaving] = useState<boolean>(false);
   const [snapshots, setSnapshots] = useState<any[]>([]);
   const [enhancedPastes, setEnhancedPastes] = useState<EnhancedPasteInfo[]>([]);
+  const [pasteCount, setPasteCount] = useState(0);
   const [autoSaveToggle, setAutoSaveToggle] = useState<boolean>(false);
   const [previousSaved, setPreviousSaved] = useState<string>('');
 
@@ -148,7 +149,8 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
   //   return lengthDiff > 15; // Consider changes significant if more than 50 characters are added/removed
   // };
 
-  async function getLastVersion(learner_id: string, problemId: string, roomId: string) {
+  const autoSaveCode = useCallback(async (codeToSave: string) => {
+    if (codeToSave === lastSaved) return;
     try {
       const response = await fetch(`/api/snapshots/last-version?learner_id=${learner_id}&problemId=${problemId}&roomId=${roomId}`);
       const data = await response.json();
@@ -159,10 +161,14 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
     }
   }
 
-  // In your autoSaveCode function, modify it to use the last version:
-  const autoSaveCode = useCallback(async (codeToSave: string) => {
-    try {
+      // Skip saving if the code is the same as the last saved code
       if (codeToSave === previousSaved) {
+        return
+      }
+
+      // Check if user is defined
+      if (!user) {
+        console.warn("User data not yet loaded, skipping auto-save.");
         return;
       }
 
@@ -190,8 +196,25 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
         body: JSON.stringify(snapshot)
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to save snapshot');
+      if (saveResponse.ok) {
+        setPreviousSaved(codeToSave);
+        const savedData = await saveResponse.json();
+        if (savedData.snippet) {
+          // Update snapshots while maintaining order
+          setSnapshots(prevSnapshots => {
+            const updatedSnapshots = [...prevSnapshots, savedData.snippet];
+            return updatedSnapshots.sort((a, b) => {
+              if (a.version && b.version) {
+                return a.version - b.version;
+              }
+              return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
+            });
+          });
+
+          setLastSaved(codeToSave);
+        }
+      } else {
+        console.error('Auto-save failed:', saveResponse.statusText);
       }
 
       setPreviousSaved(codeToSave);
@@ -203,7 +226,8 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
     } catch (error) {
       console.error('Error saving code:', error);
     }
-  }, [user, problemId, roomId, previousSaved]);
+    setSaving(false);
+  }, [lastSaved, user, snapshots, roomId, problemId]);
 
   const debouncedAutoSave = useCallback(
     debounce((codeToSave: string) => {
@@ -279,6 +303,11 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
             endColumn: event.range.endColumn
           }
         };
+        // console.log("New Paste:", newPaste);
+
+        // Update paste tracking state
+        setEnhancedPastes(prev => [...prev, newPaste]);
+        setPasteCount(prev => prev + 1);
 
       } catch (error) {
         console.error('Error handling paste event:', error);
@@ -347,9 +376,9 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
         ]);
 
         // Debug logs remove later
-        console.log("Problem data:", problemData);
-        console.log("Languages data:", languagesData);
-        console.log("User data:", userData);
+        // console.log("Problem data:", problemData);
+        // console.log("Languages data:", languagesData);
+        // console.log("User data:", userData);
 
         // Set states with strict type checks and ensure new references
         setProblem(prevState => problemData ? { ...problemData } : prevState);
@@ -431,6 +460,7 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
         const testCase = problem.test_cases[i];
         const token = await getToken(testCase.input, testCase.output);
         const result = await getSubmissionResult(token);
+        // console.log("Result from judge0 api: ", result);
 
         // Compare output exactly with proper trimming
         const userOutput = result.stdout ? atob(result.stdout).trim().replace(/\r\n/g, '\n') : '';
@@ -463,10 +493,12 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
         score: totalScore,
         score_overall_count: totalScore,
         verdict: totalScore > 0 ? 'ACCEPTED' : 'REJECTED',
+        user_type: user.type,
         learner: user.auth.username,
         learner_id: user.id,
         problem: problemId,
         room: roomId,
+        paste_history: JSON.stringify(enhancedPastes),
         start_time: Number(localStorage.getItem(problemId + '_started')),
         end_time: Date.now(),
         completion_time: Date.now() - Number(localStorage.getItem(problemId + '_started')),
@@ -830,6 +862,7 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
                     onMount={handleEditorDidMount}
                     options={{
                       fontSize: 14,
+                      readOnly: submitting,
                       minimap: { enabled: false },
                       scrollBeyondLastLine: false,
                       lineNumbers: 'on',

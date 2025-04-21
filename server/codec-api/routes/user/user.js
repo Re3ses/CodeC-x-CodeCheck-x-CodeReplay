@@ -12,12 +12,18 @@ const { APIError, DocumentNotFoundError, wrapper } = require('../../scripts').Er
 router.get('/', authenticate, wrapper(async (req, res) => {
     const limit = req.query.limit || 0
     const users = await UserService.listUsers(null, limit)
-    
+
     if (!users || users.length === 0)
         throw new DocumentNotFoundError("No users found")
 
     res.status(200).json(users)
 }))
+
+router.get('/health', (req, res) => {
+    // print to console that a health check was requested.
+    console.log('Health check requested in user.js')
+    res.status(200).json({ status: 'ok', message: 'API is running' });
+})
 
 router.get('/types', (req, res) => {
     res.status(200).json({ "types": UserService.TYPES })
@@ -32,6 +38,8 @@ router.get('/validate', wrapper(async (req, res) => {
 }))
 
 router.get('/:username', authenticate, wrapper(async (req, res) => {
+    // Print to console that a user profile was requested.
+    // console.log('User profile requested')
     if (!req.params.username)
         throw new APIError("Missing parameter: {username}", 400)
 
@@ -39,7 +47,7 @@ router.get('/:username', authenticate, wrapper(async (req, res) => {
 
     if (!user)
         throw new DocumentNotFoundError(`User [${req.params.username}] not found`)
-
+    console.log("User profile found", user)
     res.status(200).json(user)
 }))
 
@@ -52,7 +60,7 @@ router.get('/type/:type', authenticate, wrapper(async (req, res) => {
 
     if (!users || users.length === 0)
         throw new DocumentNotFoundError(`No Users of type [${req.params.type}]`)
-    
+
     res.status(200).json(users)
 }))
 
@@ -62,7 +70,7 @@ router.post('/register', wrapper(async (req, res) => {
 
     if (!newUser)
         throw new APIError("Registration failed", 400)
-    
+
     EmailNotificationEmitter.emit('signup', newUser.auth.username)
 
     res.status(200).json(newUser)
@@ -91,7 +99,7 @@ router.patch('/:username/change-pass', authenticate, wrapper(async (req, res) =>
         throw new APIError("Missing body parameter: {password}", 400)
     if (!req.body.new_password)
         throw new APIError("Missing body parameter: {new_password}", 400)
-        
+
     const changed = await UserService.changePassword({
         filter: { "auth.username": req.params.username },
         password: req.body.password,
@@ -104,10 +112,10 @@ router.patch('/:username/change-pass', authenticate, wrapper(async (req, res) =>
     let data = { code: 400, message: "Password not matched" }
     if (changed) {
         data.code = 200,
-        data.message = "Password changed"
+            data.message = "Password changed"
         EmailNotificationEmitter.emit('change-password', req.params.username)
     }
-    
+
     res.status(data.code).json({ message: data.message })
 }))
 
@@ -116,7 +124,7 @@ router.patch('/:email/forgot-pass', authenticate, wrapper(async (req, res) => {
         throw new APIError("Missing parameter: {username}", 400)
     if (!req.body.new_password)
         throw new APIError("Missing body parameter: {new_password}", 400)
-    
+
     const forgot = await UserService.forgotPassword({
         filter: { "auth.email": req.params.email },
         new_password: req.body.new_password
@@ -124,7 +132,7 @@ router.patch('/:email/forgot-pass', authenticate, wrapper(async (req, res) => {
 
     if (!forgot)
         throw new DocumentNotFoundError(`User [${req.params.email} not found]`)
-    
+
     res.status(200).json({ message: "Password changed" })
 }))
 

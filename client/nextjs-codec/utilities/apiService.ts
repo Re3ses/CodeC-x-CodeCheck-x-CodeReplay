@@ -99,7 +99,10 @@ export async function RegisterUser(payload: RegisterSchemaInferredType) {
 export async function RefreshToken() {
   let refresh_token = cookies().get('refresh_token')?.value;
 
-  const url = `${URL}${PORT.auth}/auth/refresh/`;
+  // Use properly defined environment variables with fallback values
+  const baseUrl = process.env.SERVER_URL || 'https://your-api-default.com';
+  const authPort = process.env.API_PORT || '/api';
+  const url = `${baseUrl}${authPort}/auth/refresh/`;
   const payload = {
     token: refresh_token,
   };
@@ -131,8 +134,12 @@ export async function RefreshToken() {
       Date.now() + TimeToMS(12, 0, 0)
     );
   } catch (e) {
-    console.error(e);
-    throw new Error('Failed to refresh token: ');
+    console.error('Token refresh failed:', e);
+    if (e instanceof Error) {
+      throw new Error(`Failed to refresh token: ${e.message || 'Unknown error'}`);
+    } else {
+      throw new Error('Failed to refresh token: Unknown error');
+    }
   }
 }
 

@@ -12,7 +12,7 @@ const allowedOrigins = process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS
 app.use(express.json())
 app.use(cors({
     credentials: true,
-    origin: allowedOrigins,
+    origin: process.env.ALLOWED_ORIGINS?.split(',') || 'http://localhost:3000',
     methods: [
         'GET', 'POST', 'PATCH', 'DELETE'
     ]

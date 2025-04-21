@@ -18,12 +18,7 @@ export const metadata: Metadata = {
   title: 'CodeC',
   description: 'The place where you can code',
   icons: {
-    icon: [
-      {
-        url: '/icon.png',
-        href: '/icon.png',
-      }
-    ],
+    icon: '/favicon.ico',
     shortcut: ['/favicon.ico'],
     apple: [
       {
@@ -34,6 +29,7 @@ export const metadata: Metadata = {
     ],
   },
 };
+
 
 export default function RootLayout({
   children,

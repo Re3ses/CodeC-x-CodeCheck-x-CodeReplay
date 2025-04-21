@@ -11,6 +11,7 @@ import RoomBanner from '@/components/RoomBanner';
 import RoomEnroleeList from '@/components/RoomEnroleeList';
 import RoomProblemList from '@/components/RoomProblemList';
 import { Users, BookOpen } from 'lucide-react';
+import Loading from '@/components/loading';
 
 export default function ClassroomDetail({ params }: { params: { slug: string } }) {
   const userQuery = useQuery<any>({
@@ -20,6 +21,7 @@ export default function ClassroomDetail({ params }: { params: { slug: string } }
       return res;
     },
   });
+
   const roomQuery = useQuery<RoomSchemaInferredType>({
     queryKey: ['room'],
     queryFn: async () => {
@@ -28,7 +30,13 @@ export default function ClassroomDetail({ params }: { params: { slug: string } }
     },
   });
 
-  if (!roomQuery.data) {
+  if (roomQuery.isLoading || userQuery.isLoading) {
+    return (
+      <Loading message="Loading classroom details..." />
+    );
+  }
+
+  if (roomQuery.isError || !roomQuery.data) {
     return (
       <div className="flex items-center justify-center h-screen">
         <Card className="w-96">

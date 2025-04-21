@@ -48,15 +48,29 @@ export async function refreshToken() {
 }
 
 export async function getSession() {
-  const res = jwt.decode(cookies().get('refresh_token')?.value!);
-  return res ? JSON.parse(JSON.stringify(res)) : null;
+  const token = cookies().get('refresh_token')?.value;
+  if (!token) {
+    console.warn("No refresh token found in auth.ts.");
+    return null;
+  }
+
+  try {
+    const res = jwt.decode(token);
+    return res ? JSON.parse(JSON.stringify(res)) : null;
+  } catch (error) {
+    console.error("Error decoding JWT:", error);
+    return null;
+  }
 }
 
 export async function getUser() {
   // bug at middleware
   await SilentLogin();
   const user = await getSession();
+  // console.log("Session in auth.ts:", user);
   const url = `${process.env.SERVER_URL}${process.env.API_PORT}/api/users/${user?.username}`;
+
+  // console.log("Fetching user data from:", url);
 
   const access_token = cookies().get('access_token')?.value; // token expires in vanilla server: just a hunch
   const headers = {
@@ -70,7 +84,7 @@ export async function getUser() {
     });
     const data = await res.json();
 
-    // console.log('user data: ', data);
+    // console.log('Fetched user data in auth.ts: ', data);
 
     return data;
   } catch (e) {
@@ -95,7 +109,7 @@ export async function login(payload: LoginShemaInferredType) {
     }
 
     const { access_token, refresh_token } = await res.json();
-    console.log(access_token);
+    // console.log(access_token);
 
     setSecureCookie(
       'access_token',
@@ -114,7 +128,7 @@ export async function login(payload: LoginShemaInferredType) {
   }
 }
 
-export async function refresh() {}
+export async function refresh() { }
 
 export async function logoutUser() {
   cookies().delete('access_token');

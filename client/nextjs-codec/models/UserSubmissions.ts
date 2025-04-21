@@ -7,6 +7,7 @@ interface UserSubmissions extends mongoose.Document {
   score: number;
   score_overall_count: number;
   verdict: string;
+  user_type: string;
   learner: string;
   learner_id: mongoose.Types.ObjectId;
   problem: string;
@@ -41,6 +42,10 @@ const UserSubmissionsSchema = new mongoose.Schema({
     required: [true, 'Enter verdict'],
     enum: ['ACCEPTED', 'REJECTED'],
     default: 'REJECTED',
+  },
+  user_type: {
+    type: String,
+    required: [true, 'Enter user type'],
   },
   learner: {
     type: String,

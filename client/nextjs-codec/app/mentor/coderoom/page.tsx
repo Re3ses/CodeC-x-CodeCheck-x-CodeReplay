@@ -28,6 +28,7 @@ import { useSearchParams } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { GetMentorRooms } from '@/utilities/apiService';
 import { toast } from '@/components/ui/use-toast';
+import Loading from '@/components/loading';
 
 export default function ClassroomManagement() {
   const searchParams = useSearchParams();
@@ -43,6 +44,12 @@ export default function ClassroomManagement() {
       return data;
     },
   });
+
+  if (roomsQuery.isLoading) {
+    return (
+      <Loading message="Loading classrooms..." />
+    );
+  }
 
   function handleRoomDeletion(id: any) {
     const deleteRoom = async () => {
