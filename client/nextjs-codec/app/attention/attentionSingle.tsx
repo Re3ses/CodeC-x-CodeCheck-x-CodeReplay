@@ -1,5 +1,4 @@
 "use client";
-import { set } from 'lodash';
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 
 interface AttentionViewProps {
@@ -41,8 +40,19 @@ const AttentionView: React.FC<AttentionViewProps> = ({ code1, code2 }) => {
     const [error, setError] = useState<string | null>(null);
     const [hoveredTokenIndex1, setHoveredTokenIndex1] = useState<number | null>(null);
     const [hoveredTokenIndex2, setHoveredTokenIndex2] = useState<number | null>(null);
+    const [selectedTokenIndex1, setSelectedTokenIndex1] = useState<number | null>(null);
+    const [selectedTokenIndex2, setSelectedTokenIndex2] = useState<number | null>(null);
 
-    // Reset refs when data changes
+    const filterToken = (token: string): boolean => {
+        return !(
+            token.trim() === '' ||
+            token === '[CLS]' ||
+            token === '[SEP]' ||
+            token === 'Ġ' ||
+            /^[Ġ\s\W]$/.test(token)
+        );
+    };
+
     useEffect(() => {
         tokens1Ref.current = [];
         tokens2Ref.current = [];
@@ -83,24 +93,19 @@ const AttentionView: React.FC<AttentionViewProps> = ({ code1, code2 }) => {
         fetchAttentionData();
     }, [fetchAttentionData]);
 
-    // Calculate line width based on weight
     const getLineWidth = useCallback((weight: number): number => {
-        // Scale line width from 0.5 to 4 based on weight
         return 0.5 + (weight * 3.5);
     }, []);
 
-    // Generate color based on weight using a blue-based scheme
     const getAttentionColor = useCallback((weight: number): string => {
-        // Darker blues for higher weights
-        // Cap at 1.0 and ensure minimum opacity for visibility
         const normalizedWeight = Math.min(Math.max(weight, 0.05), 1.0);
-        const opacity = 0.2 + (normalizedWeight * 0.8); // Scale opacity from 0.2 to 1.0
-
-        // Blue color with intensity based on weight
-        return `rgba(0, 0, ${Math.floor(100 + (normalizedWeight * 155))}, ${opacity})`;
+        const opacity = 0.2 + (normalizedWeight * 0.8);
+        const red = Math.floor(normalizedWeight * 255);
+        const green = Math.floor((1 - normalizedWeight) * 255);
+        const blue = 0;
+        return `rgba(${red}, ${green}, ${blue}, ${opacity})`;
     }, []);
 
-    // Draw a single line between two token indices with weight-based styling
     const drawSingleLine = useCallback((
         fromIndex: number,
         fromContainer: number,
@@ -142,120 +147,52 @@ const AttentionView: React.FC<AttentionViewProps> = ({ code1, code2 }) => {
         }
     }, [getAttentionColor, getLineWidth]);
 
-    // Draw all default attention lines without clearing
     const drawAllLinesByDefault = useCallback((): void => {
         if (!attentionData) return;
 
         const canvas = canvasRef.current;
         const ctx = canvas?.getContext('2d');
-
         if (!canvas || !ctx) return;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        try {
-            const filteredTokens1 = attentionData.tokens1.filter(token => token !== "[CLS]" && token !== "[SEP]");
-            const filteredTokens2 = attentionData.tokens2.filter(token => token !== "[CLS]" && token !== "[SEP]");
-            const threshold: number = 0.1;
+        const filteredTokens1 = attentionData.tokens1
+            .map((token, index) => ({ token, originalIndex: index }))
+            .filter(item => filterToken(item.token));
+        const filteredTokens2 = attentionData.tokens2
+            .map((token, index) => ({ token, originalIndex: index }))
+            .filter(item => filterToken(item.token));
+        const threshold: number = 0.1;
 
-            // Safety check for empty arrays
-            if (filteredTokens1.length === 0 || filteredTokens2.length === 0) return;
+        filteredTokens1.forEach((token1, filteredIndex1) => {
+            const originalIndex1 = token1.originalIndex;
+            const weights = attentionData.attention_weights[originalIndex1];
+            if (weights) {
+                filteredTokens2.forEach((token2, filteredIndex2) => {
+                    const originalIndex2 = token2.originalIndex;
+                    if (originalIndex2 < weights.length && weights[originalIndex2] > threshold) {
+                        drawSingleLine(filteredIndex1, 1, filteredIndex2, 2, weights[originalIndex2]);
+                    }
+                });
+            }
+        });
 
-            // Create a mapping from filtered indices to original indices
-            const filteredToOriginal1 = new Map<number, number>();
-            const filteredToOriginal2 = new Map<number, number>();
-
-            let filteredIdx: number = 0;
-            attentionData.tokens1.forEach((token, origIdx) => {
-                if (token !== "[CLS]" && token !== "[SEP]") {
-                    filteredToOriginal1.set(filteredIdx, origIdx);
-                    filteredIdx++;
-                }
-            });
-
-            filteredIdx = 0;
-            attentionData.tokens2.forEach((token, origIdx) => {
-                if (token !== "[CLS]" && token !== "[SEP]") {
-                    filteredToOriginal2.set(filteredIdx, origIdx);
-                    filteredIdx++;
-                }
-            });
-
-            // Draw lines from code1 to code2
-            for (let i = 0; i < filteredTokens1.length; i++) {
-                const originalIdx1 = filteredToOriginal1.get(i);
-                if (originalIdx1 === undefined || originalIdx1 >= attentionData.attention_weights.length) continue;
-
-                const weights = attentionData.attention_weights[originalIdx1];
-                if (!weights) continue;
-
-                // Find which filtered tokens in code2 have attention above threshold
-                for (let j = 0; j < filteredTokens2.length; j++) {
-                    const originalIdx2 = filteredToOriginal2.get(j);
-                    if (originalIdx2 === undefined) continue;
-
-                    // Find the corresponding weight index
-                    let weightIdx: number = -1;
-                    let filteredCount: number = 0;
-
-                    for (let k = 0; k < attentionData.tokens2.length; k++) {
-                        if (attentionData.tokens2[k] !== "[CLS]" && attentionData.tokens2[k] !== "[SEP]") {
-                            if (filteredCount === j) {
-                                weightIdx = filteredCount;
-                                break;
-                            }
-                            filteredCount++;
+        filteredTokens2.forEach((token2, filteredIndex2) => {
+            const originalIndex2 = token2.originalIndex;
+            const weightStartIndex = attentionData.tokens1.length;
+            if (weightStartIndex + originalIndex2 < attentionData.attention_weights.length) {
+                const weights = attentionData.attention_weights[weightStartIndex + originalIndex2];
+                if (weights) {
+                    filteredTokens1.forEach((token1, filteredIndex1) => {
+                        const originalIndex1 = token1.originalIndex;
+                        if (originalIndex1 < weights.length && weights[originalIndex1] > threshold) {
+                            drawSingleLine(filteredIndex2, 2, filteredIndex1, 1, weights[originalIndex1]);
                         }
-                    }
-
-                    if (weightIdx >= 0 && weightIdx < weights.length && weights[weightIdx] > threshold) {
-                        const weight = weights[weightIdx];
-                        drawSingleLine(i, 1, j, 2, weight);
-                    }
+                    });
                 }
             }
+        });
+    }, [attentionData, drawSingleLine, filterToken]);
 
-            // Draw lines from code2 to code1
-            for (let i = 0; i < filteredTokens2.length; i++) {
-                const originalIdx2 = filteredToOriginal2.get(i);
-                if (originalIdx2 === undefined) continue;
-
-                const weightIndex = attentionData.tokens1.length + originalIdx2;
-                if (weightIndex >= attentionData.attention_weights.length) continue;
-
-                const weights = attentionData.attention_weights[weightIndex];
-                if (!weights) continue;
-
-                // Find which filtered tokens in code1 have attention above threshold
-                for (let j = 0; j < filteredTokens1.length; j++) {
-                    const originalIdx1 = filteredToOriginal1.get(j);
-                    if (originalIdx1 === undefined) continue;
-
-                    // Find the corresponding weight index
-                    let weightIdx: number = -1;
-                    let filteredCount: number = 0;
-
-                    for (let k = 0; k < attentionData.tokens1.length; k++) {
-                        if (attentionData.tokens1[k] !== "[CLS]" && attentionData.tokens1[k] !== "[SEP]") {
-                            if (filteredCount === j) {
-                                weightIdx = filteredCount;
-                                break;
-                            }
-                            filteredCount++;
-                        }
-                    }
-
-                    if (weightIdx >= 0 && weightIdx < weights.length && weights[weightIdx] > threshold) {
-                        const weight = weights[weightIdx];
-                        drawSingleLine(i, 2, j, 1, weight);
-                    }
-                }
-            }
-        } catch (error) {
-            console.error("Error drawing all attention lines:", error);
-        }
-    }, [attentionData, drawSingleLine]);
-
-    // Handle canvas sizing
     useEffect(() => {
         const resizeCanvas = (): void => {
             const canvas = canvasRef.current;
@@ -263,25 +200,16 @@ const AttentionView: React.FC<AttentionViewProps> = ({ code1, code2 }) => {
             if (canvas && container) {
                 canvas.width = container.offsetWidth;
                 canvas.height = container.offsetHeight;
-
-                // Redraw lines if we have data and not hovering
                 if (attentionData && !isHovering) {
                     drawAllLinesByDefault();
                 }
             }
         };
-
-        // Initial resize
         resizeCanvas();
-
-        // Listen for window resize
         window.addEventListener('resize', resizeCanvas);
         return () => window.removeEventListener('resize', resizeCanvas);
     }, [attentionData, isHovering, drawAllLinesByDefault]);
 
-
-
-    // Draw lines from one token to multiple other tokens with weight-based styling
     const drawLines = useCallback((
         fromTokenIndex: number,
         fromContainer: number,
@@ -291,9 +219,7 @@ const AttentionView: React.FC<AttentionViewProps> = ({ code1, code2 }) => {
     ): void => {
         const canvas = canvasRef.current;
         const ctx = canvas?.getContext('2d');
-
         if (!canvas || !ctx) return;
-        // ctx.clearRect(0, 0, canvas.width, canvas.height); // REMOVE THIS LINE
 
         toIndices.forEach((toIndex, idx) => {
             const weight = idx < weights.length ? weights[idx] : 0.5;
@@ -301,53 +227,48 @@ const AttentionView: React.FC<AttentionViewProps> = ({ code1, code2 }) => {
         });
     }, [drawSingleLine]);
 
-
     useEffect(() => {
         if (attentionData && !isHovering) {
             const timer = setTimeout(() => {
                 drawAllLinesByDefault();
-            }, 100); // Small delay to ensure DOM is ready
+            }, 100);
             return () => clearTimeout(timer);
         }
     }, [attentionData, isHovering, drawAllLinesByDefault]);
 
     const handleMouseOver1 = useCallback((index: number): void => {
-        // console.log("MouseOver1 - Start, isHovering:", isHovering);
         if (!attentionData) return;
         setIsHovering(true);
         setHoveredTokenIndex1(index);
-        // console.log("MouseOver1 - After setIsHovering(true) and setHoveredTokenIndex1, isHovering:", isHovering, "hoveredTokenIndex1:", hoveredTokenIndex1);
     }, [attentionData, setHoveredTokenIndex1, setIsHovering]);
 
     const handleMouseOut1 = useCallback((): void => {
-        // console.log("MouseOut1 - Start, isHovering:", isHovering);
-        setIsHovering(false);
-        setHoveredTokenIndex1(null);
-        // console.log("MouseOut1 - After setIsHovering(false) and setHoveredTokenIndex1, isHovering:", isHovering, "hoveredTokenIndex1:", hoveredTokenIndex1);
-        setHighlightedIndices2([]);
-        setBackgroundColorMap2({});
-        setBackgroundColorMap1({});
-        drawAllLinesByDefault();
-    }, [drawAllLinesByDefault, setIsHovering, setHoveredTokenIndex1]);
+        if (selectedTokenIndex1 === null && selectedTokenIndex2 === null) {
+            setIsHovering(false);
+            setHoveredTokenIndex1(null);
+            setHighlightedIndices2([]);
+            setBackgroundColorMap2({});
+            setBackgroundColorMap1({});
+            drawAllLinesByDefault();
+        }
+    }, [drawAllLinesByDefault, selectedTokenIndex1, selectedTokenIndex2]);
 
     const handleMouseOver2 = useCallback((index: number): void => {
-        // console.log("MouseOver2 - Start, isHovering:", isHovering);
         if (!attentionData) return;
         setIsHovering(true);
         setHoveredTokenIndex2(index);
-        // console.log("MouseOver2 - After setIsHovering(true) and setHoveredTokenIndex2, isHovering:", isHovering, "hoveredTokenIndex2:", hoveredTokenIndex2);
     }, [attentionData, setIsHovering, setHoveredTokenIndex2]);
 
     const handleMouseOut2 = useCallback((): void => {
-        // console.log("MouseOut2 - Start, isHovering:", isHovering);
-        setIsHovering(false);
-        setHoveredTokenIndex2(null);
-        // console.log("MouseOut2 - After setIsHovering(false) and setHoveredTokenIndex2, isHovering:", isHovering, "hoveredTokenIndex2:", hoveredTokenIndex2);
-        setHighlightedIndices1([]);
-        setBackgroundColorMap1({});
-        setBackgroundColorMap2({});
-        drawAllLinesByDefault();
-    }, [drawAllLinesByDefault, setIsHovering, setHoveredTokenIndex2]);
+        if (selectedTokenIndex1 === null && selectedTokenIndex2 === null) {
+            setIsHovering(false);
+            setHoveredTokenIndex2(null);
+            setHighlightedIndices1([]);
+            setBackgroundColorMap1({});
+            setBackgroundColorMap2({});
+            drawAllLinesByDefault();
+        }
+    }, [drawAllLinesByDefault, selectedTokenIndex1, selectedTokenIndex2]);
 
     const handleLayerChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {
         setSelectedLayer(parseInt(event.target.value, 10));
@@ -357,67 +278,48 @@ const AttentionView: React.FC<AttentionViewProps> = ({ code1, code2 }) => {
         setSelectedHead(parseInt(event.target.value, 10));
     };
 
-    // Safely filter tokens
-    const getFilteredTokens1 = (): string[] => {
-        return attentionData?.tokens1.filter(token => token !== "[CLS]" && token !== "[SEP]") || [];
+    const getFilteredTokens1 = (): { token: string; originalIndex: number }[] => {
+        return attentionData?.tokens1
+            .map((token, index) => ({ token, originalIndex: index }))
+            .filter(item => filterToken(item.token))
+            .map(item => ({ ...item, token: item.token.replace(/^Ġ/, '') })) || [];
     };
 
-    const getFilteredTokens2 = (): string[] => {
-        return attentionData?.tokens2.filter(token => token !== "[CLS]" && token !== "[SEP]") || [];
+    const getFilteredTokens2 = (): { token: string; originalIndex: number }[] => {
+        return attentionData?.tokens2
+            .map((token, index) => ({ token, originalIndex: index }))
+            .filter(item => filterToken(item.token))
+            .map(item => ({ ...item, token: item.token.replace(/^Ġ/, '') })) || [];
     };
 
     useEffect(() => {
         if (isHovering && hoveredTokenIndex1 !== null && attentionData) {
-            console.log("useEffect triggered for MouseOver1 logic, hoveredTokenIndex1:", hoveredTokenIndex1);
             try {
-                // Create mappings between filtered and original indices
-                const filteredToOriginal1 = new Map<number, number>();
-                let filteredIdx = 0;
-                attentionData.tokens1.forEach((token, origIdx) => {
-                    if (token !== "[CLS]" && token !== "[SEP]") {
-                        filteredToOriginal1.set(filteredIdx, origIdx);
-                        filteredIdx++;
-                    }
-                });
+                const filteredTokens1WithIndex = attentionData.tokens1
+                    .map((token, originalIndex) => ({ token, originalIndex }))
+                    .filter(item => filterToken(item.token));
+                const filteredTokens2WithIndex = attentionData.tokens2
+                    .map((token, originalIndex) => ({ token, originalIndex }))
+                    .filter(item => filterToken(item.token));
 
-                const filteredToOriginal2 = new Map<number, number>();
-                filteredIdx = 0;
-                attentionData.tokens2.forEach((token, origIdx) => {
-                    if (token !== "[CLS]" && token !== "[SEP]") {
-                        filteredToOriginal2.set(filteredIdx, origIdx);
-                        filteredIdx++;
-                    }
-                });
+                const hoveredFilteredToken1 = filteredTokens1WithIndex[hoveredTokenIndex1];
+                if (!hoveredFilteredToken1) return;
+                const originalIndex1 = hoveredFilteredToken1.originalIndex;
 
-                // Get original index for the hovered token
-                const originalIdx = filteredToOriginal1.get(hoveredTokenIndex1);
-                if (originalIdx === undefined || originalIdx >= attentionData.attention_weights.length) return;
+                const weights = attentionData.attention_weights[originalIndex1];
+                if (!weights) return;
 
-                const weights = attentionData.attention_weights[originalIdx];
-                const threshold: number = 0.1;
+                const threshold = 0.1;
                 const indicesToHighlight: number[] = [];
                 const weightsToShow: number[] = [];
                 const newBackgroundColorMap2: BackgroundColorMap = {};
 
-                // Map from original token2 indices to filtered indices
-                const originalToFiltered2 = new Map<number, number>();
-                filteredIdx = 0;
-                attentionData.tokens2.forEach((token, origIdx) => {
-                    if (token !== "[CLS]" && token !== "[SEP]") {
-                        originalToFiltered2.set(origIdx, filteredIdx);
-                        filteredIdx++;
-                    }
-                });
-
-                // Find tokens with attention above threshold
-                attentionData.tokens2.forEach((token, origIdx) => {
-                    if (token !== "[CLS]" && token !== "[SEP]") {
-                        const filteredIdx = originalToFiltered2.get(origIdx);
-                        if (filteredIdx !== undefined && origIdx < weights.length && weights[origIdx] > threshold) {
-                            indicesToHighlight.push(filteredIdx);
-                            weightsToShow.push(weights[origIdx]);
-                            newBackgroundColorMap2[filteredIdx] = getAttentionColor(weights[origIdx]);
-                        }
+                filteredTokens2WithIndex.forEach((token2, filteredIndex2) => {
+                    const originalIndex2 = token2.originalIndex;
+                    if (originalIndex2 < weights.length && weights[originalIndex2] > threshold) {
+                        indicesToHighlight.push(filteredIndex2);
+                        weightsToShow.push(weights[originalIndex2]);
+                        newBackgroundColorMap2[filteredIndex2] = getAttentionColor(weights[originalIndex2]);
                     }
                 });
 
@@ -426,77 +328,49 @@ const AttentionView: React.FC<AttentionViewProps> = ({ code1, code2 }) => {
                 setBackgroundColorMap2(newBackgroundColorMap2);
                 setBackgroundColorMap1({ [hoveredTokenIndex1]: 'rgba(0, 0, 255, 0.3)' });
 
-                // Clear canvas and draw new lines
                 const canvas = canvasRef.current;
                 const ctx = canvas?.getContext('2d');
                 if (canvas && ctx) {
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
                     drawLines(hoveredTokenIndex1, 1, indicesToHighlight, 2, weightsToShow);
                 }
-                console.log("useEffect (MouseOver1) - Before drawLines call - fromIndex:", hoveredTokenIndex1, "toIndices:", indicesToHighlight, "weights:", weightsToShow);
-                drawLines(hoveredTokenIndex1, 1, indicesToHighlight, 2, weightsToShow);
             } catch (error) {
-                console.error("Error handling mouse over in useEffect:", error);
+                console.error("Error handling hover for token1:", error);
             }
         }
-    }, [isHovering, hoveredTokenIndex1, attentionData, drawLines, getAttentionColor]);
+    }, [isHovering, hoveredTokenIndex1, attentionData, drawLines, getAttentionColor, filterToken]);
 
     useEffect(() => {
         if (isHovering && hoveredTokenIndex2 !== null && attentionData) {
-            console.log("useEffect triggered for MouseOver2 logic, hoveredTokenIndex2:", hoveredTokenIndex2);
             try {
-                // Create mappings between filtered and original indices
-                const filteredToOriginal1 = new Map<number, number>();
-                let filteredIdx = 0;
-                attentionData.tokens1.forEach((token, origIdx) => {
-                    if (token !== "[CLS]" && token !== "[SEP]") {
-                        filteredToOriginal1.set(filteredIdx, origIdx);
-                        filteredIdx++;
-                    }
-                });
+                const filteredTokens1WithIndex = attentionData.tokens1
+                    .map((token, originalIndex) => ({ token, originalIndex }))
+                    .filter(item => filterToken(item.token));
+                const filteredTokens2WithIndex = attentionData.tokens2
+                    .map((token, originalIndex) => ({ token, originalIndex }))
+                    .filter(item => filterToken(item.token));
 
-                const filteredToOriginal2 = new Map<number, number>();
-                filteredIdx = 0;
-                attentionData.tokens2.forEach((token, origIdx) => {
-                    if (token !== "[CLS]" && token !== "[SEP]") {
-                        filteredToOriginal2.set(filteredIdx, origIdx);
-                        filteredIdx++;
-                    }
-                });
+                const hoveredFilteredToken2 = filteredTokens2WithIndex[hoveredTokenIndex2];
+                if (!hoveredFilteredToken2) return;
+                const originalIndex2 = hoveredFilteredToken2.originalIndex;
 
-                // Get original index for the hovered token
-                const originalIdx = filteredToOriginal2.get(hoveredTokenIndex2);
-                if (originalIdx === undefined) return;
+                const weightStartIndex = attentionData.tokens1.length;
+                if (weightStartIndex + originalIndex2 >= attentionData.attention_weights.length) return;
 
-                // For code2 tokens, the weight index is offset by the length of tokens1
-                const weightIndex = attentionData.tokens1.length + originalIdx;
-                if (weightIndex >= attentionData.attention_weights.length) return;
+                const weights = attentionData.attention_weights[weightStartIndex + originalIndex2];
+                if (!weights) return;
 
-                const weights = attentionData.attention_weights[weightIndex];
                 const threshold: number = 0.1;
                 const indicesToHighlight: number[] = [];
                 const weightsToShow: number[] = [];
                 const newBackgroundColorMap1: BackgroundColorMap = {};
 
-                // Map from original token1 indices to filtered indices
-                const originalToFiltered1 = new Map<number, number>();
-                filteredIdx = 0;
-                attentionData.tokens1.forEach((token, origIdx) => {
-                    if (token !== "[CLS]" && token !== "[SEP]") {
-                        originalToFiltered1.set(origIdx, filteredIdx);
-                        filteredIdx++;
-                    }
-                });
-
-                // Find tokens with attention above threshold
-                attentionData.tokens1.forEach((token, origIdx) => {
-                    if (token !== "[CLS]" && token !== "[SEP]") {
-                        const filteredIdx = originalToFiltered1.get(origIdx);
-                        if (filteredIdx !== undefined && origIdx < weights.length && weights[origIdx] > threshold) {
-                            indicesToHighlight.push(filteredIdx);
-                            weightsToShow.push(weights[origIdx]);
-                            newBackgroundColorMap1[filteredIdx] = getAttentionColor(weights[origIdx]);
-                        }
+                filteredTokens1WithIndex.forEach((token1, filteredIndex1) => {
+                    const originalIndex1 = token1.originalIndex;
+                    if (originalIndex1 < weights.length && weights[originalIndex1] > threshold) {
+                        indicesToHighlight.push(filteredIndex1);
+                        weightsToShow.push(weights[originalIndex1]);
+                        newBackgroundColorMap1[filteredIndex1] = getAttentionColor(weights[originalIndex1]);
                     }
                 });
 
@@ -505,20 +379,39 @@ const AttentionView: React.FC<AttentionViewProps> = ({ code1, code2 }) => {
                 setBackgroundColorMap1(newBackgroundColorMap1);
                 setBackgroundColorMap2({ [hoveredTokenIndex2]: 'rgba(0, 0, 255, 0.3)' });
 
-                // Clear canvas and draw new lines
                 const canvas = canvasRef.current;
                 const ctx = canvas?.getContext('2d');
                 if (canvas && ctx) {
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
                     drawLines(hoveredTokenIndex2, 2, indicesToHighlight, 1, weightsToShow);
                 }
-                console.log("useEffect (MouseOver2) - Before drawLines call - fromIndex:", hoveredTokenIndex2, "toIndices:", indicesToHighlight, "weights:", weightsToShow);
-                drawLines(hoveredTokenIndex2, 2, indicesToHighlight, 1, weightsToShow);
             } catch (error) {
-                console.error("Error handling mouse over in useEffect for token2:", error);
+                console.error("Error handling hover for token2:", error);
             }
         }
-    }, [isHovering, hoveredTokenIndex2, attentionData, drawLines, getAttentionColor]);
+    }, [isHovering, hoveredTokenIndex2, attentionData, drawLines, getAttentionColor, filterToken]);
+
+    const handleClick1 = useCallback((index: number): void => {
+        if (!attentionData) return;
+        const filteredTokens1WithIndex = attentionData.tokens1
+            .map((token, originalIndex) => ({ token, originalIndex }))
+            .filter(item => filterToken(item.token));
+        setSelectedTokenIndex1(index);
+        setSelectedTokenIndex2(null);
+        setIsHovering(true);
+        setHoveredTokenIndex1(index);
+    }, [attentionData, filterToken]);
+
+    const handleClick2 = useCallback((index: number): void => {
+        if (!attentionData) return;
+        const filteredTokens2WithIndex = attentionData.tokens2
+            .map((token, originalIndex) => ({ token, originalIndex }))
+            .filter(item => filterToken(item.token));
+        setSelectedTokenIndex2(index);
+        setSelectedTokenIndex1(null);
+        setIsHovering(true);
+        setHoveredTokenIndex2(index);
+    }, [attentionData, filterToken]);
 
     return (
         <div ref={containerRef} className="flex flex-col gap-4 p-5 relative h-full">
@@ -547,11 +440,25 @@ const AttentionView: React.FC<AttentionViewProps> = ({ code1, code2 }) => {
                         <option key={i} value={i}>{i}</option>
                     ))}
                 </select>
+                <button
+                    onClick={() => {
+                        setSelectedTokenIndex1(null);
+                        setSelectedTokenIndex2(null);
+                        setIsHovering(false);
+                        drawAllLinesByDefault();
+                    }}
+                    className="px-4 py-2 bg-gray-900 hover:bg-gray-700 rounded"
+                    disabled={isLoading}
+                >
+                    Clear Selection
+                </button>
                 {isLoading && <span className="text-blue-500">Loading...</span>}
                 {error && <span className="text-red-500">{error}</span>}
             </div>
-            <div className='flex-1 flex flex-col justify-around'>
-                <div className="flex-1 border border-gray-300 p-4 whitespace-pre-wrap font-mono max-h-fit">
+
+            <div className="flex-1 flex justify-around">
+                {/* Left column for Code Snippet 1 */}
+                <div className="w-1/2 border border-gray-300 p-4 overflow-y-auto">
                     <h2 className="text-lg font-semibold mb-2">Code Snippet 1</h2>
                     {isLoading ? (
                         <div>Loading tokens...</div>
@@ -560,31 +467,37 @@ const AttentionView: React.FC<AttentionViewProps> = ({ code1, code2 }) => {
                     ) : getFilteredTokens1().length === 0 ? (
                         <div>No tokens available</div>
                     ) : (
-                        getFilteredTokens1().map((token, index) => {
-                            const shouldAddSpace: boolean = index === 0 || token.startsWith("Ġ");
-                            const displayedToken: string = token.replace("Ġ", " ");
-                            return (
-                                <React.Fragment key={`token1-${index}`}>
-                                    {index > 0 && shouldAddSpace && " "}
-                                    <span
-                                        ref={(el) => (tokens1Ref.current[index] = el)}
-                                        className="cursor-pointer"
-                                        onMouseOver={() => handleMouseOver1(index)}
-                                        onMouseOut={handleMouseOut1}
-                                        style={{
-                                            backgroundColor: backgroundColorMap1[index] || 'transparent',
-                                            transition: 'background-color 0.2s'
-                                        }}
+                        <div className="flex flex-col items-start">
+                            {getFilteredTokens1().map(({ token, originalIndex }, index) => {
+                                const displayedToken: string = token.replace("Ġ", " ");
+                                return (
+                                    <div
+                                        key={`token1-${index}`}
+                                        className="py-1 w-full"
                                     >
-                                        {displayedToken}
-                                    </span>
-                                </React.Fragment>
-                            );
-                        })
+                                        <span
+                                            ref={(el) => (tokens1Ref.current[index] = el)}
+                                            className="cursor-pointer px-2 py-1 rounded inline-block"
+                                            onMouseOver={() => handleMouseOver1(index)}
+                                            onMouseOut={handleMouseOut1}
+                                            onClick={() => handleClick1(index)}
+                                            style={{
+                                                backgroundColor: backgroundColorMap1[index] ||
+                                                    (selectedTokenIndex1 === index ? 'rgba(0, 0, 255, 0.3)' : 'transparent'),
+                                                transition: 'background-color 0.2s'
+                                            }}
+                                        >
+                                            {displayedToken}
+                                        </span>
+                                    </div>
+                                );
+                            })}
+                        </div>
                     )}
                 </div>
 
-                <div className="flex-1 border border-gray-300 p-4 whitespace-pre-wrap font-mono max-h-fit">
+                {/* Right column for Code Snippet 2 */}
+                <div className="w-1/2 border border-gray-300 p-4 overflow-y-auto">
                     <h2 className="text-lg font-semibold mb-2">Code Snippet 2</h2>
                     {isLoading ? (
                         <div>Loading tokens...</div>
@@ -593,27 +506,32 @@ const AttentionView: React.FC<AttentionViewProps> = ({ code1, code2 }) => {
                     ) : getFilteredTokens2().length === 0 ? (
                         <div>No tokens available</div>
                     ) : (
-                        getFilteredTokens2().map((token, index) => {
-                            const shouldAddSpace: boolean = index === 0 || token.startsWith("Ġ");
-                            const displayedToken: string = token.replace("Ġ", " ");
-                            return (
-                                <React.Fragment key={`token2-${index}`}>
-                                    {index > 0 && shouldAddSpace && " "}
-                                    <span
-                                        ref={(el) => (tokens2Ref.current[index] = el)}
-                                        className="cursor-pointer"
-                                        onMouseOver={() => handleMouseOver2(index)}
-                                        onMouseOut={handleMouseOut2}
-                                        style={{
-                                            backgroundColor: backgroundColorMap2[index] || 'transparent',
-                                            transition: 'background-color 0.2s'
-                                        }}
+                        <div className="flex flex-col items-start">
+                            {getFilteredTokens2().map(({ token, originalIndex }, index) => {
+                                const displayedToken: string = token.replace("Ġ", " ");
+                                return (
+                                    <div
+                                        key={`token2-${index}`}
+                                        className="py-1 w-full"
                                     >
-                                        {displayedToken}
-                                    </span>
-                                </React.Fragment>
-                            );
-                        })
+                                        <span
+                                            ref={(el) => (tokens2Ref.current[index] = el)}
+                                            className="cursor-pointer px-2 py-1 rounded inline-block"
+                                            onMouseOver={() => handleMouseOver2(index)}
+                                            onMouseOut={handleMouseOut2}
+                                            onClick={() => handleClick2(index)}
+                                            style={{
+                                                backgroundColor: backgroundColorMap2[index] ||
+                                                    (selectedTokenIndex2 === index ? 'rgba(0, 0, 255, 0.3)' : 'transparent'),
+                                                transition: 'background-color 0.2s'
+                                            }}
+                                        >
+                                            {displayedToken}
+                                        </span>
+                                    </div>
+                                );
+                            })}
+                        </div>
                     )}
                 </div>
             </div>

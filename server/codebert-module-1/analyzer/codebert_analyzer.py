@@ -80,10 +80,19 @@ class CodeBERTAnalyzer:
         """Preprocess code for CodeBERT analysis."""
         # Normalize whitespace and remove newlines/tabs
         code = re.sub(r"\s+", "", code).replace("\n", "").replace("\t", "").strip()
-
+        
+        # Remove libraries (for Python)
+        code = re.sub(r"from\s+.*\s+import\s+.*", "", code)
+        
+        # Remove #include directives (for C++)
+        code = re.sub(r"#include\s+[<\"].*?[>\"]", "", code)
+        
+        # Remove excessive whitespace again after normalization
+        code = ' '.join(code.split())
+        
         # Truncate to 512 tokens with proper word boundary
         return code[:509].rsplit(" ", 1)[0] + "..." if len(code) > 512 else code
-
+    
     def get_embedding(self, code: str) -> np.ndarray:
         """Get code embedding using CodeBERT with mean pooling."""
         cache_key = hash(code)
