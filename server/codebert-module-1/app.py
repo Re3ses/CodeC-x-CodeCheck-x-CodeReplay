@@ -30,12 +30,19 @@ snapshotsCollection = db["codesnapshots"]
 
 
 @app.route("/api/similarity/matrix", methods=["GET"])
+# @limiter.limit("10 per minute")
 def get_similarity_matrix():
+    print("Similarity matrix request received.")
     start_time = time.time()
     try:
         problem_id = request.args.get("problemId")
         room_id = request.args.get("roomId")
         verdict = request.args.get("verdict")
+        user_type = request.args.get("userType")
+        accept_partial_submissions = (
+            request.args.get("acceptPartialSubmissions") == "true"
+        )
+        highest_scoring_only = request.args.get("highestScoringOnly") == "true"
 
         if not problem_id and not room_id:
             return (
@@ -45,29 +52,45 @@ def get_similarity_matrix():
                 400,
             )
 
-        query = {"verdict": verdict or "ACCEPTED"}
+        query = {}
+
+        # Only apply verdict filter if a specific verdict is provided
+        if verdict:  # If a specific verdict is provided (not empty string)
+            query["verdict"] = verdict
+        # Don't set a default verdict when "All" is selected (empty string)
+
+        # If accept_partial_submissions is enabled, add score filter
+        if accept_partial_submissions:
+            query["score"] = {"$gt": 0}
+
         if problem_id:
             query["problem"] = problem_id
+
         if room_id:
             query["room"] = room_id
 
-        # To get the highest-scoring submission per learner:
-        submissions = list(
-            userSubmissionsCollection.aggregate(
-                [
-                    {"$match": query},
-                    {"$sort": {"score_overall_count": -1}},  # Sort by score descending
-                    {"$group": {"_id": "$learner_id", "doc": {"$first": "$$ROOT"}}},
-                    {"$replaceRoot": {"newRoot": "$doc"}},
-                ]
-            )
-        )
+        if user_type and user_type != "All":
+            query["user_type"] = user_type
+
+        print("query:", query)
+
+        aggregation_pipeline = [{"$match": query}]
+
+        # Apply highest-scoring filter per learner if enabled
+        if highest_scoring_only:
+            aggregation_pipeline += [
+                {"$sort": {"score": -1}},  # Sort by score descending
+                {"$group": {"_id": "$learner_id", "doc": {"$first": "$$ROOT"}}},
+                {"$replaceRoot": {"newRoot": "$doc"}},
+            ]
+
+        submissions = list(userSubmissionsCollection.aggregate(aggregation_pipeline))
 
         for submission in submissions:
             submission["_id"] = str(submission["_id"])
             submission["learner_id"] = str(submission["learner_id"])
 
-        print("submissions", submissions)
+        # logger.info(f"Found {len(submissions)} submissions matching the query")
 
         snippets = [
             SnippetInfo(
@@ -87,31 +110,40 @@ def get_similarity_matrix():
                     "matrix": [],
                     "snippets": [],
                     "message": f"No snippets found for problemId: {problem_id} or roomId: {room_id}",
-                    "submissions": submissions,
                 }
             )
 
         matrix, snippet_info = codebert_detector.compute_similarity_matrix(snippets)
 
-        return jsonify({"success": True, "matrix": matrix, "snippets": snippet_info})
+        # logger.info(
+        #     f"Similarity matrix computation completed in {time.time() - start_time:.2f} seconds"
+        # )
+
+        response = jsonify(
+            {"success": True, "matrix": matrix, "snippets": snippet_info}
+        )
+        # response.headers.add("Access-Control-Allow-Origin", "*")
+        # response.headers.add("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE")
+        # response.headers.add("Access-Control-Allow-Headers", "Content-Type")
+        # response.headers.add("Access-Control-Allow-Credentials", "true")
+
+        return response
 
     except Exception as e:
         tb_str = traceback.format_exc()
-        print(tb_str)
+        # logger.error(f"Error in similarity matrix computation: {str(e)}\n{tb_str}")
         return (
             jsonify(
                 {
                     "success": False,
                     "error": str(e),
-                    "traceback": tb_str,
                     "matrix": [],
                     "snippets": [],
                 }
             ),
             500,
         )
-    finally:
-        print(f"Total time taken: {time.time() - start_time} seconds")
+
 
 
 @app.route("/api/similarity/sequential", methods=["GET"])

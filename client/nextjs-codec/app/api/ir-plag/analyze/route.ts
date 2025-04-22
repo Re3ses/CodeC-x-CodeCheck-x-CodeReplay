@@ -1,7 +1,6 @@
 import { NextRequest } from 'next/server';
 import { readdirSync, readFileSync, statSync } from 'fs';
 import { join } from 'path';
-import { TransformStream } from 'web-streams-polyfill';
 
 // Update dataset path to correct location
 const DATASET_PATH = join(process.cwd(), 'app', 'ir-plag', 'IR-Plag-Dataset');
@@ -15,7 +14,7 @@ try {
   console.error('Error accessing dataset:', error);
 }
 
-const SIMILARITY_THRESHOLD = 0.40;
+const SIMILARITY_THRESHOLD = 0.50;
 
 interface FileComparison {
   originalPath: string;
@@ -290,29 +289,28 @@ async function calculateSimilarity(code1: string, code2: string): Promise<number
 }
 
 export async function POST(req: NextRequest) {
-  const stream = new TransformStream();
-  const writer = stream.writable.getWriter();
-  const encoder = new TextEncoder();
-
-  (async () => {
-    try {
-      for await (const chunk of processDataset()) {
-        await writer.write(encoder.encode(chunk));
+  // Create a ReadableStream directly
+  const stream = new ReadableStream({
+    async start(controller) {
+      try {
+        for await (const chunk of processDataset()) {
+          controller.enqueue(new TextEncoder().encode(chunk));
+        }
+        // Send completion message
+        controller.enqueue(new TextEncoder().encode(JSON.stringify({ completed: true }) + '\n'));
+        controller.close();
+      } catch (error) {
+        console.error('Stream error:', error);
+        controller.enqueue(new TextEncoder().encode(JSON.stringify({ 
+          error: error instanceof Error ? error.message : 'Unknown error',
+          completed: true 
+        }) + '\n'));
+        controller.close();
       }
-      // Ensure we send a completion message
-      await writer.write(encoder.encode(JSON.stringify({ completed: true }) + '\n'));
-    } catch (error) {
-      console.error('Stream error:', error);
-      await writer.write(encoder.encode(JSON.stringify({ 
-        error: (error as Error).message,
-        completed: true 
-      }) + '\n'));
-    } finally {
-      await writer.close();
     }
-  })();
+  });
 
-  return new Response(stream.readable, {
+  return new Response(stream, {
     headers: {
       'Content-Type': 'text/event-stream',
       'Cache-Control': 'no-cache',
