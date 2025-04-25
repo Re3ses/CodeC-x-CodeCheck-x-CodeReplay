@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import React, { useEffect, useState, useRef, useCallback, use } from 'react';
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 import { Editor } from '@monaco-editor/react';
 import { Button } from '@/components/ui/button';
@@ -13,7 +13,6 @@ import axios from 'axios';
 import { GetProblems, SilentLogin } from '@/utilities/apiService';
 import {
   getBatchSubmisisons,
-  getLanguage,
   getLanguages,
   getSubmission,
   postBatchSubmissions,
@@ -68,28 +67,27 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
   const queryClient = useQueryClient();
 
   // HEALTH CHECK TO BE REMOVED
-  useEffect(() => {
-    const checkHealth = async () => {
-      try {
-        const res = await fetch('/api/rooms/healthcheck',
-          {
-            method: "GET",
-          }
-        );
-        const data = await res.json();
-        // console.log(data);
-      } catch (error) {
-        console.error('Health check failed:', error);
-      }
-    };
+  // useEffect(() => {
+  //   const checkHealth = async () => {
+  //     try {
+  //       const res = await fetch('/api/rooms/healthcheck',
+  //         {
+  //           method: "GET",
+  //         }
+  //       );
+  //       const data = await res.json();
+  //       // console.log(data);
+  //     } catch (error) {
+  //       console.error('Health check failed:', error);
+  //     }
+  //   };
 
-    checkHealth();
-  }, []);
+  //   checkHealth();
+  // }, []);
 
 
   // State management
   const [problem, setProblem] = useState<ProblemSchemaInferredType>();
-  const [startTime, setStartTime] = useState<number>(Date.now());
   const [editorValue, setEditorValue] = useState<string>(DEFAULT_TEMPLATE);
   const [selectedLang, setSelectedLang] = useState<string>(SUPPORTED_LANGUAGES.CPP);
   const [compileResult, setCompileResult] = useState<any>();
@@ -98,33 +96,18 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
   const [showCustomInput, setShowCustomInput] = useState<boolean>(false);
   const [score, setScore] = useState<any>();
   const [batchResult, setBatchResult] = useState<any>();
-  const [learner, setLearner] = useState<string>();
   const [isInitialized, setIsInitialized] = useState(false);
 
   const [user, setUser] = useState<any>();
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [trying, setTrying] = useState(false);
 
-  // LEARNER ID LOGGING
-  // useEffect(() => {
-  //   // console.log("LEARNER ID: ", learner);
-  // }, [learner]);
-
-  // // In your SolveProblem.tsx component
-  // useEffect(() => {
-  //   console.log('Current date:', new Date());
-  //   console.log('Due date:', dueDate);
-  //   console.log('Is past due:', dueDate ? new Date() > new Date(dueDate) : false);
-  // }, [dueDate]);
-
   // Autosave states
   const [lastSaved, setLastSaved] = useState<string>('');
   const [saving, setSaving] = useState<boolean>(false);
   const [snapshots, setSnapshots] = useState<any[]>([]);
   const [enhancedPastes, setEnhancedPastes] = useState<EnhancedPasteInfo[]>([]);
-  const [pasteCount, setPasteCount] = useState(0);
   const [autoSaveToggle, setAutoSaveToggle] = useState<boolean>(false);
-  const [previousSaved, setPreviousSaved] = useState<string>('');
 
   useEffect(() => {
     setAutoSaveToggle(userType ? userType === 'learner' : false);
@@ -154,11 +137,6 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
     try {
       // console.log('Auto-saving...');
 
-      // Skip saving if the code is the same as the last saved code
-      if (codeToSave === previousSaved) {
-        return
-      }
-
       // Check if user is defined
       if (!user) {
         console.warn("User data not yet loaded, skipping auto-save.");
@@ -187,7 +165,6 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
       });
 
       if (saveResponse.ok) {
-        setPreviousSaved(codeToSave);
         const savedData = await saveResponse.json();
         if (savedData.snippet) {
           // Update snapshots while maintaining order
@@ -292,7 +269,6 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
 
         // Update paste tracking state
         setEnhancedPastes(prev => [...prev, newPaste]);
-        setPasteCount(prev => prev + 1);
 
       } catch (error) {
         console.error('Error handling paste event:', error);
@@ -360,18 +336,16 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
           getUser()
         ]);
 
-        // Debug logs remove later
-        // console.log("Problem data:", problemData);
-        // console.log("Languages data:", languagesData);
-        // console.log("User data:", userData);
+        console.log("ProblemID:", problemId);
 
         // Set states with strict type checks and ensure new references
         setProblem(prevState => problemData ? { ...problemData } : prevState);
+        console.log("ProblemData:", problemData);
         setLanguages(prevState => languagesData ? [...languagesData.filter((lang: LanguageData) =>
           Object.values(SUPPORTED_LANGUAGES).includes(lang.id.toString() as "54" | "62" | "71" | "50" | "51" | "63")
         )] : prevState);
+        // console.log("LanguagesData:", languagesData);
         setUser((prevState: any) => userData ? { ...userData } : prevState);
-        setLearner(userData?.id || '');
 
       } catch (error) {
         console.error('Failed to initialize data:', error);
@@ -387,6 +361,42 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
     initializeData();
 
   }, [problemId]);
+
+  useEffect(() => {
+    console.log("User:", user);
+    console.log("Snapshots:", snapshots);
+
+    const fetchSnapshots = async (learner_id: any) => {
+      const response = await fetch(
+        `/api/codereplay/code-snapshots?problemId=${problemId}&learner_id=${learner_id}`
+      );
+      const data = await response.json();
+
+      if (data.success && data.snapshots) {
+        // Sort snapshots by version in ascending order
+        const sortedSnapshots = data.snapshots.sort((a: any, b: any) => {
+          if (a.version && b.version) {
+            return a.version - b.version;
+          }
+          return 0; // If version is missing, keep the original order
+        });
+
+        setSnapshots(sortedSnapshots);
+      }
+    };
+
+    fetchSnapshots(user?.id)
+    setLastSaved(snapshots[snapshots.length - 1]?.code || '');
+    console.log("Snapshots:", snapshots);
+    console.log("Last Saved:", lastSaved);
+
+  }, [user]);
+
+  useEffect(() => {
+    setLastSaved(snapshots[snapshots.length - 1]?.code || '');
+    console.log("Snapshots:", snapshots);
+    console.log("Last Saved:", lastSaved);
+  }, [snapshots, lastSaved]);
 
   async function getToken(input: string = '', expected: null | string = null) {
     const data = {
