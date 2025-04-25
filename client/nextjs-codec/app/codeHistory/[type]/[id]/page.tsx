@@ -130,7 +130,7 @@ export default function CodeReplayApp() {
     const fetchLearnerSnapshots = async () => {
       try {
         const response = await fetch(
-          `/api/codereplay/code-snapshots?problem_id=${params.id}`
+          `/api/codereplay/code-snapshots?problemId=${params.id}`
         );
         const data = await response.json();
         // console.log("Data received from code-snapshots API:", data);
