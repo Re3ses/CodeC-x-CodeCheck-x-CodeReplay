@@ -857,7 +857,7 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
                     onMount={handleEditorDidMount}
                     options={{
                       fontSize: 14,
-                      readOnly: submitting,
+                      readOnly: submitting || trying,
                       minimap: { enabled: false },
                       scrollBeyondLastLine: false,
                       lineNumbers: 'on',

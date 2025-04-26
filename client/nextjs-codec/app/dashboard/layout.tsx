@@ -13,7 +13,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       try {
         await refreshToken();
         const user = await getUser();
-        console.log("Fetched user:", user);
+        // console.log("Fetched user:", user);
         return user;
       } catch (error) {
         console.error("Error fetching user:", error);

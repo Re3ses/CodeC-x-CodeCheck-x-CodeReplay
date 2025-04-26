@@ -207,9 +207,9 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
       similarity: similarity.similarity,
       codebertScore: similarity.codebertScore
     })));
-    console.log("Chart Data:", chartData);
-    console.log("chartData length:", chartData.length);
-    console.log("Sequential Similarities:", sequentialSimilarities);
+    // console.log("Chart Data:", chartData);
+    // console.log("chartData length:", chartData.length);
+    // console.log("Sequential Similarities:", sequentialSimilarities);
   }, [sequentialSimilarities]);
 
 
