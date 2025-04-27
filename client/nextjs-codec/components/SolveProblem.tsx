@@ -66,26 +66,6 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
   const editorRef = useRef<Monaco.IStandaloneCodeEditor>();
   const queryClient = useQueryClient();
 
-  // HEALTH CHECK TO BE REMOVED
-  // useEffect(() => {
-  //   const checkHealth = async () => {
-  //     try {
-  //       const res = await fetch('/api/rooms/healthcheck',
-  //         {
-  //           method: "GET",
-  //         }
-  //       );
-  //       const data = await res.json();
-  //       // console.log(data);
-  //     } catch (error) {
-  //       console.error('Health check failed:', error);
-  //     }
-  //   };
-
-  //   checkHealth();
-  // }, []);
-
-
   // State management
   const [problem, setProblem] = useState<ProblemSchemaInferredType>();
   const [editorValue, setEditorValue] = useState<string>(DEFAULT_TEMPLATE);
@@ -108,6 +88,7 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
   const [snapshots, setSnapshots] = useState<any[]>([]);
   const [enhancedPastes, setEnhancedPastes] = useState<EnhancedPasteInfo[]>([]);
   const [autoSaveToggle, setAutoSaveToggle] = useState<boolean>(false);
+  const [codeTemplates, setCodeTemplates] = useState<any[]>([]);
 
   useEffect(() => {
     setAutoSaveToggle(userType ? userType === 'learner' : false);
@@ -276,12 +257,7 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
     });
   }
 
-  // // UseEffect to log paste history
-  // useEffect(() => {
-  //   console.log("Paste History: ", enhancedPastes);
-  // }, [enhancedPastes]);
-
-
+  // Initialize the editor language
   useEffect(() => {
     if (selectedLang && editorRef.current && !isInitialized) {
       const editor = editorRef.current;
@@ -336,16 +312,19 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
           getUser()
         ]);
 
-        console.log("ProblemID:", problemId);
+        // console.log("ProblemID:", problemId);
 
         // Set states with strict type checks and ensure new references
         setProblem(prevState => problemData ? { ...problemData } : prevState);
-        console.log("ProblemData:", problemData);
         setLanguages(prevState => languagesData ? [...languagesData.filter((lang: LanguageData) =>
           Object.values(SUPPORTED_LANGUAGES).includes(lang.id.toString() as "54" | "62" | "71" | "50" | "51" | "63")
         )] : prevState);
-        // console.log("LanguagesData:", languagesData);
+        setCodeTemplates(problemData?.languages)
         setUser((prevState: any) => userData ? { ...userData } : prevState);
+
+        // console.log("ProblemData:", problemData);
+        // console.log("CodeTemplates:", problemData?.languages);
+        // console.log("LanguagesData:", languagesData);
 
       } catch (error) {
         console.error('Failed to initialize data:', error);
@@ -363,8 +342,8 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
   }, [problemId]);
 
   useEffect(() => {
-    console.log("User:", user);
-    console.log("Snapshots:", snapshots);
+    // console.log("User:", user);
+    // console.log("Snapshots:", snapshots);
 
     const fetchSnapshots = async (learner_id: any) => {
       const response = await fetch(
@@ -387,16 +366,11 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
 
     fetchSnapshots(user?.id)
     setLastSaved(snapshots[snapshots.length - 1]?.code || '');
-    console.log("Snapshots:", snapshots);
-    console.log("Last Saved:", lastSaved);
-
   }, [user]);
 
   useEffect(() => {
     setLastSaved(snapshots[snapshots.length - 1]?.code || '');
-    console.log("Snapshots:", snapshots);
-    console.log("Last Saved:", lastSaved);
-  }, [snapshots, lastSaved]);
+  }, [snapshots]);
 
   async function getToken(input: string = '', expected: null | string = null) {
     const data = {
@@ -696,6 +670,46 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
     return args.filter(Boolean).join(' ');
   };
 
+  const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const lang = e.target.value;
+    setSelectedLang(lang);
+
+    // Find corresponding template based on language
+    let templateCode = '';
+
+    // Map language IDs to template names
+    const languageNameMap: Record<string, string> = {
+      [SUPPORTED_LANGUAGES.CPP]: "C++ (GCC 9.2.0)",
+      [SUPPORTED_LANGUAGES.JAVA]: "Java (OpenJDK 13.0.1)",
+      [SUPPORTED_LANGUAGES.PYTHON]: "Python (3.8.1)",
+      [SUPPORTED_LANGUAGES.C]: "C (GCC 9.2.0)",
+      [SUPPORTED_LANGUAGES.CSHARP]: "C# (Mono 6.6.0.161)",
+      [SUPPORTED_LANGUAGES.JAVASCRIPT]: "JavaScript (Node.js 12.14.1)",
+    };
+
+    // Find template by name
+    const templateName = languageNameMap[lang];
+    const template = codeTemplates?.find(template => template.name === templateName);
+
+    if (template?.code_snippet) {
+      templateCode = template.code_snippet;
+    } else {
+      // Default templates if no template found
+      const defaultTemplates: Record<string, string> = {
+        [SUPPORTED_LANGUAGES.CPP]: DEFAULT_TEMPLATE,
+        [SUPPORTED_LANGUAGES.PYTHON]: 'print("Hello World!")',
+        [SUPPORTED_LANGUAGES.JAVA]: 'public class Main {\n    public static void main(String[] args) {\n        // Your code here\n    }\n}',
+        [SUPPORTED_LANGUAGES.C]: '#include <stdio.h>\n\nint main() {\n    // Your code here\n    return 0;\n}',
+        [SUPPORTED_LANGUAGES.CSHARP]: 'using System;\n\nclass Program {\n    static void Main() {\n        // Your code here\n    }\n}',
+        [SUPPORTED_LANGUAGES.JAVASCRIPT]: 'function main() {\n    // Your code here\n}\n\nmain();',
+      };
+
+      templateCode = defaultTemplates[lang] || '';
+    }
+
+    setEditorValue(templateCode);
+  };
+
   return (
     <div className="h-screen bg-gray-900 text-white">
       <PanelGroup direction="horizontal" className="h-full">
@@ -799,7 +813,7 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
                 <select
                   className="bg-gray-900 text-white px-4 py-2 rounded-md border border-gray-700 focus:ring-2 focus:ring-[#FFD700] focus:border-[#FFD700]"
                   value={selectedLang}
-                  onChange={(e) => setSelectedLang(e.target.value)}
+                  onChange={handleLanguageChange}
                 >
                   {languages?.filter(lang =>
                     Object.values(SUPPORTED_LANGUAGES).includes(lang.id.toString() as "54" | "62" | "71" | "50" | "51" | "63")
