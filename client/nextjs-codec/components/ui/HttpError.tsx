@@ -85,14 +85,12 @@ export default function HttpError({ statusCode, reset }: HttpErrorProps) {
             Try again
           </button>
         )}
-        {error.showHome && (
-          <Link 
-            href="/dashboard"
-            className="px-6 py-3 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors"
-          >
-            Return Home
-          </Link>
-        )}
+        <Link
+          href="/dashboard"
+          className="px-6 py-3 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors"
+        >
+          Return Home
+        </Link>
       </div>
     </div>
   );
