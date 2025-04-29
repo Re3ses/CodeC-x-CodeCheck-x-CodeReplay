@@ -242,60 +242,70 @@ class StructuralAnalysis:
             # Force deterministic behavior for UMAP
             torch.use_deterministic_algorithms(True)
 
-            # Calculate overall similarity score
-            overall_similarity = self.calculate_similarity(
-                code_snippet_a, code_snippet_b
-            )
-
             # Get embeddings for both snippets
             embeddings_a, lines_a = self.get_line_embeddings(code_snippet_a)
             embeddings_b, lines_b = self.get_line_embeddings(code_snippet_b)
 
             if len(embeddings_a) == 0 or len(embeddings_b) == 0:
-                raise ValueError(
-                    "One or both code snippets are empty after preprocessing"
-                )
+                raise ValueError("One or both code snippets are empty after preprocessing")
 
             # Combine embeddings and create labels
             combined_embeddings = np.vstack([embeddings_a, embeddings_b])
-            labels = np.concatenate(
-                [np.zeros(len(embeddings_a)), np.ones(len(embeddings_b))]
-            )
+            labels = np.concatenate([np.zeros(len(embeddings_a)), np.ones(len(embeddings_b))])
 
-            # Apply UMAP with fixed parameters for reproducibility
+            # First apply UMAP for dimensionality reduction
             reducer = UMAP(
-                n_components=2,  # 2D visualization
-                n_neighbors=min(7, len(combined_embeddings) - 1),
-                min_dist=0.1,
-                spread=1,  # Increased spread for better visualization
+                n_components=2,
+                n_neighbors=min(6, len(combined_embeddings) - 1),
+                min_dist=1,
+                spread=1,
                 random_state=42,
                 n_jobs=1,
             )
 
             reduced_embeddings = reducer.fit_transform(combined_embeddings)
 
-            # Apply DBSCAN with fixed parameters
+            # Then apply DBSCAN on reduced embeddings
             clustering = DBSCAN(
-                eps=0.005,
+                eps=1.2,        # Adjusted for 2D space
                 min_samples=2,
-                metric="cosine",
-                n_jobs=1,  # Single thread for determinism
+                metric='euclidean',  # Changed to euclidean for 2D space
+                n_jobs=1,       # Single thread for determinism
             ).fit(reduced_embeddings)
 
             cluster_labels = clustering.labels_
 
             # Create DataFrame for visualization
-            df = pd.DataFrame(
-                {
-                    "x": reduced_embeddings[:, 0],
-                    "y": reduced_embeddings[:, 1],
-                    "source": [
-                        "Code Sample 1" if l == 0 else "Code Sample 2" for l in labels
-                    ],
-                    "cluster": cluster_labels,
-                    "text": lines_a + lines_b,
-                }
-            )
+            df = pd.DataFrame({
+                "x": reduced_embeddings[:, 0],
+                "y": reduced_embeddings[:, 1],
+                "source": ["Code Sample 1" if l == 0 else "Code Sample 2" for l in labels],
+                "cluster": cluster_labels,
+                "text": lines_a + lines_b,
+            })
+
+            # Group points by cluster for visualization
+            cluster_groups = df.groupby('cluster')
+            
+            # Calculate centroids for each cluster
+            centroids = {}
+            for cluster_id, group in cluster_groups:
+                if cluster_id != -1:  # Skip noise points
+                    centroids[cluster_id] = (group['x'].mean(), group['y'].mean())
+            
+            # Create a visualization factor to make points appear closer to their centroid
+            visual_compression = 0.7  # Compression factor
+            
+            # Create a copy of the dataframe for visualization
+            viz_df = df.copy()
+            
+            # Adjust points towards their cluster centroid for visualization
+            for cluster_id in centroids:
+                mask = viz_df['cluster'] == cluster_id
+                if sum(mask) > 0:
+                    centroid_x, centroid_y = centroids[cluster_id]
+                    viz_df.loc[mask, 'x'] = viz_df.loc[mask, 'x'] * visual_compression + centroid_x * (1 - visual_compression)
+                    viz_df.loc[mask, 'y'] = viz_df.loc[mask, 'y'] * visual_compression + centroid_y * (1 - visual_compression)
 
             # Find similar structures
             similar_structures = []
@@ -329,6 +339,12 @@ class StructuralAnalysis:
                         }
                     )
 
+            # Calculate overall similarity as average of cluster similarities
+            if similar_structures:
+                overall_similarity = sum(structure['similarity'] for structure in similar_structures) / len(similar_structures)
+            else:
+                overall_similarity = self.calculate_similarity(code_snippet_a, code_snippet_b)
+
             # Sort similar structures for deterministic output
             similar_structures.sort(key=lambda x: (x["cluster_id"], x["type"]))
 
@@ -347,8 +363,9 @@ class StructuralAnalysis:
             # Create main scatter plot with fixed colors
             colors = {"Code Sample 1": "#1f77b4", "Code Sample 2": "#ff7f0e"}
 
+            # Update the scatter plot to use viz_df instead of df
             for source, color in sorted(colors.items()):  # Sort for determinism
-                source_df = df[df["source"] == source]
+                source_df = viz_df[viz_df["source"] == source]
                 ax.scatter(
                     source_df["x"],
                     source_df["y"],
@@ -361,16 +378,25 @@ class StructuralAnalysis:
 
             # Highlight similar clusters
             for structure in similar_structures:
-                cluster_points = df[df["cluster"] == structure["cluster_id"]]
+                cluster_points = viz_df[viz_df["cluster"] == structure["cluster_id"]]
                 if len(cluster_points) >= 3:  # Need at least 3 points for ConvexHull
-                    hull = ConvexHull(cluster_points[["x", "y"]].values)
-                    hull_points = cluster_points[["x", "y"]].values[hull.vertices]
-
-                    # Add a translucent highlight around the cluster
+                    points = cluster_points[["x", "y"]].values
+                    hull = ConvexHull(points)
+                    hull_points = points[hull.vertices]
+                    
+                    # Pad the hull
+                    centroid = np.mean(hull_points, axis=0)
+                    padded_hull_points = []
+                    for point in hull_points:
+                        vector = point - centroid
+                        padded_point = centroid + vector * 1.05
+                        padded_hull_points.append(padded_point)
+                    
+                    padded_hull_points = np.array(padded_hull_points)
                     ax.fill(
-                        hull_points[:, 0],
-                        hull_points[:, 1],
-                        alpha=0.2,
+                        padded_hull_points[:, 0],
+                        padded_hull_points[:, 1],
+                        alpha=0.3,
                         color="gray",
                         zorder=2,
                     )
@@ -395,17 +421,19 @@ class StructuralAnalysis:
 
             # Add title and subtitle with colored similarity score
             similarity_color = (
-                "#22c55e"
+                "#ef4444"  # Red for high similarity (70-100%)
                 if overall_similarity >= 0.7
-                else "#eab308" if overall_similarity >= 0.4 else "#ef4444"
+                else "#eab308"  # Orange for medium similarity (40-70%)
+                if overall_similarity >= 0.4
+                else "#22c55e"  # Green for low similarity (<40%)
             )
-            plt.suptitle("Code Structure Comparison", fontsize=16, y=0.98)
+            plt.suptitle("Code Structure Comparison", fontsize=16, y=0.92)
             ax.set_title(
                 f"Overall Similarity: {overall_similarity:.2%}",
                 fontsize=14,
                 color=similarity_color,
                 weight="bold",
-                pad=10,
+                pad=40,
             )
 
             # Create proper legend
@@ -450,6 +478,15 @@ class StructuralAnalysis:
                     fontsize=12,
                 )
 
+            # Update axis limits to focus on visualization data
+            x_min, x_max = viz_df['x'].min(), viz_df['x'].max()
+            y_min, y_max = viz_df['y'].min(), viz_df['y'].max()
+            x_margin = (x_max - x_min) * 0.05
+            y_margin = (y_max - y_min) * 0.05
+            ax.set_xlim(x_min - x_margin, x_max + x_margin)
+            ax.set_ylim(y_min - y_margin, y_max + y_margin)
+            ax.set_aspect('equal')
+
             # Adjust layout
             plt.tight_layout()
 
@@ -480,3 +517,4 @@ class StructuralAnalysis:
             buf.seek(0)
             error_img = base64.b64encode(buf.read()).decode("utf-8")
             return f"data:image/png;base64,{error_img}", []
+

@@ -143,36 +143,32 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
     };
   };
 
-  // // Function to check if code has significant changes
-  // const hasSignificantChanges = (newCode: string, oldCode: string) => {
-  //   const lengthDiff = Math.abs(newCode.length - oldCode.length);
-  //   return lengthDiff > 15; // Consider changes significant if more than 50 characters are added/removed
-  // };
-
-  const autoSaveCode = useCallback(async (codeToSave: string) => {
-    if (codeToSave === lastSaved) return;
+  const getLastVersion = async (userId: string, problemId: string, roomId: string) => {
     try {
-      const response = await fetch(`/api/snapshots/last-version?learner_id=${learner_id}&problemId=${problemId}&roomId=${roomId}`);
+      const response = await fetch(`/api/snapshots/lastVersion?userId=${userId}&problemId=${problemId}&roomId=${roomId}`);
+      if (!response.ok) {
+        return 0;
+      }
       const data = await response.json();
       return data.lastVersion || 0;
     } catch (error) {
-      console.error('Error fetching last version:', error);
+      console.error('Error getting last version:', error);
       return 0;
     }
-  }
+  };
+
+  const autoSaveCode = useCallback(async (codeToSave: string) => {
+    try {
+      setSaving(true);
 
       // Skip saving if the code is the same as the last saved code
       if (codeToSave === previousSaved) {
-        return
+        return;
       }
 
       // Check if user is defined
       if (!user) {
         console.warn("User data not yet loaded, skipping auto-save.");
-        return;
-      }
-
-      if (!user) {
         return;
       }
 
@@ -196,11 +192,10 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
         body: JSON.stringify(snapshot)
       });
 
-      if (saveResponse.ok) {
+      if (response.ok) {
         setPreviousSaved(codeToSave);
-        const savedData = await saveResponse.json();
+        const savedData = await response.json();
         if (savedData.snippet) {
-          // Update snapshots while maintaining order
           setSnapshots(prevSnapshots => {
             const updatedSnapshots = [...prevSnapshots, savedData.snippet];
             return updatedSnapshots.sort((a, b) => {
@@ -210,24 +205,22 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
               return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
             });
           });
-
           setLastSaved(codeToSave);
         }
       } else {
-        console.error('Auto-save failed:', saveResponse.statusText);
+        console.error('Auto-save failed:', response.statusText);
       }
 
       setPreviousSaved(codeToSave);
       setLastSaved(new Date());
-      
-      // Update local snapshots array
       setSnapshots(prev => [...prev, snapshot]);
 
     } catch (error) {
       console.error('Error saving code:', error);
+    } finally {
+      setSaving(false);
     }
-    setSaving(false);
-  }, [lastSaved, user, snapshots, roomId, problemId]);
+  }, [user, problemId, roomId, previousSaved, setSnapshots, setLastSaved, setPreviousSaved]);
 
   const debouncedAutoSave = useCallback(
     debounce((codeToSave: string) => {
