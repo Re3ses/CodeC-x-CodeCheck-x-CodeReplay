@@ -92,6 +92,35 @@ export async function getUser() {
   }
 }
 
+export async function getUser2() {
+  // bug at middleware
+  await SilentLogin();
+  const user = await getSession();
+  // console.log("Session in auth.ts:", user);
+  const url = `${process.env.SERVER_URL}${process.env.API_PORT}/api/users/${user?.username}`;
+
+  // console.log("Fetching user data from:", url);
+
+  const access_token = cookies().get('access_token')?.value; // token expires in vanilla server: just a hunch
+  const headers = {
+    Authorization: `Bearer ${access_token}`,
+  };
+
+  try {
+    const res = await fetch(url, {
+      method: 'GET',
+      headers: headers,
+    });
+    const data = await res.json();
+
+    // console.log('Fetched user data in auth.ts: ', data);
+
+    return data;
+  } catch (e) {
+    return null;
+  }
+}
+
 export async function login(payload: LoginShemaInferredType) {
   try {
     const url = `${process.env.SERVER_URL}${process.env.AUTH_PORT}/auth/login/`;

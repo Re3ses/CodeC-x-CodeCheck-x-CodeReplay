@@ -1,7 +1,8 @@
 'use client';
-import React from 'react';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import LoginForm from '@/components/ui/auth/loginForm';
-import Image from 'next/image';
+import { getUser2 } from '@/lib/auth';
 
 const IsometricIllustration = () => (
   <svg viewBox="0 0 400 300" className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
@@ -13,6 +14,25 @@ const IsometricIllustration = () => (
 );
 
 export default function Page() {
+  const router = useRouter();
+
+  useEffect(() => {
+    const checkUserAuth = async () => {
+      try {
+        const userData = await getUser2();
+        if (userData) {
+          // User is already logged in, redirect to dashboard
+          router.push('/dashboard');
+        }
+      } catch (error) {
+        // Error occurred or user is not authenticated, stay on login page
+        console.error('Auth check error:', error);
+      }
+    };
+
+    checkUserAuth();
+  }, [router]);
+
   return (
     <div className="min-h-screen bg-gray-900 flex">
       {/* Left Section - Login Form (smaller) */}

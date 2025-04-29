@@ -48,13 +48,13 @@ services:
     <<: *default-logging
     restart: always
 
-  # flask:
-  #   build: ./flask  # Path to your Flask project containing the Dockerfile
-  #   ports:
-  #     - "5000:5000"
-  #   env_file: ./flask/.env 
-  #   restart: always
-  #   <<: *default-logging
+  flask:
+    build: ./flask  # Path to your Flask project containing the Dockerfile
+    ports:
+      - "5000:5000"
+    env_file: ./flask/.env 
+    restart: always
+    <<: *default-logging
 
 volumes:
   postgres-data:
