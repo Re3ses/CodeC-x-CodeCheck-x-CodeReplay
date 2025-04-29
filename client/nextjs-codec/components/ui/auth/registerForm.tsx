@@ -173,7 +173,7 @@ export default function RegisterForm() {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="Learner">Learner</SelectItem>
-                      <SelectItem value="Mentor">Mentor</SelectItem>
+                      {/* <SelectItem value="Mentor">Mentor</SelectItem> */}
                     </SelectContent>
                   </Select>
                   <FormMessage />
