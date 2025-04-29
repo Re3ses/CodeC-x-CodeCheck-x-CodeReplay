@@ -3,6 +3,8 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
+import { Button } from '@/components/ui/button';
+import { ChevronLeft } from 'lucide-react';
 import {
   Code2,
   Trophy,
@@ -31,6 +33,8 @@ export default function Nav(props: { variant?: string; name?: string; type?: str
   const handleNavigation = (href: string) => {
     router.push(href);
   };
+
+
 
   return (
     <nav className="flex items-center justify-between px-6 py-3 bg-card text-white bg-gray-900 border-b border-white/10">
@@ -66,14 +70,23 @@ export default function Nav(props: { variant?: string; name?: string; type?: str
       </div>
 
       {/* Profile Section with Avatar */}
-      <Link href="/dashboard/profile" className="flex items-center gap-2">
-        <Avatar className="h-8 w-8">
-          <AvatarImage src="" alt={props.name} />
-          <AvatarFallback className="bg-yellow-500 text-black">
-            {props.name?.charAt(0)?.toUpperCase()}
-          </AvatarFallback>
-        </Avatar>
-      </Link>
-    </nav>
+      <div className='flex items-center gap-4'>
+        {!(window.history.length > 1 && pathname === "/dashboard") && (
+          <button onClick={() => router.back()}
+            className="h-9 rounded-md pl-2 pr-4 border border-input bg-background text-white/40 hover:bg-violet-600/30 hover:text-accent-foreground inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50">
+            <ChevronLeft /> Back
+          </button>
+        )
+        }
+        <Link href="/dashboard/profile" className="flex items-center gap-2">
+          <Avatar className="h-8 w-8">
+            <AvatarImage src="" alt={props.name} />
+            <AvatarFallback className="bg-yellow-500 text-black">
+              {props.name?.charAt(0)?.toUpperCase()}
+            </AvatarFallback>
+          </Avatar>
+        </Link>
+      </div >
+    </nav >
   );
 }
