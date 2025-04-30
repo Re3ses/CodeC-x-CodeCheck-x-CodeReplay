@@ -10,11 +10,13 @@ import {
   Trophy,
   Shield,
 } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 export default function Nav(props: { variant?: string; name?: string; type?: string }) {
   const pathname = usePathname();
   const router = useRouter();
   const path = props.type?.toLowerCase();
+  const [canGoBack, setCanGoBack] = useState(false);
 
   // Navigation links; Code Room should be disabled when active (i.e. already on that route)
   const navLinks = [
@@ -34,6 +36,10 @@ export default function Nav(props: { variant?: string; name?: string; type?: str
     router.push(href);
   };
 
+
+  useEffect(() => {
+    setCanGoBack(window.history.length > 1);
+  })
 
 
   return (
@@ -71,7 +77,7 @@ export default function Nav(props: { variant?: string; name?: string; type?: str
 
       {/* Profile Section with Avatar */}
       <div className='flex items-center gap-4'>
-        {!(window.history.length > 1 && pathname === "/dashboard") && (
+        {!(canGoBack && pathname === "/dashboard") && (
           <button onClick={() => router.back()}
             className="h-9 rounded-md pl-2 pr-4 border border-input bg-background text-white/40 hover:bg-violet-600/30 hover:text-accent-foreground inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50">
             <ChevronLeft /> Back

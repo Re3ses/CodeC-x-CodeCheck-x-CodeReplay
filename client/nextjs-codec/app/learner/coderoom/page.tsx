@@ -35,13 +35,13 @@ export default function Joined() {
       </CardHeader>
 
       <CardContent>
-        <div className="flex items-center py-4">
+        {/* <div className="flex items-center py-4">
           <Search className="mr-2 h-4 w-4 text-muted-foreground" />
           <Input
             placeholder="Search rooms..."
             className="max-w-sm"
           />
-        </div>
+        </div> */}
 
         <div className="rounded-md border">
           <Table>

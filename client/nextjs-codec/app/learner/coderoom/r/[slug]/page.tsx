@@ -9,7 +9,7 @@ import RoomProblemList from '@/components/RoomProblemList';
 import { getUser } from '@/lib/auth';
 import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Users, Code, Layout } from 'lucide-react';
+import { Users, Code } from 'lucide-react';
 
 interface SubmissionStats {
   solvedProblems: number;
@@ -26,7 +26,7 @@ export default function Page({ params }: { params: { slug: string } }) {
   });
 
   const roomQuery = useQuery<RoomSchemaInferredType>({
-    queryKey: ['room', 3],
+    queryKey: ['room', params.slug],
     queryFn: async () => {
       const res = await GetRoom(params.slug!);
       return res;
@@ -34,19 +34,19 @@ export default function Page({ params }: { params: { slug: string } }) {
   });
 
   const submissionStatsQuery = useQuery<SubmissionStats>({
-    queryKey: ['submissionStats', params.slug],
+    queryKey: ['submissionStats', params.slug, userQuery.data?.id],
     queryFn: async () => {
-      const response = await fetch(`/api/userSubmissions/stats?room_id=${params.slug}`);
+      const response = await fetch(`/api/userSubmissions/stats?room_id=${params.slug}&learner_id=${userQuery.data?.id}`);
       if (!response.ok) {
         throw new Error('Failed to fetch submission stats');
       }
       const data = await response.json();
       return {
-        solvedProblems: data.perfectScoreCount || 0,
+        solvedProblems: data.solvedProblems || 0,
         totalProblems: roomQuery.data?.problems?.length || 0
       };
     },
-    enabled: !!roomQuery.data && userQuery.data?.type === 'Learner'
+    enabled: !!roomQuery.data && !!userQuery.data?.id && userQuery.data?.type === 'Learner'
   });
 
   return (

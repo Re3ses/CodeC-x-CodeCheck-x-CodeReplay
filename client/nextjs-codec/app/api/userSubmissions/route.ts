@@ -1,3 +1,4 @@
+// api/userSubmissions/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '../../../lib/dbConnect';
 import UserSubmissions from '@/models/UserSubmissions';
@@ -15,6 +16,7 @@ export async function GET(request: Request) {
     const learner_id = searchParams.get('learner_id');
     const all = searchParams.get('all')?.toLowerCase() === 'true';
     const single = searchParams.get('single')?.toLowerCase() === 'true';
+    const highest = searchParams.get('highest')?.toLowerCase() === 'true';
     const verdict = searchParams.get('verdict');
 
     // Build query object dynamically
@@ -50,29 +52,56 @@ export async function GET(request: Request) {
 
     // Handle one submission per learner case (from original code)
     if (single === true) {
+      if (highest === true) {
+        const submissions = await UserSubmissions.aggregate([
+          { $match: query },
+          { $sort: { score: -1 } }, // Sort by score in descending order (highest first)
+          {
+            $group: {
+              _id: "$learner_id",
+              submission: { $first: "$$ROOT" } // Take the first document (highest score) for each learner
+            }
+          },
+          { $replaceRoot: { newRoot: "$submission" } }
+        ]).exec();
 
-      const submissions = await UserSubmissions.aggregate([
-        { $match: query },
-        { $sort: { submission_date: -1 } },
-        {
-          $group: {
-            _id: "$learner_id",
-            submission: { $first: "$$ROOT" }
-          }
-        },
-        { $replaceRoot: { newRoot: "$submission" } }
-      ]).exec();
+        return NextResponse.json({
+          success: true,
+          message: 'Success! One accepted submission per learner sorted by highest score',
+          submissions: submissions.map(sub => ({
+            ...sub,
+            score: sub.score || 0,
+            score_overall_count: sub.score_overall_count || 0
+          })),
+          count: submissions.length
+        });
 
-      return NextResponse.json({
-        success: true,
-        message: 'Success! One accepted submission per learner',
-        submissions: submissions.map(sub => ({
-          ...sub,
-          score: sub.score || 0,
-          score_overall_count: sub.score_overall_count || 0
-        })),
-        count: submissions.length
-      });
+      } else {
+        const submissions = await UserSubmissions.aggregate([
+          { $match: query },
+          { $sort: { submission_date: -1 } },
+          {
+            $group: {
+              _id: "$learner_id",
+              submission: { $first: "$$ROOT" }
+            }
+          },
+          { $replaceRoot: { newRoot: "$submission" } }
+        ]).exec();
+
+        return NextResponse.json({
+          success: true,
+          message: 'Success! One accepted submission per learner sorted by submission date',
+          submissions: submissions.map(sub => ({
+            ...sub,
+            score: sub.score || 0,
+            score_overall_count: sub.score_overall_count || 0
+          })),
+          count: submissions.length
+        });
+      }
+
+
     }
 
     // Regular submissions query (from new code)

@@ -13,6 +13,7 @@ from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 
 from codebert_analyzer import CodeBERTAnalyzer, SnippetInfo
+from structural_analysis import StructuralAnalysis
 
 # Load environment variables
 load_dotenv()
@@ -41,13 +42,13 @@ print("Parsed allowed_origins:", allowed_origins)  # Debug print
 limiter = Limiter(
     get_remote_address,
     app=app,
-    default_limits=["200 per day", "50 per hour"],
+    default_limits=["200 per day", "30 per hour"],
     storage_uri="memory://",
 )
 
 # Connect to the MongoDB server
 MONGO_URI = os.getenv("MONGO_URI")
-# print("Connecting to MongoDB server at:", MONGO_URI)
+print("Connecting to MongoDB server at:", MONGO_URI)
 client = MongoClient(MONGO_URI)
 db = client["codec"]
 userSubmissionsCollection = db["usersubmissions"]
@@ -55,6 +56,7 @@ snapshotsCollection = db["codesnapshots"]
 
 # Initialize detectors as global variables
 codebert_detector = CodeBERTAnalyzer()
+structural_detector = StructuralAnalysis()
 
 
 # @app.before_request
@@ -273,6 +275,28 @@ def get_sequential_similarity():
             ),
             500,
         )
+
+
+@app.route("/api/visualize-similarity", methods=["POST"])
+def visualize_similarity():
+    try:
+        data = request.get_json()
+        code1 = data.get("code1", "")
+        code2 = data.get("code2", "")
+
+        if not code1 or not code2:
+            return jsonify({"success": False, "error": "Missing code samples"}), 400
+
+        print(f"Analyzing code samples: {len(code1)}, {len(code2)} chars")
+
+        image, structures = structural_detector.visualize_code_similarity(code1, code2)
+
+        print(f"Analysis complete. Found {len(structures)} similar structures")
+
+        return jsonify({"success": True, "image": image, "structures": structures})
+
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
 
 
 if __name__ == "__main__":

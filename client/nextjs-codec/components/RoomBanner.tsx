@@ -1,30 +1,23 @@
-import React from 'react';
+// RoomBanner.tsx with updated stats handling
+import React, { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { RoomSchemaInferredType } from '@/lib/interface/room';
 import { GetRoom } from '@/utilities/apiService';
 import { Button } from './ui/button';
 import { toast } from './ui/use-toast';
-import { BookOpen, Users, ClipboardCopy, FileCode, History, Crown } from 'lucide-react';
-import { Trophy, Star, Target } from 'lucide-react';
+import { BookOpen, Users, ClipboardCopy, FileCode } from 'lucide-react';
+import { Target } from 'lucide-react';
 import { Progress } from "@/components/ui/progress";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
+import { getUser } from '@/lib/auth';
 
 // Add this helper function at the top of the file
 function formatDate(date: string | Date | undefined) {
@@ -37,8 +30,17 @@ function formatDate(date: string | Date | undefined) {
 }
 
 interface SubmissionStats {
-  totalProblems: number;
   solvedProblems: number;
+  details?: Array<{
+    _id: string;
+    highestScore: number;
+    submissionDetails: {
+      submission_id: string;
+      score: number;
+      score_overall_count: number;
+    };
+  }>;
+  success: boolean;
 }
 
 interface RoomBannerProps {
@@ -46,10 +48,6 @@ interface RoomBannerProps {
   username: string;
   usertype: string;
   params: { slug: string };
-  submissionStats?: {
-    solvedProblems: number;
-    totalProblems: number;
-  };
 }
 
 export default function RoomBanner({
@@ -57,23 +55,34 @@ export default function RoomBanner({
   username,
   usertype,
   params,
-  submissionStats
 }: RoomBannerProps) {
   const roomQuery = useQuery<RoomSchemaInferredType>({
-    queryKey: ['room'],
+    queryKey: ['room', params.slug],
     queryFn: async () => {
       const res = await GetRoom(params.slug!);
       return res;
     },
   });
 
-  const submissionStatsQuery = useQuery<SubmissionStats>({
-    queryKey: ['submissionStats', params.slug],
+  const userQuery = useQuery({
+    queryKey: ['user'],
     queryFn: async () => {
-      const response = await fetch(`/api/userSubmissions/stats?room_id=${params.slug}`);
-      return response.json();
+      const res = await getUser();
+      return res;
     },
     enabled: usertype === 'Learner'
+  });
+
+  const submissionStatsQuery = useQuery<SubmissionStats>({
+    queryKey: ['submissionStats', params.slug, userQuery.data?.id],
+    queryFn: async () => {
+      const response = await fetch(`/api/userSubmissions/stats?room_id=${params.slug}&learner_id=${userQuery.data?.id}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch submission stats');
+      }
+      return response.json();
+    },
+    enabled: usertype === 'Learner' && !!userQuery.data?.id
   });
 
   const handleCopyCode = () => {
@@ -84,10 +93,19 @@ export default function RoomBanner({
     });
   };
 
-  // Use submissionStats in the progress calculation
-  const progressValue = submissionStats
-    ? (submissionStats.solvedProblems / (room?.problems?.length || 1)) * 100
-    : 0;
+  // Calculate progress value
+  const totalProblems = room?.problems?.length || 0;
+  const solvedProblems = submissionStatsQuery.data?.solvedProblems || 0;
+  const progressValue = totalProblems > 0 ? (solvedProblems / totalProblems) * 100 : 0;
+
+  useEffect(() => {
+    if (process.env.NODE_ENV === 'development') {
+      console.log("Submission Stats:", submissionStatsQuery.data);
+      console.log("Progress Value:", progressValue);
+      console.log("Total Problems:", totalProblems);
+      console.log("Solved Problems:", solvedProblems);
+    }
+  }, [submissionStatsQuery.data, progressValue, totalProblems, solvedProblems]);
 
   return (
     <div className="space-y-4">
@@ -143,7 +161,7 @@ export default function RoomBanner({
                   />
                 </div>
                 <div className="text-sm font-medium">
-                  {submissionStatsQuery.data?.solvedProblems || 0}/{room?.problems?.length || 0}
+                  {solvedProblems}/{totalProblems}
                 </div>
               </div>
             </CardContent>
