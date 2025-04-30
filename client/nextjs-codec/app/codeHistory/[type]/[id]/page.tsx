@@ -1,6 +1,6 @@
 //page.tsx
 'use client'
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ChevronDown, ChevronUp, FileCode2, Network, GitBranch, Activity } from "lucide-react";
@@ -155,7 +155,7 @@ export default function CodeReplayApp() {
     fetchLearnerSnapshots();
   }, []);
 
-  const fetchSimilarityData = async (filterOptions = filters) => {
+  const fetchSimilarityData = useCallback(async (filterOptions = filters) => {
     try {
       setIsMatrixLoading(true);
 
@@ -190,7 +190,7 @@ export default function CodeReplayApp() {
     } finally {
       setIsMatrixLoading(false);
     }
-  };
+  }, [filters]);
 
   useEffect(() => {
     fetchSimilarityData();
