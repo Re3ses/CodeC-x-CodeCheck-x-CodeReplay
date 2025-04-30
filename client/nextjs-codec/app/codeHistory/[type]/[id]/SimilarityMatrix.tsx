@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import CodeComparison from './CodeComparison';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import Editor from '@monaco-editor/react';
 import { ArrowLeft } from 'lucide-react';
@@ -43,24 +42,22 @@ interface SimilarityCardProps {
   snippet: Snippet;
 }
 
+interface HighSimilarityPair {
+  user1: string;
+  user2: string;
+  similarity: number;
+}
+
 interface SimilarityDashboardProps {
   matrix: number[][];
   snippets: Snippet[];
-}
-
-interface SimilarStructure {
-  cluster_id: number;
-  type: string;
-  similarity: number;
-  code_a: string[];
-  code_b: string[];
 }
 
 // Helper functions
 const getSimilarityColor = (similarity: number) => {
   if (similarity >= 80) return { bg: 'bg-red-600', text: 'text-white', hex: '#dc2626' };
   if (similarity >= 60) return { bg: 'bg-yellow-600', text: 'text-white', hex: '#ca8a04' };
-  return { bg: 'bg-gray-400', text: 'text-white', hex: '#2563eb' };
+  return { bg: 'bg-blue-600', text: 'text-white', hex: '#2563eb' };
 };
 
 const getColorForSimilarity = (similarity: number) => {
@@ -124,11 +121,6 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
   const [graphPositions, setGraphPositions] = useState<GraphPositions | null>(null);
   const [showHighSimilaritySection, setShowHighSimilaritySection] = useState(true);
   const [selectedComparisonUserId, setSelectedComparisonUserId] = useState<string | null>(null);
-
-  const [disableHighlightButton, setDissableHighlightButton] = useState(false);
-
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
-  const [structures, setStructures] = useState<SimilarStructure[]>([]);
 
   const width = 500;
   const height = 400;
@@ -241,7 +233,7 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
     const linkData: LinkData[] = [];
     matrix.forEach((row, i) => {
       row.forEach((similarity, j) => {
-        if (i < j && similarity >= 0) {
+        if (i < j && similarity >= 60) {
           linkData.push({
             source: i,
             target: j,
@@ -397,47 +389,11 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
     </div>
   );
 
-  const highlightCode = async () => {
-    setDissableHighlightButton(true);
-    console.log("highlight code requested")
-    if (!selectedNode || !selectedSnippetCode) return;
-
-    // const API_URL = process.env.FLASK_API_URL || 'https://codecflaskapi.duckdns.org';
-    const API_URL = process.env.FLASK_API_URL || 'http://localhost:5000';
-    try {
-
-      const structuralResponse = await fetch(`${API_URL}/api/visualize-similarity`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          code1: snippets[selectedNode].code.trim(),
-          code2: selectedSnippetCode.trim()
-        }),
-      })
-
-      const structuralData = await structuralResponse.json();
-      if (!structuralResponse.ok) {
-        throw new Error('Failed to fetch structural data');
-      }
-
-
-      if (structuralData.success) {
-        // if (structuralData.image) setImageUrl(structuralData.image);
-        if (structuralData.structures) setStructures(structuralData.structures);
-      } else {
-        throw new Error(structuralData.error || 'Structural analysis failed');
-      }
-    } catch {
-      console.error('Error fetching structural data');
-    } finally {
-      setDissableHighlightButton(false);
-    }
-  }
-
   return (
     <Card className="bg-gray-800 border-0">
+      <CardHeader>
+        {/* <CardTitle className="text-xl font-semibold">Similarity Analysis Dashboard</CardTitle> */}
+      </CardHeader>
       <CardContent>
         <div className="grid grid-cols-2 gap-6">
           {/* Left column: Graph */}
@@ -550,54 +506,46 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
         </div>
 
         {!isLoading && (
-          <div className="gap-6 mt-6 flex flex-col">
-            {/* Code comparison section */}
-            <div className="bg-gray-700 rounded-lg p-4 mt-4">
-              <div className="flex justify-between items-center mb-4">
-                <div className="flex gap-4">
-                  <h4 className="font-medium">
-                    {selectedNode !== null && snippets[selectedNode]
-                      ? `${snippets[selectedNode].learner}'s Code`
-                      : 'Reference File'
-                    }
-                    &nbsp;vs&nbsp;
-                    {selectedComparisonUserId
-                      ? `${selectedComparisonUserId}'s Code`
-                      : "Select a snippet to compare"
-                    }
-                  </h4>
-                </div>
-                <div className="flex items-center">
-                  <button
-                    className="px-3 py-1 bg-blue-600 hover:bg-blue-700 rounded text-white disabled:bg-gray-500"
-                    disabled={
-                      disableHighlightButton ||
-                      !selectedNode ||
-                      !selectedSnippetCode ||
-                      (selectedNode !== null && snippets[selectedNode] && snippets[selectedNode].code === selectedSnippetCode)
-                    }
-                    onClick={highlightCode}
-                  >
-                    Highlight differences
-                  </button>
-                </div>
-              </div>
-
-              <CodeComparison
-                code1={selectedNode !== null && snippets[selectedNode]
-                  ? snippets[selectedNode].code
-                  : "// Select a node to view its code"
-                }
-                code2={selectedSnippetCode || "// Select a snippet to view its code"}
-                learner1Id={selectedNode !== null && snippets[selectedNode]
+          <div className="grid grid-cols-2 gap-6 mt-6">
+            <div className="bg-gray-700 rounded-lg p-4">
+              <h4 className="font-medium mb-2">
+                {selectedNode !== null && snippets[selectedNode]
                   ? `${snippets[selectedNode].learner}'s Code`
                   : 'Reference File'
                 }
-                learner2Id={selectedComparisonUserId
+              </h4>
+              <Editor
+                height="300px"
+                language="javascript"
+                theme="vs-dark"
+                value={selectedNode !== null && snippets[selectedNode]
+                  ? snippets[selectedNode].code
+                  : "// Select a node to view its code"
+                }
+                options={{
+                  readOnly: true,
+                  minimap: { enabled: false },
+                  scrollBeyondLastLine: false
+                }}
+              />
+            </div>
+            <div className="bg-gray-700 rounded-lg p-4">
+              <h4 className="font-medium mb-2">
+                {selectedComparisonUserId
                   ? `${selectedComparisonUserId}'s Code`
                   : "Select a snippet to compare"
                 }
-                structures={structures || []}
+              </h4>
+              <Editor
+                height="300px"
+                language="javascript"
+                theme="vs-dark"
+                value={selectedSnippetCode || "// Select a snippet to view its code"}
+                options={{
+                  readOnly: true,
+                  minimap: { enabled: false },
+                  scrollBeyondLastLine: false
+                }}
               />
             </div>
           </div>

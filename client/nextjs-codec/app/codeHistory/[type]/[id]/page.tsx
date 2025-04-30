@@ -130,7 +130,7 @@ export default function CodeReplayApp() {
     const fetchLearnerSnapshots = async () => {
       try {
         const response = await fetch(
-          `/api/codereplay/code-snapshots?problemId=${params.id}`
+          `/api/codereplay/code-snapshots?problem_id=${params.id}`
         );
         const data = await response.json();
         // console.log("Data received from code-snapshots API:", data);
@@ -153,7 +153,7 @@ export default function CodeReplayApp() {
       }
     };
     fetchLearnerSnapshots();
-  }, [params.id]);
+  }, []);
 
   const fetchSimilarityData = async (filterOptions = filters) => {
     try {
@@ -170,8 +170,8 @@ export default function CodeReplayApp() {
 
       // console.log("Query params", queryParams);
 
-      // const API_URL = process.env.FLASK_API_URL || 'https://codecflaskapi.duckdns.org';
-      const API_URL = process.env.FLASK_API_URL || 'http://localhost:5000';
+      const API_URL = process.env.FLASK_API_URL || 'https://codecflaskapi.duckdns.org';
+      // const API_URL = process.env.FLASK_API_URL || 'http://localhost:5000';
       const response = await fetch(`${API_URL}/api/similarity/matrix?${queryParams}`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' }
@@ -194,7 +194,7 @@ export default function CodeReplayApp() {
 
   useEffect(() => {
     fetchSimilarityData();
-  }, [fetchSimilarityData]);
+  }, []);
 
   // Calculate statistics for each snippet
   const calculateSnippetStats = (matrix: number[][], index: number) => {
