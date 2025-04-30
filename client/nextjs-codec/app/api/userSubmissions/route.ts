@@ -17,6 +17,7 @@ export async function GET(request: Request) {
     const all = searchParams.get('all')?.toLowerCase() === 'true';
     const single = searchParams.get('single')?.toLowerCase() === 'true';
     const highest = searchParams.get('highest')?.toLowerCase() === 'true';
+    const highestPerProblem = searchParams.get('highestPerProblem')?.toLowerCase() === 'true';
     const verdict = searchParams.get('verdict');
 
     // Build query object dynamically
@@ -46,62 +47,139 @@ export async function GET(request: Request) {
       return NextResponse.json({
         success: false,
         message: 'Please provide at least one query parameter',
-        query_params: { room, problem, learner_id, all, single }
+        query_params: { room, problem, learner_id, all, single, highest, highestPerProblem }
       }, { status: 400 });
     }
 
-    // Handle one submission per learner case (from original code)
+    // Handle highestPerProblem parameter (new functionality)
+    if (highestPerProblem === true) {
+      try {
+        // First get all matching submissions
+        const allSubmissions = await UserSubmissions
+          .find(query)
+          .lean()
+          .exec();
+
+        // Then manually process them to get highest score per problem per learner
+        const submissionMap = new Map();
+
+        // Group and find highest score for each learner-problem pair
+        allSubmissions.forEach(submission => {
+          const key = `${submission.learner_id}-${submission.problem}`;
+
+          if (!submissionMap.has(key) || (submissionMap.get(key).score < submission.score)) {
+            submissionMap.set(key, submission);
+          }
+        });
+
+        // Convert map back to array
+        const highestSubmissions = Array.from(submissionMap.values());
+
+        return NextResponse.json({
+          success: true,
+          message: 'Success! One highest scoring accepted submission per learner per problem',
+          submissions: highestSubmissions.map(sub => ({
+            ...sub,
+            score: sub.score || 0,
+            score_overall_count: sub.score_overall_count || 0
+          })),
+          count: highestSubmissions.length
+        });
+      } catch (error: any) {
+        console.error('Error in highestPerProblem processing:', error);
+        return NextResponse.json({
+          success: false,
+          error: error.message
+        }, { status: 500 });
+      }
+    }
+
+    // Handle one submission per learner case (original functionality)
     if (single === true) {
       if (highest === true) {
-        const submissions = await UserSubmissions.aggregate([
-          { $match: query },
-          { $sort: { score: -1 } }, // Sort by score in descending order (highest first)
-          {
-            $group: {
-              _id: "$learner_id",
-              submission: { $first: "$$ROOT" } // Take the first document (highest score) for each learner
+        try {
+          // First get all matching submissions
+          const allSubmissions = await UserSubmissions
+            .find(query)
+            .lean()
+            .exec();
+
+          // Then manually process them to get highest score per learner
+          const submissionMap = new Map();
+
+          // Group and find highest score for each learner
+          allSubmissions.forEach(submission => {
+            const key = `${submission.learner_id}`;
+
+            if (!submissionMap.has(key) || (submissionMap.get(key).score < submission.score)) {
+              submissionMap.set(key, submission);
             }
-          },
-          { $replaceRoot: { newRoot: "$submission" } }
-        ]).exec();
+          });
 
-        return NextResponse.json({
-          success: true,
-          message: 'Success! One accepted submission per learner sorted by highest score',
-          submissions: submissions.map(sub => ({
-            ...sub,
-            score: sub.score || 0,
-            score_overall_count: sub.score_overall_count || 0
-          })),
-          count: submissions.length
-        });
+          // Convert map back to array
+          const highestSubmissions = Array.from(submissionMap.values());
 
+          return NextResponse.json({
+            success: true,
+            message: 'Success! One accepted submission per learner sorted by highest score',
+            submissions: highestSubmissions.map(sub => ({
+              ...sub,
+              score: sub.score || 0,
+              score_overall_count: sub.score_overall_count || 0
+            })),
+            count: highestSubmissions.length
+          });
+        } catch (error: any) {
+          console.error('Error in single highest processing:', error);
+          return NextResponse.json({
+            success: false,
+            error: error.message
+          }, { status: 500 });
+        }
       } else {
-        const submissions = await UserSubmissions.aggregate([
-          { $match: query },
-          { $sort: { submission_date: -1 } },
-          {
-            $group: {
-              _id: "$learner_id",
-              submission: { $first: "$$ROOT" }
+        try {
+          // Get all matching submissions
+          const allSubmissions = await UserSubmissions
+            .find(query)
+            .sort({ submission_date: -1 })
+            .lean()
+            .exec();
+
+          // Then manually process them to get latest submission per learner
+          const submissionMap = new Map();
+
+          // Group and find latest submission for each learner
+          allSubmissions.forEach(submission => {
+            const key = `${submission.learner_id}`;
+
+            // For each learner, we only want to keep first one we encounter
+            // since we've already sorted by submission_date descending
+            if (!submissionMap.has(key)) {
+              submissionMap.set(key, submission);
             }
-          },
-          { $replaceRoot: { newRoot: "$submission" } }
-        ]).exec();
+          });
 
-        return NextResponse.json({
-          success: true,
-          message: 'Success! One accepted submission per learner sorted by submission date',
-          submissions: submissions.map(sub => ({
-            ...sub,
-            score: sub.score || 0,
-            score_overall_count: sub.score_overall_count || 0
-          })),
-          count: submissions.length
-        });
+          // Convert map back to array
+          const latestSubmissions = Array.from(submissionMap.values());
+
+          return NextResponse.json({
+            success: true,
+            message: 'Success! One accepted submission per learner sorted by submission date',
+            submissions: latestSubmissions.map(sub => ({
+              ...sub,
+              score: sub.score || 0,
+              score_overall_count: sub.score_overall_count || 0
+            })),
+            count: latestSubmissions.length
+          });
+        } catch (error: any) {
+          console.error('Error in single processing:', error);
+          return NextResponse.json({
+            success: false,
+            error: error.message
+          }, { status: 500 });
+        }
       }
-
-
     }
 
     // Regular submissions query (from new code)

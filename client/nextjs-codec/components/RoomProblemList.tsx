@@ -78,7 +78,7 @@ export default function RoomProblemList({ params }: { params: { slug: string } }
       if (!userQuery.data?.id) {
         return [];
       }
-      const response = await fetch(`/api/userSubmissions?room_id=${params.slug}&single=true&learner_id=${userQuery.data?.id}&highest=true`);
+      const response = await fetch(`/api/userSubmissions?room_id=${params.slug}&learner_id=${userQuery.data?.id}&highestPerProblem=true`);
       if (!response.ok) {
         throw new Error('Failed to fetch submissions');
       }
