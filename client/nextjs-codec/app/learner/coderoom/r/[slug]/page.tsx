@@ -59,7 +59,6 @@ export default function Page({ params }: { params: { slug: string } }) {
             username={userQuery.data?.auth.username}
             usertype={userQuery.data?.type}
             params={params}
-            submissionStats={submissionStatsQuery.data}
           />
         </CardContent>
       </Card>
