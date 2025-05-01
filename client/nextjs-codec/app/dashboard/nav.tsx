@@ -39,7 +39,7 @@ export default function Nav(props: { variant?: string; name?: string; type?: str
 
   useEffect(() => {
     setCanGoBack(window.history.length > 1);
-  })
+  }, [])
 
 
   return (

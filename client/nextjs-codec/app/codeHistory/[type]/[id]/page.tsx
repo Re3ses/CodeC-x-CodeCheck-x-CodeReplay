@@ -153,7 +153,7 @@ export default function CodeReplayApp() {
       }
     };
     fetchLearnerSnapshots();
-  }, []);
+  }, [params.id]);
 
   const fetchSimilarityData = useCallback(async (filterOptions = filters) => {
     try {
@@ -194,7 +194,7 @@ export default function CodeReplayApp() {
 
   useEffect(() => {
     fetchSimilarityData();
-  }, []);
+  }, [fetchSimilarityData]);
 
   // Calculate statistics for each snippet
   const calculateSnippetStats = (matrix: number[][], index: number) => {
