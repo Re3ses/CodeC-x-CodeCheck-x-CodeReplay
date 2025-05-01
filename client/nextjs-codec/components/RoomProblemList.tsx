@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { SubmissionSchemaInferredType } from '@/lib/interface/submissions';
@@ -85,8 +85,13 @@ export default function RoomProblemList({ params }: { params: { slug: string } }
       const data = await response.json();
       return data.submissions || [];
     },
-    enabled: !isMentor && !!userQuery.data?.id
+    enabled: !!userQuery.data && !!roomQuery.data && !isMentor
   });
+
+  // useEffect(() => {
+  //   console.log("Submissions Data:", submissionsQuery.data);
+  //   console.log("Submissions Query:", submissionsQuery);
+  // }, [submissionsQuery]);
 
   const handleDelete = async (problemId: string, problemName: string) => {
     try {
@@ -114,9 +119,10 @@ export default function RoomProblemList({ params }: { params: { slug: string } }
   };
 
   const getSubmission = (problemSlug: string) => {
-    if (!submissionsQuery.data) return null;
+    if (!submissionsQuery.data || !problemSlug) return null;
     return submissionsQuery.data.find(sub => sub.problem === problemSlug);
   };
+
 
   return (
     <div className="space-y-4">

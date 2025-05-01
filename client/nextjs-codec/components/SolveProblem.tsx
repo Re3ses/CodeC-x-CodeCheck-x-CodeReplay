@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState, useRef, useCallback, use } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 import { Editor } from '@monaco-editor/react';
 import { Button } from '@/components/ui/button';
@@ -107,29 +107,18 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
     };
   };
 
-  // // Function to check if code has significant changes
-  // const hasSignificantChanges = (newCode: string, oldCode: string) => {
-  //   const lengthDiff = Math.abs(newCode.length - oldCode.length);
-  //   return lengthDiff > 15; // Consider changes significant if more than 50 characters are added/removed
-  // };
-
   const autoSaveCode = useCallback(async (codeToSave: string) => {
     if (codeToSave === lastSaved) return;
     try {
-      // console.log('Auto-saving...');
-
-      // Check if user is defined
       if (!user) {
         console.warn("User data not yet loaded, skipping auto-save.");
         return;
       }
 
-      // Find the last version from existing snapshots
       const lastVersion = snapshots.length > 0
         ? Math.max(...snapshots.map(snapshot => snapshot.version || 0))
         : 0;
 
-      // Increment the last version by 1
       const nextVersion = lastVersion + 1;
 
       const saveResponse = await fetch('/api/codereplay/code-snapshots', {
@@ -141,14 +130,13 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
           problemId: problemId,
           roomId: roomId,
           submissionId: `submission-${Date.now()}`,
-          version: nextVersion // Explicitly pass the next version
+          version: nextVersion
         }),
       });
 
       if (saveResponse.ok) {
         const savedData = await saveResponse.json();
         if (savedData.snippet) {
-          // Update snapshots while maintaining order
           setSnapshots(prevSnapshots => {
             const updatedSnapshots = [...prevSnapshots, savedData.snippet];
             return updatedSnapshots.sort((a, b) => {
@@ -175,24 +163,20 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
   const debouncedAutoSave = useCallback(
     debounce((codeToSave: string) => {
       if (codeToSave === lastSaved || !user) return;
-      // console.log('Debounced auto-saving...');
       autoSaveCode(codeToSave);
     }, 10000),
     [lastSaved, user, autoSaveCode]
   );
 
-  // Auto-save effect
   useEffect(() => {
     if (!autoSaveToggle) return;
 
-    // Call the debounced function when editor value changes
     if (editorValue !== lastSaved) {
       debouncedAutoSave(editorValue);
     }
 
     const handleVisibilityChange = () => {
       if (document.hidden && editorValue !== lastSaved && user) {
-        // Cancel pending debounced saves and save immediately
         debouncedAutoSave.cancel();
         autoSaveCode(editorValue);
       }
@@ -200,40 +184,32 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
 
     const handleBeforeUnload = () => {
       if (editorValue !== lastSaved && user) {
-        // Cancel pending debounced saves and save immediately
         debouncedAutoSave.cancel();
         autoSaveCode(editorValue);
       }
     };
 
-    // Add event listeners
     document.addEventListener('visibilitychange', handleVisibilityChange);
     window.addEventListener('beforeunload', handleBeforeUnload);
 
     return () => {
-      // Cancel pending debounced operations on cleanup
       debouncedAutoSave.cancel();
       document.removeEventListener('visibilitychange', handleVisibilityChange);
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
   }, [user, editorValue, autoSaveToggle, lastSaved, debouncedAutoSave, autoSaveCode]);
 
-  // Replace the handleEditorDidMount function
   function handleEditorDidMount(editor: any) {
     editorRef.current = editor;
 
     editor.onDidPaste((event: any) => {
       try {
-        // console.log("PASTE EVENT:", event);
-
         const model = editor.getModel();
         if (!model) return;
 
-        // Get the pasted content and its range
         const pastedText = model.getValueInRange(event.range);
         const fullCode = model.getValue();
 
-        // Create enhanced paste info
         const newPaste: EnhancedPasteInfo = {
           text: pastedText,
           fullCode: fullCode,
@@ -246,9 +222,7 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
             endColumn: event.range.endColumn
           }
         };
-        // console.log("New Paste:", newPaste);
 
-        // Update paste tracking state
         setEnhancedPastes(prev => [...prev, newPaste]);
 
       } catch (error) {
@@ -257,30 +231,27 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
     });
   }
 
-  // Initialize the editor language
   useEffect(() => {
     if (selectedLang && editorRef.current && !isInitialized) {
       const editor = editorRef.current;
 
       const languageMap: MonacoLanguageMap = {
         [SUPPORTED_LANGUAGES.CPP]: { language: 'cpp' },
-        [SUPPORTED_LANGUAGES.JAVA]: { language: 'java' },
-        [SUPPORTED_LANGUAGES.PYTHON]: { language: 'python' },
-        [SUPPORTED_LANGUAGES.C]: { language: 'c' },
-        [SUPPORTED_LANGUAGES.CSHARP]: { language: 'csharp' },
-        [SUPPORTED_LANGUAGES.JAVASCRIPT]: { language: 'js' },
+        // [SUPPORTED_LANGUAGES.JAVA]: { language: 'java' },
+        // [SUPPORTED_LANGUAGES.PYTHON]: { language: 'python' },
+        // [SUPPORTED_LANGUAGES.C]: { language: 'c' },
+        // [SUPPORTED_LANGUAGES.CSHARP]: { language: 'csharp' },
+        // [SUPPORTED_LANGUAGES.JAVASCRIPT]: { language: 'js' },
       };
 
       const selectedLanguage = languageMap[selectedLang];
       if (selectedLanguage) {
-        // Set the language
         const model = editor.getModel();
         if (model) {
           Monaco.setModelLanguage(model, selectedLanguage.language);
         }
         setIsInitialized(true);
       } else {
-        // Fallback to plaintext if language not found
         const model = editor.getModel();
         if (model) {
           Monaco.setModelLanguage(model, "plaintext");
@@ -289,7 +260,6 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
     }
   }, [selectedLang, isInitialized]);
 
-  // Initialize the editor with C++ as the default language
   useEffect(() => {
     setSelectedLang(SUPPORTED_LANGUAGES.CPP);
   }, []);
@@ -312,23 +282,16 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
           getUser()
         ]);
 
-        // console.log("ProblemID:", problemId);
-
-        // Set states with strict type checks and ensure new references
         setProblem(prevState => problemData ? { ...problemData } : prevState);
         setLanguages(prevState => languagesData ? [...languagesData.filter((lang: LanguageData) =>
           Object.values(SUPPORTED_LANGUAGES).includes(lang.id.toString() as "54" | "62" | "71" | "50" | "51" | "63")
+          // Object.values(SUPPORTED_LANGUAGES).includes(lang.id.toString() as "54")
         )] : prevState);
         setCodeTemplates(problemData?.languages)
         setUser((prevState: any) => userData ? { ...userData } : prevState);
 
-        // console.log("ProblemData:", problemData);
-        // console.log("CodeTemplates:", problemData?.languages);
-        // console.log("LanguagesData:", languagesData);
-
       } catch (error) {
         console.error('Failed to initialize data:', error);
-        // Optionally show an error toast
         toast({
           title: "Error loading data",
           description: "Please refresh the page",
@@ -342,9 +305,6 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
   }, [problemId]);
 
   useEffect(() => {
-    // console.log("User:", user);
-    // console.log("Snapshots:", snapshots);
-
     const fetchSnapshots = async (learner_id: any) => {
       const response = await fetch(
         `/api/codereplay/code-snapshots?problemId=${problemId}&learner_id=${learner_id}`
@@ -352,12 +312,11 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
       const data = await response.json();
 
       if (data.success && data.snapshots) {
-        // Sort snapshots by version in ascending order
         const sortedSnapshots = data.snapshots.sort((a: any, b: any) => {
           if (a.version && b.version) {
             return a.version - b.version;
           }
-          return 0; // If version is missing, keep the original order
+          return 0;
         });
 
         setSnapshots(sortedSnapshots);
@@ -392,12 +351,10 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
     while (attempts < maxAttempts) {
       result = await getSubmission(token);
 
-      // Check if processing is complete
-      if (result.status.id !== 1 && result.status.id !== 2) { // Not in queue or processing
+      if (result.status.id !== 1 && result.status.id !== 2) {
         return result;
       }
 
-      // Wait before next attempt
       await new Promise(resolve => setTimeout(resolve, 1000));
       attempts++;
     }
@@ -410,28 +367,56 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
       setSubmitting(true);
       setSaving(true);
 
-      // Validate required user data
       if (!user?.auth?.username || !user?.id || !problemId || !roomId) {
         throw new Error('Missing required user data');
       }
 
       await autoSaveCode(editorValue);
 
-      const testResults = [];
-      let totalScore = 0;
-      let correctTestCases = 0;
-
-      // Run test cases and calculate score
       if (!problem) {
         throw new Error('Problem data is not loaded');
       }
-      for (let i = 0; i < problem.test_cases.length; i++) {
-        const testCase = problem.test_cases[i];
-        const token = await getToken(testCase.input, testCase.output);
-        const result = await getSubmissionResult(token);
-        // console.log("Result from judge0 api: ", result);
 
-        // Compare output exactly with proper trimming
+      const payload = problem.test_cases.map((testCase) => ({
+        language_id: +selectedLang!,
+        source_code: btoa(editorValue),
+        stdin: btoa(testCase.input),
+        expected_output: btoa(testCase.output),
+      }));
+
+      toast({ title: 'Testing your solution...' });
+      const batchSubmissions = await postBatchSubmissions(payload);
+      const tokens = batchSubmissions?.map((token: any) => token.token);
+
+      let allComplete = false;
+      let attempts = 0;
+      const maxAttempts = 100;
+      let batchResults;
+
+      while (!allComplete && attempts < maxAttempts) {
+        batchResults = await getBatchSubmisisons(tokens.join());
+
+        allComplete = !batchResults.submissions.some(
+          (result: any) => result.status.id === 1 || result.status.id === 2
+        );
+
+        if (!allComplete) {
+          await new Promise(resolve => setTimeout(resolve, 1000));
+          attempts++;
+        }
+      }
+
+      if (!allComplete) {
+        throw new Error('Some submissions are still processing after timeout');
+      }
+
+      const testResults: any = [];
+      let totalScore = 0;
+      let correctTestCases = 0;
+
+      batchResults.submissions.forEach((result: any, i: number) => {
+        const testCase = problem.test_cases[i];
+
         const userOutput = result.stdout ? atob(result.stdout).trim().replace(/\r\n/g, '\n') : '';
         const expectedOutput = testCase.output.trim().replace(/\r\n/g, '\n');
         const isAccepted = userOutput === expectedOutput;
@@ -451,9 +436,8 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
           totalScore += Number(testCase.score) || 0;
           correctTestCases++;
         }
-      }
+      });
 
-      // Calculate perfect score from test cases
       const perfectScore = problem.test_cases.reduce((sum, test) => sum + (test.score || 0), 0);
 
       const submissionData = {
@@ -499,7 +483,6 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
         queryKey: ['submissions', roomId, problemId]
       });
 
-      // Display toast message with correct test cases
       toast({
         title: "Submission complete",
         description: (
@@ -547,7 +530,6 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
       await autoSaveCode(editorValue);
 
       if (showCustomInput) {
-        // Handle custom input case
         if (!inputVal) {
           toast({
             title: 'No input detected...',
@@ -589,7 +571,6 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
           });
         }
       } else {
-        // Handle test cases
         const sample_cases = problem?.test_cases.filter((item) => item.is_sample);
 
         if (!sample_cases?.length) {
@@ -674,34 +655,31 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
     const lang = e.target.value;
     setSelectedLang(lang);
 
-    // Find corresponding template based on language
     let templateCode = '';
 
     // Map language IDs to template names
     const languageNameMap: Record<string, string> = {
       [SUPPORTED_LANGUAGES.CPP]: "C++ (GCC 9.2.0)",
-      [SUPPORTED_LANGUAGES.JAVA]: "Java (OpenJDK 13.0.1)",
-      [SUPPORTED_LANGUAGES.PYTHON]: "Python (3.8.1)",
-      [SUPPORTED_LANGUAGES.C]: "C (GCC 9.2.0)",
-      [SUPPORTED_LANGUAGES.CSHARP]: "C# (Mono 6.6.0.161)",
-      [SUPPORTED_LANGUAGES.JAVASCRIPT]: "JavaScript (Node.js 12.14.1)",
+      // [SUPPORTED_LANGUAGES.JAVA]: "Java (OpenJDK 13.0.1)",
+      // [SUPPORTED_LANGUAGES.PYTHON]: "Python (3.8.1)",
+      // [SUPPORTED_LANGUAGES.C]: "C (GCC 9.2.0)",
+      // [SUPPORTED_LANGUAGES.CSHARP]: "C# (Mono 6.6.0.161)",
+      // [SUPPORTED_LANGUAGES.JAVASCRIPT]: "JavaScript (Node.js 12.14.1)",
     };
 
-    // Find template by name
     const templateName = languageNameMap[lang];
     const template = codeTemplates?.find(template => template.name === templateName);
 
     if (template?.code_snippet) {
       templateCode = template.code_snippet;
     } else {
-      // Default templates if no template found
       const defaultTemplates: Record<string, string> = {
         [SUPPORTED_LANGUAGES.CPP]: DEFAULT_TEMPLATE,
-        [SUPPORTED_LANGUAGES.PYTHON]: 'print("Hello World!")',
-        [SUPPORTED_LANGUAGES.JAVA]: 'public class Main {\n    public static void main(String[] args) {\n        // Your code here\n    }\n}',
-        [SUPPORTED_LANGUAGES.C]: '#include <stdio.h>\n\nint main() {\n    // Your code here\n    return 0;\n}',
-        [SUPPORTED_LANGUAGES.CSHARP]: 'using System;\n\nclass Program {\n    static void Main() {\n        // Your code here\n    }\n}',
-        [SUPPORTED_LANGUAGES.JAVASCRIPT]: 'function main() {\n    // Your code here\n}\n\nmain();',
+        // [SUPPORTED_LANGUAGES.PYTHON]: 'print("Hello World!")',
+        // [SUPPORTED_LANGUAGES.JAVA]: 'public class Main {\n    public static void main(String[] args) {\n        // Your code here\n    }\n}',
+        // [SUPPORTED_LANGUAGES.C]: '#include <stdio.h>\n\nint main() {\n    // Your code here\n    return 0;\n}',
+        // [SUPPORTED_LANGUAGES.CSHARP]: 'using System;\n\nclass Program {\n    static void Main() {\n        // Your code here\n    }\n}',
+        // [SUPPORTED_LANGUAGES.JAVASCRIPT]: 'function main() {\n    // Your code here\n}\n\nmain();',
       };
 
       templateCode = defaultTemplates[lang] || '';
@@ -713,15 +691,13 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
   return (
     <div className="h-screen bg-gray-900 text-white">
       <PanelGroup direction="horizontal" className="h-full">
-        {/* Problem Description Panel */}
         <Panel
           defaultSize={40}
           minSize={20}
           maxSize={80}
-          className="overflow-hidden" // Added to ensure proper sizing
+          className="overflow-hidden"
         >
           <div className="flex flex-col h-full overflow-auto">
-            {/* Problem Header */}
             <div className="bg-gray-800 p-4 rounded-lg m-3">
               <h1 className="text-xl font-bold mb-4 text-[#FFD700]">
                 <SafeHtml html={problem?.name} />
@@ -743,7 +719,6 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
               </div>
             </div>
 
-            {/* Sample Cases */}
             <div className="bg-gray-800 p-4 rounded-lg mx-3 mb-3">
               <h2 className="text-lg font-semibold mb-3 text-[#FFD700]">Sample Cases</h2>
               <div className="space-y-4">
@@ -751,7 +726,6 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
                   .filter(test => test.is_sample)
                   .map((test, index) => (
                     <div key={index} className="space-y-3">
-                      {/* Sample Input */}
                       <div className="bg-gray-900 p-3 rounded">
                         <h3 className="text-sm font-semibold mb-2 text-[#FFD700]">
                           Sample Input {index + 1}
@@ -760,7 +734,6 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
                           {test.input}
                         </pre>
                       </div>
-                      {/* Sample Output */}
                       <div className="bg-gray-900 p-3 rounded">
                         <h3 className="text-sm font-semibold mb-2 text-[#FFD700]">
                           Sample Output {index + 1}
@@ -774,7 +747,6 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
               </div>
             </div>
 
-            {/* Custom Input Section */}
             <div className="bg-gray-800 p-4 rounded-lg mx-3">
               <div className="flex items-center justify-between mb-2">
                 <h3 className="font-medium text-[#FFD700]">Custom Input</h3>
@@ -796,10 +768,8 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
           </div>
         </Panel>
 
-
         <HorizontalResizeHandle />
 
-        {/* Code Editor Panel */}
         <Panel
           defaultSize={60}
           minSize={20}
@@ -807,7 +777,6 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
           className="overflow-hidden"
         >
           <div className="flex flex-col h-full">
-            {/* Toolbar - Add saving indicator */}
             <div className="bg-gray-800 p-3 flex justify-between items-center">
               <div className="flex items-center">
                 <select
@@ -817,6 +786,7 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
                 >
                   {languages?.filter(lang =>
                     Object.values(SUPPORTED_LANGUAGES).includes(lang.id.toString() as "54" | "62" | "71" | "50" | "51" | "63")
+                    // Object.values(SUPPORTED_LANGUAGES).includes(lang.id.toString() as "54")
                   ).map((lang) => (
                     <option
                       key={lang.id}
@@ -859,13 +829,12 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
               </div>
             </div>
             <PanelGroup direction="vertical" className="flex-1">
-              {/* Editor */}
               <Panel defaultSize={70} minSize={30}>
                 <div className="h-full bg-gray-900">
                   <Editor
                     height="100%"
                     theme="vs-dark"
-                    defaultLanguage="cpp" // Set default language to C++
+                    defaultLanguage="cpp"
                     value={editorValue}
                     onChange={(value) => setEditorValue(value || '')}
                     onMount={handleEditorDidMount}
@@ -887,7 +856,6 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
 
               <VerticalResizeHandle />
 
-              {/* Results Panel */}
               <Panel defaultSize={30} minSize={20}>
                 <div className="h-full bg-gray-800 overflow-y-auto">
                   {showCustomInput ? (
