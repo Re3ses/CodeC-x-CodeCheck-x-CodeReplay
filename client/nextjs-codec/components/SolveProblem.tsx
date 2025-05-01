@@ -237,11 +237,11 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
 
       const languageMap: MonacoLanguageMap = {
         [SUPPORTED_LANGUAGES.CPP]: { language: 'cpp' },
-        // [SUPPORTED_LANGUAGES.JAVA]: { language: 'java' },
-        // [SUPPORTED_LANGUAGES.PYTHON]: { language: 'python' },
-        // [SUPPORTED_LANGUAGES.C]: { language: 'c' },
-        // [SUPPORTED_LANGUAGES.CSHARP]: { language: 'csharp' },
-        // [SUPPORTED_LANGUAGES.JAVASCRIPT]: { language: 'js' },
+        [SUPPORTED_LANGUAGES.JAVA]: { language: 'java' },
+        [SUPPORTED_LANGUAGES.PYTHON]: { language: 'python' },
+        [SUPPORTED_LANGUAGES.C]: { language: 'c' },
+        [SUPPORTED_LANGUAGES.CSHARP]: { language: 'csharp' },
+        [SUPPORTED_LANGUAGES.JAVASCRIPT]: { language: 'js' },
       };
 
       const selectedLanguage = languageMap[selectedLang];
@@ -660,11 +660,11 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
     // Map language IDs to template names
     const languageNameMap: Record<string, string> = {
       [SUPPORTED_LANGUAGES.CPP]: "C++ (GCC 9.2.0)",
-      // [SUPPORTED_LANGUAGES.JAVA]: "Java (OpenJDK 13.0.1)",
-      // [SUPPORTED_LANGUAGES.PYTHON]: "Python (3.8.1)",
-      // [SUPPORTED_LANGUAGES.C]: "C (GCC 9.2.0)",
-      // [SUPPORTED_LANGUAGES.CSHARP]: "C# (Mono 6.6.0.161)",
-      // [SUPPORTED_LANGUAGES.JAVASCRIPT]: "JavaScript (Node.js 12.14.1)",
+      [SUPPORTED_LANGUAGES.JAVA]: "Java (OpenJDK 13.0.1)",
+      [SUPPORTED_LANGUAGES.PYTHON]: "Python (3.8.1)",
+      [SUPPORTED_LANGUAGES.C]: "C (GCC 9.2.0)",
+      [SUPPORTED_LANGUAGES.CSHARP]: "C# (Mono 6.6.0.161)",
+      [SUPPORTED_LANGUAGES.JAVASCRIPT]: "JavaScript (Node.js 12.14.1)",
     };
 
     const templateName = languageNameMap[lang];
@@ -675,11 +675,11 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
     } else {
       const defaultTemplates: Record<string, string> = {
         [SUPPORTED_LANGUAGES.CPP]: DEFAULT_TEMPLATE,
-        // [SUPPORTED_LANGUAGES.PYTHON]: 'print("Hello World!")',
-        // [SUPPORTED_LANGUAGES.JAVA]: 'public class Main {\n    public static void main(String[] args) {\n        // Your code here\n    }\n}',
-        // [SUPPORTED_LANGUAGES.C]: '#include <stdio.h>\n\nint main() {\n    // Your code here\n    return 0;\n}',
-        // [SUPPORTED_LANGUAGES.CSHARP]: 'using System;\n\nclass Program {\n    static void Main() {\n        // Your code here\n    }\n}',
-        // [SUPPORTED_LANGUAGES.JAVASCRIPT]: 'function main() {\n    // Your code here\n}\n\nmain();',
+        [SUPPORTED_LANGUAGES.PYTHON]: 'print("Hello World!")',
+        [SUPPORTED_LANGUAGES.JAVA]: 'public class Main {\n    public static void main(String[] args) {\n        // Your code here\n    }\n}',
+        [SUPPORTED_LANGUAGES.C]: '#include <stdio.h>\n\nint main() {\n    // Your code here\n    return 0;\n}',
+        [SUPPORTED_LANGUAGES.CSHARP]: 'using System;\n\nclass Program {\n    static void Main() {\n        // Your code here\n    }\n}',
+        [SUPPORTED_LANGUAGES.JAVASCRIPT]: 'function main() {\n    // Your code here\n}\n\nmain();',
       };
 
       templateCode = defaultTemplates[lang] || '';
