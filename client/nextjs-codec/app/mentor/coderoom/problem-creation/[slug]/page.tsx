@@ -178,12 +178,12 @@ const TestCaseControls = React.forwardRef(({
 TestCaseControls.displayName = 'TestCaseControls';
 
 const SUPPORTED_LANGUAGES = [
-  { id: 54, name: 'C++ (GCC 11.2.0)', extension: 'cpp' },
-  { id: 62, name: 'Java (OpenJDK 17.0.6)', extension: 'java' },
-  { id: 71, name: 'Python (3.11.2)', extension: 'py' },
-  { id: 50, name: 'C (GCC 11.2.0)', extension: 'c' },
-  { id: 88, name: 'C# (Mono 6.12.0)', extension: 'cs' },
-  { id: 63, name: 'Javascript (Node.js 16.13.0)', extension: 'js' }
+  { id: 54, name: 'C++ (GCC 9.2.0)', extension: 'cpp' },
+  { id: 62, name: 'Java (OpenJDK 13.0.1)', extension: 'java' },
+  { id: 71, name: 'Python (3.8.1)', extension: 'py' },
+  { id: 50, name: 'C (GCC 9.2.0)', extension: 'c' },
+  { id: 88, name: 'C# (Mono 6.6.0.161)', extension: 'cs' },
+  { id: 63, name: 'Javascript (Node.js 12.14.1)', extension: 'js' }
 ];
 
 const DEFAULT_SNIPPETS = {
@@ -399,6 +399,17 @@ export default function Page({ params }: { params: { slug: string } }) {
     { name: 'Test Cases', icon: '4' }
   ];
 
+  const quillModules = {
+    toolbar: [
+      ['bold', 'italic', 'underline'],
+      [{ list: 'bullet' }],
+      // ['clean'], // remove formatting button
+    ],
+  };
+
+  const quillFormats = ['bold', 'italic', 'underline', 'list'];
+
+
   return (
     <div className="container max-w-7xl mx-auto p-6 flex items-center justify-center">
       <div className="bg-gray-800 rounded-xl shadow-xl p-6 min-w-fit">
@@ -460,6 +471,8 @@ export default function Page({ params }: { params: { slug: string } }) {
                       setDescription(e);
                       setMissingFieldsState(prev => ({ ...prev, description: false }));
                     }}
+                    modules={quillModules}
+                    formats={quillFormats}
                     className="min-h-[10vh] bg-gray-800 rounded-lg [&_.ql-toolbar]:bg-gray-700 [&_.ql-container]:bg-gray-800 [&_.ql-editor]:min-h-[200px] [&_.ql-editor]:text-white [&_.ql-toolbar_svg]:text-white [&_.ql-toolbar_button]:text-white [&_.ql-toolbar_.ql-stroke]:stroke-white [&_.ql-toolbar_.ql-fill]:fill-white [&_.ql-toolbar_.ql-picker-label]:text-white"
                     preserveWhitespace={true}
                   />
@@ -565,6 +578,8 @@ export default function Page({ params }: { params: { slug: string } }) {
                   }
                 </label>
                 <ReactQuill
+                  modules={quillModules}
+                  formats={quillFormats}
                   value={constraints}
                   onChange={(e) => {
                     setConstraints(e);
@@ -583,6 +598,8 @@ export default function Page({ params }: { params: { slug: string } }) {
                       }
                     </label>
                     <ReactQuill
+                      modules={quillModules}
+                      formats={quillFormats}
                       value={inputFormat}
                       onChange={(e) => {
                         setInputFormat(e);
@@ -601,6 +618,8 @@ export default function Page({ params }: { params: { slug: string } }) {
                       }
                     </label>
                     <ReactQuill
+                      modules={quillModules}
+                      formats={quillFormats}
                       value={outputFormat}
                       onChange={(e) => {
                         setOutputFormat(e);
