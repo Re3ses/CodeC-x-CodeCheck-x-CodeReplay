@@ -289,6 +289,10 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
         )] : prevState);
         setCodeTemplates(problemData?.languages)
         setUser((prevState: any) => userData ? { ...userData } : prevState);
+        // console.log("ProblemData:", problemData);
+        // console.log("LanguagesData:", languagesData);
+        // console.log("UserData:", userData);
+
 
       } catch (error) {
         console.error('Failed to initialize data:', error);

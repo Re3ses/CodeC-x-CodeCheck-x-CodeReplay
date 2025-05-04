@@ -73,6 +73,7 @@ server/codec-api/.env
 # Old Files
 *.old
 *.old.*
+*.old.tsx.old
 
 venv
 __pycache__

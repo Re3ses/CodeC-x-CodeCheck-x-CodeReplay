@@ -48,6 +48,12 @@ export default function ClassroomDetail({ params }: { params: { slug: string } }
               The classroom you&apos;re looking for doesn&apos;t exist or you don&apos;t have access to it.
             </p>
           </CardContent>
+          <button
+            className="mt-4 w-full bg-blue-500 text-white py-2 rounded"
+            onClick={() => window.location.href = '/dashboard'}
+          >
+            Go Back to Classroom List
+          </button>
         </Card>
       </div>
     );
