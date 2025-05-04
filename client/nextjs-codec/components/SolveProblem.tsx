@@ -40,11 +40,11 @@ type MonacoLanguageMap = {
 
 const SUPPORTED_LANGUAGES = {
   CPP: '54',    // C++ (GCC 9.2.0)
-  // JAVA: '62',   // Java (OpenJDK 13.0.1)
-  // PYTHON: '71', // Python (3.8.1)
-  // C: '50',      // C (GCC 9.2.0)
-  // CSHARP: '51', // C# (Mono 6.6.0.161)
-  // JAVASCRIPT: '63', // JavaScript (Node.js 12.14.1)
+  JAVA: '62',   // Java (OpenJDK 13.0.1)
+  PYTHON: '71', // Python (3.8.1)
+  C: '50',      // C (GCC 9.2.0)
+  CSHARP: '51', // C# (Mono 6.6.0.161)
+  JAVASCRIPT: '63', // JavaScript (Node.js 12.14.1)
 } as const;
 
 interface CodeEditorProps {
@@ -168,8 +168,28 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
     [lastSaved, user, autoSaveCode]
   );
 
+  const isATemplate = (code: string): boolean => {
+    if (!code || !codeTemplates || codeTemplates.length === 0) {
+      return false;
+    }
+
+    // Normalize code by trimming whitespace and removing carriage returns
+    const normalizedCode = code.trim().replace(/\r\n/g, '\n');
+
+    // Check if the normalized code matches any template in codeTemplates
+    return codeTemplates.some(template => {
+      if (!template.code_snippet) return false;
+      const normalizedTemplate = template.code_snippet.trim().replace(/\r\n/g, '\n');
+      return normalizedCode === normalizedTemplate;
+    });
+  };
+
+  // Auto-save logic
   useEffect(() => {
     if (!autoSaveToggle) return;
+
+    // if code is a template then return
+    if (isATemplate(editorValue)) return;
 
     if (editorValue !== lastSaved) {
       debouncedAutoSave(editorValue);
@@ -231,17 +251,43 @@ export default function CodeEditor({ userType, roomId, problemId, dueDate }: Cod
     });
   }
 
+  // save every 10 seconds
+  useEffect(() => {
+    if (!autoSaveToggle || !user) return;
+
+    // Skip saving if code is a template
+    if (isATemplate(editorValue)) return;
+
+    // Always save immediately if code differs from last saved
+    const saveIfChanged = () => {
+      if (editorValue !== lastSaved) {
+        // Cancel any pending debounced save
+        debouncedAutoSave.cancel();
+        // Save immediately
+        autoSaveCode(editorValue);
+      }
+    };
+
+    // Set up periodic saving every 30 seconds
+    const intervalId = setInterval(saveIfChanged, 30000);
+
+    // Clean up interval on unmount
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [user, editorValue, autoSaveToggle, lastSaved, autoSaveCode, debouncedAutoSave, isATemplate]);
+
   useEffect(() => {
     if (selectedLang && editorRef.current && !isInitialized) {
       const editor = editorRef.current;
 
       const languageMap: MonacoLanguageMap = {
         [SUPPORTED_LANGUAGES.CPP]: { language: 'cpp' },
-        // [SUPPORTED_LANGUAGES.JAVA]: { language: 'java' },
-        // [SUPPORTED_LANGUAGES.PYTHON]: { language: 'python' },
-        // [SUPPORTED_LANGUAGES.C]: { language: 'c' },
-        // [SUPPORTED_LANGUAGES.CSHARP]: { language: 'csharp' },
-        // [SUPPORTED_LANGUAGES.JAVASCRIPT]: { language: 'js' },
+        [SUPPORTED_LANGUAGES.JAVA]: { language: 'java' },
+        [SUPPORTED_LANGUAGES.PYTHON]: { language: 'python' },
+        [SUPPORTED_LANGUAGES.C]: { language: 'c' },
+        [SUPPORTED_LANGUAGES.CSHARP]: { language: 'csharp' },
+        [SUPPORTED_LANGUAGES.JAVASCRIPT]: { language: 'js' },
       };
 
       const selectedLanguage = languageMap[selectedLang];
