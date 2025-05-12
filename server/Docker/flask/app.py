@@ -1,7 +1,7 @@
 # app.py
 from flask import Flask, request, jsonify
 
-from flask_cors import CORS
+# from flask_cors import CORS
 import traceback
 import time
 from pymongo import MongoClient
@@ -31,7 +31,7 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__)
 
 # Configure CORS
-print("Loaded ALLOWED_ORIGINS:", os.getenv("ALLOWED_ORIGINS"))
+# print("Loaded ALLOWED_ORIGINS:", os.getenv("ALLOWED_ORIGINS"))
 
 allowed_origins = os.getenv("ALLOWED_ORIGINS", "*").split(",")
 print("Parsed allowed_origins:", allowed_origins)  # Debug print
@@ -42,7 +42,7 @@ CORS(app, resources={r"/api/*": {"origins": allowed_origins}})
 limiter = Limiter(
     get_remote_address,
     app=app,
-    default_limits=["20000 per day", "3000 per hour"],
+    default_limits=["2000 per day", "100 per hour"],
     storage_uri="memory://",
 )
 
