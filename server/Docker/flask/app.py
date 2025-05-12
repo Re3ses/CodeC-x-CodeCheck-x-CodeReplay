@@ -11,6 +11,8 @@ from dotenv import load_dotenv
 import logging
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+import psutil
+import gc
 
 from codebert_analyzer import CodeBERTAnalyzer, SnippetInfo
 from structural_analysis import StructuralAnalysis
@@ -33,6 +35,20 @@ logger = logging.getLogger(__name__)
 # Initialize Flask app
 app = Flask(__name__)
 
+
+# Memory usage tracking function
+def log_memory_usage(label=""):
+    """Log current memory usage with an optional label"""
+    process = psutil.Process(os.getpid())
+    memory_info = process.memory_info()
+    memory_mb = memory_info.rss / 1024 / 1024  # Convert to MB
+    logger.info(f"MEMORY USAGE {label}: {memory_mb:.2f} MB")
+    return memory_mb
+
+
+# Log initial memory usage
+log_memory_usage("APP STARTUP")
+
 # Configure CORS
 # print("Loaded ALLOWED_ORIGINS:", os.getenv("ALLOWED_ORIGINS"))
 
@@ -45,7 +61,7 @@ print("Parsed allowed_origins:", allowed_origins)  # Debug print
 limiter = Limiter(
     get_remote_address,
     app=app,
-    default_limits=["2000 per day", "100 per hour"],
+    default_limits=["1000 per day", "50 per hour"],
     storage_uri="memory://",
 )
 
@@ -58,25 +74,31 @@ userSubmissionsCollection = db["usersubmissions"]
 snapshotsCollection = db["codesnapshots"]
 
 # Initialize detectors as global variables
+logger.info("Initializing CodeBERT model...")
+log_memory_usage("BEFORE CODEBERT INIT")
 codebert_detector = CodeBERTAnalyzer()
-
-
-# @app.before_request
-# def handle_options():
-#     if request.method == "OPTIONS":
-#         return "", 204  # Ensure Flask does not interfere with OPTIONS requests
+log_memory_usage("AFTER CODEBERT INIT")
 
 
 @app.route("/health", methods=["GET"])
+@limiter.limit("100 per minute")
 def health_check():
     """Simple health check endpoint"""
-    return jsonify({"status": "ok", "message": "Service is running"})
+    memory_mb = log_memory_usage("HEALTH CHECK")
+    return jsonify(
+        {
+            "status": "ok",
+            "message": "Service is running",
+            "memory_usage_mb": f"{memory_mb:.2f}",
+        }
+    )
 
 
 @app.route("/api/similarity/matrix", methods=["GET"])
-@limiter.limit("1000 per minute")
+@limiter.limit("20 per minute")
 def get_similarity_matrix():
     print("Similarity matrix request received.")
+    log_memory_usage("MATRIX START")
     start_time = time.time()
     try:
         problem_id = request.args.get("problemId")
@@ -117,6 +139,7 @@ def get_similarity_matrix():
             query["user_type"] = user_type
 
         print("query:", query)
+        log_memory_usage("BEFORE DB QUERY")
 
         aggregation_pipeline = [{"$match": query}]
 
@@ -129,6 +152,7 @@ def get_similarity_matrix():
             ]
 
         submissions = list(userSubmissionsCollection.aggregate(aggregation_pipeline))
+        log_memory_usage(f"AFTER DB QUERY - {len(submissions)} submissions")
 
         for submission in submissions:
             submission["_id"] = str(submission["_id"])
@@ -146,6 +170,7 @@ def get_similarity_matrix():
             )
             for submission in submissions
         ]
+        log_memory_usage(f"AFTER SNIPPETS CREATION - {len(snippets)} snippets")
 
         if not snippets:
             return jsonify(
@@ -157,25 +182,41 @@ def get_similarity_matrix():
                 }
             )
 
+        # Log data size before computation
+        total_code_size = sum(len(snippet.code) for snippet in snippets)
+        logger.info(
+            f"Total code size: {total_code_size} characters across {len(snippets)} snippets"
+        )
+
+        # Add a size limit to prevent OOM
+        if len(snippets) > 50:
+            logger.warning(
+                f"Large number of snippets ({len(snippets)}) may cause memory issues"
+            )
+            # Consider limiting the number of snippets if needed
+            # snippets = snippets[:50]  # Uncomment to limit
+
+        log_memory_usage("BEFORE MATRIX COMPUTATION")
         matrix, snippet_info = codebert_detector.compute_similarity_matrix(snippets)
+        log_memory_usage("AFTER MATRIX COMPUTATION")
 
         logger.info(
             f"Similarity matrix computation completed in {time.time() - start_time:.2f} seconds"
         )
 
+        # Force garbage collection after heavy computation
+        gc.collect()
+        log_memory_usage("AFTER GARBAGE COLLECTION")
+
         response = jsonify(
             {"success": True, "matrix": matrix, "snippets": snippet_info}
         )
-        # response.headers.add("Access-Control-Allow-Origin", "*")
-        # response.headers.add("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE")
-        # response.headers.add("Access-Control-Allow-Headers", "Content-Type")
-        # response.headers.add("Access-Control-Allow-Credentials", "true")
-
         return response
 
     except Exception as e:
         tb_str = traceback.format_exc()
         logger.error(f"Error in similarity matrix computation: {str(e)}\n{tb_str}")
+        log_memory_usage("ERROR IN MATRIX COMPUTATION")
         return (
             jsonify(
                 {
@@ -190,9 +231,10 @@ def get_similarity_matrix():
 
 
 @app.route("/api/similarity/sequential", methods=["POST"])
-@limiter.limit("10 per minute")
+@limiter.limit("50 per minute")
 def get_sequential_similarity():
     print("Sequential similarity request received.")
+    log_memory_usage("SEQUENTIAL START")
     start_time = time.time()
     try:
         data = request.get_json()
@@ -213,6 +255,7 @@ def get_sequential_similarity():
             )
 
         # No snapshots passed, so fetch from DB
+        log_memory_usage("BEFORE DB SNAPSHOTS QUERY")
         if not snapshots:
             snapshots = list(
                 snapshotsCollection.find(
@@ -223,6 +266,7 @@ def get_sequential_similarity():
                     }
                 ).sort("submission_date", 1)
             )  # Sort by timestamp ascending
+        log_memory_usage(f"AFTER DB SNAPSHOTS QUERY - {len(snapshots)} snapshots")
 
         for snapshot in snapshots:
             snapshot["_id"] = str(snapshot["_id"])
@@ -249,10 +293,16 @@ def get_sequential_similarity():
             }
             for snapshot in snapshots
         ]
+        log_memory_usage("BEFORE SEQUENTIAL COMPUTATION")
 
         similarities = codebert_detector.compute_sequential_similarities(
             formatted_snapshots
         )
+        log_memory_usage("AFTER SEQUENTIAL COMPUTATION")
+
+        # Force garbage collection
+        gc.collect()
+        log_memory_usage("AFTER GARBAGE COLLECTION")
 
         logger.info(
             f"Sequential similarity computation completed in {time.time() - start_time:.2f} seconds"
@@ -268,6 +318,7 @@ def get_sequential_similarity():
     except Exception as e:
         tb_str = traceback.format_exc()
         logger.error(f"Error in sequential similarity computation: {str(e)}\n{tb_str}")
+        log_memory_usage("ERROR IN SEQUENTIAL COMPUTATION")
         return (
             jsonify(
                 {
@@ -280,7 +331,9 @@ def get_sequential_similarity():
 
 
 @app.route("/api/visualize-similarity", methods=["POST"])
+@limiter.limit("50 per minute")
 def visualize_similarity():
+    log_memory_usage("VISUALIZE START")
     try:
         data = request.get_json()
         code1 = data.get("code1", "")
@@ -290,14 +343,21 @@ def visualize_similarity():
             return jsonify({"success": False, "error": "Missing code samples"}), 400
 
         print(f"Analyzing code samples: {len(code1)}, {len(code2)} chars")
+        log_memory_usage("BEFORE VISUALIZATION")
 
         image, structures = structural_detector.visualize_code_similarity(code1, code2)
+        log_memory_usage("AFTER VISUALIZATION")
+
+        # Force garbage collection
+        gc.collect()
+        log_memory_usage("AFTER GARBAGE COLLECTION")
 
         print(f"Analysis complete. Found {len(structures)} similar structures")
 
         return jsonify({"success": True, "image": image, "structures": structures})
 
     except Exception as e:
+        log_memory_usage("ERROR IN VISUALIZATION")
         return jsonify({"success": False, "error": str(e)}), 500
 
 
