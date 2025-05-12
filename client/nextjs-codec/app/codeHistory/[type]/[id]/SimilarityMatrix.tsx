@@ -184,17 +184,17 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
     };
   }, [matrix, snippets.length]);
 
-  // // Initialize with first node selected
-  // useEffect(() => {
-  //   if (snippets?.length && !selection.nodeId) {
-  //     setSelection({
-  //       nodeId: 0,
-  //       isLocked: true,
-  //       snippetCode: snippets[0].code,
-  //       comparisonUserId: snippets[0].learner
-  //     });
-  //   }
-  // }, [snippets, selection.nodeId]);
+  // Initialize with first node selected
+  useEffect(() => {
+    if (snippets?.length && !selection.nodeId) {
+      setSelection({
+        nodeId: 0,
+        isLocked: true,
+        snippetCode: snippets[0].code,
+        comparisonUserId: snippets[0].learner
+      });
+    }
+  }, [snippets, selection.nodeId]);
 
   // Selected node connections
   const selectedNodeConnections = useMemo(() => {

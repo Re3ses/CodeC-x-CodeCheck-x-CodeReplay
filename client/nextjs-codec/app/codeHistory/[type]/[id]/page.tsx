@@ -238,9 +238,6 @@ export default function CodeReplayApp() {
               <GitBranch className="w-4 h-4 mr-2 text-yellow-500" />
               Code Evolution
             </TabsTrigger>
-            <TabsTrigger value="matrix2" className="data-[state=active]:bg-gray-700">
-              Matrix 2
-            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="network" className="mt-6">

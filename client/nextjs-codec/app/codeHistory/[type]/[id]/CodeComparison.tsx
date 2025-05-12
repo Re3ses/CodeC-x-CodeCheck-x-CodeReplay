@@ -30,7 +30,7 @@ interface HighlightRange {
   matchingLines: string[];
 }
 
-export default function CodeComparison({ code1, code2, learner1Id, learner2Id, structures, onButtonClick, disableButton }: CodeComparisonProps) {
+export default function CodeComparison({ code1, code2, learner1Id, learner2Id, structures, onButtonClick, disableButton = false }: CodeComparisonProps) {
   const [scrollTop1, setScrollTop1] = useState(0);
   const [scrollTop2, setScrollTop2] = useState(0);
   const [syncScrolling, setSyncScrolling] = useState(true);
@@ -138,10 +138,10 @@ export default function CodeComparison({ code1, code2, learner1Id, learner2Id, s
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-end mb-2">
+      <div className="flex justify-around mb-2 gap-2">
         {disableButton && (
           <div className="flex items-center justify-center mr-4">
-            <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-blue-500"></div>
+            <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-r-2 border-b-2 border-white"></div>
           </div>
         )}
         <button

@@ -1,7 +1,7 @@
 # app.py
 from flask import Flask, request, jsonify
 
-# from flask_cors import CORS
+from flask_cors import CORS
 import traceback
 import time
 from pymongo import MongoClient
@@ -36,13 +36,13 @@ print("Loaded ALLOWED_ORIGINS:", os.getenv("ALLOWED_ORIGINS"))
 allowed_origins = os.getenv("ALLOWED_ORIGINS", "*").split(",")
 print("Parsed allowed_origins:", allowed_origins)  # Debug print
 
-# CORS(app, resources={r"/api/*": {"origins": allowed_origins}})
+CORS(app, resources={r"/api/*": {"origins": allowed_origins}})
 
 # Configure rate limiting
 limiter = Limiter(
     get_remote_address,
     app=app,
-    default_limits=["200 per day", "30 per hour"],
+    default_limits=["20000 per day", "3000 per hour"],
     storage_uri="memory://",
 )
 
@@ -72,7 +72,7 @@ def health_check():
 
 
 @app.route("/api/similarity/matrix", methods=["GET"])
-@limiter.limit("10 per minute")
+@limiter.limit("1000 per minute")
 def get_similarity_matrix():
     print("Similarity matrix request received.")
     start_time = time.time()
