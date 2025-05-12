@@ -13,6 +13,10 @@ from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 
 from codebert_analyzer import CodeBERTAnalyzer, SnippetInfo
+from structural_analysis import StructuralAnalysis
+
+
+structural_detector = StructuralAnalysis()
 
 # Load environment variables
 load_dotenv()
@@ -30,7 +34,7 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__)
 
 # Configure CORS
-print("Loaded ALLOWED_ORIGINS:", os.getenv("ALLOWED_ORIGINS"))
+# print("Loaded ALLOWED_ORIGINS:", os.getenv("ALLOWED_ORIGINS"))
 
 allowed_origins = os.getenv("ALLOWED_ORIGINS", "*").split(",")
 print("Parsed allowed_origins:", allowed_origins)  # Debug print
@@ -41,7 +45,7 @@ CORS(app, resources={r"/api/*": {"origins": allowed_origins}})
 limiter = Limiter(
     get_remote_address,
     app=app,
-    default_limits=["200 per day", "50 per hour"],
+    default_limits=["2000 per day", "100 per hour"],
     storage_uri="memory://",
 )
 
@@ -70,7 +74,7 @@ def health_check():
 
 
 @app.route("/api/similarity/matrix", methods=["GET"])
-@limiter.limit("10 per minute")
+@limiter.limit("1000 per minute")
 def get_similarity_matrix():
     print("Similarity matrix request received.")
     start_time = time.time()
@@ -273,6 +277,28 @@ def get_sequential_similarity():
             ),
             500,
         )
+
+
+@app.route("/api/visualize-similarity", methods=["POST"])
+def visualize_similarity():
+    try:
+        data = request.get_json()
+        code1 = data.get("code1", "")
+        code2 = data.get("code2", "")
+
+        if not code1 or not code2:
+            return jsonify({"success": False, "error": "Missing code samples"}), 400
+
+        print(f"Analyzing code samples: {len(code1)}, {len(code2)} chars")
+
+        image, structures = structural_detector.visualize_code_similarity(code1, code2)
+
+        print(f"Analysis complete. Found {len(structures)} similar structures")
+
+        return jsonify({"success": True, "image": image, "structures": structures})
+
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
 
 
 if __name__ == "__main__":

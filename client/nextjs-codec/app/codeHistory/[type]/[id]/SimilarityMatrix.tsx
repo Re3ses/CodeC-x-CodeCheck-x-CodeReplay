@@ -1,9 +1,10 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import Editor from '@monaco-editor/react';
+import CodeComparison from './CodeComparison';
 import { ArrowLeft } from 'lucide-react';
+import * as d3 from 'd3';
+import DraggableLegend from '@/components/ui/draggable';
 
 // Types
 interface Snippet {
@@ -51,6 +52,24 @@ interface HighSimilarityPair {
 interface SimilarityDashboardProps {
   matrix: number[][];
   snippets: Snippet[];
+}
+
+interface SimilarStructure {
+  cluster_id: number;
+  type: string;
+  similarity: number;
+  code_a: string[];
+  code_b: string[];
+}
+
+// Add this interface to your file
+interface MyNodeDatum extends d3.SimulationNodeDatum {
+  id: number; // Changed from string to number
+  learner?: string;
+  learner_id?: string;
+  timestamp?: string;
+  // Other optional properties
+  similarity?: number;
 }
 
 // Helper functions
@@ -112,15 +131,25 @@ const SimilarityCard = React.memo(({ snippetId, similarity, onClick, snippet }: 
 SimilarityCard.displayName = 'SimilarityCard';
 
 const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snippets }) => {
-  const [nodes, setNodes] = useState<NodeData[]>([]);
-  const [links, setLinks] = useState<LinkData[]>([]);
-  const [selectedNode, setSelectedNode] = useState<number | null>(null);
-  const [isNodeLocked, setIsNodeLocked] = useState(false);
-  const [selectedSnippetCode, setSelectedSnippetCode] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [graphPositions, setGraphPositions] = useState<GraphPositions | null>(null);
-  const [showHighSimilaritySection, setShowHighSimilaritySection] = useState(true);
-  const [selectedComparisonUserId, setSelectedComparisonUserId] = useState<string | null>(null);
+  const [graphData, setGraphData] = useState({
+    nodes: [] as NodeData[],
+    links: [] as LinkData[],
+    positions: null as GraphPositions | null,
+    isLoading: true
+  });
+
+  const [selection, setSelection] = useState({
+    nodeId: null as number | null,
+    isLocked: false,
+    comparisonUserId: null as string | null,
+    snippetCode: null as string | null
+  });
+
+  const [uiState, setUiState] = useState({
+    showHighSimilaritySection: true,
+    isHighlightingCode: false,
+    structures: [] as SimilarStructure[]
+  });
 
   const width = 500;
   const height = 400;
@@ -163,79 +192,160 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
 
   // Initialize with first node selected
   useEffect(() => {
-    if (snippets?.length && !selectedNode) {
-      setSelectedNode(0);
-      setSelectedSnippetCode(snippets[0].code);
-      setIsNodeLocked(true);
+    if (snippets?.length && !selection.nodeId) {
+      setSelection({
+        nodeId: 0,
+        isLocked: true,
+        snippetCode: snippets[0].code,
+        comparisonUserId: snippets[0].learner
+      });
     }
-  }, [snippets, selectedNode]);
+  }, [snippets, selection.nodeId]);
 
   // Selected node connections
   const selectedNodeConnections = useMemo(() => {
-    if (selectedNode === null || !links.length) return [];
+    if (selection.nodeId === null || !graphData.links.length) return [];
 
-    return links
-      .filter(link => link.source === selectedNode || link.target === selectedNode)
+    return graphData.links
+      .filter(link => {
+        const sourceId = typeof link.source === 'number'
+          ? link.source
+          : (link.source as any).id;
+        const targetId = typeof link.target === 'number'
+          ? link.target
+          : (link.target as any).id;
+        return sourceId === selection.nodeId || targetId === selection.nodeId;
+      })
       .sort((a, b) => b.similarity - a.similarity)
-      .map(link => ({
-        connectedNode: link.source === selectedNode ? link.target : link.source,
-        similarity: link.similarity
-      }));
-  }, [selectedNode, links]);
+      .map(link => {
+        const sourceId = typeof link.source === 'number'
+          ? link.source
+          : (link.source as any).id;
+        const targetId = typeof link.target === 'number'
+          ? link.target
+          : (link.target as any).id;
+        return {
+          connectedNode: sourceId === selection.nodeId ? targetId : sourceId,
+          similarity: link.similarity
+        };
+      });
+  }, [selection.nodeId, graphData.links]);
 
   const handleNodeClick = useCallback((nodeId: number) => {
     if (!snippets[nodeId]) return;
 
-    setSelectedNode(prev => {
-      if (prev === nodeId && isNodeLocked) {
-        setIsNodeLocked(false);
-        setSelectedSnippetCode(null);
-        return null;
+    setSelection(prev => {
+      if (prev.nodeId === nodeId && prev.isLocked) {
+        return {
+          ...prev,
+          nodeId: null,
+          isLocked: false,
+          snippetCode: null
+        };
       }
-      setIsNodeLocked(true);
-      setSelectedSnippetCode(snippets[nodeId].code);
-      setShowHighSimilaritySection(false); // Close high similarity section
-      return nodeId;
+      return {
+        ...prev,
+        nodeId: nodeId,
+        isLocked: true,
+        snippetCode: snippets[nodeId].code
+      };
     });
-  }, [isNodeLocked, snippets]);
+
+    setUiState(prev => ({
+      ...prev,
+      showHighSimilaritySection: false
+    }));
+  }, [snippets]);
 
   const handleNodeHover = useCallback((nodeId: number) => {
-    if (!isNodeLocked && snippets[nodeId]) {
-      setSelectedNode(nodeId);
-      setSelectedSnippetCode(snippets[nodeId].code);
-      setShowHighSimilaritySection(false); // Close high similarity section
+    if (!selection.isLocked && snippets[nodeId]) {
+      setSelection(prev => ({
+        ...prev,
+        nodeId: nodeId,
+        snippetCode: snippets[nodeId].code
+      }));
+
+      setUiState(prev => ({
+        ...prev,
+        showHighSimilaritySection: false
+      }));
     }
-  }, [isNodeLocked, snippets]);
+  }, [selection.isLocked, snippets]);
 
   const handleSnippetClick = useCallback((snippetId: number) => {
     if (snippets[snippetId]) {
-      setSelectedSnippetCode(snippets[snippetId].code);
-      setSelectedComparisonUserId(snippets[snippetId].learner);
+      // Clear structures to reset any previous comparison
+      setUiState(prev => ({
+        ...prev,
+        structures: []
+      }));
+
+      // Update selection state
+      setSelection(prev => ({
+        ...prev,
+        snippetCode: snippets[snippetId].code,
+        comparisonUserId: snippets[snippetId].learner
+      }));
+
+      // Log to verify state updates are happening
+      console.log(`Selected comparison: ${snippets[snippetId].learner}`);
     }
   }, [snippets]);
 
-  // Initialize simulation
+  // Debug useEffect for highlight button conditions
+  useEffect(() => {
+    console.log("Highlight button conditions changed:");
+    console.log("- isHighlightingCode:", uiState.isHighlightingCode);
+    console.log("- selection.nodeId:", selection.nodeId);
+    console.log("- selection.snippetCode:", selection.snippetCode ? "exists" : "null");
+
+    const isSameCode = selection.nodeId !== null &&
+      snippets[selection.nodeId] &&
+      snippets[selection.nodeId].code === selection.snippetCode;
+    console.log("- Same code:", isSameCode);
+
+    const isSameUser = selection.nodeId !== null &&
+      snippets[selection.nodeId] &&
+      snippets[selection.nodeId].learner_id === selection.comparisonUserId;
+    console.log("- Same user:", isSameUser);
+
+    const buttonDisabled = uiState.isHighlightingCode ||
+      !selection.nodeId ||
+      !selection.snippetCode ||
+      (isSameCode && isSameUser);
+    console.log("- Button disabled:", buttonDisabled);
+  }, [
+    uiState.isHighlightingCode,
+    selection.nodeId,
+    selection.snippetCode,
+    selection.comparisonUserId,
+    snippets
+  ]);
+
+  // Replace custom simulation with D3
   useEffect(() => {
     if (!matrix?.length || !snippets?.length) return;
-    setIsLoading(true);
+    setGraphData(prev => ({ ...prev, isLoading: true }));
 
-    const nodeData: NodeData[] = snippets.map((snippet, index) => ({
+    const nodeData = snippets.map((snippet, index) => ({
       id: index,
       learner: snippet.learner,
       learner_id: snippet.learner,
       timestamp: snippet.timestamp,
-      x: Math.random() * (width - 2 * nodeRadius) + nodeRadius,
-      y: Math.random() * (height - 2 * nodeRadius) + nodeRadius,
+      x: width / 2, // D3 will handle positioning
+      y: height / 2,
       vx: 0,
       vy: 0
     }));
 
-    const linkData: LinkData[] = [];
-    matrix.forEach((row, i) => {
+    const linkData: (any) = [];
+    const linkDataWithIndices = matrix.forEach((row, i) => {
       row.forEach((similarity, j) => {
         if (i < j && similarity >= 60) {
           linkData.push({
-            source: i,
+            sourceIndex: i, // Store original numeric indices
+            targetIndex: j,
+            source: i,      // These will be modified by D3
             target: j,
             similarity
           });
@@ -243,95 +353,54 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
       });
     });
 
-    setNodes(nodeData);
-    setLinks(linkData);
+    setGraphData(prev => ({
+      ...prev,
+      nodes: nodeData,
+      links: linkData
+    }));
 
-    let rafId: number;
-    let isActive = true;
-    let iteration = 0;
-    const maxIterations = 200;
-
-    const simulate = () => {
-      if (!isActive || iteration >= maxIterations) return;
-      iteration++;
-
-      let totalMovement = 0;
-      nodeData.forEach((node1, i) => {
-        nodeData.forEach((node2, j) => {
-          if (i < j) {
-            const dx = node2.x - node1.x;
-            const dy = node2.y - node1.y;
-            const distance = Math.sqrt(dx * dx + dy * dy);
-            if (distance < nodeSpacing) {
-              const force = (nodeSpacing - distance) / distance;
-              const moveX = dx * force * forceStrength;
-              const moveY = dy * force * forceStrength;
-
-              node1.vx -= moveX;
-              node1.vy -= moveY;
-              node2.vx += moveX;
-              node2.vy += moveY;
-
-              totalMovement += Math.abs(moveX) + Math.abs(moveY);
-            }
-          }
+    // Create D3 force simulation
+    const simulation = d3.forceSimulation<MyNodeDatum>(nodeData as MyNodeDatum[])
+      .force('link', d3.forceLink<MyNodeDatum, any>(linkData)
+        .id(d => d.id)
+        .strength(d => d.similarity ? d.similarity / 100 : 0))
+      .force('charge', d3.forceManyBody().strength(-100))
+      .force('center', d3.forceCenter(width / 2, height / 2))
+      .force('collision', d3.forceCollide().radius(nodeRadius * 1.5))
+      .on('tick', () => {
+        // Contain nodes within bounds
+        nodeData.forEach(node => {
+          node.x = Math.max(nodeRadius, Math.min(width - nodeRadius, node.x));
+          node.y = Math.max(nodeRadius, Math.min(height - nodeRadius, node.y));
         });
 
-        linkData.forEach(link => {
-          if (link.source === i || link.target === i) {
-            const other = nodeData[link.source === i ? link.target : link.source];
-            const dx = other.x - node1.x;
-            const dy = other.y - node1.y;
-            const distance = Math.sqrt(dx * dx + dy * dy);
-            const force = (distance - nodeSpacing) / distance;
-            const similarity = link.similarity / 100;
-
-            const moveX = dx * force * forceStrength * similarity;
-            const moveY = dy * force * forceStrength * similarity;
-
-            node1.vx += moveX;
-            node1.vy += moveY;
-          }
-        });
-
-        node1.x += node1.vx;
-        node1.y += node1.vy;
-        node1.vx *= 0.8;
-        node1.vy *= 0.8;
-
-        node1.x = Math.max(nodeRadius, Math.min(width - nodeRadius, node1.x));
-        node1.y = Math.max(nodeRadius, Math.min(height - nodeRadius, node1.y));
+        setGraphData(prev => ({
+          ...prev,
+          nodes: [...nodeData], // Create new reference to trigger re-render
+          links: linkData,
+          positions: {
+            nodes: nodeData.map(node => ({ x: node.x, y: node.y })),
+            timestamp: Date.now()
+          },
+          isLoading: false
+        }));
       });
 
-      setGraphPositions({
-        nodes: nodeData.map(node => ({ x: node.x, y: node.y })),
-        timestamp: Date.now()
-      });
+    // Add alpha decay to make simulation settle faster
+    simulation.alphaDecay(0.02);
 
-      if (totalMovement < 0.1 || iteration >= maxIterations) {
-        isActive = false;
-      } else {
-        rafId = requestAnimationFrame(simulate);
-      }
-    };
-
-    rafId = requestAnimationFrame(simulate);
-    setIsLoading(false);
-
+    // Cleanup
     return () => {
-      isActive = false;
-      if (rafId) {
-        cancelAnimationFrame(rafId);
-      }
+      simulation.stop();
     };
-  }, [matrix, snippets, width, height, nodeRadius, forceStrength, nodeSpacing]);
+  }, [matrix, snippets, width, height, nodeRadius]);
 
   // Render function for nodes
   const renderNode = useCallback((node: NodeData, i: number, isSelected: boolean) => {
     const baseColor = getSimilarityColor(0);
     const nodeColor = isSelected ? '#3b82f6' : baseColor.hex;
     const learner = node.learner;
-    const position = graphPositions?.nodes[i] || node;
+    const position = graphData.positions?.nodes[i] || node;
 
     return (
       <g key={i}>
@@ -360,7 +429,7 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
         </text>
       </g>
     );
-  }, [graphPositions, handleNodeClick, handleNodeHover, nodeRadius]);
+  }, [graphData.positions, handleNodeClick, handleNodeHover, nodeRadius]);
 
   if (!matrix || !snippets) {
     return <div>No data available</div>;
@@ -379,7 +448,7 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
       </div>
       <div
         className="p-3 bg-gray-700 rounded-lg cursor-pointer hover:bg-gray-600 transition-colors"
-        onClick={() => setShowHighSimilaritySection(prev => !prev)}
+        onClick={() => setUiState(prev => ({ ...prev, showHighSimilaritySection: !prev.showHighSimilaritySection }))}
       >
         <h4 className="text-xs font-medium mb-1">High Similarity</h4>
         <div className="text-xl font-bold">
@@ -389,21 +458,69 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
     </div>
   );
 
+  const highlightCode = async () => {
+    setUiState(prev => ({
+      ...prev,
+      isHighlightingCode: true
+    }));
+
+    console.log("highlight code requested")
+    if (!selection.nodeId === null || !selection.snippetCode) return;
+
+    // const API_URL = process.env.FLASK_API_URL || 'https://duckdns';
+    const API_URL = process.env.FLASK_API_URL || 'http://localhost:5000';
+    try {
+      const structuralResponse = await fetch(`${API_URL}/api/visualize-similarity`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          code1: selection.nodeId !== null ? snippets[selection.nodeId].code.trim() : "",
+          code2: selection.snippetCode.trim()
+        }),
+      })
+
+      const structuralData = await structuralResponse.json();
+      if (!structuralResponse.ok) {
+        throw new Error('Failed to fetch structural data');
+      }
+
+      if (structuralData.success) {
+        setUiState(prev => ({
+          ...prev,
+          structures: structuralData.structures
+        }));
+      } else {
+        throw new Error(structuralData.error || 'Structural analysis failed');
+      }
+    } catch {
+      console.error('Error fetching structural data');
+    } finally {
+      setUiState(prev => ({
+        ...prev,
+        isHighlightingCode: false
+      }));
+    }
+  }
+
+
   return (
     <Card className="bg-gray-800 border-0">
       <CardHeader>
         {/* <CardTitle className="text-xl font-semibold">Similarity Analysis Dashboard</CardTitle> */}
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-2 gap-6">
+        <div className="grid grid-cols-2 gap-6 pt-8">
           {/* Left column: Graph */}
           <div className="relative">
-            <div className="bg-gray-900 rounded-lg p-4">
+            <div className="bg-gray-900 rounded-lg p-4 h-full relative">
               <svg width={width} height={height}>
-                {links.map((link, i) => {
-                  const source = nodes[link.source];
-                  const target = nodes[link.target];
-                  const selected = selectedNode === link.source || selectedNode === link.target;
+                {/* ...existing SVG content... */}
+                {graphData.links.map((link: any, i) => {
+                  const source = graphData.nodes[link.sourceIndex];
+                  const target = graphData.nodes[link.targetIndex];
+                  const selected = selection.nodeId === link.sourceIndex || selection.nodeId === link.targetIndex;
                   const color = getSimilarityColor(link.similarity).hex;
 
                   return source && target ? (
@@ -415,15 +532,18 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
                       y2={target.y}
                       stroke={color}
                       strokeWidth={selected ? 3 : 1}
-                      opacity={selectedNode === null || selected ? 0.6 : 0.2}
+                      opacity={selection.nodeId === null || selected ? 0.6 : 0.2}
                     />
                   ) : null;
                 })}
 
-                {nodes.map((node, i) => renderNode(node, i, selectedNode === i))}
+                {graphData.nodes.map((node, i) => renderNode(node, i, selection.nodeId === i))}
               </svg>
 
-              <div className="absolute top-4 right-4 bg-gray-800 p-3 rounded-lg shadow-lg">
+              <DraggableLegend
+                className="p-3 bg-gray-800 rounded-lg"
+                initialPosition={{ x: width - 150, y: 20 }}
+              >
                 <div className="space-y-2 text-sm">
                   <div className="flex items-center gap-2">
                     <div className="w-3 h-3 rounded-full bg-red-600" />
@@ -438,7 +558,7 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
                     <span>Selected User</span>
                   </div>
                 </div>
-              </div>
+              </DraggableLegend>
             </div>
           </div>
 
@@ -448,10 +568,10 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
             <StatsSection />
 
             {/* Connections or High Similarity section */}
-            {selectedNode !== null && !showHighSimilaritySection && (
+            {selection.nodeId !== null && !uiState.showHighSimilaritySection && (
               <div className="bg-gray-700 rounded-lg p-4">
                 <h4 className="font-medium mb-3">
-                  Connections for {snippets[selectedNode]?.learner}&apos;s Submission
+                  Connections for {snippets[selection.nodeId]?.learner}&apos;s Submission
                 </h4>
                 <div className="grid grid-cols-2 gap-2 max-h-[300px] overflow-y-auto pr-2">
                   {selectedNodeConnections.map((conn, i) => (
@@ -468,12 +588,12 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
             )}
 
             {/* High Similarity Section */}
-            {showHighSimilaritySection && (
+            {uiState.showHighSimilaritySection && (
               <div className="bg-gray-700 rounded-lg p-4">
                 <div className="flex justify-between items-center mb-3">
                   <h4 className="font-medium">High Similarity Pairs</h4>
                   <button
-                    onClick={() => setShowHighSimilaritySection(false)}
+                    onClick={() => setUiState(prev => ({ ...prev, showHighSimilaritySection: false }))}
                     className="p-1 hover:bg-gray-600 rounded-full transition-colors"
                   >
                     <ArrowLeft className="w-4 h-4" />
@@ -486,7 +606,10 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
                       className="bg-gray-800 rounded-lg p-3 cursor-pointer hover:bg-gray-750"
                       onClick={() => {
                         handleSnippetClick(pair.source);
-                        setSelectedNode(pair.target);
+                        setSelection(prev => ({
+                          ...prev,
+                          nodeId: pair.target
+                        }));
                       }}
                     >
                       <div className="flex justify-between items-center mb-1">
@@ -505,47 +628,51 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
           </div>
         </div>
 
-        {!isLoading && (
-          <div className="grid grid-cols-2 gap-6 mt-6">
-            <div className="bg-gray-700 rounded-lg p-4">
-              <h4 className="font-medium mb-2">
-                {selectedNode !== null && snippets[selectedNode]
-                  ? `${snippets[selectedNode].learner}'s Code`
-                  : 'Reference File'
-                }
-              </h4>
-              <Editor
-                height="300px"
-                language="javascript"
-                theme="vs-dark"
-                value={selectedNode !== null && snippets[selectedNode]
-                  ? snippets[selectedNode].code
+        {!graphData.isLoading && (
+          <div className="gap-6 mt-6 flex flex-col">
+            {/* Code comparison section */}
+            <div className="bg-gray-700 rounded-lg p-4 mt-4">
+              {/* <div className="flex justify-between items-center mb-4">
+                <div className="flex gap-4">
+                  <h4 className="font-medium">
+                    {selection.nodeId !== null && snippets[selection.nodeId]
+                      ? `${snippets[selection.nodeId].learner}'s Code`
+                      : 'Reference File'
+                    }
+                    &nbsp;vs&nbsp;
+                    {selection.comparisonUserId
+                      ? `${selection.comparisonUserId}'s Code`
+                      : "Select a snippet to compare"
+                    }
+                  </h4>
+                </div>
+              </div> */}
+
+              <CodeComparison
+                code1={selection.nodeId !== null && snippets[selection.nodeId]
+                  ? snippets[selection.nodeId].code
                   : "// Select a node to view its code"
                 }
-                options={{
-                  readOnly: true,
-                  minimap: { enabled: false },
-                  scrollBeyondLastLine: false
-                }}
-              />
-            </div>
-            <div className="bg-gray-700 rounded-lg p-4">
-              <h4 className="font-medium mb-2">
-                {selectedComparisonUserId
-                  ? `${selectedComparisonUserId}'s Code`
+                code2={selection.snippetCode || "// Select a snippet to view its code"}
+                learner1Id={selection.nodeId !== null && snippets[selection.nodeId]
+                  ? `${snippets[selection.nodeId].learner}'s Code`
+                  : 'Reference File'
+                }
+                learner2Id={selection.comparisonUserId
+                  ? `${selection.comparisonUserId}'s Code`
                   : "Select a snippet to compare"
                 }
-              </h4>
-              <Editor
-                height="300px"
-                language="javascript"
-                theme="vs-dark"
-                value={selectedSnippetCode || "// Select a snippet to view its code"}
-                options={{
-                  readOnly: true,
-                  minimap: { enabled: false },
-                  scrollBeyondLastLine: false
-                }}
+                structures={uiState.structures || []}
+                onButtonClick={highlightCode}
+                disableButton={
+                  uiState.isHighlightingCode ||
+                  !selection.nodeId === null ||
+                  !selection.snippetCode ||
+                  (selection.nodeId !== null &&
+                    snippets[selection.nodeId] &&
+                    snippets[selection.nodeId].code === selection.snippetCode &&
+                    snippets[selection.nodeId].learner_id === selection.comparisonUserId)
+                }
               />
             </div>
           </div>
