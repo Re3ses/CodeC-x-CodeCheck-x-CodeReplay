@@ -79,6 +79,7 @@ export default function CodeReplayApp() {
     userType: '',
     highestScoringOnly: false
   });
+  const [showFilters, setShowFilters] = useState(false);
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
     const { name, type, value } = e.target;
@@ -245,58 +246,67 @@ export default function CodeReplayApp() {
               <Loading message="Loading similarity matrix..." />
             ) : (
               <div className="space-y-6">
-                <div className="bg-gray-800 p-4 rounded-lg">
-                  <h3 className="text-lg font-bold mb-2">Filters</h3>
-                  <div className="grid grid-cols-3 gap-4 items-center justify-center">
-                    <div className="col-span-1">
-                      <label className="text-sm text-gray-300">Verdict:</label>
-                      <select name="verdict" value={filters.verdict} onChange={handleFilterChange} className="w-full p-2 bg-gray-900 border border-gray-700 rounded">
-                        <option value="">All</option>
-                        <option value="ACCEPTED">Accepted</option>
-                        <option value="REJECTED">Rejected</option>
-                      </select>
-
-                      <label className="flex items-center space-x-2 text-gray-300">
-                        <input
-                          type="checkbox"
-                          name="acceptPartialSubmissions"
-                          checked={filters.acceptPartialSubmissions}
-                          onChange={handleFilterChange}
-                          className="w-4 h-4"
-                          title="This option overrides the verdict filter and includes all submissions with a score greater than 0."
-                        />
-                        <span>Accept Partial Submissions</span>
-                      </label>
-
-                    </div>
-
-                    <div className="col-span-1">
-                      <label className="text-sm text-gray-300">User Type:</label>
-                      <select name="userType" value={filters.userType} onChange={handleFilterChange} className="w-full p-2 bg-gray-900 border border-gray-700 rounded">
-                        <option value="Learner">Learners</option>
-                        <option value="Mentor">Mentors</option>
-                        <option value="All">All</option>
-                      </select>
-
-                      <label className="flex items-center space-x-2 text-gray-300">
-                        <input
-                          type="checkbox"
-                          name="highestScoringOnly"
-                          checked={filters.highestScoringOnly}
-                          onChange={handleFilterChange}
-                          className="w-4 h-4"
-                          title="This option overrides the 'Accept Partial Submissions' filter and includes only the highest scoring submission for each learner."
-                        />
-                        <span>Filter Highest Scoring Only</span>
-                      </label>
-                    </div>
-
-                    <div className="col-span-1">
-                      <button onClick={() => fetchSimilarityData(filters)} className="w-full bg-yellow-500 text-black p-2 rounded">
-                        Apply Filters
-                      </button>
-                    </div>
+                <div className="bg-gray-800 p-4 rounded-lg mb-4">
+                  <div className="flex justify-between items-center cursor-pointer" onClick={() => setShowFilters(!showFilters)}>
+                    <h3 className="text-lg font-bold">Filters</h3>
+                    {showFilters ? (
+                      <ChevronUp className="h-5 w-5 text-gray-400" />
+                    ) : (
+                      <ChevronDown className="h-5 w-5 text-gray-400" />
+                    )}
                   </div>
+
+                  {showFilters && (
+                    <div className="grid grid-cols-3 gap-4 items-center justify-center mt-2">
+                      <div className="col-span-1">
+                        <label className="text-sm text-gray-300">Verdict:</label>
+                        <select name="verdict" value={filters.verdict} onChange={handleFilterChange} className="w-full p-2 bg-gray-900 border border-gray-700 rounded">
+                          <option value="">All</option>
+                          <option value="ACCEPTED">Accepted</option>
+                          <option value="REJECTED">Rejected</option>
+                        </select>
+
+                        <label className="flex items-center space-x-2 text-gray-300">
+                          <input
+                            type="checkbox"
+                            name="acceptPartialSubmissions"
+                            checked={filters.acceptPartialSubmissions}
+                            onChange={handleFilterChange}
+                            className="w-4 h-4"
+                            title="This option overrides the verdict filter and includes all submissions with a score greater than 0."
+                          />
+                          <span>Accept Partial Submissions</span>
+                        </label>
+                      </div>
+
+                      <div className="col-span-1">
+                        <label className="text-sm text-gray-300">User Type:</label>
+                        <select name="userType" value={filters.userType} onChange={handleFilterChange} className="w-full p-2 bg-gray-900 border border-gray-700 rounded">
+                          <option value="Learner">Learners</option>
+                          <option value="Mentor">Mentors</option>
+                          <option value="All">All</option>
+                        </select>
+
+                        <label className="flex items-center space-x-2 text-gray-300">
+                          <input
+                            type="checkbox"
+                            name="highestScoringOnly"
+                            checked={filters.highestScoringOnly}
+                            onChange={handleFilterChange}
+                            className="w-4 h-4"
+                            title="This option overrides the 'Accept Partial Submissions' filter and includes only the highest scoring submission for each learner."
+                          />
+                          <span>Filter Highest Scoring Only</span>
+                        </label>
+                      </div>
+
+                      <div className="col-span-1">
+                        <button onClick={() => fetchSimilarityData(filters)} className="w-full bg-yellow-500 text-black p-2 rounded">
+                          Apply Filters
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 {similarityMatrix ?
