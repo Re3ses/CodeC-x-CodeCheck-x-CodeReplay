@@ -1,30 +1,27 @@
 import numpy as np
 import matplotlib
 
-matplotlib.use("Agg")
+matplotlib.use("Agg")  # Non-interactive backend
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 from scipy.spatial import ConvexHull
-from umap import UMAP
-from sklearn.cluster import DBSCAN
 import pandas as pd
 import io
 import base64
 import random
 import torch
-from codebert_analyzer import CodeBERTAnalyzer
-
-# Set environment variables for deterministic behavior
+import gc
 import os
 
+# Set environment variables for deterministic behavior
 os.environ["PYTHONHASHSEED"] = "42"
 os.environ["CUBLAS_WORKSPACE_CONFIG"] = ":4096:8"  # For CUDA determinism
 
 
 class StructuralAnalysis:
     def __init__(self):
-        # Initialize the CodeBERT analyzer
-        self.analyzer = CodeBERTAnalyzer()
+        # Don't initialize CodeBERT on startup
+        self.analyzer = None
 
         # Set all seeds for reproducibility
         np.random.seed(42)
@@ -33,12 +30,49 @@ class StructuralAnalysis:
         if torch.cuda.is_available():
             torch.cuda.manual_seed_all(42)
 
+        # For lazy loading
+        self._umap_reducer = None
+
+    def _ensure_analyzer_loaded(self):
+        """Lazy load the CodeBERT analyzer when needed."""
+        if self.analyzer is None:
+            from codebert_analyzer import CodeBERTAnalyzer
+
+            self.analyzer = CodeBERTAnalyzer()
+
+    def _get_umap_reducer(self, n_neighbors):
+        """Lazy load the UMAP reducer."""
+        if self._umap_reducer is None:
+            from umap import UMAP
+
+            self._umap_reducer = UMAP(
+                n_components=2,
+                n_neighbors=n_neighbors,
+                min_dist=1,
+                spread=1,
+                random_state=42,
+                n_jobs=1,
+            )
+        return self._umap_reducer
+
+    def _get_dbscan_clusterer(self):
+        """Create a new DBSCAN clusterer each time to avoid state issues."""
+        from sklearn.cluster import DBSCAN
+
+        return DBSCAN(eps=1.2, min_samples=2, metric="euclidean", n_jobs=1)
+
     def get_embedding(self, line):
+        # Ensure analyzer is loaded
+        self._ensure_analyzer_loaded()
+
         # Use the analyzer's embedding method with preprocessing
         preprocessed_line = self.analyzer.preprocess_code(line)
         return self.analyzer.get_embedding(preprocessed_line)
 
     def calculate_similarity(self, code1, code2):
+        # Ensure analyzer is loaded
+        self._ensure_analyzer_loaded()
+
         # Use the analyzer's preprocessing and similarity calculation
         preprocessed_code1 = self.analyzer.preprocess_code(code1)
         preprocessed_code2 = self.analyzer.preprocess_code(code2)
@@ -168,6 +202,7 @@ class StructuralAnalysis:
             embeddings.append(emb)
             valid_lines.append(line)
 
+        # Convert to numpy array only at the end to avoid intermediate copies
         return np.array(embeddings), valid_lines
 
     def get_line_positions(self, code: str) -> list[dict]:
@@ -267,29 +302,24 @@ class StructuralAnalysis:
                 [np.zeros(len(embeddings_a)), np.ones(len(embeddings_b))]
             )
 
-            # First apply UMAP for dimensionality reduction
-            reducer = UMAP(
-                n_components=2,
-                n_neighbors=min(6, len(combined_embeddings) - 1),
-                min_dist=1,
-                spread=1,
-                random_state=42,
-                n_jobs=1,
-            )
+            # Calculate appropriate n_neighbors value
+            n_neighbors = min(6, len(combined_embeddings) - 1)
 
+            # Get UMAP reducer with appropriate parameters
+            reducer = self._get_umap_reducer(n_neighbors)
+
+            # Apply UMAP for dimensionality reduction
             reduced_embeddings = reducer.fit_transform(combined_embeddings)
 
-            # Then apply DBSCAN on reduced embeddings
-            clustering = DBSCAN(
-                eps=1.2,  # Adjusted for 2D space
-                min_samples=2,
-                metric="euclidean",  # Changed to euclidean for 2D space
-                n_jobs=1,  # Single thread for determinism
-            ).fit(reduced_embeddings)
+            # Clear memory of original embeddings
+            del embeddings_a, embeddings_b, combined_embeddings
+            gc.collect()
 
+            # Apply DBSCAN on reduced embeddings
+            clustering = self._get_dbscan_clusterer().fit(reduced_embeddings)
             cluster_labels = clustering.labels_
 
-            # Create DataFrame for visualization
+            # Create DataFrame for visualization - more memory efficient
             df = pd.DataFrame(
                 {
                     "x": reduced_embeddings[:, 0],
@@ -302,6 +332,10 @@ class StructuralAnalysis:
                 }
             )
 
+            # Free memory
+            del reduced_embeddings, labels
+            gc.collect()
+
             # Group points by cluster for visualization
             cluster_groups = df.groupby("cluster")
 
@@ -311,13 +345,11 @@ class StructuralAnalysis:
                 if cluster_id != -1:  # Skip noise points
                     centroids[cluster_id] = (group["x"].mean(), group["y"].mean())
 
-            # Create a visualization factor to make points appear closer to their centroid
-            visual_compression = 0.7  # Compression factor
-
-            # Create a copy of the dataframe for visualization
+            # Create visualization with adjusted points
+            visual_compression = 0.7
             viz_df = df.copy()
 
-            # Adjust points towards their cluster centroid for visualization
+            # Adjust points to centroids
             for cluster_id in centroids:
                 mask = viz_df["cluster"] == cluster_id
                 if sum(mask) > 0:
@@ -331,9 +363,7 @@ class StructuralAnalysis:
 
             # Find similar structures
             similar_structures = []
-            for cluster_id in sorted(
-                set(cluster_labels)
-            ):  # Sort for deterministic order
+            for cluster_id in sorted(set(cluster_labels)):
                 if cluster_id == -1:  # Skip noise points
                     continue
                 cluster_df = df[df["cluster"] == cluster_id]
@@ -361,7 +391,7 @@ class StructuralAnalysis:
                         }
                     )
 
-            # Calculate overall similarity as average of cluster similarities
+            # Calculate overall similarity
             if similar_structures:
                 overall_similarity = sum(
                     structure["similarity"] for structure in similar_structures
@@ -371,63 +401,61 @@ class StructuralAnalysis:
                     code_snippet_a, code_snippet_b
                 )
 
-            # Sort similar structures for deterministic output
+            # Sort structures
             similar_structures.sort(key=lambda x: (x["cluster_id"], x["type"]))
 
-            # Create visualization with improved layout
+            # Create visualization with plt
             plt.figure(figsize=(14, 12))
-
-            # Create subplot layout with room for labels
             gs = gridspec.GridSpec(1, 2, width_ratios=[2.5, 1])
             ax = plt.subplot(gs[0])
             legend_ax = plt.subplot(gs[1])
             legend_ax.axis("off")
-
-            # Add grid for better readability
             ax.grid(True, linestyle="--", alpha=0.3, zorder=1)
 
-            # Create main scatter plot with fixed colors
+            # Plot points
             colors = {"Code Sample 1": "#1f77b4", "Code Sample 2": "#ff7f0e"}
-
-            # Update the scatter plot to use viz_df instead of df
-            for source, color in sorted(colors.items()):  # Sort for determinism
+            for source, color in sorted(colors.items()):
                 source_df = viz_df[viz_df["source"] == source]
                 ax.scatter(
                     source_df["x"],
                     source_df["y"],
                     c=color,
                     alpha=0.8,
-                    s=100,  # Larger points
+                    s=100,
                     label=source,
                     zorder=3,
                 )
 
-            # Highlight similar clusters
+            # Draw convex hulls
             for structure in similar_structures:
                 cluster_points = viz_df[viz_df["cluster"] == structure["cluster_id"]]
-                if len(cluster_points) >= 3:  # Need at least 3 points for ConvexHull
+                if len(cluster_points) >= 3:
                     points = cluster_points[["x", "y"]].values
-                    hull = ConvexHull(points)
-                    hull_points = points[hull.vertices]
+                    try:
+                        hull = ConvexHull(points)
+                        hull_points = points[hull.vertices]
 
-                    # Pad the hull
-                    centroid = np.mean(hull_points, axis=0)
-                    padded_hull_points = []
-                    for point in hull_points:
-                        vector = point - centroid
-                        padded_point = centroid + vector * 1.05
-                        padded_hull_points.append(padded_point)
+                        # Calculate centroid and pad hull
+                        centroid = np.mean(hull_points, axis=0)
+                        padded_hull_points = []
+                        for point in hull_points:
+                            vector = point - centroid
+                            padded_point = centroid + vector * 1.05
+                            padded_hull_points.append(padded_point)
 
-                    padded_hull_points = np.array(padded_hull_points)
-                    ax.fill(
-                        padded_hull_points[:, 0],
-                        padded_hull_points[:, 1],
-                        alpha=0.3,
-                        color="gray",
-                        zorder=2,
-                    )
+                        padded_hull_points = np.array(padded_hull_points)
+                        ax.fill(
+                            padded_hull_points[:, 0],
+                            padded_hull_points[:, 1],
+                            alpha=0.3,
+                            color="gray",
+                            zorder=2,
+                        )
+                    except Exception:
+                        # Skip drawing convex hull if any errors occur
+                        pass
 
-                # Add cluster number in the center
+                # Add cluster number
                 centroid = (cluster_points["x"].mean(), cluster_points["y"].mean())
                 ax.text(
                     centroid[0],
@@ -521,14 +549,18 @@ class StructuralAnalysis:
             # Save high-quality image with fixed DPI and format
             buf = io.BytesIO()
             plt.savefig(buf, format="png", dpi=300, bbox_inches="tight", pad_inches=0.4)
-            plt.close("all")
+            plt.close("all")  # Close plots to free memory
             buf.seek(0)
             img_base64 = base64.b64encode(buf.read()).decode("utf-8")
+            buf.close()  # Explicitly close buffer
 
-            # Enrich the similar structures with position information
+            # Enrich structures
             enriched_structures = self.enrich_similar_structures(
                 code_snippet_a, code_snippet_b, similar_structures
             )
+
+            # Force garbage collection before returning
+            gc.collect()
 
             return f"data:image/png;base64,{img_base64}", enriched_structures
 
@@ -542,4 +574,5 @@ class StructuralAnalysis:
             plt.close("all")
             buf.seek(0)
             error_img = base64.b64encode(buf.read()).decode("utf-8")
+            buf.close()
             return f"data:image/png;base64,{error_img}", []

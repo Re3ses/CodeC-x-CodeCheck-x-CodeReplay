@@ -18,7 +18,21 @@ from codebert_analyzer import CodeBERTAnalyzer, SnippetInfo
 from structural_analysis import StructuralAnalysis
 
 
-structural_detector = StructuralAnalysis()
+# Replace with a global variable
+structural_detector = None
+
+
+# Add a function for lazy loading
+def get_structural_detector():
+    global structural_detector
+    if structural_detector is None:
+        log_memory_usage("BEFORE STRUCTURAL ANALYSIS INIT")
+        structural_detector = StructuralAnalysis()
+        log_memory_usage("AFTER STRUCTURAL ANALYSIS INIT")
+        # Force garbage collection after initialization
+        gc.collect()
+    return structural_detector
+
 
 # Load environment variables
 load_dotenv()
@@ -380,7 +394,9 @@ def visualize_similarity():
         print(f"Analyzing code samples: {len(code1)}, {len(code2)} chars")
         log_memory_usage("BEFORE VISUALIZATION")
 
-        image, structures = structural_detector.visualize_code_similarity(code1, code2)
+        # Get or initialize the structural detector
+        detector = get_structural_detector()
+        image, structures = detector.visualize_code_similarity(code1, code2)
         log_memory_usage("AFTER VISUALIZATION")
 
         # Force garbage collection
@@ -392,6 +408,8 @@ def visualize_similarity():
         return jsonify({"success": True, "image": image, "structures": structures})
 
     except Exception as e:
+        tb_str = traceback.format_exc()
+        logger.error(f"Error in visualization: {str(e)}\n{tb_str}")
         log_memory_usage("ERROR IN VISUALIZATION")
         return jsonify({"success": False, "error": str(e)}), 500
 
