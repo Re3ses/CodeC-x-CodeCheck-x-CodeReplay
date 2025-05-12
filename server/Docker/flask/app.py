@@ -39,7 +39,7 @@ app = Flask(__name__)
 allowed_origins = os.getenv("ALLOWED_ORIGINS", "*").split(",")
 print("Parsed allowed_origins:", allowed_origins)  # Debug print
 
-CORS(app, resources={r"/api/*": {"origins": allowed_origins}})
+# CORS(app, resources={r"/api/*": {"origins": allowed_origins}})
 
 # Configure rate limiting
 limiter = Limiter(
