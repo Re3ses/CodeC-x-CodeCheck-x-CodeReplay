@@ -75,9 +75,44 @@ snapshotsCollection = db["codesnapshots"]
 
 # Initialize detectors as global variables
 logger.info("Initializing CodeBERT model...")
-log_memory_usage("BEFORE CODEBERT INIT")
-codebert_detector = CodeBERTAnalyzer()
-log_memory_usage("AFTER CODEBERT INIT")
+codebert_detector = None
+
+
+def get_codebert():
+    global codebert_detector
+    if codebert_detector is None:
+        log_memory_usage("BEFORE CODEBERT INIT")
+        codebert_detector = CodeBERTAnalyzer()
+        log_memory_usage("AFTER CODEBERT INIT")
+        # Force garbage collection after initialization
+        gc.collect()
+    return codebert_detector
+
+
+def compute_similarity_matrix_batched(snippets, batch_size=10):
+    n = len(snippets)
+    result_matrix = [[0 for _ in range(n)] for _ in range(n)]
+
+    # Process in batches
+    for i in range(0, n, batch_size):
+        batch_end = min(i + batch_size, n)
+        batch_snippets = snippets[i:batch_end]
+
+        # Process this batch against all previous batches
+        for j in range(0, i, batch_size):
+            prev_batch_end = min(j + batch_size, n)
+            prev_batch = snippets[j:prev_batch_end]
+
+            # Compute similarity for these batches
+            # ... implement similarity computation
+
+        # Process this batch against itself
+        # ... implement similarity computation
+
+        # Force garbage collection after each batch
+        gc.collect()
+
+    return result_matrix, snippets
 
 
 @app.route("/health", methods=["GET"])
@@ -197,7 +232,8 @@ def get_similarity_matrix():
             # snippets = snippets[:50]  # Uncomment to limit
 
         log_memory_usage("BEFORE MATRIX COMPUTATION")
-        matrix, snippet_info = codebert_detector.compute_similarity_matrix(snippets)
+        detector = get_codebert()
+        matrix, snippet_info = detector.compute_similarity_matrix(snippets)
         log_memory_usage("AFTER MATRIX COMPUTATION")
 
         logger.info(
@@ -295,9 +331,8 @@ def get_sequential_similarity():
         ]
         log_memory_usage("BEFORE SEQUENTIAL COMPUTATION")
 
-        similarities = codebert_detector.compute_sequential_similarities(
-            formatted_snapshots
-        )
+        detector = get_codebert()
+        similarities = detector.compute_sequential_similarities(formatted_snapshots)
         log_memory_usage("AFTER SEQUENTIAL COMPUTATION")
 
         # Force garbage collection
