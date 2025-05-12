@@ -362,8 +362,8 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
     // Create D3 force simulation
     const simulation = d3.forceSimulation<MyNodeDatum>(nodeData as MyNodeDatum[])
       .force('link', d3.forceLink<MyNodeDatum, any>(linkData)
-        .id(d => d.id)
-        .strength(d => d.similarity ? d.similarity / 100 : 0))
+        .id((d: { id: any; }) => d.id)
+        .strength((d: { similarity: number; }) => d.similarity ? d.similarity / 100 : 0))
       .force('charge', d3.forceManyBody().strength(-100))
       .force('center', d3.forceCenter(width / 2, height / 2))
       .force('collision', d3.forceCollide().radius(nodeRadius * 1.5))
@@ -507,9 +507,6 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
 
   return (
     <Card className="bg-gray-800 border-0">
-      <CardHeader>
-        {/* <CardTitle className="text-xl font-semibold">Similarity Analysis Dashboard</CardTitle> */}
-      </CardHeader>
       <CardContent>
         <div className="grid grid-cols-2 gap-6 pt-8">
           {/* Left column: Graph */}
