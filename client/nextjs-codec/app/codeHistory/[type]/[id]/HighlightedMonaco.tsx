@@ -33,8 +33,15 @@ const HighlightedMonaco: React.FC<HighlightedMonacoProps> = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const [isEditorReady, setIsEditorReady] = useState(false);
 
+  // Get color based on similarity - using exact same thresholds and colors as SimilarityDashboard
+  const getSimilarityColor = (similarity: number) => {
+    if (similarity >= 80) return { bg: 'rgba(220, 38, 38, 0.3)', border: '#dc2626' }; // Red for high similarity (matches hex #dc2626)
+    if (similarity >= 60) return { bg: 'rgba(202, 138, 4, 0.3)', border: '#ca8a04' };  // Yellow for medium (matches hex #ca8a04)
+    return { bg: 'rgba(37, 99, 235, 0.3)', border: '#2563eb' };  // Blue for lower similarity (matches hex #2563eb)
+  };
+
   // Add custom CSS for highlights
-  const addCustomHighlightStyles = (clusterColorMap: Map<number, string>) => {
+  const addCustomHighlightStyles = () => {
     // Remove previous style if exists
     const existingStyle = document.getElementById('monaco-highlight-styles');
     if (existingStyle) {
@@ -54,23 +61,39 @@ const HighlightedMonaco: React.FC<HighlightedMonacoProps> = ({
       }
     `;
 
-    // Add styles for each cluster
-    clusterColorMap.forEach((color, clusterId) => {
-      const borderColor = color.replace('0.15', '0.75').replace('0.12', '0.65');
-
-      styleContent += `
-        .monaco-editor .highlight-cluster-${clusterId} {
-          background-color: ${color} !important;
-          border-left: 3px solid ${borderColor} !important;
-        }
-        .monaco-editor .highlight-gutter-cluster-${clusterId} {
-          border-left: 3px solid ${borderColor} !important;
-        }
-        .monaco-editor .highlight-margin-cluster-${clusterId} {
-          border-left: 3px solid ${borderColor} !important;
-        }
-      `;
-    });
+    // Add styles for each similarity level - using exact same colors as SimilarityDashboard
+    styleContent += `
+      .monaco-editor .highlight-high-similarity {
+        background-color: rgba(220, 38, 38, 0.3) !important;
+        // border-left: 3px solid #dc2626 !important;
+      }
+      .monaco-editor .highlight-medium-similarity {
+        background-color: rgba(202, 138, 4, 0.3) !important;
+        // border-left: 3px solid #ca8a04 !important;
+      }
+      .monaco-editor .highlight-low-similarity {
+        background-color: rgba(37, 99, 235, 0.3) !important;
+        // border-left: 3px solid #2563eb !important;
+      }
+      .monaco-editor .highlight-gutter-high-similarity {
+        // border-left: 3px solid #dc2626 !important;
+      }
+      .monaco-editor .highlight-gutter-medium-similarity {
+        // border-left: 3px solid #ca8a04 !important;
+      }
+      .monaco-editor .highlight-gutter-low-similarity {
+        // border-left: 3px solid #2563eb !important;
+      }
+      .monaco-editor .highlight-margin-high-similarity {
+        // border-left: 3px solid #dc2626 !important;
+      }
+      .monaco-editor .highlight-margin-medium-similarity {
+        // border-left: 3px solid #ca8a04 !important;
+      }
+      .monaco-editor .highlight-margin-low-similarity {
+        // border-left: 3px solid #2563eb !important;
+      }
+    `;
 
     styleElement.innerHTML = styleContent;
     document.head.appendChild(styleElement);
@@ -121,44 +144,17 @@ const HighlightedMonaco: React.FC<HighlightedMonacoProps> = ({
         decorationsRef.current = editorRef.current.deltaDecorations(decorationsRef.current, []);
       }
 
-      // Create a map by cluster ID for consistent coloring
-      const clusterColorMap = new Map();
-
-      // First pass to establish consistent colors per cluster
-      highlights.forEach(highlight => {
-        if (!clusterColorMap.has(highlight.clusterId)) {
-          // Decide color based on cluster ID to ensure consistency
-          let color;
-          const colorIndex = highlight.clusterId % 5; // Cycle through 5 distinct colors
-
-          switch (colorIndex) {
-            case 0:
-              color = `rgba(220, 20, 60, 0.45)`;  // Red
-              break;
-            case 1:
-              color = `rgba(0, 128, 0, 0.2)`;    // Green
-              break;
-            case 2:
-              color = `rgba(0, 0, 255, 0.2)`;    // Blue
-              break;
-            case 3:
-              color = `rgba(255, 165, 0, 0.2)`;  // Orange
-              break;
-            case 4:
-              color = `rgba(128, 0, 128, 0.2)`;  // Purple
-              break;
-            default:
-              color = `rgba(255, 215, 0, 0.2)`;  // Yellow fallback
-          }
-
-          clusterColorMap.set(highlight.clusterId, color);
-        }
-      });
-
       // Create decorations for all highlights
       const decorations = highlights.map(highlight => {
-        const backgroundColor = clusterColorMap.get(highlight.clusterId);
-        const borderColor = backgroundColor.replace('0.15', '0.75').replace('0.12', '0.65');
+        // Determine similarity level class
+        let similarityLevel = 'low';
+        if (highlight.similarity >= 80) {
+          similarityLevel = 'high';
+        } else if (highlight.similarity >= 60) {
+          similarityLevel = 'medium';
+        }
+
+        const colorInfo = getSimilarityColor(highlight.similarity);
 
         return {
           range: new (monacoRef.current as any).Range(
@@ -169,16 +165,16 @@ const HighlightedMonaco: React.FC<HighlightedMonacoProps> = ({
           ),
           options: {
             isWholeLine: true,
-            className: `highlight-line highlight-cluster-${highlight.clusterId}`,
-            inlineClassName: `highlight-text-cluster-${highlight.clusterId}`,
-            linesDecorationsClassName: `highlight-gutter-cluster-${highlight.clusterId}`,
-            marginClassName: `highlight-margin-cluster-${highlight.clusterId}`,
+            className: `highlight-line highlight-${similarityLevel}-similarity`,
+            inlineClassName: `highlight-text-${similarityLevel}-similarity`,
+            linesDecorationsClassName: `highlight-gutter-${similarityLevel}-similarity`,
+            marginClassName: `highlight-margin-${similarityLevel}-similarity`,
             stickiness: monacoRef.current?.editor?.TrackedRangeStickiness?.NeverGrowsWhenTypingAtEdges || monacoRef.current?.editor?.TrackedRangeStickiness.NeverGrowsWhenTypingAtEdges,
             overviewRuler: {
-              color: borderColor,
+              color: colorInfo.border,
               position: monacoRef.current?.editor?.OverviewRulerLane?.Center || undefined
             },
-            hoverMessage: { value: `Similarity: ${(highlight.similarity * 100).toFixed(1)}% (Cluster ${highlight.clusterId})` }
+            hoverMessage: { value: `Similarity: ${(highlight.similarity * 100).toFixed(1)}%` }
           }
         };
       });
@@ -187,7 +183,7 @@ const HighlightedMonaco: React.FC<HighlightedMonacoProps> = ({
       decorationsRef.current = editorRef.current.deltaDecorations([], decorations);
 
       // Add custom CSS for highlights
-      addCustomHighlightStyles(clusterColorMap);
+      addCustomHighlightStyles();
     };
 
     // Function to apply highlights and handle editor layout

@@ -14,9 +14,11 @@ interface SimilarStructure {
 interface CodeComparisonProps {
   code1: string | null;
   code2: string | null;
-  learner1Id?: string;
-  learner2Id?: string;
-  structures: SimilarStructure[];
+  learner1Id?: string | null;
+  learner2Id?: string | null;
+  structures: SimilarStructure[] | null;
+  disableButton?: boolean;
+  onButtonClick?: () => void;
 }
 
 interface HighlightRange {
@@ -28,7 +30,7 @@ interface HighlightRange {
   matchingLines: string[];
 }
 
-export default function CodeComparison({ code1, code2, learner1Id, learner2Id, structures }: CodeComparisonProps) {
+export default function CodeComparison({ code1, code2, learner1Id, learner2Id, structures, onButtonClick, disableButton }: CodeComparisonProps) {
   const [scrollTop1, setScrollTop1] = useState(0);
   const [scrollTop2, setScrollTop2] = useState(0);
   const [syncScrolling, setSyncScrolling] = useState(true);
@@ -137,6 +139,16 @@ export default function CodeComparison({ code1, code2, learner1Id, learner2Id, s
   return (
     <div className="space-y-4">
       <div className="flex justify-end mb-2">
+        {disableButton && (
+          <div className="flex items-center justify-center mr-4">
+            <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-blue-500"></div>
+          </div>
+        )}
+        <button
+          onClick={onButtonClick}
+          disabled={disableButton}
+          className={`px-4 py-2 rounded-lg text-white ${disableButton ? 'bg-gray-400' : 'bg-blue-500 hover:bg-blue-600'}`}
+        >Highlight</button>
         <div className="flex items-center">
           <label className="text-sm mr-2 text-gray-700 dark:text-gray-300">Sync Scrolling</label>
           <input

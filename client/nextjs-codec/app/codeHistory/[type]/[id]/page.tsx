@@ -1,6 +1,6 @@
 //page.tsx
 'use client'
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react'; // Added useCallback import
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ChevronDown, ChevronUp, FileCode2, Network, GitBranch, Activity } from "lucide-react";
@@ -155,7 +155,8 @@ export default function CodeReplayApp() {
     fetchLearnerSnapshots();
   }, [params.id]);
 
-  const fetchSimilarityData = async (filterOptions = filters) => {
+  // Wrapped fetchSimilarityData with useCallback to optimize re-renders
+  const fetchSimilarityData = useCallback(async (filterOptions = filters) => {
     try {
       setIsMatrixLoading(true);
 
@@ -190,7 +191,7 @@ export default function CodeReplayApp() {
     } finally {
       setIsMatrixLoading(false);
     }
-  };
+  }, [filters]);
 
   useEffect(() => {
     fetchSimilarityData();
@@ -236,6 +237,9 @@ export default function CodeReplayApp() {
             <TabsTrigger value="evolution" className="data-[state=active]:bg-gray-700">
               <GitBranch className="w-4 h-4 mr-2 text-yellow-500" />
               Code Evolution
+            </TabsTrigger>
+            <TabsTrigger value="matrix2" className="data-[state=active]:bg-gray-700">
+              Matrix 2
             </TabsTrigger>
           </TabsList>
 
