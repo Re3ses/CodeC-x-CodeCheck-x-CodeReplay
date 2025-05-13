@@ -22,9 +22,9 @@ interface HighlightedMonacoProps {
 
 // Helper function to get color based on similarity
 const getSimilarityColor = (similarity: number) => {
-  if (similarity >= 80) return { bg: 'bg-red-600', opacity: 'bg-opacity-40', text: 'text-white', hex: '#dc2626' };
-  if (similarity >= 60) return { bg: 'bg-yellow-600', opacity: 'bg-opacity-60', text: 'text-white', hex: '#ca8a04' };
-  return { bg: 'bg-gray-700', opacity: 'bg-opacity-50', text: 'text-white', hex: '#2563eb' };
+  if (similarity >= 80) return { bg: 'bg-red-600', opacity: 'bg-opacity-30', text: 'text-white', hex: '#dc2626' };
+  if (similarity >= 60) return { bg: 'bg-yellow-600', opacity: 'bg-opacity-20', text: 'text-white', hex: '#ca8a04' };
+  return { bg: 'bg-gray-700', opacity: 'bg-opacity-30', text: 'text-white', hex: '#2563eb' };
 };
 
 

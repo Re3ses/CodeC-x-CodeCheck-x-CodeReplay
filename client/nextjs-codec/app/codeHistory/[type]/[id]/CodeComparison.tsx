@@ -138,17 +138,17 @@ export default function CodeComparison({ code1, code2, learner1Id, learner2Id, s
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-around mb-2 gap-2">
-        {disableButton && (
-          <div className="flex items-center justify-center mr-4">
-            <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-r-2 border-b-2 border-white"></div>
-          </div>
-        )}
+      <div className="flex justify-start mb-2 gap-2">
         <button
           onClick={onButtonClick}
           disabled={disableButton}
           className={`px-4 py-2 rounded-lg text-white ${disableButton ? 'bg-gray-400' : 'bg-blue-500 hover:bg-blue-600'}`}
         >Highlight</button>
+        {disableButton && (
+          <div className="flex items-center justify-center mr-4">
+            <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-r-2 border-b-2 border-white"></div>
+          </div>
+        )}
         <div className="flex items-center">
           <label className="text-sm mr-2 text-gray-700 dark:text-gray-300">Sync Scrolling</label>
           <input
