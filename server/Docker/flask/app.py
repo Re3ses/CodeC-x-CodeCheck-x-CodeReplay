@@ -30,13 +30,11 @@ logger = logging.getLogger(__name__)
 # Initialize Flask app
 app = Flask(__name__)
 
-# Configure CORS
-# print("Loaded ALLOWED_ORIGINS:", os.getenv("ALLOWED_ORIGINS"))
-
 allowed_origins = os.getenv("ALLOWED_ORIGINS", "*").split(",")
 print("Parsed allowed_origins:", allowed_origins)  # Debug print
 
-CORS(app, resources={r"/api/*": {"origins": allowed_origins}})
+# Configure CORS
+# CORS(app, resources={r"/api/*": {"origins": allowed_origins}})
 
 # Configure rate limiting
 limiter = Limiter(
