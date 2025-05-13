@@ -461,8 +461,8 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
     console.log("highlight code requested")
     if (!selection.nodeId === null || !selection.snippetCode) return;
 
-    // const API_URL = process.env.FLASK_API_URL || 'https://duckdns';
-    const API_URL = process.env.FLASK_API_URL || 'http://localhost:5000';
+    const API_URL = process.env.NEXT_PUBLIC_FLASK_API_URL || 'https://codecflaskapi.duckdns.org';
+    // const API_URL = process.env.NEXT_PUBLIC_FLASK_API_URL || 'http://localhost:5000';
     try {
       const structuralResponse = await fetch(`${API_URL}/api/visualize-similarity`, {
         method: 'POST',
