@@ -37,6 +37,7 @@ interface GraphPositions {
 }
 
 interface SimilarityCardProps {
+  anonymize: boolean;
   snippetId: number;
   similarity: number;
   onClick: (id: number) => void;
@@ -44,6 +45,7 @@ interface SimilarityCardProps {
 }
 
 interface SimilarityDashboardProps {
+  anonymize: boolean;
   matrix: number[][];
   snippets: Snippet[];
 }
@@ -97,7 +99,7 @@ const getHighSimilarityPairs = (matrix: number[][], snippets: Snippet[]) => {
 };
 
 // Memoized SimilarityCard component
-const SimilarityCard = React.memo(({ snippetId, similarity, onClick, snippet }: SimilarityCardProps) => {
+const SimilarityCard = React.memo(({ snippetId, similarity, onClick, snippet, anonymize }: SimilarityCardProps) => {
   if (!snippet) return null;
 
   const colorClass = getSimilarityColor(similarity);
@@ -109,7 +111,7 @@ const SimilarityCard = React.memo(({ snippetId, similarity, onClick, snippet }: 
     >
       <div className="flex flex-col text-left overflow-hidden">
         <span className="text-sm font-medium truncate text-white">
-          {snippet.learner}
+          {anonymize ? 'Leaner' : snippet.learner}
         </span>
         <span className="text-xs text-gray-400 truncate">
           {new Date(snippet.timestamp).toLocaleString()}
@@ -124,7 +126,7 @@ const SimilarityCard = React.memo(({ snippetId, similarity, onClick, snippet }: 
 
 SimilarityCard.displayName = 'SimilarityCard';
 
-const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snippets }) => {
+const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ anonymize = false, matrix, snippets }) => {
   const [graphData, setGraphData] = useState({
     nodes: [] as NodeData[],
     links: [] as LinkData[],
@@ -390,7 +392,7 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
   }, [matrix, snippets, width, height, nodeRadius]);
 
   // Render function for nodes
-  const renderNode = useCallback((node: NodeData, i: number, isSelected: boolean) => {
+  const renderNode = useCallback((node: NodeData, i: number, isSelected: boolean, anonymize: boolean) => {
     const baseColor = getSimilarityColor(0);
     const nodeColor = isSelected ? '#3b82f6' : baseColor.hex;
     const learner = node.learner;
@@ -419,7 +421,7 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
           fontSize="10"
           className="select-none"
         >
-          {learner}
+          {anonymize ? 'Learner' : learner}
         </text>
       </g>
     );
@@ -528,7 +530,7 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
                   ) : null;
                 })}
 
-                {graphData.nodes.map((node, i) => renderNode(node, i, selection.nodeId === i))}
+                {graphData.nodes.map((node, i) => renderNode(node, i, selection.nodeId === i, anonymize))}
               </svg>
 
               <DraggableLegend
@@ -567,6 +569,7 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
                 <div className="grid grid-cols-2 gap-2 max-h-[300px] overflow-y-auto pr-2">
                   {selectedNodeConnections.map((conn, i) => (
                     <SimilarityCard
+                      anonymize={anonymize}
                       key={i}
                       snippetId={conn.connectedNode}
                       similarity={conn.similarity}
@@ -605,7 +608,12 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
                     >
                       <div className="flex justify-between items-center mb-1">
                         <span className="text-sm truncate max-w-[70%]">
-                          {snippets[pair.source].learner} & {snippets[pair.target].learner}
+                          {anonymize ?
+                            'Learner1 & Learner2'
+                            :
+                            `${snippets[pair.source].learner} & ${snippets[pair.target].learner}`
+                          }
+
                         </span>
                         <Badge className={getColorForSimilarity(pair.similarity)}>
                           {pair.similarity.toFixed(1)}%
@@ -623,23 +631,9 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ matrix, snipp
           <div className="gap-6 mt-6 flex flex-col">
             {/* Code comparison section */}
             <div className="bg-gray-700 rounded-lg p-4 mt-4">
-              {/* <div className="flex justify-between items-center mb-4">
-                <div className="flex gap-4">
-                  <h4 className="font-medium">
-                    {selection.nodeId !== null && snippets[selection.nodeId]
-                      ? `${snippets[selection.nodeId].learner}'s Code`
-                      : 'Reference File'
-                    }
-                    &nbsp;vs&nbsp;
-                    {selection.comparisonUserId
-                      ? `${selection.comparisonUserId}'s Code`
-                      : "Select a snippet to compare"
-                    }
-                  </h4>
-                </div>
-              </div> */}
 
               <CodeComparison
+                anonymize={anonymize}
                 code1={selection.nodeId !== null && snippets[selection.nodeId]
                   ? snippets[selection.nodeId].code
                   : "// Select a node to view its code"
