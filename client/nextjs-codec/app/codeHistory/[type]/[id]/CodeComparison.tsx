@@ -12,6 +12,7 @@ interface SimilarStructure {
 }
 
 interface CodeComparisonProps {
+  anonymize?: boolean;
   code1: string | null;
   code2: string | null;
   learner1Id?: string | null;
@@ -30,7 +31,7 @@ interface HighlightRange {
   matchingLines: string[];
 }
 
-export default function CodeComparison({ code1, code2, learner1Id, learner2Id, structures, onButtonClick, disableButton = false }: CodeComparisonProps) {
+export default function CodeComparison({ anonymize = true, code1, code2, learner1Id, learner2Id, structures, onButtonClick, disableButton = false }: CodeComparisonProps) {
   const [scrollTop1, setScrollTop1] = useState(0);
   const [scrollTop2, setScrollTop2] = useState(0);
   const [syncScrolling, setSyncScrolling] = useState(true);
@@ -138,17 +139,17 @@ export default function CodeComparison({ code1, code2, learner1Id, learner2Id, s
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-around mb-2 gap-2">
-        {disableButton && (
-          <div className="flex items-center justify-center mr-4">
-            <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-r-2 border-b-2 border-white"></div>
-          </div>
-        )}
+      <div className="flex justify-start mb-2 gap-2">
         <button
           onClick={onButtonClick}
           disabled={disableButton}
           className={`px-4 py-2 rounded-lg text-white ${disableButton ? 'bg-gray-400' : 'bg-blue-500 hover:bg-blue-600'}`}
         >Highlight</button>
+        {disableButton && (
+          <div className="flex items-center justify-center mr-4">
+            <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-r-2 border-b-2 border-white"></div>
+          </div>
+        )}
         <div className="flex items-center">
           <label className="text-sm mr-2 text-gray-700 dark:text-gray-300">Sync Scrolling</label>
           <input
@@ -163,7 +164,7 @@ export default function CodeComparison({ code1, code2, learner1Id, learner2Id, s
       <div className="grid md:grid-cols-2 gap-4">
         <div className="space-y-2">
           <h3 className="font-semibold text-gray-700 dark:text-gray-300">
-            {learner1Id ? learner1Id : 'Code Sample 1'}
+            {anonymize ? 'Learner' : learner1Id ? learner1Id : 'Code Sample 1'}
           </h3>
           <div className="h-[500px] border-none rounded-lg overflow-hidden">
             <HighlightedMonaco
@@ -176,7 +177,7 @@ export default function CodeComparison({ code1, code2, learner1Id, learner2Id, s
         </div>
         <div className="space-y-2">
           <h3 className="font-semibold text-gray-700 dark:text-gray-300">
-            {learner2Id ? learner2Id : 'Code Sample 2'}
+            {anonymize ? 'Learner' : learner2Id ? learner2Id : 'Code Sample 1'}
           </h3>
           <div className="h-[500px] border-none rounded-lg overflow-hidden">
             <HighlightedMonaco

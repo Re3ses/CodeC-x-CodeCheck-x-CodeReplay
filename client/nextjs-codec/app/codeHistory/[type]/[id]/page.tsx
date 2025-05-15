@@ -79,6 +79,7 @@ export default function CodeReplayApp() {
     userType: '',
     highestScoringOnly: false
   });
+  const [anonymize, setAnonymize] = useState(true);
   const [showFilters, setShowFilters] = useState(false);
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
@@ -172,8 +173,8 @@ export default function CodeReplayApp() {
 
       // console.log("Query params", queryParams);
 
-      const API_URL = process.env.FLASK_API_URL || 'https://codecflaskapi.duckdns.org';
-      // const API_URL = process.env.FLASK_API_URL || 'http://localhost:5000';
+      const API_URL = process.env.NEXT_PUBLIC_FLASK_API_URL || 'https://codecflaskapi.duckdns.org';
+      // const API_URL = process.env.NEXT_PUBLIC_FLASK_API_URL || 'http://localhost:5000';
       const response = await fetch(`${API_URL}/api/similarity/matrix?${queryParams}`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' }
@@ -246,9 +247,27 @@ export default function CodeReplayApp() {
               <Loading message="Loading similarity matrix..." />
             ) : (
               <div className="space-y-6">
-                <div className="bg-gray-800 p-4 rounded-lg mb-4">
-                  <div className="flex justify-between items-center cursor-pointer" onClick={() => setShowFilters(!showFilters)}>
-                    <h3 className="text-lg font-bold">Filters</h3>
+                <div className={`bg-gray-800 p-4 rounded-lg mb-4 ${!showFilters ? 'w-max' : 'w-full'}`}>
+                  <div className="flex justify-between items-center cursor-pointer gap-4" onClick={() => setShowFilters(!showFilters)}>
+                    <div className='flex flex-row items-center gap-2'>
+                      <h3 className="text-lg font-bold">Settings</h3>
+                      {!showFilters ? (
+                        <div className='flex items-center' onClick={(e) => e.stopPropagation()}>
+                          <label className="inline-flex items-center cursor-pointer space-x-2 text-gray-300">
+                            <input
+                              type="checkbox"
+                              name="anonymize"
+                              checked={anonymize}
+                              onChange={() => setAnonymize(prev => !prev)}
+                              className="w-4 h-4 sr-only peer"
+                              title="Anonymize users to protect their identities."
+                            />
+                            <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring- rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600 dark:peer-checked:bg-blue-600"></div>
+                            <span>Anonymize Users</span>
+                          </label>
+                        </div>
+                      ) : null}
+                    </div>
                     {showFilters ? (
                       <ChevronUp className="h-5 w-5 text-gray-400" />
                     ) : (
@@ -257,8 +276,8 @@ export default function CodeReplayApp() {
                   </div>
 
                   {showFilters && (
-                    <div className="grid grid-cols-3 gap-4 items-center justify-center mt-2">
-                      <div className="col-span-1">
+                    <div className="grid grid-cols-4 gap-4 items-center justify-center mt-2">
+                      <div className="col-span-1 flex items-start flex-col">
                         <label className="text-sm text-gray-300">Verdict:</label>
                         <select name="verdict" value={filters.verdict} onChange={handleFilterChange} className="w-full p-2 bg-gray-900 border border-gray-700 rounded">
                           <option value="">All</option>
@@ -279,7 +298,7 @@ export default function CodeReplayApp() {
                         </label>
                       </div>
 
-                      <div className="col-span-1">
+                      <div className="col-span-1 flex items-start flex-col">
                         <label className="text-sm text-gray-300">User Type:</label>
                         <select name="userType" value={filters.userType} onChange={handleFilterChange} className="w-full p-2 bg-gray-900 border border-gray-700 rounded">
                           <option value="Learner">Learners</option>
@@ -298,12 +317,28 @@ export default function CodeReplayApp() {
                           />
                           <span>Filter Highest Scoring Only</span>
                         </label>
+
                       </div>
 
-                      <div className="col-span-1">
+                      <div className="col-span-1 flex items-start flex-col">
                         <button onClick={() => fetchSimilarityData(filters)} className="w-full bg-yellow-500 text-black p-2 rounded">
                           Apply Filters
                         </button>
+                      </div>
+
+                      <div className='col-span-1 flex items-start flex-col'>
+                        <label className="inline-flex items-center cursor-pointer space-x-2 text-gray-300">
+                          <input
+                            type="checkbox"
+                            name="anonymize"
+                            checked={anonymize}
+                            onChange={() => setAnonymize(prev => !prev)}
+                            className="w-4 h-4 sr-only peer"
+                            title="Anonymize users to protect their identities."
+                          />
+                          <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring- rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600 dark:peer-checked:bg-blue-600"></div>
+                          <span>Anonymize Users</span>
+                        </label>
                       </div>
                     </div>
                   )}
@@ -311,6 +346,7 @@ export default function CodeReplayApp() {
 
                 {similarityMatrix ?
                   <SimilarityDashboard
+                    anonymize={anonymize}
                     matrix={similarityMatrix.matrix}
                     snippets={similarityMatrix.snippets}
                   /> : "similaritymatrix empty"
@@ -337,7 +373,8 @@ export default function CodeReplayApp() {
                             <div className="flex items-center justify-between">
                               <div className="flex items-center gap-2 truncate">
                                 <FileCode2 className="w-4 h-4 flex-shrink-0" />
-                                <span className="truncate">{snippet.learner}</span>
+                                <span className="truncate">
+                                  {anonymize ? 'Learner' : snippet.learner}</span>
                               </div>
                               <div className="flex items-center gap-2 flex-shrink-0">
                                 {expandedCard === index ? (
