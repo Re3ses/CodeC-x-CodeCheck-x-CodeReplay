@@ -101,3 +101,53 @@ export async function GET(
     );
   }
 }
+
+export async function PUT(request: Request) {
+  try {
+    const body = await request.json();
+    const { problem_id, ...updateData } = body;
+
+    if (!problem_id) {
+      return NextResponse.json(
+        { message: 'Problem ID is required for updates' },
+        { status: 400 }
+      );
+    }
+
+    await dbConnect();
+    const db = mongoose.connection;
+    const problemCollection = db.collection('problems');
+
+    // Create the query based on whether the provided ID is a valid ObjectId
+    let query: any = { slug: problem_id }; // Default to searching by slug
+
+    // If the ID matches ObjectId pattern, search by ObjectId
+    if (problem_id.match(/^[0-9a-fA-F]{24}$/)) {
+      query = { _id: new ObjectId(problem_id) };
+    }
+
+    const result = await problemCollection.updateOne(
+      query,
+      { $set: updateData }
+    );
+
+    if (result.matchedCount === 0) {
+      return NextResponse.json(
+        { message: `Problem not found with id: ${problem_id}` },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json({
+      message: 'Problem updated successfully',
+      problem_id: problem_id,
+      modifiedCount: result.modifiedCount
+    });
+  } catch (error) {
+    console.error('Error updating problem:', error);
+    return NextResponse.json(
+      { message: `Failed to update problem: ${error}` },
+      { status: 500 }
+    );
+  }
+}

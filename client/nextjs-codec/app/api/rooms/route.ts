@@ -105,3 +105,57 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: error.message || 'Failed to create room' }, { status: 500 });
   }
 }
+
+export async function PUT(request: NextRequest) {
+  try {
+    await dbConnect();
+
+    const data = await request.json();
+    const { room_id, ...updateData } = data;
+
+    if (!room_id) {
+      return NextResponse.json({ error: 'Room ID is required' }, { status: 400 });
+    }
+
+    // Handle date conversions if they're provided
+    if (updateData.releaseDate) {
+      updateData.releaseDate = new Date(updateData.releaseDate);
+    }
+    if (updateData.dueDate) {
+      updateData.dueDate = new Date(updateData.dueDate);
+    }
+
+    // Don't allow updating the slug
+    if (updateData.slug) {
+      delete updateData.slug;
+    }
+
+    const db = mongoose.connection;
+    const roomsCollection = db.collection('coderooms');
+
+    if (!ObjectId.isValid(room_id)) {
+      return NextResponse.json({ error: 'Invalid Room ID' }, { status: 400 });
+    }
+
+    const result = await roomsCollection.updateOne(
+      { _id: new ObjectId(room_id) },
+      { $set: updateData }
+    );
+
+    if (result.matchedCount === 0) {
+      return NextResponse.json({ error: `No room found with id: ${room_id}` }, { status: 404 });
+    }
+
+    // Get the updated room
+    const updatedRoom = await roomsCollection.findOne({ _id: new ObjectId(room_id) });
+
+    return NextResponse.json({
+      message: 'Room updated successfully',
+      room: updatedRoom
+    }, { status: 200 });
+
+  } catch (error: any) {
+    console.error('Room update error:', error);
+    return NextResponse.json({ error: error.message || 'Failed to update room' }, { status: 500 });
+  }
+}

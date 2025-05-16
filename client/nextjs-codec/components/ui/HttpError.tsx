@@ -49,14 +49,16 @@ const HTTP_ERRORS: Record<number, ErrorDefinition> = {
 interface HttpErrorProps {
   statusCode: number;
   reset?: () => void;
+  showHome?: boolean;
+  message?: string;
 }
 
-export default function HttpError({ statusCode, reset }: HttpErrorProps) {
+export default function HttpError({ statusCode, message, reset, showHome }: HttpErrorProps) {
   const error = HTTP_ERRORS[statusCode] || {
-    title: 'Unknown Error',
-    message: 'Something unexpected happened.',
+    title: statusCode || 'Unknown Error',
+    message: message || 'Something unexpected happened.',
     showReset: true,
-    showHome: true
+    showHome: showHome || true
   };
 
   return (

@@ -25,7 +25,9 @@ import {
   DialogFooter,
   DialogClose,
 } from "./ui/dialog";
-import { Eye, CopyCheck, Trash2, Code, ChevronDown, ChevronUp, FileText, CheckCircle2 } from 'lucide-react';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from './ui/dropdown-menu';
+import { UpdateProblemDialog } from './ui/classroom/updateProblemDialog';
+import { MoreVertical, Eye, CopyCheck, Trash2, Code, ChevronDown, ChevronRight, FileText, CheckCircle2, Pencil } from 'lucide-react';
 
 const CollapsibleDescription = ({ description }: { description: string }) => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -37,7 +39,7 @@ const CollapsibleDescription = ({ description }: { description: string }) => {
         className="flex items-center gap-1 text-sm text-muted-foreground hover:text-primary transition-colors"
       >
         Description {isExpanded ?
-          <ChevronUp className="h-4 w-4" /> :
+          <ChevronRight className="h-4 w-4" /> :
           <ChevronDown className="h-4 w-4" />
         }
       </button>
@@ -140,55 +142,92 @@ export default function RoomProblemList({ params }: { params: { slug: string } }
                     <CollapsibleDescription description={problem.description} />
                   </div>
                   {isMentor ? (
-                    <div className="grid grid-cols-2 gap-2 shrink-0">
-                      <Button variant="outline" size="sm" asChild>
-                        <Link href={`/mentor/coderoom/r/${params.slug}/problem/${problem.slug}`}>
-                          <Eye className="mr-2 h-4 w-4" />
-                          View
-                        </Link>
-                      </Button>
-                      <Button variant="outline" size="sm" asChild>
-                        <Link href={`/submissions/${params.slug}?problem=${problem.slug}`}>
-                          <FileText className="mr-2 h-4 w-4" />
-                          Submissions
-                        </Link>
-                      </Button>
-                      <Button variant="outline" size="sm">
-                        <Link href={`/codeHistory/problem/${problem.slug}`} className='flex items-center'>
-                          <CopyCheck className="mr-2 h-4 w-4" />
-                          CodeCheck
-                        </Link>
-                      </Button>
+                    <div className="flex items-start justify-start gap-2 shrink-0">
+                      <div className='grid grid-cols-2 gap-2'>
+                        <Button variant="outline" size="sm" asChild>
+                          <Link href={`/submissions/${params.slug}?problem=${problem.slug}`}>
+                            <FileText className="mr-2 h-4 w-4" />
+                            Submissions
+                          </Link>
+                        </Button>
+                        <Button variant="outline" size="sm">
+                          <Link href={`/codeHistory/problem/${problem.slug}`} className='flex items-center'>
+                            <CopyCheck className="mr-2 h-4 w-4" />
+                            CodeCheck
+                          </Link>
+                        </Button>
+                      </div>
 
-                      <Dialog>
-                        <DialogTrigger asChild>
-                          <Button variant="destructive" size="sm">
-                            <Trash2 className="mr-2 h-4 w-4" />
-                            Delete
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" size="sm">
+                            <MoreVertical className="h-4 w-4" />
                           </Button>
-                        </DialogTrigger>
-                        <DialogContent>
-                          <DialogHeader>
-                            <DialogTitle>Delete Problem</DialogTitle>
-                            <DialogDescription>
-                              Are you sure you want to delete &quot;{problem.name}&quot;? This action cannot be undone.
-                            </DialogDescription>
-                          </DialogHeader>
-                          <DialogFooter>
-                            <DialogClose asChild>
-                              <Button variant="outline">Cancel</Button>
-                            </DialogClose>
-                            <DialogClose asChild>
-                              <Button
-                                variant="destructive"
-                                onClick={() => handleDelete(problem._id!, problem.name)}
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuItem
+                            onSelect={(e) => e.preventDefault()}
+                            className="text-muted-foreground focus:text-primary"
+                          >
+                            <Link className="flex items-center text-white" href={`/mentor/coderoom/r/${params.slug}/problem/${problem.slug}`}>
+                              <Eye className="mr-2 h-4 w-4" />
+                              View
+                            </Link>
+                          </DropdownMenuItem>
+
+                          <UpdateProblemDialog
+                            problem={{
+                              _id: problem._id!,
+                              name: problem.name,
+                              description: problem.description,
+                              input_format: problem.input_format || "",
+                              output_format: problem.output_format || "",
+                              constraints: problem.constraints || "",
+                              languages: problem.languages || [],
+                              test_cases: problem.test_cases || [],
+                              mentor: problem.mentor || "",
+                              perfect_score: problem.perfect_score || 0
+                            }}
+                            onSuccess={() => {
+                              // Refetch room data to get updated problems
+                              roomQuery.refetch();
+                            }}
+                          />
+
+                          <Dialog>
+                            <DialogTrigger asChild>
+                              <DropdownMenuItem
+                                onSelect={(e) => e.preventDefault()}
+                                className="text-white focus:text-red-600"
                               >
-                                Delete Problem
-                              </Button>
-                            </DialogClose>
-                          </DialogFooter>
-                        </DialogContent>
-                      </Dialog>
+                                <Trash2 className="h-4 w-4 mr-2" />
+                                Delete
+                              </DropdownMenuItem>
+                            </DialogTrigger>
+                            <DialogContent>
+                              <DialogHeader>
+                                <DialogTitle>Delete Problem</DialogTitle>
+                                <DialogDescription>
+                                  Are you sure you want to delete &quot;{problem.name}&quot;? This action cannot be undone.
+                                </DialogDescription>
+                              </DialogHeader>
+                              <DialogFooter>
+                                <DialogClose asChild>
+                                  <Button variant="outline">Cancel</Button>
+                                </DialogClose>
+                                <DialogClose asChild>
+                                  <Button
+                                    variant="destructive"
+                                    onClick={() => handleDelete(problem._id!, problem.name)}
+                                  >
+                                    Delete Problem
+                                  </Button>
+                                </DialogClose>
+                              </DialogFooter>
+                            </DialogContent>
+                          </Dialog>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
                     </div>
                   ) : (
                     <div className="flex items-center gap-4">
