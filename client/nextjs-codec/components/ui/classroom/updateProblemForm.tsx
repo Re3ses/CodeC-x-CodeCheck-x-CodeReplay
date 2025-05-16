@@ -1,6 +1,5 @@
 'use client';
-
-import { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -158,7 +157,7 @@ export default function UpdateProblemForm({ onFormSubmit, problem }: UpdateProbl
     return form.getValues().test_cases.reduce((total, testCase) => total + testCase.score, 0);
   };
 
-  const handleAddLanguage = () => {
+  const handleAddLanguage = useCallback(() => {
     if (!selectedLang || !codeSnippet) {
       toast({
         title: 'Make sure you have selected a language and added a code snippet.',
@@ -185,9 +184,9 @@ export default function UpdateProblemForm({ onFormSubmit, problem }: UpdateProbl
     });
 
     toast({ title: 'Language template added successfully!' });
-  };
+  }, [selectedLang, codeSnippet, appendLanguage, form, toast]);
 
-  const handleAddTestCase = () => {
+  const handleAddTestCase = useCallback(() => {
     if (!newTestCase.output) {
       toast({
         title: 'Missing test case details',
@@ -214,7 +213,7 @@ export default function UpdateProblemForm({ onFormSubmit, problem }: UpdateProbl
     });
 
     toast({ title: 'Test case added successfully!' });
-  };
+  }, [newTestCase, appendTestCase, toast]);
 
   const onSubmit = async (data: ProblemFormData) => {
     try {
@@ -272,7 +271,7 @@ export default function UpdateProblemForm({ onFormSubmit, problem }: UpdateProbl
     { name: 'Test Cases', icon: '4' }
   ];
 
-  const ReactQuillEditor = ({ value, onChange }: { value: string, onChange: (value: string) => void }) => {
+  const ReactQuillEditor = React.memo(({ value, onChange }: { value: string, onChange: (value: string) => void }) => {
     return (
       <ReactQuill
         value={value}
@@ -283,7 +282,8 @@ export default function UpdateProblemForm({ onFormSubmit, problem }: UpdateProbl
         preserveWhitespace={true}
       />
     );
-  };
+  });
+  ReactQuillEditor.displayName = "ReactQuillEditor";
 
   return (
     <Form {...form}>

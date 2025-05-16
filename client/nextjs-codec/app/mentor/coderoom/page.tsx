@@ -65,12 +65,6 @@ export default function ClassroomManagement() {
 
 
   const ownerId = roomsQuery.data?.[0]?.mentor?.id;
-  // if (userQuery.data?.type == 'Mentor') {
-
-  // } else {
-  //   const learnerId = userQuery.data?.id;
-  // }
-
 
   if (roomsQuery.isLoading) {
     return (
