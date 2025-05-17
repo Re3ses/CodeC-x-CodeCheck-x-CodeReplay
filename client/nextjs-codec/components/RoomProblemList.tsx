@@ -30,7 +30,7 @@ import { UpdateProblemDialog } from './ui/classroom/updateProblemDialog';
 import { MoreVertical, Eye, CopyCheck, Trash2, Code, ChevronDown, ChevronRight, FileText, CheckCircle2, Pencil } from 'lucide-react';
 
 const CollapsibleDescription = ({ description }: { description: string }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(true);
 
   return (
     <div className="space-y-1 h-fit">
@@ -142,7 +142,7 @@ export default function RoomProblemList({ params }: { params: { slug: string } }
                     <CollapsibleDescription description={problem.description} />
                   </div>
                   {isMentor ? (
-                    <div className="flex items-start justify-start gap-2 shrink-0">
+                    <div className="flex items-center justify-center gap-2 shrink-0">
                       <div className='grid grid-cols-2 gap-2'>
                         <Button variant="outline" size="sm" asChild>
                           <Link href={`/submissions/${params.slug}?problem=${problem.slug}`}>
@@ -150,7 +150,7 @@ export default function RoomProblemList({ params }: { params: { slug: string } }
                             Submissions
                           </Link>
                         </Button>
-                        <Button variant="outline" size="sm">
+                        <Button variant="codecBlue" size="sm">
                           <Link href={`/codeHistory/problem/${problem.slug}`} className='flex items-center'>
                             <CopyCheck className="mr-2 h-4 w-4" />
                             CodeCheck
