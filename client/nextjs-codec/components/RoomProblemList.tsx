@@ -30,7 +30,7 @@ import { UpdateProblemDialog } from './ui/classroom/updateProblemDialog';
 import { MoreVertical, Eye, CopyCheck, Trash2, Code, ChevronDown, ChevronRight, FileText, CheckCircle2, Pencil } from 'lucide-react';
 
 const CollapsibleDescription = ({ description }: { description: string }) => {
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   return (
     <div className="space-y-1 h-fit">
