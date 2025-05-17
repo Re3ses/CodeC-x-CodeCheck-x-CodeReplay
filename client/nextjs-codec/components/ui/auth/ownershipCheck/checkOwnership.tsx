@@ -7,6 +7,7 @@ import { getUser } from '@/lib/auth';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { AlertCircle } from 'lucide-react';
+import Loading from '@/components/loading';
 
 interface OwnershipCheckProps {
   /**
@@ -107,8 +108,8 @@ export default function OwnershipCheck({
   // Loading state
   if (isChecking || userQuery.isLoading) {
     return loadingComponent || (
-      <div className="flex items-center justify-center min-h-[200px]">
-        <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full"></div>
+      <div className='w-full h-full flex items-center justify-center'>
+        <Loading />
       </div>
     );
   }

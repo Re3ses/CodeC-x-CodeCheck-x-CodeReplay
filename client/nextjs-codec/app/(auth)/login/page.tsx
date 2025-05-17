@@ -39,15 +39,17 @@ export default function Page() {
           {/* Container for 3:4 aspect ratio */}
           <div className="relative w-full max-w-3xl aspect-[3/4]">
             {/* Decorative blobs */}
-            <div className="absolute top-0 -left-4 w-28 h-28 bg-yellow-500 rounded-full animate-blob"></div>
-            <div className="absolute bottom-[10rem] z-50 -right-14 w-44 h-44 bg-blue-500 rounded-full  animate-blob animation-delay-2000"></div>
-            <div className="absolute -bottom-8 left-20 w-32 h-32 bg-white rounded-full animate-blob animation-delay-4000"></div>
+            <div className="absolute top-0 -left-4 w-28 h-28 bg-yellow-500 rounded-full shadow-md animate-blob"></div>
+            <div className="absolute bottom-[10rem] z-50 -right-14 w-44 h-44 bg-blue-500 rounded-full shadow-md animate-blob animation-delay-2000"></div>
+            <div className="absolute -bottom-8 left-20 w-32 h-32 bg-white rounded-full shadow-md animate-blob animation-delay-4000"></div>
+            <div className="absolute top-40 -right-64 w-60 h-60 bg-yellow-300 rounded-full shadow-md animate-blob animation-delay-4000"></div>
 
             <div className="relative w-full h-full flex flex-col items-center justify-center">
               <Image
                 width={400}
                 height={300}
-                src="/images/CodeCArt.png" alt={'CodeC Illustration'} />
+                src="/images/CodeCArt.png" alt={'CodeC Illustration'}
+              />
               <div className='p-8 font-medium text-3xl'>
                 <span>Code</span>.<span>Connect</span>.<span>Compete</span>
               </div>
