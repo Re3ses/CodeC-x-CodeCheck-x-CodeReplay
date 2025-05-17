@@ -56,13 +56,12 @@ export default function Nav(props: { variant?: string; name?: string; type?: str
         {/* Navigation Links */}
         <div className="flex gap-6">
           {path && (navLinks.map(({ label, href, id, icon: Icon, disabled }) => (
-            <AnimatePresence>
+            <AnimatePresence key={id}>
               <motion.button
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: "auto" }}
                 exit={{ opacity: 0, height: 0 }}
                 transition={{ duration: 0.2 }}
-                key={id}
                 onClick={() => !disabled && handleNavigation(href)}
                 disabled={disabled}
                 className={`flex items-center gap-2 text-sm font-medium transition-colors relative 
