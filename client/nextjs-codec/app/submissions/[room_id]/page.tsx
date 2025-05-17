@@ -16,7 +16,10 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Search, Code, X, Trophy, AlertTriangle } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
+import { Search, Code, X, Trophy, AlertTriangle, Filter, ChevronDown, ChevronUp, ArrowDownNarrowWide, ArrowUpNarrowWide } from 'lucide-react';
 import moment from 'moment';
 import Nav from '@/app/dashboard/nav';
 import { useParams, useSearchParams } from 'next/navigation';
@@ -24,6 +27,8 @@ import { ProblemSchemaInferredType } from '@/lib/interface/problem';
 import { RoomSchemaInferredType } from '@/lib/interface/room'; // Import the RoomSchemaInferredType
 import { useQuery } from '@tanstack/react-query';
 import { GetRoom } from '@/utilities/apiService';
+import Loading from '@/components/loading';
+import { get } from 'lodash';
 
 interface Submission {
   _id: string;
@@ -49,8 +54,19 @@ export default function SubmissionsPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [submissions, setSubmissions] = useState<Submission[]>([]);
+  const [allSubmissions, setAllSubmissions] = useState<Submission[]>([]);
   const [problemData, setProblemData] = useState<ProblemSchemaInferredType | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  // Add filter states
+  const [showFilters, setShowFilters] = useState(false);
+  const [filters, setFilters] = useState({
+    minScore: 0,
+    maxAttempts: 100,
+    sortBy: 'score', // 'score', 'name', 'attempts', 'duration'
+    sortOrder: 'desc', // 'asc', 'desc'
+    showHighestOnly: true,
+  });
 
   // Use useQuery to fetch room data
   const roomQuery = useQuery<RoomSchemaInferredType>({
@@ -91,7 +107,10 @@ export default function SubmissionsPage() {
           throw new Error(submissionsData.error || 'Failed to fetch submissions data');
         }
 
-        // Process submissions regardless of problem data availability
+        // Store all submissions
+        setAllSubmissions(submissionsData.submissions);
+
+        // Process submissions
         const highestSubmissions = submissionsData.submissions.reduce((acc: Record<string, Submission>, curr: Submission) => {
           if (!acc[curr.learner_id] || acc[curr.learner_id].score_overall_count < curr.score_overall_count) {
             acc[curr.learner_id] = curr;
@@ -103,7 +122,7 @@ export default function SubmissionsPage() {
 
         // Try to fetch problem data with the new API structure
         try {
-          const problemResponse = await fetch(`api/problems?problem_id=${problemSlug}`, {
+          const problemResponse = await fetch(`/api/problems?problem_id=${problemSlug}`, {
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
           });
@@ -136,9 +155,63 @@ export default function SubmissionsPage() {
     }
   }, [room_id, problemSlug]);
 
-  const filteredSubmissions = submissions.filter(submission =>
-    submission.learner.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Apply filters function
+  useEffect(() => {
+    if (allSubmissions.length === 0) return;
+
+    let filtered = [...allSubmissions];
+
+    // Apply highest score only filter
+    if (filters.showHighestOnly) {
+      const highestSubmissions = filtered.reduce((acc: Record<string, Submission>, curr: Submission) => {
+        if (!acc[curr.learner_id] || acc[curr.learner_id].score_overall_count < curr.score_overall_count) {
+          acc[curr.learner_id] = curr;
+        }
+        return acc;
+      }, {});
+      filtered = Object.values(highestSubmissions);
+    }
+
+    // Apply score filter
+    filtered = filtered.filter(submission =>
+      submission.score_overall_count >= filters.minScore
+    );
+
+    // Apply attempts filter
+    filtered = filtered.filter(submission =>
+      submission.attempt_count <= filters.maxAttempts
+    );
+
+    // Apply search filter
+    filtered = filtered.filter(submission =>
+      submission.learner.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
+    // Apply sorting
+    filtered.sort((a, b) => {
+      let comparison = 0;
+      switch (filters.sortBy) {
+        case 'score':
+          comparison = a.score_overall_count - b.score_overall_count;
+          break;
+        case 'name':
+          comparison = a.learner.localeCompare(b.learner);
+          break;
+        case 'attempts':
+          comparison = a.attempt_count - b.attempt_count;
+          break;
+        case 'duration':
+          comparison = a.completion_time - b.completion_time;
+          break;
+        default:
+          comparison = 0;
+      }
+
+      return filters.sortOrder === 'asc' ? comparison : -comparison;
+    });
+
+    setSubmissions(filtered);
+  }, [allSubmissions, filters, searchQuery]);
 
   const getScoreColor = (score: number) => {
     // Use the perfect score from the problem data (or room data) as the denominator
@@ -152,6 +225,27 @@ export default function SubmissionsPage() {
     if (percentage >= 50) return 'bg-yellow-500/20 text-yellow-400';
     return 'bg-red-500/20 text-red-400';
   };
+
+  const getLanguageUsed = (language: string) => {
+    switch (language) {
+      case '54':
+        return 'c++';
+      case '62':
+        return 'java';
+      case '71':
+        return 'python';
+      case '50':
+        return 'c';
+      case '88':
+        return 'c#';
+      case '63':
+        return 'javaScript';
+      default:
+        return 'plaintext';
+    }
+  }
+
+
 
   return (
     <div className="min-h-screen bg-gray-900">
@@ -191,21 +285,101 @@ export default function SubmissionsPage() {
                 />
               </div>
             </div>
+
+            {/* Filter button */}
+            <div className="mt-4">
+              <Button
+                variant="outline"
+                onClick={() => setShowFilters(!showFilters)}
+                className="w-full sm:w-auto flex items-center justify-center border-gray-700 hover:bg-gray-700 text-gray-300"
+              >
+                <Filter className="mr-2 h-4 w-4" />
+                {showFilters ? 'Hide Filters' : 'Show Filters'}
+                {showFilters ? <ChevronUp className="ml-2 h-4 w-4" /> : <ChevronDown className="ml-2 h-4 w-4" />}
+              </Button>
+
+              {/* Filter panel */}
+              <AnimatePresence>
+                {showFilters && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="mt-4 bg-gray-900/50 rounded-lg p-4 overflow-hidden"
+                  >
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                      {/* Minimum Score */}
+                      <div className="space-y-2">
+                        <Label className="text-gray-300">Minimum Score</Label>
+                        <div className="flex items-center space-x-2">
+                          <Input
+                            type="range"
+                            min="0"
+                            max={problemData?.perfect_score || 100}
+                            value={filters.minScore}
+                            onChange={(e) => setFilters({ ...filters, minScore: parseInt(e.target.value) })}
+                            className="w-full"
+                          />
+                          <Input
+                            type="number"
+                            min="0"
+                            max={problemData?.perfect_score || 100}
+                            value={filters.minScore}
+                            onChange={(e) => setFilters({ ...filters, minScore: parseInt(e.target.value) })}
+                            className="w-20 bg-gray-800 border-gray-700 text-gray-300"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Max Attempts */}
+                      <div className="space-y-2">
+                        <Label className="text-gray-300">Max Attempts</Label>
+                        <div className="flex items-center space-x-2">
+                          <Input
+                            type="range"
+                            min="1"
+                            max="100"
+                            value={filters.maxAttempts}
+                            onChange={(e) => setFilters({ ...filters, maxAttempts: parseInt(e.target.value) })}
+                            className="w-full"
+                          />
+                          <Input
+                            type="number"
+                            min="0"
+                            max="100"
+                            value={filters.maxAttempts}
+                            onChange={(e) => setFilters({ ...filters, maxAttempts: parseInt(e.target.value) })}
+                            className="w-20 bg-gray-800 border-gray-700 text-gray-300"
+                          />
+                        </div>
+                      </div>
+
+
+                      {/* Show only highest score */}
+                      <div className="space-y-2">
+                        <Label className="text-gray-300">Display Options</Label>
+                        <div className="flex items-center justify-between bg-gray-800 p-3 rounded-md border border-gray-700">
+                          <span className="text-gray-300 text-sm">Show only highest score per student</span>
+                          <Switch
+                            checked={filters.showHighestOnly}
+                            onCheckedChange={(checked) => setFilters({ ...filters, showHighestOnly: checked })}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </CardHeader>
           <CardContent>
             <AnimatePresence>
               {isLoading ? (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="flex justify-center items-center py-12"
-                >
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white" />
-                </motion.div>
+                <Loading message="Loading submissions..." />
               ) : error ? (
                 <div className="text-red-400 text-center py-4">{error}</div>
-              ) : filteredSubmissions.length === 0 ? (
+              ) : submissions.length === 0 ? (
                 <div className="text-gray-400 text-center py-4">
                   No submissions found
                 </div>
@@ -215,39 +389,73 @@ export default function SubmissionsPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3 }}
                 >
+                  {/* Table display */}
                   <Card className="bg-gray-900 border-gray-700">
                     <Table>
                       <TableHeader>
                         <TableRow className="border-gray-700 hover:bg-gray-800/50">
-                          <TableHead className="w-[250px] font-semibold text-gray-300">Name</TableHead>
-                          <TableHead className="font-semibold text-gray-300">Duration</TableHead>
-                          <TableHead className="font-semibold text-gray-300">Attempts</TableHead>
-                          <TableHead className="font-semibold text-gray-300">Score</TableHead>
+                          <TableHead className="w-[250px] font-semibold text-gray-300">
+                            <Button
+                              onClick={() => setFilters({ ...filters, sortBy: 'name', sortOrder: filters.sortOrder === 'asc' ? 'desc' : 'asc' })}
+                              variant="ghost"
+                              className="flex items-center gap-2 text-gray-300 hover:text-white">
+                              Name
+                              {filters.sortBy === 'name' && (filters.sortOrder === 'asc' ? <ArrowUpNarrowWide className="h-4 w-4" /> : <ArrowDownNarrowWide className="h-4 w-4" />)}
+                            </Button>
+                          </TableHead>
+                          <TableHead className="font-semibold text-gray-300">
+                            <Button
+                              onClick={() => setFilters({ ...filters, sortBy: 'duration', sortOrder: filters.sortOrder === 'asc' ? 'desc' : 'asc' })}
+                              variant="ghost"
+                              className="flex items-center gap-2 text-gray-300 hover:text-white">
+                              Duration
+                              {filters.sortBy === 'duration' && (filters.sortOrder === 'asc' ? <ArrowUpNarrowWide className="h-4 w-4" /> : <ArrowDownNarrowWide className="h-4 w-4" />)}
+                            </Button>
+                          </TableHead>
+                          <TableHead className="font-semibold text-gray-300">
+                            <Button
+                              onClick={() => setFilters({ ...filters, sortBy: 'attempts', sortOrder: filters.sortOrder === 'asc' ? 'desc' : 'asc' })}
+                              variant="ghost"
+                              className="flex items-center gap-2 text-gray-300 hover:text-white">
+                              Attempts
+                              {filters.sortBy === 'attempts' && (filters.sortOrder === 'asc' ? <ArrowUpNarrowWide className="h-4 w-4" /> : <ArrowDownNarrowWide className="h-4 w-4" />)}
+                            </Button>
+                          </TableHead>
+                          <TableHead className="font-semibold text-gray-300">
+                            <Button
+                              onClick={() => setFilters({ ...filters, sortBy: 'score', sortOrder: filters.sortOrder === 'asc' ? 'desc' : 'asc' })}
+                              variant="ghost"
+                              className="flex items-center gap-2 text-gray-300 hover:text-white">
+                              Score
+                              {filters.sortBy === 'score' && (filters.sortOrder === 'asc' ? <ArrowUpNarrowWide className="h-4 w-4" /> : <ArrowDownNarrowWide className="h-4 w-4" />)}
+                            </Button>
+                          </TableHead>
                           <TableHead className="text-right font-semibold text-gray-300">Actions</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
-                        {filteredSubmissions.map((submission) => (
+                        {/* Existing table body code */}
+                        {submissions.map((submission) => (
                           <React.Fragment key={submission._id}>
                             <TableRow className="group border-gray-700 hover:bg-gray-800/50">
-                              <TableCell className="font-medium text-white">
+                              <TableCell className="pl-8 font-medium text-white">
                                 {submission.learner}
                               </TableCell>
-                              <TableCell className="text-gray-400">
+                              <TableCell className="pl-8 text-gray-400">
                                 {moment.duration(submission.completion_time).humanize()}
                               </TableCell>
-                              <TableCell className="text-gray-400">
+                              <TableCell className="pl-8 text-gray-400">
                                 {submission.attempt_count}
                               </TableCell>
-                              <TableCell>
+                              <TableCell className='pl-8'>
                                 <Badge
                                   variant="outline"
-                                  className={`font-mono ${getScoreColor(submission.score_overall_count)}`}
+                                  className={`font-mono ${getScoreColor(submission.score_overall_count)} `}
                                 >
                                   {submission.score_overall_count}
                                 </Badge>
                               </TableCell>
-                              <TableCell className="text-right">
+                              <TableCell className="pl-8 text-right">
                                 <Button
                                   variant="outline"
                                   size="sm"
@@ -288,7 +496,7 @@ export default function SubmissionsPage() {
                                       <div className="h-96">
                                         <Editor
                                           height="100%"
-                                          defaultLanguage={submission.language_used}
+                                          defaultLanguage={getLanguageUsed(submission.language_used)}
                                           defaultValue={submission.code}
                                           theme="vs-dark"
                                           options={{
