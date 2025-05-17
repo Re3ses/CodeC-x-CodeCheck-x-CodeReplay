@@ -13,9 +13,9 @@ export default function Page() {
   const randomQuote = inspirationalQuotes[Math.floor(Math.random() * inspirationalQuotes.length)];
 
   return (
-    <div className="p-6">
-      <Card className="overflow-hidden max-w-4xl mx-auto">
-        <CardContent className="p-0">
+    <div className="p-6 h-full w-full flex items-center justify-center">
+      <Card className="overflow-hidden w-full h-fit max-w-4xl mx-auto">
+        <CardContent className="p-0 h-fit w-full">
           <div className="bg-gray-900 p-6">
             <div className="flex flex-col md:flex-row items-center gap-4">
               {/* Trophy Section */}

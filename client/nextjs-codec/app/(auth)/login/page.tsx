@@ -39,14 +39,18 @@ export default function Page() {
           {/* Container for 3:4 aspect ratio */}
           <div className="relative w-full max-w-3xl aspect-[3/4]">
             {/* Decorative blobs */}
-            <div className="absolute top-0 -left-4 w-96 h-96 bg-yellow-500 rounded-full mix-blend-multiply filter blur-xl opacity-10 animate-blob"></div>
-            <div className="absolute top-0 -right-4 w-96 h-96 bg-yellow-500 rounded-full mix-blend-multiply filter blur-xl opacity-10 animate-blob animation-delay-2000"></div>
-            <div className="absolute -bottom-8 left-20 w-96 h-96 bg-white rounded-full mix-blend-multiply filter blur-xl opacity-10 animate-blob animation-delay-4000"></div>
+            <div className="absolute top-0 -left-4 w-28 h-28 bg-yellow-500 rounded-full animate-blob"></div>
+            <div className="absolute bottom-[10rem] z-50 -right-14 w-44 h-44 bg-blue-500 rounded-full  animate-blob animation-delay-2000"></div>
+            <div className="absolute -bottom-8 left-20 w-32 h-32 bg-white rounded-full animate-blob animation-delay-4000"></div>
 
-            {/* Placeholder for actual image */}
-            <div className="relative w-full h-full">
-              {/* You can replace this with your actual image */}
-              <IsometricIllustration />
+            <div className="relative w-full h-full flex flex-col items-center justify-center">
+              <Image
+                width={400}
+                height={300}
+                src="/images/CodeCArt.png" alt={'CodeC Illustration'} />
+              <div className='p-8 font-medium text-3xl'>
+                <span>Code</span>.<span>Connect</span>.<span>Compete</span>
+              </div>
             </div>
           </div>
         </div>

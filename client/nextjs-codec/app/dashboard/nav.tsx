@@ -3,7 +3,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Button } from '@/components/ui/button';
+import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft } from 'lucide-react';
 import {
   Code2,
@@ -55,23 +55,29 @@ export default function Nav(props: { variant?: string; name?: string; type?: str
 
         {/* Navigation Links */}
         <div className="flex gap-6">
-          {navLinks.map(({ label, href, id, icon: Icon, disabled }) => (
-            <button
-              key={id}
-              onClick={() => !disabled && handleNavigation(href)}
-              disabled={disabled}
-              className={`flex items-center gap-2 text-sm font-medium transition-colors relative 
+          {path && (navLinks.map(({ label, href, id, icon: Icon, disabled }) => (
+            <AnimatePresence>
+              <motion.button
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.2 }}
+                key={id}
+                onClick={() => !disabled && handleNavigation(href)}
+                disabled={disabled}
+                className={`flex items-center gap-2 text-sm font-medium transition-colors relative 
                 ${disabled ? 'text-yellow-500 cursor-not-allowed' : 'text-white hover:text-yellow-500'}`}
-            >
-              <Icon className={`w-5 h-5 ${disabled ? 'text-yellow-500' : 'text-yellow-500'}`} />
-              {label}
-              {disabled && (
-                <span className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs bg-gray-800 text-white px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity group-hover:block">
-                  Loading...
-                </span>
-              )}
-            </button>
-          ))}
+              >
+                <Icon className={`w-5 h-5 ${disabled ? 'text-yellow-500' : 'text-yellow-500'}`} />
+                {label}
+                {disabled && (
+                  <span className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs bg-gray-800 text-white px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity group-hover:block">
+                    Loading...
+                  </span>
+                )}
+              </motion.button>
+            </AnimatePresence>
+          )))}
         </div>
       </div>
 
