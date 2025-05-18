@@ -16,9 +16,8 @@ export default function Page() {
   return (
     <div className="min-h-screen bg-gray-900 flex">
       {/* Left Section - Login Form (smaller) */}
-      <div className="w-full lg:w-3/5 flex flex-col justify-center items-center p-8">
+      <div className="w-full flex flex-col justify-center items-center p-8">
         <div className="w-full max-w-md space-y-8">
-          {/* Logo */}
           <div className="text-center">
             <h1 className="text-5xl font-bold text-white">
               Code<span className="text-yellow-500">C</span>
@@ -26,7 +25,6 @@ export default function Page() {
             <p className="mt-2 text-white/60">Welcome back! Please login to your account.</p>
           </div>
 
-          {/* Login Form Card */}
           <div className="bg-gray-800/50 backdrop-blur-sm p-8 rounded-xl shadow-2xl">
             <LoginForm />
           </div>
@@ -34,11 +32,9 @@ export default function Page() {
       </div>
 
       {/* Right Section - Illustration (larger) */}
-      <div className="hidden lg:flex w-3/5 bg-gray-800 relative overflow-hidden">
+      {/* <div className="hidden lg:flex w-3/5 bg-gray-800 relative overflow-hidden">
         <div className="absolute inset-0 flex items-center justify-center p-12">
-          {/* Container for 3:4 aspect ratio */}
           <div className="relative w-full max-w-3xl aspect-[3/4]">
-            {/* Decorative blobs */}
             <div className="absolute top-0 -left-4 w-28 h-28 bg-yellow-500 rounded-full shadow-md animate-blob"></div>
             <div className="absolute bottom-[10rem] z-50 -right-14 w-44 h-44 bg-blue-500 rounded-full shadow-md animate-blob animation-delay-2000"></div>
             <div className="absolute -bottom-8 left-20 w-32 h-32 bg-white rounded-full shadow-md animate-blob animation-delay-4000"></div>
@@ -56,7 +52,7 @@ export default function Page() {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Footer */}
       <div className="fixed bottom-0 w-full bg-gray-800/50 backdrop-blur-sm py-2 z-10">
