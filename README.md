@@ -9,7 +9,7 @@ For a more in-depth guide and information, refer to our CodeC Wiki: [https://git
 * `docker` must be installed on your machine.
 * `nvm` should be used to manage Node.js versions.
 * `mongodb` to manage database instances
-* `mongodb compass` database insteraction GUI
+* `mongodb compass` database interaction GUI
 
 ## Quick Start: How to Run the development server
 
