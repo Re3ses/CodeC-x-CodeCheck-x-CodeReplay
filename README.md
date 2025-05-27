@@ -130,4 +130,7 @@ This quick start guide assumes that you already have the prerequisites installed
    python app.py
    ```
 
+### Setting up mongodb
+ Mongodb can be run either locally or in the cloud for free using their free tier. Follow their guide at https://www.mongodb.com/docs/guides/ for info on how to get your `mongodb uri`.
+
    Note: If you are using a GNU/Linux system, make sure to [set cgroups to v1](https://docs.docker.com/config/containers/runmetrics/#:~:text=Changing%20cgroup%20version,-Changing%20cgroup%20version&text=On%20systemd%2Dbased%20systems%2C%20cgroup,unified_cgroup_hierarchy%3D0%20instead.) to make Judge0 work properly. 
