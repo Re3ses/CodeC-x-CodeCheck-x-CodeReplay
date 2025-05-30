@@ -120,7 +120,7 @@ This quick start guide assumes that you already have the prerequisites installed
 
 5. Create a `.env` file inside the `Docker/flask` folder using the `.env.development` as a template.
 
-6. Run the python script.
+6. Run the python script. \
    6.a. Important, for local testing make sure to uncomment the `CORS library` import lines at `line 4` of `app.py`. Next, uncomment the allowed routes at `line 72` within the same file.
    ```
    py app.py
