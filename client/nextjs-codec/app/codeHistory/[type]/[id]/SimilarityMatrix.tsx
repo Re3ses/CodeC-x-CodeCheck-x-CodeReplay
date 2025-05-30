@@ -570,7 +570,7 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ anonymize = f
             {selection.nodeId !== null && !uiState.showHighSimilaritySection && (
               <div className="bg-gray-700 rounded-lg p-4">
                 <h4 className="font-medium mb-3">
-                  Connections for {snippets[selection.nodeId]?.learner}&apos;s Submission
+                  {anonymize ? "Learner" : `Connections for ${snippets[selection.nodeId]?.learner}'s Submission`}
                 </h4>
                 <div className="grid grid-cols-2 gap-2 max-h-[300px] overflow-y-auto pr-2">
                   {selectedNodeConnections.map((conn, i) => (
