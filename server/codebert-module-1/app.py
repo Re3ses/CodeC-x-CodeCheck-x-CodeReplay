@@ -7,6 +7,7 @@ from analyzer.codebert_attention import CodeBERTAttentionAnalyzer
 from analyzer.attention import (
     CodeSimilarityAnalyzer as OriginalCodeSimilarityAnalyzer,
 )  # Renamed to avoid conflict
+from analyzer.agreement_analyzer import AgreementAnalyzer  # Fixed import path
 
 import json
 import logging
@@ -143,8 +144,6 @@ def get_similarity_matrix():
             ),
             500,
         )
-
-
 
 @app.route("/api/similarity/sequential", methods=["GET"])
 def get_sequential_similarity():
@@ -394,6 +393,39 @@ def visualize_attention_custom():
         print(f"Error processing custom visualize attention request: {str(e)}")
         print(traceback.format_exc())
         return jsonify({"success": False, "error": str(e)}), 500
+
+
+@app.route('/analyze_agreement', methods=['POST'])
+def analyze_agreement():
+    try:
+        # Check if files were uploaded
+        if 'file' not in request.files:
+            return jsonify({'success': False, 'error': 'No files uploaded'}), 400
+
+        files = request.files.getlist('file')
+        if not files or all(not file.filename for file in files):
+            return jsonify({'success': False, 'error': 'No files selected'}), 400
+
+        # Get aggregation preference
+        aggregate = request.form.get('aggregate', 'false').lower() == 'true'
+
+        # Create analyzer instance
+        analyzer = AgreementAnalyzer()
+        
+        # Analyze files
+        result = analyzer.analyze_agreement(files, aggregate)
+        
+        if not result.get('success'):
+            return jsonify(result), 400
+            
+        return jsonify(result)
+
+    except Exception as e:
+        traceback.print_exc()
+        return jsonify({
+            'success': False, 
+            'error': f'Server error: {str(e)}'
+        }), 500
 
 
 if __name__ == "__main__":
