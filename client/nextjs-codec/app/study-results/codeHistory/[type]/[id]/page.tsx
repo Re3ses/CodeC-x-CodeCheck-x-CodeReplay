@@ -70,7 +70,7 @@ export default function CodeReplayApp() {
   const [isMatrixLoading, setIsMatrixLoading] = useState(true);
   const [snapshots, setSnapshots] = useState<CodeSnapshot[]>([]);
   const [enhancedPastes, setEnhancedPastes] = useState<EnhancedPasteInfo[]>([]);
-  const [anonymize, setAnonymize] = useState(true);
+  // Remove the anonymize state - it's always true now
 
   // Fetch user submissions
   useEffect(() => {
@@ -146,11 +146,12 @@ export default function CodeReplayApp() {
 
   const fetchSimilarityData = useCallback(async () => {
     if (studyProblems.includes(params.id)) {
+      console.log("Loading local study data for:", params.id);
       try {
         setIsMatrixLoading(true);
 
         // Import data from local JSON file
-        const data = await import(`@/data/study-problems/${params.id}.json`);
+        const data = await import(`@/data/studyFindings/${params.id}.json`);
 
         if (data.success) {
           setSimilarityMatrix({
@@ -225,33 +226,17 @@ export default function CodeReplayApp() {
               <Loading message="Loading similarity matrix..." />
             ) : (
               <div className="space-y-6">
-                <div className="bg-gray-800 p-4 rounded-lg mb-4">
-                  <div className="flex justify-between items-center">
-                    <h3 className="text-lg font-bold">Settings</h3>
-                    <div className="flex items-center">
-                      <label className="inline-flex items-center cursor-pointer space-x-2 text-gray-300">
-                        <input
-                          type="checkbox"
-                          name="anonymize"
-                          checked={anonymize}
-                          onChange={() => setAnonymize(prev => !prev)}
-                          className="w-4 h-4 sr-only peer"
-                          title="Anonymize users to protect their identities."
-                        />
-                        <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-0 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600 dark:peer-checked:bg-blue-600"></div>
-                        <span>Anonymize Users</span>
-                      </label>
-                    </div>
-                  </div>
-                </div>
+                {/* Removed settings section entirely */}
 
-                {similarityMatrix ?
+                {similarityMatrix ? (
                   <SimilarityDashboard
-                    anonymize={anonymize}
+                    anonymize={true} // Always anonymize
                     matrix={similarityMatrix.matrix}
                     snippets={similarityMatrix.snippets}
-                  /> : "Similarity matrix empty"
-                }
+                  />
+                ) : (
+                  "Similarity matrix empty"
+                )}
               </div>
             )}
           </TabsContent>
@@ -274,8 +259,7 @@ export default function CodeReplayApp() {
                             <div className="flex items-center justify-between">
                               <div className="flex items-center gap-2 truncate">
                                 <FileCode2 className="w-4 h-4 flex-shrink-0" />
-                                <span className="truncate">
-                                  {anonymize ? `Student ${index + 1}` : snippet.learner}</span>
+                                <span className="truncate">Student {index + 1}</span>
                               </div>
                               <div className="flex items-center gap-2 flex-shrink-0">
                                 {expandedCard === index ? (
