@@ -1,0 +1,1034 @@
+{
+  "formatted_snapshots": [
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n    cin >> C >> width >> height;\n\n    for (int i = 0; i < height; ++i) {\n        cout << setfill (C) << setw (width) << \" \" << endl;\n    }\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68148a5aaf49ed9f4221102d",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n\n    \n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "6814882caf49ed9f42211003",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n    cin >> C >> \n\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "6814883caf49ed9f42211007",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n    cin >> C >> width >> height;\n\n    \n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "6814884daf49ed9f4221100b",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n    cin >> C >> width >> height;\n\n    for (i = 0 )\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "6814885aaf49ed9f4221100f",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n    cin >> C >> width >> height;\n\n    for (int i = 0 )\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68148865af49ed9f42211013",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n    cin >> C >> width >> height;\n\n    for (int i = 0; i  )\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "6814886daf49ed9f42211017",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n    cin >> C >> width >> height;\n\n    for (int i = 0; i < height; ++i) {\n        cout << \n    }\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68148884af49ed9f4221101b",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n    cin >> C >> width >> height;\n\n    for (int i = 0; i < height; ++i) {\n        cout << setfill (C) << \n    }\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "6814888faf49ed9f4221101f",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n    cin >> C >> width >> height;\n\n    for (int i = 0; i < height; ++i) {\n        cout << setfill (C) << setw (C) << \n    }\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "6814889daf49ed9f42211023",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n    cin >> C >> width >> height;\n\n    for (int i = 0; i < height; ++i) {\n        cout << setfill (C) << setw (width) << \n    }\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "681488b0af49ed9f42211027",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    \n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68148821af49ed9f42210fff",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n    cin >> C >> width >> height;\n\n    for (int i = 0; i < height; ++i) {\n        cout << setfill (C) << setw (width) << \" \" << endl;\n    }\n    \n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68148a5faf49ed9f42211031",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n    cin >> C >> width >> height;\n\n    for (int i = 0; i < height; ++i) {\n        \n    }\n\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68148a9faf49ed9f42211036",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n    cin >> C >> width >> height;\n\n    for (int i = 0; i < height; ++i) {\n        for (int j = 0; j < width; )\n    }\n\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68148abdaf49ed9f4221103a",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n    cin >> C >> width >> height;\n\n    for (int i = 0; i < height; ++i) {\n        for (int j = 0; j < width; ++j)\n    }\n\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68148ac5af49ed9f4221103e",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n    cin >> C >> width >> height;\n\n    for (int i = 0; i < height; ++i) {\n        for (int j = 0; j < width; ++j) {\n            \n        }\n    }\n\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68148accaf49ed9f42211042",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n    cin >> C >> width >> height;\n\n    for (int i = 0; i < height; ++i) {\n        for (int j = 0; j < width; ++j) {\n            cout << C;\n        }\n    }\n\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68148ad6af49ed9f42211046",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n    cin >> C >> width >> height;\n\n    for (int i = 0; i < height; ++i) {\n        for (int j = 0; j < width; ++j) {\n            cout << C;\n        }\n        cout << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68148b23af49ed9f42211056",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n    cin >> ws\n    cin >> C >> width >> height;\n\n    for (int i = 0; i < height; ++i) {\n        for (int j = 0; j < width; ++j) {\n            cout << C;\n        }\n        cout << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68148b5caf49ed9f4221105a",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n    cin >> ws >> C;\n    cin >> C >> width >> height;\n\n    for (int i = 0; i < height; ++i) {\n        for (int j = 0; j < width; ++j) {\n            cout << C;\n        }\n        cout << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68148b64af49ed9f4221105e",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nusing namespace std;\n\nint main() {\n    char c;\n    int width, height;\n\n    cin >> c >> width >> height;\n\n    for (int i = 0; i < height; ++i) {\n        cout << setfill(c) << setw(width) << \"\" << endl;\n    }\n\n    return 0;\n}\n",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68148ce2af49ed9f4221106d",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n\n    cin >> C >> width >> height;\n\n    for (int i = 0; height; ++i)\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "6814873aaf49ed9f42210fd6",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "681486d5af49ed9f42210fae",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    \n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "681486deaf49ed9f42210fb2",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    \n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "681486ebaf49ed9f42210fb6",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, length;\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "681486f7af49ed9f42210fba",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n    \n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68148701af49ed9f42210fbe",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n\n    cin >> C >> width >> height\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68148716af49ed9f42210fc2",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n\n    cin >> C >> width >> height;\n\n    \n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "6814871aaf49ed9f42210fc6",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n\n    cin >> C >> width >> height;\n\n    for (int )\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68148722af49ed9f42210fca",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n\n    cin >> C >> width >> height;\n\n    for (int i = 0; i)\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "6814872baf49ed9f42210fce",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n\n    cin >> C >> width >> height;\n\n    for (int i = 0; height)\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68148732af49ed9f42210fd2",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "681486c3af49ed9f42210faa",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n\n    cin >> C >> width >> height;\n\n    for (int i = 0; height; i++)\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68148747af49ed9f42210fda",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n\n    cin >> C >> width >> height;\n\n    for (int i = 0; height; i++) {\n        \n    }\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "6814874baf49ed9f42210fde",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n\n    cin >> C >> width >> height;\n\n    for (int i = 0; height; i++) {\n        cout << setfill\n    }\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68148759af49ed9f42210fe2",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n\n    cin >> C >> width >> height;\n\n    for (int i = 0; height; i++) {\n        cout << setfill (C)\n    }\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68148761af49ed9f42210fe6",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n\n    cin >> C >> width >> height;\n\n    for (int i = 0; height; i++) {\n        cout << setfill (C) << setw (width)\n    }\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "6814876faf49ed9f42210fea",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n\n    cin >> C >> width >> height;\n\n    for (int i = 0; height; i++) {\n        cout << setfill (C) << setw (width) << \" \" << endl;\n    }\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "6814877baf49ed9f42210fee",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n\n    cin >> C >> width >> height;\n\n    for (int i = 0; height; i++) {\n        cout << setfill (C) << setw (width) << \" \" << endl;\n    }\n    \n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68148781af49ed9f42210ff2",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "6814880faf49ed9f42210ff7",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    \n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68148819af49ed9f42210ffb",
+      "timestamp": ""
+    }
+  ],
+  "sequentialSimilarities": [
+    {
+      "codebert_score": 59,
+      "from_index": 0,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 59,
+      "to_index": 1
+    },
+    {
+      "codebert_score": 74,
+      "from_index": 1,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 74,
+      "to_index": 2
+    },
+    {
+      "codebert_score": 80,
+      "from_index": 2,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 80,
+      "to_index": 3
+    },
+    {
+      "codebert_score": 81,
+      "from_index": 3,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 81,
+      "to_index": 4
+    },
+    {
+      "codebert_score": 88,
+      "from_index": 4,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 88,
+      "to_index": 5
+    },
+    {
+      "codebert_score": 84,
+      "from_index": 5,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 84,
+      "to_index": 6
+    },
+    {
+      "codebert_score": 70,
+      "from_index": 6,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 70,
+      "to_index": 7
+    },
+    {
+      "codebert_score": 85,
+      "from_index": 7,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 85,
+      "to_index": 8
+    },
+    {
+      "codebert_score": 84,
+      "from_index": 8,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 84,
+      "to_index": 9
+    },
+    {
+      "codebert_score": 92,
+      "from_index": 9,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 92,
+      "to_index": 10
+    },
+    {
+      "codebert_score": 59,
+      "from_index": 10,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 59,
+      "to_index": 11
+    },
+    {
+      "codebert_score": 58,
+      "from_index": 11,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 58,
+      "to_index": 12
+    },
+    {
+      "codebert_score": 75,
+      "from_index": 12,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 75,
+      "to_index": 13
+    },
+    {
+      "codebert_score": 81,
+      "from_index": 13,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 81,
+      "to_index": 14
+    },
+    {
+      "codebert_score": 79,
+      "from_index": 14,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 79,
+      "to_index": 15
+    },
+    {
+      "codebert_score": 83,
+      "from_index": 15,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 83,
+      "to_index": 16
+    },
+    {
+      "codebert_score": 87,
+      "from_index": 16,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 87,
+      "to_index": 17
+    },
+    {
+      "codebert_score": 88,
+      "from_index": 17,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 88,
+      "to_index": 18
+    },
+    {
+      "codebert_score": 87,
+      "from_index": 18,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 87,
+      "to_index": 19
+    },
+    {
+      "codebert_score": 89,
+      "from_index": 19,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 89,
+      "to_index": 20
+    },
+    {
+      "codebert_score": 70,
+      "from_index": 20,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 70,
+      "to_index": 21
+    },
+    {
+      "codebert_score": 69,
+      "from_index": 21,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 69,
+      "to_index": 22
+    },
+    {
+      "codebert_score": 62,
+      "from_index": 22,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 62,
+      "to_index": 23
+    },
+    {
+      "codebert_score": 78,
+      "from_index": 23,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 78,
+      "to_index": 24
+    },
+    {
+      "codebert_score": 78,
+      "from_index": 24,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 78,
+      "to_index": 25
+    },
+    {
+      "codebert_score": 80,
+      "from_index": 25,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 80,
+      "to_index": 26
+    },
+    {
+      "codebert_score": 86,
+      "from_index": 26,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 86,
+      "to_index": 27
+    },
+    {
+      "codebert_score": 73,
+      "from_index": 27,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 73,
+      "to_index": 28
+    },
+    {
+      "codebert_score": 85,
+      "from_index": 28,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 85,
+      "to_index": 29
+    },
+    {
+      "codebert_score": 82,
+      "from_index": 29,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 82,
+      "to_index": 30
+    },
+    {
+      "codebert_score": 80,
+      "from_index": 30,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 80,
+      "to_index": 31
+    },
+    {
+      "codebert_score": 86,
+      "from_index": 31,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 86,
+      "to_index": 32
+    },
+    {
+      "codebert_score": 59,
+      "from_index": 32,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 59,
+      "to_index": 33
+    },
+    {
+      "codebert_score": 58,
+      "from_index": 33,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 58,
+      "to_index": 34
+    },
+    {
+      "codebert_score": 84,
+      "from_index": 34,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 84,
+      "to_index": 35
+    },
+    {
+      "codebert_score": 83,
+      "from_index": 35,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 83,
+      "to_index": 36
+    },
+    {
+      "codebert_score": 84,
+      "from_index": 36,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 84,
+      "to_index": 37
+    },
+    {
+      "codebert_score": 84,
+      "from_index": 37,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 84,
+      "to_index": 38
+    },
+    {
+      "codebert_score": 82,
+      "from_index": 38,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 82,
+      "to_index": 39
+    },
+    {
+      "codebert_score": 100,
+      "from_index": 39,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 100,
+      "to_index": 40
+    },
+    {
+      "codebert_score": 58,
+      "from_index": 40,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 58,
+      "to_index": 41
+    },
+    {
+      "codebert_score": 78,
+      "from_index": 41,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 78,
+      "to_index": 42
+    }
+  ],
+  "snapshots": [
+    {
+      "__v": 0,
+      "_id": "68148a5aaf49ed9f4221102d",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n    cin >> C >> width >> height;\n\n    for (int i = 0; i < height; ++i) {\n        cout << setfill (C) << setw (width) << \" \" << endl;\n    }\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746176602174",
+      "timestamp": "Fri, 02 May 2025 09:03:22 GMT",
+      "version": 33
+    },
+    {
+      "__v": 0,
+      "_id": "6814882caf49ed9f42211003",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n\n    \n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746176043311",
+      "timestamp": "Fri, 02 May 2025 08:54:04 GMT",
+      "version": 23
+    },
+    {
+      "__v": 0,
+      "_id": "6814883caf49ed9f42211007",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n    cin >> C >> \n\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746176059688",
+      "timestamp": "Fri, 02 May 2025 08:54:20 GMT",
+      "version": 24
+    },
+    {
+      "__v": 0,
+      "_id": "6814884daf49ed9f4221100b",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n    cin >> C >> width >> height;\n\n    \n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746176076415",
+      "timestamp": "Fri, 02 May 2025 08:54:37 GMT",
+      "version": 25
+    },
+    {
+      "__v": 0,
+      "_id": "6814885aaf49ed9f4221100f",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n    cin >> C >> width >> height;\n\n    for (i = 0 )\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746176089974",
+      "timestamp": "Fri, 02 May 2025 08:54:50 GMT",
+      "version": 26
+    },
+    {
+      "__v": 0,
+      "_id": "68148865af49ed9f42211013",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n    cin >> C >> width >> height;\n\n    for (int i = 0 )\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746176101198",
+      "timestamp": "Fri, 02 May 2025 08:55:01 GMT",
+      "version": 27
+    },
+    {
+      "__v": 0,
+      "_id": "6814886daf49ed9f42211017",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n    cin >> C >> width >> height;\n\n    for (int i = 0; i  )\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746176108639",
+      "timestamp": "Fri, 02 May 2025 08:55:09 GMT",
+      "version": 28
+    },
+    {
+      "__v": 0,
+      "_id": "68148884af49ed9f4221101b",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n    cin >> C >> width >> height;\n\n    for (int i = 0; i < height; ++i) {\n        cout << \n    }\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746176131326",
+      "timestamp": "Fri, 02 May 2025 08:55:32 GMT",
+      "version": 29
+    },
+    {
+      "__v": 0,
+      "_id": "6814888faf49ed9f4221101f",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n    cin >> C >> width >> height;\n\n    for (int i = 0; i < height; ++i) {\n        cout << setfill (C) << \n    }\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746176142758",
+      "timestamp": "Fri, 02 May 2025 08:55:43 GMT",
+      "version": 30
+    },
+    {
+      "__v": 0,
+      "_id": "6814889daf49ed9f42211023",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n    cin >> C >> width >> height;\n\n    for (int i = 0; i < height; ++i) {\n        cout << setfill (C) << setw (C) << \n    }\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746176156255",
+      "timestamp": "Fri, 02 May 2025 08:55:57 GMT",
+      "version": 31
+    },
+    {
+      "__v": 0,
+      "_id": "681488b0af49ed9f42211027",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n    cin >> C >> width >> height;\n\n    for (int i = 0; i < height; ++i) {\n        cout << setfill (C) << setw (width) << \n    }\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746176175452",
+      "timestamp": "Fri, 02 May 2025 08:56:16 GMT",
+      "version": 32
+    },
+    {
+      "__v": 0,
+      "_id": "68148821af49ed9f42210fff",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    \n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746176033105",
+      "timestamp": "Fri, 02 May 2025 08:53:53 GMT",
+      "version": 22
+    },
+    {
+      "__v": 0,
+      "_id": "68148a5faf49ed9f42211031",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n    cin >> C >> width >> height;\n\n    for (int i = 0; i < height; ++i) {\n        cout << setfill (C) << setw (width) << \" \" << endl;\n    }\n    \n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746176607180",
+      "timestamp": "Fri, 02 May 2025 09:03:27 GMT",
+      "version": 34
+    },
+    {
+      "__v": 0,
+      "_id": "68148a9faf49ed9f42211036",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n    cin >> C >> width >> height;\n\n    for (int i = 0; i < height; ++i) {\n        \n    }\n\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746176671101",
+      "timestamp": "Fri, 02 May 2025 09:04:31 GMT",
+      "version": 35
+    },
+    {
+      "__v": 0,
+      "_id": "68148abdaf49ed9f4221103a",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n    cin >> C >> width >> height;\n\n    for (int i = 0; i < height; ++i) {\n        for (int j = 0; j < width; )\n    }\n\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746176700388",
+      "timestamp": "Fri, 02 May 2025 09:05:01 GMT",
+      "version": 36
+    },
+    {
+      "__v": 0,
+      "_id": "68148ac5af49ed9f4221103e",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n    cin >> C >> width >> height;\n\n    for (int i = 0; i < height; ++i) {\n        for (int j = 0; j < width; ++j)\n    }\n\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746176708828",
+      "timestamp": "Fri, 02 May 2025 09:05:09 GMT",
+      "version": 37
+    },
+    {
+      "__v": 0,
+      "_id": "68148accaf49ed9f42211042",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n    cin >> C >> width >> height;\n\n    for (int i = 0; i < height; ++i) {\n        for (int j = 0; j < width; ++j) {\n            \n        }\n    }\n\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746176716156",
+      "timestamp": "Fri, 02 May 2025 09:05:16 GMT",
+      "version": 38
+    },
+    {
+      "__v": 0,
+      "_id": "68148ad6af49ed9f42211046",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n    cin >> C >> width >> height;\n\n    for (int i = 0; i < height; ++i) {\n        for (int j = 0; j < width; ++j) {\n            cout << C;\n        }\n    }\n\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746176725644",
+      "timestamp": "Fri, 02 May 2025 09:05:26 GMT",
+      "version": 39
+    },
+    {
+      "__v": 0,
+      "_id": "68148b23af49ed9f42211056",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n    cin >> C >> width >> height;\n\n    for (int i = 0; i < height; ++i) {\n        for (int j = 0; j < width; ++j) {\n            cout << C;\n        }\n        cout << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746176803136",
+      "timestamp": "Fri, 02 May 2025 09:06:43 GMT",
+      "version": 40
+    },
+    {
+      "__v": 0,
+      "_id": "68148b5caf49ed9f4221105a",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n    cin >> ws\n    cin >> C >> width >> height;\n\n    for (int i = 0; i < height; ++i) {\n        for (int j = 0; j < width; ++j) {\n            cout << C;\n        }\n        cout << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746176859658",
+      "timestamp": "Fri, 02 May 2025 09:07:40 GMT",
+      "version": 41
+    },
+    {
+      "__v": 0,
+      "_id": "68148b64af49ed9f4221105e",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n    cin >> ws >> C;\n    cin >> C >> width >> height;\n\n    for (int i = 0; i < height; ++i) {\n        for (int j = 0; j < width; ++j) {\n            cout << C;\n        }\n        cout << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746176867482",
+      "timestamp": "Fri, 02 May 2025 09:07:48 GMT",
+      "version": 42
+    },
+    {
+      "__v": 0,
+      "_id": "68148ce2af49ed9f4221106d",
+      "code": "#include <iostream>\n#include <iomanip>\n\nusing namespace std;\n\nint main() {\n    char c;\n    int width, height;\n\n    cin >> c >> width >> height;\n\n    for (int i = 0; i < height; ++i) {\n        cout << setfill(c) << setw(width) << \"\" << endl;\n    }\n\n    return 0;\n}\n",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746177249920",
+      "timestamp": "Fri, 02 May 2025 09:14:10 GMT",
+      "version": 43
+    },
+    {
+      "__v": 0,
+      "_id": "6814873aaf49ed9f42210fd6",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n\n    cin >> C >> width >> height;\n\n    for (int i = 0; height; ++i)\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746175802061",
+      "timestamp": "Fri, 02 May 2025 08:50:02 GMT",
+      "version": 12
+    },
+    {
+      "__v": 0,
+      "_id": "681486d5af49ed9f42210fae",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746175700974",
+      "timestamp": "Fri, 02 May 2025 08:48:21 GMT",
+      "version": 2
+    },
+    {
+      "__v": 0,
+      "_id": "681486deaf49ed9f42210fb2",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    \n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746175710045",
+      "timestamp": "Fri, 02 May 2025 08:48:30 GMT",
+      "version": 3
+    },
+    {
+      "__v": 0,
+      "_id": "681486ebaf49ed9f42210fb6",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    \n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746175723245",
+      "timestamp": "Fri, 02 May 2025 08:48:43 GMT",
+      "version": 4
+    },
+    {
+      "__v": 0,
+      "_id": "681486f7af49ed9f42210fba",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, length;\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746175735229",
+      "timestamp": "Fri, 02 May 2025 08:48:55 GMT",
+      "version": 5
+    },
+    {
+      "__v": 0,
+      "_id": "68148701af49ed9f42210fbe",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n    \n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746175745277",
+      "timestamp": "Fri, 02 May 2025 08:49:05 GMT",
+      "version": 6
+    },
+    {
+      "__v": 0,
+      "_id": "68148716af49ed9f42210fc2",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n\n    cin >> C >> width >> height\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746175765517",
+      "timestamp": "Fri, 02 May 2025 08:49:26 GMT",
+      "version": 7
+    },
+    {
+      "__v": 0,
+      "_id": "6814871aaf49ed9f42210fc6",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n\n    cin >> C >> width >> height;\n\n    \n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746175769685",
+      "timestamp": "Fri, 02 May 2025 08:49:30 GMT",
+      "version": 8
+    },
+    {
+      "__v": 0,
+      "_id": "68148722af49ed9f42210fca",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n\n    cin >> C >> width >> height;\n\n    for (int )\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746175777660",
+      "timestamp": "Fri, 02 May 2025 08:49:38 GMT",
+      "version": 9
+    },
+    {
+      "__v": 0,
+      "_id": "6814872baf49ed9f42210fce",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n\n    cin >> C >> width >> height;\n\n    for (int i = 0; i)\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746175786413",
+      "timestamp": "Fri, 02 May 2025 08:49:47 GMT",
+      "version": 10
+    },
+    {
+      "__v": 0,
+      "_id": "68148732af49ed9f42210fd2",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n\n    cin >> C >> width >> height;\n\n    for (int i = 0; height)\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746175793605",
+      "timestamp": "Fri, 02 May 2025 08:49:54 GMT",
+      "version": 11
+    },
+    {
+      "__v": 0,
+      "_id": "681486c3af49ed9f42210faa",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746175682661",
+      "timestamp": "Fri, 02 May 2025 08:48:03 GMT",
+      "version": 1
+    },
+    {
+      "__v": 0,
+      "_id": "68148747af49ed9f42210fda",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n\n    cin >> C >> width >> height;\n\n    for (int i = 0; height; i++)\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746175814363",
+      "timestamp": "Fri, 02 May 2025 08:50:15 GMT",
+      "version": 13
+    },
+    {
+      "__v": 0,
+      "_id": "6814874baf49ed9f42210fde",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n\n    cin >> C >> width >> height;\n\n    for (int i = 0; height; i++) {\n        \n    }\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746175819163",
+      "timestamp": "Fri, 02 May 2025 08:50:19 GMT",
+      "version": 14
+    },
+    {
+      "__v": 0,
+      "_id": "68148759af49ed9f42210fe2",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n\n    cin >> C >> width >> height;\n\n    for (int i = 0; height; i++) {\n        cout << setfill\n    }\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746175833243",
+      "timestamp": "Fri, 02 May 2025 08:50:33 GMT",
+      "version": 15
+    },
+    {
+      "__v": 0,
+      "_id": "68148761af49ed9f42210fe6",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n\n    cin >> C >> width >> height;\n\n    for (int i = 0; height; i++) {\n        cout << setfill (C)\n    }\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746175840315",
+      "timestamp": "Fri, 02 May 2025 08:50:41 GMT",
+      "version": 16
+    },
+    {
+      "__v": 0,
+      "_id": "6814876faf49ed9f42210fea",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n\n    cin >> C >> width >> height;\n\n    for (int i = 0; height; i++) {\n        cout << setfill (C) << setw (width)\n    }\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746175855084",
+      "timestamp": "Fri, 02 May 2025 08:50:55 GMT",
+      "version": 17
+    },
+    {
+      "__v": 0,
+      "_id": "6814877baf49ed9f42210fee",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n\n    cin >> C >> width >> height;\n\n    for (int i = 0; height; i++) {\n        cout << setfill (C) << setw (width) << \" \" << endl;\n    }\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746175866931",
+      "timestamp": "Fri, 02 May 2025 08:51:07 GMT",
+      "version": 18
+    },
+    {
+      "__v": 0,
+      "_id": "68148781af49ed9f42210ff2",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int width, height;\n\n    cin >> C >> width >> height;\n\n    for (int i = 0; height; i++) {\n        cout << setfill (C) << setw (width) << \" \" << endl;\n    }\n    \n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746175873232",
+      "timestamp": "Fri, 02 May 2025 08:51:13 GMT",
+      "version": 19
+    },
+    {
+      "__v": 0,
+      "_id": "6814880faf49ed9f42210ff7",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746176015184",
+      "timestamp": "Fri, 02 May 2025 08:53:35 GMT",
+      "version": 20
+    },
+    {
+      "__v": 0,
+      "_id": "68148819af49ed9f42210ffb",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    \n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746176024616",
+      "timestamp": "Fri, 02 May 2025 08:53:45 GMT",
+      "version": 21
+    }
+  ],
+  "success": true
+}

@@ -1,0 +1,50 @@
+{
+  "formatted_snapshots": [
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "6814fadd80b316ddbdb518d8",
+      "submission_id": "6814fbd56d1d093413f9f73f",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int W, H;\n\n    cin >> C >> W >> H;\n\n    for (int i = 0; i < H; ++i) {\n        cout << setfill(C) << setw(W) << \"\" << endl;\n    }\n}\n",
+      "learner_id": "6814fadd80b316ddbdb518d8",
+      "submission_id": "6814fbea6d1d093413f9f743",
+      "timestamp": ""
+    }
+  ],
+  "sequentialSimilarities": [
+    {
+      "codebert_score": 51,
+      "from_index": 0,
+      "learner_id": "6814fadd80b316ddbdb518d8",
+      "similarity": 51,
+      "to_index": 1
+    }
+  ],
+  "snapshots": [
+    {
+      "__v": 0,
+      "_id": "6814fbd56d1d093413f9f73f",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "6814fadd80b316ddbdb518d8",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746205720949",
+      "timestamp": "Fri, 02 May 2025 17:07:33 GMT",
+      "version": 1
+    },
+    {
+      "__v": 0,
+      "_id": "6814fbea6d1d093413f9f743",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char C;\n    int W, H;\n\n    cin >> C >> W >> H;\n\n    for (int i = 0; i < H; ++i) {\n        cout << setfill(C) << setw(W) << \"\" << endl;\n    }\n}\n",
+      "learner_id": "6814fadd80b316ddbdb518d8",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746205741375",
+      "timestamp": "Fri, 02 May 2025 17:07:54 GMT",
+      "version": 2
+    }
+  ],
+  "success": true
+}

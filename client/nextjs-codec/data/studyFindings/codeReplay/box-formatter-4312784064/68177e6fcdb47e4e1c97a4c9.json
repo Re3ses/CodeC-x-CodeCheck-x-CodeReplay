@@ -1,0 +1,338 @@
+{
+  "formatted_snapshots": [
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    \n    return 0;\n}",
+      "learner_id": "68177e6fcdb47e4e1c97a4c9",
+      "submission_id": "68178386ebea7c9edfcd4d9d",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    char c; \n    int H;\n    int W;\n\n    cout << \"Enter a character\";\n    cin >> C;\n    cout << \"Enter Width \"\n    return 0;\n}",
+      "learner_id": "68177e6fcdb47e4e1c97a4c9",
+      "submission_id": "68178598ebea7c9edfcd4da8",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    char c; \n    int H;\n    int W;\n\n    cout << \"Enter a character\";\n    cin >> C;\n    cout << \"Enter Width (1 \u2264 W \u2264 30)\";\n    cin >> W;\n    cout << \"Enter Height ()\"\n    return 0;\n}",
+      "learner_id": "68177e6fcdb47e4e1c97a4c9",
+      "submission_id": "681785c6ebea7c9edfcd4dab",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    char c; \n    int H;\n    int W;\n\n    cout << \"Enter a character\";\n    cin >> C;\n    cout << \"Enter Width (1 \u2264 W \u2264 30)\";\n    cin >> W;\n    cout << \"Enter Height (1 \u2264 H \u2264 20)\";\n    cin >> H;\n\n    \n    return 0;\n}",
+      "learner_id": "68177e6fcdb47e4e1c97a4c9",
+      "submission_id": "681785dfebea7c9edfcd4dae",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    char c; \n    int H;\n    int W;\n\n    cout << \"Enter a character\";\n    cin >> C;\n    cout << \"Enter Width (1 \u2264 W \u2264 30)\";\n    cin >> W;\n    cout << \"Enter Height (1 \u2264 H \u2264 20)\";\n    cin >> H;\n\n    for (int row = 0; row < H; ++row){\n        cout << setfill(ch) << setw(W) << \" \" << \"\\n\";\n    }\n\n\n    return 0;\n}",
+      "learner_id": "68177e6fcdb47e4e1c97a4c9",
+      "submission_id": "681786a3ebea7c9edfcd4db1",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    char c; \n    int H;\n    int W;\n\n   cin >> ch >> width >> height;\n\n    for (int row = 0; row < H; ++row){\n        cout << setfill(ch) << setw(W) << \" \" << \"\\n\";\n    }\n\n\n    return 0;\n}",
+      "learner_id": "68177e6fcdb47e4e1c97a4c9",
+      "submission_id": "68178711ebea7c9edfcd4db5",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    char ch; \n    int Height;\n    int width;\n\n   cin >> ch >> width >> height;\n\n    for (int row = 0; row < H; ++row){\n        cout << setfill(ch) << setw(W) << \" \" << \"\\n\";\n    }\n\n\n    return 0;\n}",
+      "learner_id": "68177e6fcdb47e4e1c97a4c9",
+      "submission_id": "68178731ebea7c9edfcd4db8",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    char ch; \n    int Height;\n    int width;\n\n   cin >> ch >> width >> height;\n\n    for (int row = 0; row < height; ++row){\n        cout << setfill(ch) << setw(W) << \" \" << \"\\n\";\n    }\n\n\n    return 0;\n}",
+      "learner_id": "68177e6fcdb47e4e1c97a4c9",
+      "submission_id": "6817874febea7c9edfcd4dbb",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char ch; \n    int Height;\n    int width;\n\n   cin >> ch >> width >> height;\n\n    for (int row = 0; row < height; ++row){\n        cout << setfill(ch) << setw(W) << \" \" << \"\\n\";\n    }\n\n\n    return 0;\n}",
+      "learner_id": "68177e6fcdb47e4e1c97a4c9",
+      "submission_id": "68178781ebea7c9edfcd4dbe",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char ch; \n    int Height;\n    int width;\n\n   cin >> ch >> width >> height;\n\n    for (int row = 0; row < height; ++row){\n        cout << setfill(ch) << setw(width) << \" \" << \"\\n\";\n    }\n\n\n    return 0;\n}",
+      "learner_id": "68177e6fcdb47e4e1c97a4c9",
+      "submission_id": "6817879eebea7c9edfcd4dc1",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char ch; \n    int Height;\n    int width;\n\n   cin >> ch >> width >> Height;\n\n    for (int row = 0; row < Height; ++row){\n        cout << setfill(ch) << setw(width) << \" \" << \"\\n\";\n    }\n\n\n    return 0;\n}",
+      "learner_id": "68177e6fcdb47e4e1c97a4c9",
+      "submission_id": "681787afebea7c9edfcd4dc4",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char ch; \n    int Height;\n    int width;\n\n   cin >> ch >> width >> Height;\n\n    for (int row = 1; row < Height; ++row){\n        cout << setfill(ch) << setw(width) << \" \" << \"\\n\";\n    }\n\n\n    return 0;\n}",
+      "learner_id": "68177e6fcdb47e4e1c97a4c9",
+      "submission_id": "681787c6ebea7c9edfcd4dc7",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char ch; \n    int Height;\n    int width;\n\n   cin >> ch >> width >> Height;\n\n    for (int row = 0; row < Height; ++row){\n        cout << setfill(ch) << setw(width) << \"  \" << \"\\n\";\n    }\n\n\n    return 0;\n}",
+      "learner_id": "68177e6fcdb47e4e1c97a4c9",
+      "submission_id": "681787e1ebea7c9edfcd4dca",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char ch; \n    int Height;\n    int width;\n\n   cin >> ch >> width >> Height;\n\n    for (int row = 0; row < Height; ++row){\n        cout << setfill(ch) << setw(width) << \"\" << \"\\n\";\n    }\n\n\n    return 0;\n}",
+      "learner_id": "68177e6fcdb47e4e1c97a4c9",
+      "submission_id": "681787eeebea7c9edfcd4dcd",
+      "timestamp": ""
+    }
+  ],
+  "sequentialSimilarities": [
+    {
+      "codebert_score": 61,
+      "from_index": 0,
+      "learner_id": "68177e6fcdb47e4e1c97a4c9",
+      "similarity": 61,
+      "to_index": 1
+    },
+    {
+      "codebert_score": 76,
+      "from_index": 1,
+      "learner_id": "68177e6fcdb47e4e1c97a4c9",
+      "similarity": 76,
+      "to_index": 2
+    },
+    {
+      "codebert_score": 71,
+      "from_index": 2,
+      "learner_id": "68177e6fcdb47e4e1c97a4c9",
+      "similarity": 71,
+      "to_index": 3
+    },
+    {
+      "codebert_score": 73,
+      "from_index": 3,
+      "learner_id": "68177e6fcdb47e4e1c97a4c9",
+      "similarity": 73,
+      "to_index": 4
+    },
+    {
+      "codebert_score": 69,
+      "from_index": 4,
+      "learner_id": "68177e6fcdb47e4e1c97a4c9",
+      "similarity": 69,
+      "to_index": 5
+    },
+    {
+      "codebert_score": 85,
+      "from_index": 5,
+      "learner_id": "68177e6fcdb47e4e1c97a4c9",
+      "similarity": 85,
+      "to_index": 6
+    },
+    {
+      "codebert_score": 92,
+      "from_index": 6,
+      "learner_id": "68177e6fcdb47e4e1c97a4c9",
+      "similarity": 92,
+      "to_index": 7
+    },
+    {
+      "codebert_score": 85,
+      "from_index": 7,
+      "learner_id": "68177e6fcdb47e4e1c97a4c9",
+      "similarity": 85,
+      "to_index": 8
+    },
+    {
+      "codebert_score": 91,
+      "from_index": 8,
+      "learner_id": "68177e6fcdb47e4e1c97a4c9",
+      "similarity": 91,
+      "to_index": 9
+    },
+    {
+      "codebert_score": 92,
+      "from_index": 9,
+      "learner_id": "68177e6fcdb47e4e1c97a4c9",
+      "similarity": 92,
+      "to_index": 10
+    },
+    {
+      "codebert_score": 94,
+      "from_index": 10,
+      "learner_id": "68177e6fcdb47e4e1c97a4c9",
+      "similarity": 94,
+      "to_index": 11
+    },
+    {
+      "codebert_score": 94,
+      "from_index": 11,
+      "learner_id": "68177e6fcdb47e4e1c97a4c9",
+      "similarity": 94,
+      "to_index": 12
+    },
+    {
+      "codebert_score": 92,
+      "from_index": 12,
+      "learner_id": "68177e6fcdb47e4e1c97a4c9",
+      "similarity": 92,
+      "to_index": 13
+    }
+  ],
+  "snapshots": [
+    {
+      "__v": 0,
+      "_id": "68178386ebea7c9edfcd4d9d",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    \n    return 0;\n}",
+      "learner_id": "68177e6fcdb47e4e1c97a4c9",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746371462355",
+      "timestamp": "Sun, 04 May 2025 15:11:02 GMT",
+      "version": 1
+    },
+    {
+      "__v": 0,
+      "_id": "68178598ebea7c9edfcd4da8",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    char c; \n    int H;\n    int W;\n\n    cout << \"Enter a character\";\n    cin >> C;\n    cout << \"Enter Width \"\n    return 0;\n}",
+      "learner_id": "68177e6fcdb47e4e1c97a4c9",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746371992357",
+      "timestamp": "Sun, 04 May 2025 15:19:52 GMT",
+      "version": 2
+    },
+    {
+      "__v": 0,
+      "_id": "681785c6ebea7c9edfcd4dab",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    char c; \n    int H;\n    int W;\n\n    cout << \"Enter a character\";\n    cin >> C;\n    cout << \"Enter Width (1 \u2264 W \u2264 30)\";\n    cin >> W;\n    cout << \"Enter Height ()\"\n    return 0;\n}",
+      "learner_id": "68177e6fcdb47e4e1c97a4c9",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746372038226",
+      "timestamp": "Sun, 04 May 2025 15:20:38 GMT",
+      "version": 3
+    },
+    {
+      "__v": 0,
+      "_id": "681785dfebea7c9edfcd4dae",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    char c; \n    int H;\n    int W;\n\n    cout << \"Enter a character\";\n    cin >> C;\n    cout << \"Enter Width (1 \u2264 W \u2264 30)\";\n    cin >> W;\n    cout << \"Enter Height (1 \u2264 H \u2264 20)\";\n    cin >> H;\n\n    \n    return 0;\n}",
+      "learner_id": "68177e6fcdb47e4e1c97a4c9",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746372063166",
+      "timestamp": "Sun, 04 May 2025 15:21:03 GMT",
+      "version": 4
+    },
+    {
+      "__v": 0,
+      "_id": "681786a3ebea7c9edfcd4db1",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    char c; \n    int H;\n    int W;\n\n    cout << \"Enter a character\";\n    cin >> C;\n    cout << \"Enter Width (1 \u2264 W \u2264 30)\";\n    cin >> W;\n    cout << \"Enter Height (1 \u2264 H \u2264 20)\";\n    cin >> H;\n\n    for (int row = 0; row < H; ++row){\n        cout << setfill(ch) << setw(W) << \" \" << \"\\n\";\n    }\n\n\n    return 0;\n}",
+      "learner_id": "68177e6fcdb47e4e1c97a4c9",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746372259643",
+      "timestamp": "Sun, 04 May 2025 15:24:19 GMT",
+      "version": 5
+    },
+    {
+      "__v": 0,
+      "_id": "68178711ebea7c9edfcd4db5",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    char c; \n    int H;\n    int W;\n\n   cin >> ch >> width >> height;\n\n    for (int row = 0; row < H; ++row){\n        cout << setfill(ch) << setw(W) << \" \" << \"\\n\";\n    }\n\n\n    return 0;\n}",
+      "learner_id": "68177e6fcdb47e4e1c97a4c9",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746372369062",
+      "timestamp": "Sun, 04 May 2025 15:26:09 GMT",
+      "version": 6
+    },
+    {
+      "__v": 0,
+      "_id": "68178731ebea7c9edfcd4db8",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    char ch; \n    int Height;\n    int width;\n\n   cin >> ch >> width >> height;\n\n    for (int row = 0; row < H; ++row){\n        cout << setfill(ch) << setw(W) << \" \" << \"\\n\";\n    }\n\n\n    return 0;\n}",
+      "learner_id": "68177e6fcdb47e4e1c97a4c9",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746372401792",
+      "timestamp": "Sun, 04 May 2025 15:26:41 GMT",
+      "version": 7
+    },
+    {
+      "__v": 0,
+      "_id": "6817874febea7c9edfcd4dbb",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    char ch; \n    int Height;\n    int width;\n\n   cin >> ch >> width >> height;\n\n    for (int row = 0; row < height; ++row){\n        cout << setfill(ch) << setw(W) << \" \" << \"\\n\";\n    }\n\n\n    return 0;\n}",
+      "learner_id": "68177e6fcdb47e4e1c97a4c9",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746372431750",
+      "timestamp": "Sun, 04 May 2025 15:27:11 GMT",
+      "version": 8
+    },
+    {
+      "__v": 0,
+      "_id": "68178781ebea7c9edfcd4dbe",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char ch; \n    int Height;\n    int width;\n\n   cin >> ch >> width >> height;\n\n    for (int row = 0; row < height; ++row){\n        cout << setfill(ch) << setw(W) << \" \" << \"\\n\";\n    }\n\n\n    return 0;\n}",
+      "learner_id": "68177e6fcdb47e4e1c97a4c9",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746372481262",
+      "timestamp": "Sun, 04 May 2025 15:28:01 GMT",
+      "version": 9
+    },
+    {
+      "__v": 0,
+      "_id": "6817879eebea7c9edfcd4dc1",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char ch; \n    int Height;\n    int width;\n\n   cin >> ch >> width >> height;\n\n    for (int row = 0; row < height; ++row){\n        cout << setfill(ch) << setw(width) << \" \" << \"\\n\";\n    }\n\n\n    return 0;\n}",
+      "learner_id": "68177e6fcdb47e4e1c97a4c9",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746372510623",
+      "timestamp": "Sun, 04 May 2025 15:28:30 GMT",
+      "version": 10
+    },
+    {
+      "__v": 0,
+      "_id": "681787afebea7c9edfcd4dc4",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char ch; \n    int Height;\n    int width;\n\n   cin >> ch >> width >> Height;\n\n    for (int row = 0; row < Height; ++row){\n        cout << setfill(ch) << setw(width) << \" \" << \"\\n\";\n    }\n\n\n    return 0;\n}",
+      "learner_id": "68177e6fcdb47e4e1c97a4c9",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746372527152",
+      "timestamp": "Sun, 04 May 2025 15:28:47 GMT",
+      "version": 11
+    },
+    {
+      "__v": 0,
+      "_id": "681787c6ebea7c9edfcd4dc7",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char ch; \n    int Height;\n    int width;\n\n   cin >> ch >> width >> Height;\n\n    for (int row = 1; row < Height; ++row){\n        cout << setfill(ch) << setw(width) << \" \" << \"\\n\";\n    }\n\n\n    return 0;\n}",
+      "learner_id": "68177e6fcdb47e4e1c97a4c9",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746372550334",
+      "timestamp": "Sun, 04 May 2025 15:29:10 GMT",
+      "version": 12
+    },
+    {
+      "__v": 0,
+      "_id": "681787e1ebea7c9edfcd4dca",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char ch; \n    int Height;\n    int width;\n\n   cin >> ch >> width >> Height;\n\n    for (int row = 0; row < Height; ++row){\n        cout << setfill(ch) << setw(width) << \"  \" << \"\\n\";\n    }\n\n\n    return 0;\n}",
+      "learner_id": "68177e6fcdb47e4e1c97a4c9",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746372577123",
+      "timestamp": "Sun, 04 May 2025 15:29:37 GMT",
+      "version": 13
+    },
+    {
+      "__v": 0,
+      "_id": "681787eeebea7c9edfcd4dcd",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    char ch; \n    int Height;\n    int width;\n\n   cin >> ch >> width >> Height;\n\n    for (int row = 0; row < Height; ++row){\n        cout << setfill(ch) << setw(width) << \"\" << \"\\n\";\n    }\n\n\n    return 0;\n}",
+      "learner_id": "68177e6fcdb47e4e1c97a4c9",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746372590685",
+      "timestamp": "Sun, 04 May 2025 15:29:50 GMT",
+      "version": 14
+    }
+  ],
+  "success": true
+}

@@ -1,0 +1,722 @@
+{
+  "formatted_snapshots": [
+    {
+      "code": "#include <iostream>\n\nusing namespace std;\n\nint main() {\n    int cej, cej1, cej2;\n     cin >> cej >> cej1;\n    \n    for (int i = 0; i < h; i++){\n        cout << setfill(cej) << setw(cej1)\n             << \"\" << endl;\n    }\n\n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "6814dbb556c3a8f3394c98c1",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\nint main() {\n    char c;\n    int w, h;\n\n    cin >> c >> w >> h;\n\n  \n    for (int i = 0; i < h; ++i) {\n        cout << setfill(c) << std::setw(w) \n        << \"\" << std::endl;\n    }\n\n    return 0;\n}\n",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "6814e8ed56c3a8f3394c99bd",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n     char c\n     int  w, h;\n   \n     cin >> c >> w >> h;\n    \n    for (int i = 0; i < h; i++){\n        cout << setfill(c) << setw(w)\n             << \"\" << endl;\n    }\n\n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "6814e8079c29c776bbea90fc",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n     char c\n     int  w, h;\n   \n     cin >> c >> w >> h;\n    \n    for (int i = 0; i < ; i++){\n        cout << setfill(x) << setw(y)\n             << \"\" << endl;\n    }\n\n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "6814e7f99c29c776bbea90f5",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n     char c\n     int  w, v;\n   \n     cin >> n >> x >> y;\n    \n    for (int i = 0; i < n; i++){\n        cout << setfill(x) << setw(y)\n             << \"\" << endl;\n    }\n\n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "6814e7e59c29c776bbea90ee",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n     char n\n     int  X, Y;\n   \n     cin >> n >> x >> y;\n    \n    for (int i = 0; i < n; i++){\n        cout << setfill(x) << setw(y)\n             << \"\" << endl;\n    }\n\n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "6814e32f9c29c776bbea9014",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n     char N\n     int  X, Y;\n   \n     cin >> N >> X >> Y;\n    \n    for (int i = 0; i < N; i++){\n        cout << setfill(X) << setw(Y)\n             << \"\" << endl;\n    }\n\n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "6814e28f9c29c776bbea8fe4",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int  cej1, cej2;\n    char cej\n     cin >> cej >> cej1 >> cej2;\n    \n    for (int i = 0; i < cej; i++){\n        cout << setfill(cej1) << setw(cej2)\n             << \"\" << endl;\n    }\n\n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "6814e05d56c3a8f3394c9936",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int  cej1, cej2;\n    char cej\n     cin >> cej >> cej1 >> cej2;\n    \n    for (int i = 0; i < cej; i++){\n        cout << setfill(cej1) << setw(cej2)\n             << \"*\" << endl;\n    }\n\n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "6814e05956c3a8f3394c9933",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int cej, cej1, cej2;\n     cin >> cej >> cej1 >> cej2;\n    \n    for (int i = 0; i < cej; i++){\n        cout << setfill(cej1) << setw(cej2)\n             << \"*\" << endl;\n    }\n\n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "6814df2056c3a8f3394c9918",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int cej, cej1, cej2;\n     cin >> cej >> cej1 >> cej2;\n    \n    for (int i = 0; i < cej; i++){\n        cout << setfill(cej1) << setw(cej2)\n             << \"*\" << endl;\n    }\n\n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "6814df1f56c3a8f3394c9915",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int cej, cej1, cej2;\n     cin >> cej >> cej1 >> cej2;\n    \n    for (int i = 0; i < cej; i++){\n        cout << setfill(cej) << setw(cej1)\n             << \"*\" << endl;\n    }\n\n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "6814df1456c3a8f3394c990f",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int cej, cej1, cej2;\n     cin >> cej >> cej1;\n    \n    for (int i = 0; i < cej1; i++){\n        cout << setfill(cej) << setw(cej1)\n             << \"*\" << endl;\n    }\n\n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "6814de9f56c3a8f3394c9908",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int cej, cej1, cej2;\n     cin >> cej >> cej1;\n    \n    for (int i = 0; i < h; i++){\n        cout << setfill(cej) << setw(cej1)\n             << \"*\" << endl;\n    }\n\n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "6814dc6e56c3a8f3394c98dd",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int cej, cej1, cej2;\n     cin >> cej >> cej1;\n    \n    for (int i = 0; i < h; i++){\n        cout << setfill(cej) << setw(cej1)\n             << \"\" << endl;\n    }\n\n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "6814dbcc56c3a8f3394c98c6",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "681331a70957108cd0095601",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n\nusing namespace std;\n\nint main() {\n    int cej, cej1, cej2;\n     cin >> cej >> cej1;\n    \n    for (int i = 0; i < h; i++){\n        cout << setfill(cej) << setw(cej1)\n             << \"\" << \n    }\n\n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "6814dbaa56c3a8f3394c98ba",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n\nusing namespace std;\n\nint main() {\n    int cej, cej1, cej2;\n     cin >> cej >> cej1;\n    \n    for (int i = 0; i < h; i++){\n        cout << setfill(cej) << setw(cej1)\n    }\n\n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "6814db8b56c3a8f3394c98b6",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n\nusing namespace std;\n\nint main() {\n    int cej, cej1, cej2;\n     cin >> cej >> cej1;\n    \n    for (int i = 0; i < h; i++){\n        cout << setfill(cej) << \n    }\n\n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "6814db6d56c3a8f3394c98ae",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n\nusing namespace std;\n\nint main() {\n    int cej, cej1, cej2;\n     cin >> cej >> cej1;\n    \n    for (int i = 0; i < h; i++){\n        cout << setfill(cej)\n    }\n\n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "6814db6156c3a8f3394c98a7",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n\nusing namespace std;\n\nint main() {\n    int cej, cej1;\n     cin >> cej >> cej1;\n    \n    for (int i = 0; i < h; i++){\n        cout << setfill()\n    }\n\n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "6814db470302cb3e870c04b3",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n\nusing namespace std;\n\nint main() {\n    int cej, cej1;\n     cin >> cej >> cej1;\n    \n    for (int i = 0; i < h; i++){\n        cout << \n    }\n\n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "6814db350302cb3e870c04ae",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n\nusing namespace std;\n\nint main() {\n    int cej, cej1;\n     cin >> cej >> cej1;\n    \n    for (int i = 0; i < h; i++){\n\n    }\n\n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "6814d62056c3a8f3394c97ed",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int cej, cej1;\n     cin >> cej >> cej1;\n    \n    for (int i = 0; i < h; i++){\n        \n    }\n\n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "6814d58456c3a8f3394c97e0",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int cej, cej1;\n     cin >> cej >> cej1;\n    \n    for (int i = 0; i < h; i++)\n\n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "6814d56e56c3a8f3394c97d7",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int cej, cej1;\n     cin >> cej >> cej1;\n    \n    for (int i = 0; i)\n\n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "6814d55856c3a8f3394c97d3",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int cej, cej1;\n     cin >> cej >> cej1;\n    \n    for \n    \n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "6814d53356c3a8f3394c97cb",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int cej, cej1;\n    cin >> cej >> cej1;\n    \n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "6814d52056c3a8f3394c97c7",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int cej, cej1;\n    \n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "6814d46256c3a8f3394c97b3",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int \n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "6814d44d56c3a8f3394c97af",
+      "timestamp": ""
+    }
+  ],
+  "sequentialSimilarities": [
+    {
+      "codebert_score": 70,
+      "from_index": 0,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 70,
+      "to_index": 1
+    },
+    {
+      "codebert_score": 81,
+      "from_index": 1,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 81,
+      "to_index": 2
+    },
+    {
+      "codebert_score": 86,
+      "from_index": 2,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 86,
+      "to_index": 3
+    },
+    {
+      "codebert_score": 85,
+      "from_index": 3,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 85,
+      "to_index": 4
+    },
+    {
+      "codebert_score": 88,
+      "from_index": 4,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 88,
+      "to_index": 5
+    },
+    {
+      "codebert_score": 86,
+      "from_index": 5,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 86,
+      "to_index": 6
+    },
+    {
+      "codebert_score": 70,
+      "from_index": 6,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 70,
+      "to_index": 7
+    },
+    {
+      "codebert_score": 91,
+      "from_index": 7,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 91,
+      "to_index": 8
+    },
+    {
+      "codebert_score": 83,
+      "from_index": 8,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 83,
+      "to_index": 9
+    },
+    {
+      "codebert_score": 99,
+      "from_index": 9,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 99,
+      "to_index": 10
+    },
+    {
+      "codebert_score": 92,
+      "from_index": 10,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 92,
+      "to_index": 11
+    },
+    {
+      "codebert_score": 81,
+      "from_index": 11,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 81,
+      "to_index": 12
+    },
+    {
+      "codebert_score": 89,
+      "from_index": 12,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 89,
+      "to_index": 13
+    },
+    {
+      "codebert_score": 91,
+      "from_index": 13,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 91,
+      "to_index": 14
+    },
+    {
+      "codebert_score": 45,
+      "from_index": 14,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 45,
+      "to_index": 15
+    },
+    {
+      "codebert_score": 47,
+      "from_index": 15,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 47,
+      "to_index": 16
+    },
+    {
+      "codebert_score": 85,
+      "from_index": 16,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 85,
+      "to_index": 17
+    },
+    {
+      "codebert_score": 79,
+      "from_index": 17,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 79,
+      "to_index": 18
+    },
+    {
+      "codebert_score": 87,
+      "from_index": 18,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 87,
+      "to_index": 19
+    },
+    {
+      "codebert_score": 77,
+      "from_index": 19,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 77,
+      "to_index": 20
+    },
+    {
+      "codebert_score": 84,
+      "from_index": 20,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 84,
+      "to_index": 21
+    },
+    {
+      "codebert_score": 86,
+      "from_index": 21,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 86,
+      "to_index": 22
+    },
+    {
+      "codebert_score": 100,
+      "from_index": 22,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 100,
+      "to_index": 23
+    },
+    {
+      "codebert_score": 77,
+      "from_index": 23,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 77,
+      "to_index": 24
+    },
+    {
+      "codebert_score": 74,
+      "from_index": 24,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 74,
+      "to_index": 25
+    },
+    {
+      "codebert_score": 77,
+      "from_index": 25,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 77,
+      "to_index": 26
+    },
+    {
+      "codebert_score": 79,
+      "from_index": 26,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 79,
+      "to_index": 27
+    },
+    {
+      "codebert_score": 72,
+      "from_index": 27,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 72,
+      "to_index": 28
+    },
+    {
+      "codebert_score": 71,
+      "from_index": 28,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 71,
+      "to_index": 29
+    }
+  ],
+  "snapshots": [
+    {
+      "__v": 0,
+      "_id": "6814dbb556c3a8f3394c98c1",
+      "code": "#include <iostream>\n\nusing namespace std;\n\nint main() {\n    int cej, cej1, cej2;\n     cin >> cej >> cej1;\n    \n    for (int i = 0; i < h; i++){\n        cout << setfill(cej) << setw(cej1)\n             << \"\" << endl;\n    }\n\n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746197428866",
+      "timestamp": "Fri, 02 May 2025 14:50:29 GMT",
+      "version": 16
+    },
+    {
+      "__v": 0,
+      "_id": "6814e8ed56c3a8f3394c99bd",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\nint main() {\n    char c;\n    int w, h;\n\n    cin >> c >> w >> h;\n\n  \n    for (int i = 0; i < h; ++i) {\n        cout << setfill(c) << std::setw(w) \n        << \"\" << std::endl;\n    }\n\n    return 0;\n}\n",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746200812965",
+      "timestamp": "Fri, 02 May 2025 15:46:53 GMT",
+      "version": 29
+    },
+    {
+      "__v": 0,
+      "_id": "6814e8079c29c776bbea90fc",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n     char c\n     int  w, h;\n   \n     cin >> c >> w >> h;\n    \n    for (int i = 0; i < h; i++){\n        cout << setfill(c) << setw(w)\n             << \"\" << endl;\n    }\n\n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746200583276",
+      "timestamp": "Fri, 02 May 2025 15:43:03 GMT",
+      "version": 28
+    },
+    {
+      "__v": 0,
+      "_id": "6814e7f99c29c776bbea90f5",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n     char c\n     int  w, h;\n   \n     cin >> c >> w >> h;\n    \n    for (int i = 0; i < ; i++){\n        cout << setfill(x) << setw(y)\n             << \"\" << endl;\n    }\n\n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746200568706",
+      "timestamp": "Fri, 02 May 2025 15:42:49 GMT",
+      "version": 27
+    },
+    {
+      "__v": 0,
+      "_id": "6814e7e59c29c776bbea90ee",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n     char c\n     int  w, v;\n   \n     cin >> n >> x >> y;\n    \n    for (int i = 0; i < n; i++){\n        cout << setfill(x) << setw(y)\n             << \"\" << endl;\n    }\n\n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746200549352",
+      "timestamp": "Fri, 02 May 2025 15:42:29 GMT",
+      "version": 26
+    },
+    {
+      "__v": 0,
+      "_id": "6814e32f9c29c776bbea9014",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n     char n\n     int  X, Y;\n   \n     cin >> n >> x >> y;\n    \n    for (int i = 0; i < n; i++){\n        cout << setfill(x) << setw(y)\n             << \"\" << endl;\n    }\n\n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746199342564",
+      "timestamp": "Fri, 02 May 2025 15:22:23 GMT",
+      "version": 25
+    },
+    {
+      "__v": 0,
+      "_id": "6814e28f9c29c776bbea8fe4",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n     char N\n     int  X, Y;\n   \n     cin >> N >> X >> Y;\n    \n    for (int i = 0; i < N; i++){\n        cout << setfill(X) << setw(Y)\n             << \"\" << endl;\n    }\n\n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746199182707",
+      "timestamp": "Fri, 02 May 2025 15:19:43 GMT",
+      "version": 24
+    },
+    {
+      "__v": 0,
+      "_id": "6814e05d56c3a8f3394c9936",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int  cej1, cej2;\n    char cej\n     cin >> cej >> cej1 >> cej2;\n    \n    for (int i = 0; i < cej; i++){\n        cout << setfill(cej1) << setw(cej2)\n             << \"\" << endl;\n    }\n\n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746198621115",
+      "timestamp": "Fri, 02 May 2025 15:10:21 GMT",
+      "version": 23
+    },
+    {
+      "__v": 0,
+      "_id": "6814e05956c3a8f3394c9933",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int  cej1, cej2;\n    char cej\n     cin >> cej >> cej1 >> cej2;\n    \n    for (int i = 0; i < cej; i++){\n        cout << setfill(cej1) << setw(cej2)\n             << \"*\" << endl;\n    }\n\n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746198616982",
+      "timestamp": "Fri, 02 May 2025 15:10:17 GMT",
+      "version": 22
+    },
+    {
+      "__v": 0,
+      "_id": "6814df2056c3a8f3394c9918",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int cej, cej1, cej2;\n     cin >> cej >> cej1 >> cej2;\n    \n    for (int i = 0; i < cej; i++){\n        cout << setfill(cej1) << setw(cej2)\n             << \"*\" << endl;\n    }\n\n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746198303974",
+      "timestamp": "Fri, 02 May 2025 15:05:04 GMT",
+      "version": 21
+    },
+    {
+      "__v": 0,
+      "_id": "6814df1f56c3a8f3394c9915",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int cej, cej1, cej2;\n     cin >> cej >> cej1 >> cej2;\n    \n    for (int i = 0; i < cej; i++){\n        cout << setfill(cej1) << setw(cej2)\n             << \"*\" << endl;\n    }\n\n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746198303444",
+      "timestamp": "Fri, 02 May 2025 15:05:03 GMT",
+      "version": 21
+    },
+    {
+      "__v": 0,
+      "_id": "6814df1456c3a8f3394c990f",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int cej, cej1, cej2;\n     cin >> cej >> cej1 >> cej2;\n    \n    for (int i = 0; i < cej; i++){\n        cout << setfill(cej) << setw(cej1)\n             << \"*\" << endl;\n    }\n\n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746198292417",
+      "timestamp": "Fri, 02 May 2025 15:04:52 GMT",
+      "version": 20
+    },
+    {
+      "__v": 0,
+      "_id": "6814de9f56c3a8f3394c9908",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int cej, cej1, cej2;\n     cin >> cej >> cej1;\n    \n    for (int i = 0; i < cej1; i++){\n        cout << setfill(cej) << setw(cej1)\n             << \"*\" << endl;\n    }\n\n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746198174740",
+      "timestamp": "Fri, 02 May 2025 15:02:55 GMT",
+      "version": 19
+    },
+    {
+      "__v": 0,
+      "_id": "6814dc6e56c3a8f3394c98dd",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int cej, cej1, cej2;\n     cin >> cej >> cej1;\n    \n    for (int i = 0; i < h; i++){\n        cout << setfill(cej) << setw(cej1)\n             << \"*\" << endl;\n    }\n\n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746197614139",
+      "timestamp": "Fri, 02 May 2025 14:53:34 GMT",
+      "version": 18
+    },
+    {
+      "__v": 0,
+      "_id": "6814dbcc56c3a8f3394c98c6",
+      "code": "#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int cej, cej1, cej2;\n     cin >> cej >> cej1;\n    \n    for (int i = 0; i < h; i++){\n        cout << setfill(cej) << setw(cej1)\n             << \"\" << endl;\n    }\n\n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746197451939",
+      "timestamp": "Fri, 02 May 2025 14:50:52 GMT",
+      "version": 17
+    },
+    {
+      "__v": 0,
+      "_id": "681331a70957108cd0095601",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746088361148",
+      "timestamp": "Thu, 01 May 2025 08:32:39 GMT",
+      "version": 1
+    },
+    {
+      "__v": 0,
+      "_id": "6814dbaa56c3a8f3394c98ba",
+      "code": "#include <iostream>\n\nusing namespace std;\n\nint main() {\n    int cej, cej1, cej2;\n     cin >> cej >> cej1;\n    \n    for (int i = 0; i < h; i++){\n        cout << setfill(cej) << setw(cej1)\n             << \"\" << \n    }\n\n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746197417915",
+      "timestamp": "Fri, 02 May 2025 14:50:18 GMT",
+      "version": 15
+    },
+    {
+      "__v": 0,
+      "_id": "6814db8b56c3a8f3394c98b6",
+      "code": "#include <iostream>\n\nusing namespace std;\n\nint main() {\n    int cej, cej1, cej2;\n     cin >> cej >> cej1;\n    \n    for (int i = 0; i < h; i++){\n        cout << setfill(cej) << setw(cej1)\n    }\n\n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746197387071",
+      "timestamp": "Fri, 02 May 2025 14:49:47 GMT",
+      "version": 14
+    },
+    {
+      "__v": 0,
+      "_id": "6814db6d56c3a8f3394c98ae",
+      "code": "#include <iostream>\n\nusing namespace std;\n\nint main() {\n    int cej, cej1, cej2;\n     cin >> cej >> cej1;\n    \n    for (int i = 0; i < h; i++){\n        cout << setfill(cej) << \n    }\n\n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746197356705",
+      "timestamp": "Fri, 02 May 2025 14:49:17 GMT",
+      "version": 13
+    },
+    {
+      "__v": 0,
+      "_id": "6814db6156c3a8f3394c98a7",
+      "code": "#include <iostream>\n\nusing namespace std;\n\nint main() {\n    int cej, cej1, cej2;\n     cin >> cej >> cej1;\n    \n    for (int i = 0; i < h; i++){\n        cout << setfill(cej)\n    }\n\n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746197344612",
+      "timestamp": "Fri, 02 May 2025 14:49:05 GMT",
+      "version": 12
+    },
+    {
+      "__v": 0,
+      "_id": "6814db470302cb3e870c04b3",
+      "code": "#include <iostream>\n\nusing namespace std;\n\nint main() {\n    int cej, cej1;\n     cin >> cej >> cej1;\n    \n    for (int i = 0; i < h; i++){\n        cout << setfill()\n    }\n\n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746197318474",
+      "timestamp": "Fri, 02 May 2025 14:48:39 GMT",
+      "version": 11
+    },
+    {
+      "__v": 0,
+      "_id": "6814db350302cb3e870c04ae",
+      "code": "#include <iostream>\n\nusing namespace std;\n\nint main() {\n    int cej, cej1;\n     cin >> cej >> cej1;\n    \n    for (int i = 0; i < h; i++){\n        cout << \n    }\n\n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746197301400",
+      "timestamp": "Fri, 02 May 2025 14:48:21 GMT",
+      "version": 10
+    },
+    {
+      "__v": 0,
+      "_id": "6814d62056c3a8f3394c97ed",
+      "code": "#include <iostream>\n\nusing namespace std;\n\nint main() {\n    int cej, cej1;\n     cin >> cej >> cej1;\n    \n    for (int i = 0; i < h; i++){\n\n    }\n\n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746195999662",
+      "timestamp": "Fri, 02 May 2025 14:26:40 GMT",
+      "version": 9
+    },
+    {
+      "__v": 0,
+      "_id": "6814d58456c3a8f3394c97e0",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int cej, cej1;\n     cin >> cej >> cej1;\n    \n    for (int i = 0; i < h; i++){\n        \n    }\n\n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746195843482",
+      "timestamp": "Fri, 02 May 2025 14:24:04 GMT",
+      "version": 8
+    },
+    {
+      "__v": 0,
+      "_id": "6814d56e56c3a8f3394c97d7",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int cej, cej1;\n     cin >> cej >> cej1;\n    \n    for (int i = 0; i < h; i++)\n\n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746195822192",
+      "timestamp": "Fri, 02 May 2025 14:23:42 GMT",
+      "version": 7
+    },
+    {
+      "__v": 0,
+      "_id": "6814d55856c3a8f3394c97d3",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int cej, cej1;\n     cin >> cej >> cej1;\n    \n    for (int i = 0; i)\n\n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746195800221",
+      "timestamp": "Fri, 02 May 2025 14:23:20 GMT",
+      "version": 6
+    },
+    {
+      "__v": 0,
+      "_id": "6814d53356c3a8f3394c97cb",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int cej, cej1;\n     cin >> cej >> cej1;\n    \n    for \n    \n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746195763412",
+      "timestamp": "Fri, 02 May 2025 14:22:43 GMT",
+      "version": 5
+    },
+    {
+      "__v": 0,
+      "_id": "6814d52056c3a8f3394c97c7",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int cej, cej1;\n    cin >> cej >> cej1;\n    \n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746195744345",
+      "timestamp": "Fri, 02 May 2025 14:22:24 GMT",
+      "version": 4
+    },
+    {
+      "__v": 0,
+      "_id": "6814d46256c3a8f3394c97b3",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int cej, cej1;\n    \n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746195553474",
+      "timestamp": "Fri, 02 May 2025 14:19:14 GMT",
+      "version": 3
+    },
+    {
+      "__v": 0,
+      "_id": "6814d44d56c3a8f3394c97af",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int \n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746195532943",
+      "timestamp": "Fri, 02 May 2025 14:18:53 GMT",
+      "version": 2
+    }
+  ],
+  "success": true
+}

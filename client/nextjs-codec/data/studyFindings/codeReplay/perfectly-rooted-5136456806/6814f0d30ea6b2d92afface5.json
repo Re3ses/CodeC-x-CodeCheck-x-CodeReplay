@@ -1,0 +1,290 @@
+{
+  "formatted_snapshots": [
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "6814f0d30ea6b2d92afface5",
+      "submission_id": "6814f115c6980029280e8596",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\n\nusing namespace std;\n\nint main() {\n    \n    return 0;\n}",
+      "learner_id": "6814f0d30ea6b2d92afface5",
+      "submission_id": "6814f13fc6980029280e859c",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\n\nusing namespace std;\n\nint main() {\n    \n    int num;\n    cout << \"Enter a number: \";\n    cin >> num;\n    cout << \"The Square root of \" << num << \" is \" << sqrt(num);\n\n    return 0;\n}",
+      "learner_id": "6814f0d30ea6b2d92afface5",
+      "submission_id": "6814f18ec6980029280e859f",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\n\nusing namespace std;\n\nint main() {\n    \n    int num;\n    cin >> num;\n    cout << \"The Square root of \" << num << \" is \" << sqrt(num);\n\n    return 0;\n}",
+      "learner_id": "6814f0d30ea6b2d92afface5",
+      "submission_id": "6814f1abc6980029280e85a2",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\n\nusing namespace std;\n\nint main() {\n    \n    int num;\n    cin >> num;\n    cout << \"The Square root of \" << num << \" is \" << setprecis << sqrt(num);\n\n    return 0;\n}",
+      "learner_id": "6814f0d30ea6b2d92afface5",
+      "submission_id": "6814f1dcc6980029280e85a6",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\n\nusing namespace std;\n\nint main() {\n    \n    int num;\n    cin >> num;\n    cout << \"The Square root of \" << num << \" is \" << setprecision(2) << sqrt(num);\n\n    return 0;\n}",
+      "learner_id": "6814f0d30ea6b2d92afface5",
+      "submission_id": "6814f1e2c6980029280e85aa",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\n\nusing namespace std;\n\nint main() {\n    \n    float num;\n    cin >> num;\n    cout << \"The Square root of \" << num << \" is \" << setprecision(2) << sqrt(num);\n\n    return 0;\n}",
+      "learner_id": "6814f0d30ea6b2d92afface5",
+      "submission_id": "6814f221c6980029280e85ae",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\n\nusing namespace std;\n\nint main() {\n    \n    int num;\n    cin >> num;\n    cout << \"The Square root of \" << num << \" is \" << setprecision(2) << sqrt(num);\n\n    return 0;\n}",
+      "learner_id": "6814f0d30ea6b2d92afface5",
+      "submission_id": "6814f234c6980029280e85b1",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\n\nusing namespace std;\n\nint main() {\n    \n    int num;\n    cin >> num;\n    float n = sqrt(num);\n    cout << \"The Square root of \" << num << \" is \" << setprecision(2) << n;\n\n    return 0;\n}",
+      "learner_id": "6814f0d30ea6b2d92afface5",
+      "submission_id": "6814f258c6980029280e85b4",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\n\nusing namespace std;\n\nint main() {\n    \n    int num;\n    cin >> num;\n    float n = sqrt(num);\n    cout << \"The Square root of \" << num << \" is \" << setprecision(3) << n;\n\n    return 0;\n}",
+      "learner_id": "6814f0d30ea6b2d92afface5",
+      "submission_id": "6814f27fc6980029280e85b7",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\n\nusing namespace std;\n\nint main() {\n    \n    int num;\n    cin >> num;\n    float n = sqrt(num);\n\n    cout << fixed << setprecision(2);\n    cout << \"The Square root of \" << num << \" is \" << n;\n\n    return 0;\n}",
+      "learner_id": "6814f0d30ea6b2d92afface5",
+      "submission_id": "6814f2c1c6980029280e85bc",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\n\nusing namespace std;\n\nint main() {\n    \n    int num;\n    cin >> num;\n    float n = sqrt(num);\n\n    cout << fixed << setprecision(2);\n    cout << \"The square root of \" << num << \" is \" << n;\n\n    return 0;\n}",
+      "learner_id": "6814f0d30ea6b2d92afface5",
+      "submission_id": "6814f2e0c6980029280e85bf",
+      "timestamp": ""
+    }
+  ],
+  "sequentialSimilarities": [
+    {
+      "codebert_score": 58,
+      "from_index": 0,
+      "learner_id": "6814f0d30ea6b2d92afface5",
+      "similarity": 58,
+      "to_index": 1
+    },
+    {
+      "codebert_score": 61,
+      "from_index": 1,
+      "learner_id": "6814f0d30ea6b2d92afface5",
+      "similarity": 61,
+      "to_index": 2
+    },
+    {
+      "codebert_score": 84,
+      "from_index": 2,
+      "learner_id": "6814f0d30ea6b2d92afface5",
+      "similarity": 84,
+      "to_index": 3
+    },
+    {
+      "codebert_score": 82,
+      "from_index": 3,
+      "learner_id": "6814f0d30ea6b2d92afface5",
+      "similarity": 82,
+      "to_index": 4
+    },
+    {
+      "codebert_score": 83,
+      "from_index": 4,
+      "learner_id": "6814f0d30ea6b2d92afface5",
+      "similarity": 83,
+      "to_index": 5
+    },
+    {
+      "codebert_score": 92,
+      "from_index": 5,
+      "learner_id": "6814f0d30ea6b2d92afface5",
+      "similarity": 92,
+      "to_index": 6
+    },
+    {
+      "codebert_score": 92,
+      "from_index": 6,
+      "learner_id": "6814f0d30ea6b2d92afface5",
+      "similarity": 92,
+      "to_index": 7
+    },
+    {
+      "codebert_score": 80,
+      "from_index": 7,
+      "learner_id": "6814f0d30ea6b2d92afface5",
+      "similarity": 80,
+      "to_index": 8
+    },
+    {
+      "codebert_score": 93,
+      "from_index": 8,
+      "learner_id": "6814f0d30ea6b2d92afface5",
+      "similarity": 93,
+      "to_index": 9
+    },
+    {
+      "codebert_score": 82,
+      "from_index": 9,
+      "learner_id": "6814f0d30ea6b2d92afface5",
+      "similarity": 82,
+      "to_index": 10
+    },
+    {
+      "codebert_score": 94,
+      "from_index": 10,
+      "learner_id": "6814f0d30ea6b2d92afface5",
+      "similarity": 94,
+      "to_index": 11
+    }
+  ],
+  "snapshots": [
+    {
+      "__v": 0,
+      "_id": "6814f115c6980029280e8596",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "6814f0d30ea6b2d92afface5",
+      "problemId": "perfectly-rooted-5136456806",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746202899796",
+      "timestamp": "Fri, 02 May 2025 16:21:41 GMT",
+      "version": 1
+    },
+    {
+      "__v": 0,
+      "_id": "6814f13fc6980029280e859c",
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\n\nusing namespace std;\n\nint main() {\n    \n    return 0;\n}",
+      "learner_id": "6814f0d30ea6b2d92afface5",
+      "problemId": "perfectly-rooted-5136456806",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746202942532",
+      "timestamp": "Fri, 02 May 2025 16:22:23 GMT",
+      "version": 2
+    },
+    {
+      "__v": 0,
+      "_id": "6814f18ec6980029280e859f",
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\n\nusing namespace std;\n\nint main() {\n    \n    int num;\n    cout << \"Enter a number: \";\n    cin >> num;\n    cout << \"The Square root of \" << num << \" is \" << sqrt(num);\n\n    return 0;\n}",
+      "learner_id": "6814f0d30ea6b2d92afface5",
+      "problemId": "perfectly-rooted-5136456806",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746203021393",
+      "timestamp": "Fri, 02 May 2025 16:23:42 GMT",
+      "version": 3
+    },
+    {
+      "__v": 0,
+      "_id": "6814f1abc6980029280e85a2",
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\n\nusing namespace std;\n\nint main() {\n    \n    int num;\n    cin >> num;\n    cout << \"The Square root of \" << num << \" is \" << sqrt(num);\n\n    return 0;\n}",
+      "learner_id": "6814f0d30ea6b2d92afface5",
+      "problemId": "perfectly-rooted-5136456806",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746203050117",
+      "timestamp": "Fri, 02 May 2025 16:24:11 GMT",
+      "version": 4
+    },
+    {
+      "__v": 0,
+      "_id": "6814f1dcc6980029280e85a6",
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\n\nusing namespace std;\n\nint main() {\n    \n    int num;\n    cin >> num;\n    cout << \"The Square root of \" << num << \" is \" << setprecis << sqrt(num);\n\n    return 0;\n}",
+      "learner_id": "6814f0d30ea6b2d92afface5",
+      "problemId": "perfectly-rooted-5136456806",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746203098595",
+      "timestamp": "Fri, 02 May 2025 16:25:00 GMT",
+      "version": 5
+    },
+    {
+      "__v": 0,
+      "_id": "6814f1e2c6980029280e85aa",
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\n\nusing namespace std;\n\nint main() {\n    \n    int num;\n    cin >> num;\n    cout << \"The Square root of \" << num << \" is \" << setprecision(2) << sqrt(num);\n\n    return 0;\n}",
+      "learner_id": "6814f0d30ea6b2d92afface5",
+      "problemId": "perfectly-rooted-5136456806",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746203105514",
+      "timestamp": "Fri, 02 May 2025 16:25:06 GMT",
+      "version": 6
+    },
+    {
+      "__v": 0,
+      "_id": "6814f221c6980029280e85ae",
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\n\nusing namespace std;\n\nint main() {\n    \n    float num;\n    cin >> num;\n    cout << \"The Square root of \" << num << \" is \" << setprecision(2) << sqrt(num);\n\n    return 0;\n}",
+      "learner_id": "6814f0d30ea6b2d92afface5",
+      "problemId": "perfectly-rooted-5136456806",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746203168286",
+      "timestamp": "Fri, 02 May 2025 16:26:09 GMT",
+      "version": 7
+    },
+    {
+      "__v": 0,
+      "_id": "6814f234c6980029280e85b1",
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\n\nusing namespace std;\n\nint main() {\n    \n    int num;\n    cin >> num;\n    cout << \"The Square root of \" << num << \" is \" << setprecision(2) << sqrt(num);\n\n    return 0;\n}",
+      "learner_id": "6814f0d30ea6b2d92afface5",
+      "problemId": "perfectly-rooted-5136456806",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746203187249",
+      "timestamp": "Fri, 02 May 2025 16:26:28 GMT",
+      "version": 8
+    },
+    {
+      "__v": 0,
+      "_id": "6814f258c6980029280e85b4",
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\n\nusing namespace std;\n\nint main() {\n    \n    int num;\n    cin >> num;\n    float n = sqrt(num);\n    cout << \"The Square root of \" << num << \" is \" << setprecision(2) << n;\n\n    return 0;\n}",
+      "learner_id": "6814f0d30ea6b2d92afface5",
+      "problemId": "perfectly-rooted-5136456806",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746203223144",
+      "timestamp": "Fri, 02 May 2025 16:27:04 GMT",
+      "version": 9
+    },
+    {
+      "__v": 0,
+      "_id": "6814f27fc6980029280e85b7",
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\n\nusing namespace std;\n\nint main() {\n    \n    int num;\n    cin >> num;\n    float n = sqrt(num);\n    cout << \"The Square root of \" << num << \" is \" << setprecision(3) << n;\n\n    return 0;\n}",
+      "learner_id": "6814f0d30ea6b2d92afface5",
+      "problemId": "perfectly-rooted-5136456806",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746203262169",
+      "timestamp": "Fri, 02 May 2025 16:27:43 GMT",
+      "version": 10
+    },
+    {
+      "__v": 0,
+      "_id": "6814f2c1c6980029280e85bc",
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\n\nusing namespace std;\n\nint main() {\n    \n    int num;\n    cin >> num;\n    float n = sqrt(num);\n\n    cout << fixed << setprecision(2);\n    cout << \"The Square root of \" << num << \" is \" << n;\n\n    return 0;\n}",
+      "learner_id": "6814f0d30ea6b2d92afface5",
+      "problemId": "perfectly-rooted-5136456806",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746203328076",
+      "timestamp": "Fri, 02 May 2025 16:28:49 GMT",
+      "version": 11
+    },
+    {
+      "__v": 0,
+      "_id": "6814f2e0c6980029280e85bf",
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\n\nusing namespace std;\n\nint main() {\n    \n    int num;\n    cin >> num;\n    float n = sqrt(num);\n\n    cout << fixed << setprecision(2);\n    cout << \"The square root of \" << num << \" is \" << n;\n\n    return 0;\n}",
+      "learner_id": "6814f0d30ea6b2d92afface5",
+      "problemId": "perfectly-rooted-5136456806",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746203359015",
+      "timestamp": "Fri, 02 May 2025 16:29:20 GMT",
+      "version": 12
+    }
+  ],
+  "success": true
+}

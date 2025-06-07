@@ -55,12 +55,24 @@ interface SequentialSimilarityVisualizationProps {
   snapshots: CodeSnapshot[];
   pastedSnippets: EnhancedPasteInfo[];
   learnerId?: string;
+  problemId?: string;  // New prop for checking study problems
 }
+
+const studyProblems = [
+  "box-formatter-4312784064",
+  "fahrenheit-to-celsius-converter-8133077604",
+  "count-vowels-in-a-string-7746433050",
+  "palindrome-check-6834925212",
+  "character-inspector-4333782441",
+  "perfectly-rooted-5136456806",
+  "linear-search-for-odd-numbers-4386603267"
+]
 
 const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizationProps> = ({
   snapshots,
   pastedSnippets,
   learnerId,
+  problemId
 }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentSnapshotIndex, setCurrentSnapshotIndex] = useState(0);
@@ -69,7 +81,7 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
   const [pasteCount, setPasteCount] = useState(0);
   const [bigPasteCount, setBigPasteCount] = useState(0);
   const [chartData, setChartData] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);  // Initialize as true to show loading state initially
 
   const notEnoughSnapshots = snapshots.length <= 2;
 
@@ -84,6 +96,37 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
       setLoading(true);
       try {
         const learner_id = learnerId ? learnerId : snapshotsToCompare[0].learner_id;
+
+        // Check if this is a study problem and should load from local file
+        if (problemId && studyProblems.includes(problemId)) {
+          console.log("Loading local sequential similarity data for:", problemId, "learner:", learner_id);
+          try {
+            // Import data from local JSON file
+            const data = await import(`@/data/studyFindings/codeReplay/${problemId}/${learner_id}.json`);
+            console.log("Data loaded from local file:", data);
+            if (data.success) {
+              setSequentialSimilarities(data.sequentialSimilarities);
+              console.log("Loaded local sequential similarities data successfully");
+            }
+          } catch (error) {
+            console.error('Error loading local sequential similarity data:', error);
+            // Fall back to API call if local data loading fails
+            await fetchFromAPI(learner_id, snapshotsToCompare);
+          }
+        } else {
+          // Not a study problem, fetch from API
+          await fetchFromAPI(learner_id, snapshotsToCompare);
+        }
+      } catch (error) {
+        console.error('Sequential similarity calculation error:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    // Helper function to fetch from API
+    const fetchFromAPI = async (learner_id: string, snapshotsToCompare: CodeSnapshot[]) => {
+      try {
         const problemId = snapshotsToCompare[0].problemId;
         const roomId = snapshotsToCompare[0].roomId;
 
@@ -98,23 +141,21 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
         });
 
         const data = await response.json();
-        // console.log("Sequential Similarities Response:", data);
         if (response.ok) {
-          // console.log("Response OK");
           setSequentialSimilarities(data.sequentialSimilarities);
         }
-        // console.log("Sequential Similarities:", sequentialSimilarities);
       } catch (error) {
-        console.error('Sequential similarity calculation error:', error);
+        console.error('API fetch error:', error);
       }
     };
-    setLoading(false);
-    calculateSequentialSimilarities(snapshots);
-  }, [snapshots, notEnoughSnapshots, learnerId]);
 
-  // useEffect(() => {
-  //   console.log("Sequential similarities updated:", sequentialSimilarities);
-  // }, [sequentialSimilarities]);
+    calculateSequentialSimilarities(snapshots);
+  }, [snapshots, notEnoughSnapshots, learnerId, problemId]);
+
+  useEffect(() => {
+    console.log("Sequential similarities updated:", sequentialSimilarities);
+    setLoading(false);
+  }, [sequentialSimilarities]);
 
   // useEffect(() => {
   //   console.log("Received Snapshots:", snapshots);

@@ -1,0 +1,59 @@
+{
+  "matrix": [
+    [
+      100,
+      62,
+      68,
+      57
+    ],
+    [
+      62,
+      100,
+      73,
+      76
+    ],
+    [
+      68,
+      73,
+      100,
+      68
+    ],
+    [
+      57,
+      76,
+      68,
+      100
+    ]
+  ],
+  "snippets": [
+    {
+      "code": "#include <iostream>\r\n#include <iomanip>\r\nusing namespace std;\r\n\r\nint main() {\r\n    \r\n    double F, celsius;\r\n    \r\n    cin >> F;\r\n    \r\n    celsius = (F - 32) * 5 / 9;\r\n    \r\n    cout << F << \" F is \";\r\n    cout << fixed << setprecision(2);\r\n    cout << celsius << \" C\";\r\n    \r\n    return 0;\r\n}",
+      "fileName": "jmoso13_fahrenheit-to-celsius-converter-8133077604.js",
+      "learner": "jmoso13",
+      "learner_id": "68145f82b76578b17f09c176",
+      "timestamp": "2025-05-02 06:25:44.185000"
+    },
+    {
+      "code": "#include <iostream>\r\n#include <iomanip>\r\nusing namespace std;\r\n\r\ndouble toCelsius(double fahrenheit) {\r\n    fahrenheit = (fahrenheit - 32) * 5/9;\r\n    return fahrenheit;\r\n}\r\n\r\nint main() {\r\n    double F;\r\n    cin >> F;\r\n\r\n    if (F >= -100 && F <= 500) {\r\n        cout << F << \" F is \" << setprecision(2) << fixed << toCelsius(F) << \" C\";\r\n    }\r\n    return 0;\r\n}",
+      "fileName": "kyle_fahrenheit-to-celsius-converter-8133077604.js",
+      "learner": "kyle",
+      "learner_id": "6818a151121fbec68421fa4b",
+      "timestamp": "2025-05-05 11:54:13.938000"
+    },
+    {
+      "code": "#include <iostream>\r\n#include <iomanip> \r\n\r\nusing namespace std;\r\n\r\ndouble toCelsius(double fahrenheit){\r\n    return (fahrenheit - 32) * 5.0 / 9.0;\r\n}\r\n\r\nint main() {\r\n    float F;\r\n    cin >> F;\r\n\r\n    float C = toCelsius(F);\r\n\r\n    cout << F << \" F is \" << fixed << setprecision(2) << C << \" C\" << endl;\r\n    \r\n\r\n    return 0;\r\n}",
+      "fileName": "codecnigabo_fahrenheit-to-celsius-converter-8133077604.js",
+      "learner": "codecnigabo",
+      "learner_id": "68123ead9c872fb2482f570d",
+      "timestamp": "2025-05-02 16:46:27.722000"
+    },
+    {
+      "code": "#include <iostream>\r\n#include <iomanip>\r\nusing namespace std;\r\n\r\ndouble toCelsius(double fah)\r\n{\r\n    return (fah - 32) * 5.0 / 9.0;\r\n}\r\n\r\nint main() {\r\n    double f;\r\n    cin >> f;\r\n\r\n    if (f < -100 || f > 500)\r\n    {\r\n        cout << \"Temperature must be between -100 and 500 Fahrenheit.\" << endl;\r\n        return 1;\r\n    }\r\n\r\n    double c = toCelsius(f);\r\n    cout << f << \" F is \" << fixed << setprecision(2) << c << \" C\" << endl;\r\n\r\n    return 0;\r\n}",
+      "fileName": "rorot_fahrenheit-to-celsius-converter-8133077604.js",
+      "learner": "rorot",
+      "learner_id": "6814f0d30ea6b2d92afface5",
+      "timestamp": "2025-05-02 16:53:00.328000"
+    }
+  ],
+  "success": true
+}

@@ -1,0 +1,259 @@
+{
+  "matrix": [
+    [
+      100,
+      86,
+      86,
+      83,
+      83,
+      72,
+      70,
+      83,
+      78,
+      70,
+      84,
+      86
+    ],
+    [
+      86,
+      100,
+      90,
+      84,
+      85,
+      70,
+      69,
+      87,
+      76,
+      68,
+      81,
+      91
+    ],
+    [
+      86,
+      90,
+      100,
+      86,
+      86,
+      72,
+      71,
+      86,
+      76,
+      70,
+      83,
+      91
+    ],
+    [
+      83,
+      84,
+      86,
+      100,
+      87,
+      71,
+      71,
+      81,
+      78,
+      69,
+      82,
+      84
+    ],
+    [
+      83,
+      85,
+      86,
+      87,
+      100,
+      71,
+      72,
+      83,
+      75,
+      70,
+      82,
+      86
+    ],
+    [
+      72,
+      70,
+      72,
+      71,
+      71,
+      100,
+      70,
+      70,
+      71,
+      87,
+      74,
+      72
+    ],
+    [
+      70,
+      69,
+      71,
+      71,
+      72,
+      70,
+      100,
+      70,
+      73,
+      70,
+      72,
+      71
+    ],
+    [
+      83,
+      87,
+      86,
+      81,
+      83,
+      70,
+      70,
+      100,
+      73,
+      69,
+      79,
+      88
+    ],
+    [
+      78,
+      76,
+      76,
+      78,
+      75,
+      71,
+      73,
+      73,
+      100,
+      69,
+      79,
+      76
+    ],
+    [
+      70,
+      68,
+      70,
+      69,
+      70,
+      87,
+      70,
+      69,
+      69,
+      100,
+      72,
+      70
+    ],
+    [
+      84,
+      81,
+      83,
+      82,
+      82,
+      74,
+      72,
+      79,
+      79,
+      72,
+      100,
+      83
+    ],
+    [
+      86,
+      91,
+      91,
+      84,
+      86,
+      72,
+      71,
+      88,
+      76,
+      70,
+      83,
+      100
+    ]
+  ],
+  "snippets": [
+    {
+      "code": "#include <iostream>\r\n#include <cmath>\r\n#include <iomanip>\r\nusing namespace std;\r\n\r\nint main() {\r\n    int N;\r\n    cin >> N;\r\n\r\ndouble R = sqrt(N);\r\n\r\ncout << \"The square root of \" << N << \" is \" << fixed << setprecision (2) << R << endl;\r\n\r\n    return 0;\r\n}",
+      "fileName": "jgab_perfectly-rooted-5136456806.js",
+      "learner": "jgab",
+      "learner_id": "681477a6a0892f131964f278",
+      "timestamp": "2025-05-02 07:55:42.426000"
+    },
+    {
+      "code": "#include <iostream>\r\n#include <cmath>\r\n#include <iomanip>\r\nusing namespace std;\r\n\r\nint main() {\r\n    int N;\r\n    cin >> N;\r\n\r\n    double R = sqrt(N);\r\n\r\n    cout << fixed << setprecision(2);\r\n    cout << \"The square root of \" << N << \" is \" << R <<endl;\r\n\r\n    return 0;\r\n}",
+      "fileName": "Julius_perfectly-rooted-5136456806.js",
+      "learner": "Julius",
+      "learner_id": "6814bda36cceec68ee3bd7c5",
+      "timestamp": "2025-05-02 15:21:35.505000"
+    },
+    {
+      "code": "#include <iostream>\r\n#include <cmath>\r\n#include <iomanip>\r\n\r\nusing namespace std;\r\n\r\nint main() {\r\n    int N;\r\n    cin >> N;\r\n\r\n    float R = sqrt(N);\r\n\r\n    cout << fixed << setprecision(2);\r\n    cout << \"The square root of \" << N << \" is \" << R << endl;\r\n    \r\n    return 0;\r\n}",
+      "fileName": "codecnigabo_perfectly-rooted-5136456806.js",
+      "learner": "codecnigabo",
+      "learner_id": "68123ead9c872fb2482f570d",
+      "timestamp": "2025-05-02 15:26:24.368000"
+    },
+    {
+      "code": "#include <iostream>\r\n#include <cmath>\r\n#include <iomanip>\r\n\r\nusing namespace std;\r\n\r\nint main() {\r\n    \r\n    int num;\r\n    cin >> num;\r\n    float n = sqrt(num);\r\n\r\n    cout << fixed << setprecision(2);\r\n    cout << \"The square root of \" << num << \" is \" << n;\r\n\r\n    return 0;\r\n}",
+      "fileName": "rorot_perfectly-rooted-5136456806.js",
+      "learner": "rorot",
+      "learner_id": "6814f0d30ea6b2d92afface5",
+      "timestamp": "2025-05-02 16:29:34.663000"
+    },
+    {
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int num;\n    cin >> num;\n    double result = sqrt(num);\n    cout << fixed << setprecision(2);\n    cout << \"The square root of \" << num << \" is \" << result << endl;\n    return 0;\n}",
+      "fileName": "cjoguan_perfectly-rooted-5136456806.js",
+      "learner": "cjoguan",
+      "learner_id": "6815183e17d4c26021f0b1bc",
+      "timestamp": "2025-05-02 19:19:42.902000"
+    },
+    {
+      "code": "#include <iostream>\r\n#include <iomanip>\r\n#include <cmath>\r\n\r\nint main() {\r\n    int N;\r\n    std::cin >> N;\r\n\r\n    double R = sqrt(N);\r\n    std::cout << \"The square root of \" << N << \" is \" << std::fixed << std::setprecision(2) << R;\r\n\r\n    return 0;\r\n}",
+      "fileName": "ofrancisco_perfectly-rooted-5136456806.js",
+      "learner": "ofrancisco",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "timestamp": "2025-05-01 03:27:30.894000"
+    },
+    {
+      "code": "#include <iostream>\r\n#include <iomanip>\r\n#include <cmath>\r\nusing namespace std;\r\n\r\nint main() {\r\n    int N;\r\n   cin >> N;\r\n   \r\n   if (N < 0 || N > 10000){\r\n    cout << \" Invalid Input please enter a number between 0 and 10,000.\" << endl;\r\n    return 1;\r\n   }\r\ndouble root = sqrt(N);\r\ncout << fixed << setprecision(2);\r\ncout << \"The square root of \" << N << \" is \" << root << endl;\r\n\r\n    return 0;\r\n}",
+      "fileName": "brentb_perfectly-rooted-5136456806.js",
+      "learner": "brentb",
+      "learner_id": "68177e6fcdb47e4e1c97a4c9",
+      "timestamp": "2025-05-04 15:47:42.315000"
+    },
+    {
+      "code": "#include <iostream>\r\n#include <iomanip>\r\n#include <cmath>\r\nusing namespace std;\r\n\r\nint main() {\r\n    int N;\r\n    cin >> N;\r\n\r\n    double R = sqrt(N);\r\n\r\n    cout << fixed << setprecision(2);\r\n    cout << \"The square root of \" << N << \" is \" << R << endl;\r\n\r\n}\r\n",
+      "fileName": "zsanchez23_perfectly-rooted-5136456806.js",
+      "learner": "zsanchez23",
+      "learner_id": "6814fadd80b316ddbdb518d8",
+      "timestamp": "2025-05-02 17:06:01.898000"
+    },
+    {
+      "code": "#include <iostream>\r\n#include <cmath>\r\n#include <iomanip>\r\nusing namespace std;\r\n\r\nint main() {\r\n    int N;\r\n    cin >> N;\r\n\r\n    if (N >= 0 && N <= 10000) {\r\n        double R = sqrt(N);\r\n        cout << \"The square root of \" << N << \" is \" << setprecision(2) << fixed << R;\r\n    }\r\n    return 0;\r\n}",
+      "fileName": "kyle_perfectly-rooted-5136456806.js",
+      "learner": "kyle",
+      "learner_id": "6818a151121fbec68421fa4b",
+      "timestamp": "2025-05-05 11:47:23.724000"
+    },
+    {
+      "code": "#include <iostream>\r\n#include <cmath>\r\n#include <iomanip>\r\n\r\nint main() {\r\n    int N;\r\n    std::cin >> N;\r\n\r\n    double R = sqrt(N);\r\n\r\n    std::cout << \"The square root of \" << N << \" is \" \r\n              << std::fixed << std::setprecision(2) << R << std::endl;\r\n\r\n    return 0;\r\n}",
+      "fileName": "japosugac_perfectly-rooted-5136456806.js",
+      "learner": "japosugac",
+      "learner_id": "68150661a62d51ae3b4c6a35",
+      "timestamp": "2025-05-02 17:55:39.565000"
+    },
+    {
+      "code": "#include <iostream>\r\n#include <cmath>\r\n#include <iomanip>\r\nusing namespace std;\r\n\r\nint main() {\r\n    int N;\r\n    cin >> N;\r\n\r\n    double total = sqrt(N);\r\n\r\n    cout << fixed << setprecision(2) << \"The square root of \";\r\n    cout << N << \" is \" << total << endl;\r\n\r\n    return 0;\r\n}",
+      "fileName": "cjaspe_perfectly-rooted-5136456806.js",
+      "learner": "cjaspe",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "timestamp": "2025-05-01 07:39:43.651000"
+    },
+    {
+      "code": "#include <iostream>\r\n#include <iomanip>\r\n#include <cmath>\r\nusing namespace std;\r\n\r\nint main() {\r\n    int N;\r\n    cin >> N;\r\n    double R = sqrt(N);\r\n    cout << fixed << setprecision(2); \r\n    cout << \"The square root of \" << N << \" is \" << R << endl;\r\n    return 0;\r\n}",
+      "fileName": "vladiberks_perfectly-rooted-5136456806.js",
+      "learner": "vladiberks",
+      "learner_id": "681309193ce25f1b7c4bbe22",
+      "timestamp": "2025-05-02 14:57:13.347000"
+    }
+  ],
+  "success": true
+}

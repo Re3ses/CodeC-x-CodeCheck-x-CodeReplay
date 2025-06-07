@@ -1,0 +1,50 @@
+{
+  "formatted_snapshots": [
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "68150661a62d51ae3b4c6a35",
+      "submission_id": "681506c22a2bfd6ab4742782",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\n\nint main() {\n    int N;\n    std::cin >> N;\n\n    double R = sqrt(N);\n\n    std::cout << \"The square root of \" << N << \" is \" \n              << std::fixed << std::setprecision(2) << R << std::endl;\n\n    return 0;\n}",
+      "learner_id": "68150661a62d51ae3b4c6a35",
+      "submission_id": "681506f52a2bfd6ab4742787",
+      "timestamp": ""
+    }
+  ],
+  "sequentialSimilarities": [
+    {
+      "codebert_score": 48,
+      "from_index": 0,
+      "learner_id": "68150661a62d51ae3b4c6a35",
+      "similarity": 48,
+      "to_index": 1
+    }
+  ],
+  "snapshots": [
+    {
+      "__v": 0,
+      "_id": "681506c22a2bfd6ab4742782",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "68150661a62d51ae3b4c6a35",
+      "problemId": "perfectly-rooted-5136456806",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746208448531",
+      "timestamp": "Fri, 02 May 2025 17:54:10 GMT",
+      "version": 1
+    },
+    {
+      "__v": 0,
+      "_id": "681506f52a2bfd6ab4742787",
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\n\nint main() {\n    int N;\n    std::cin >> N;\n\n    double R = sqrt(N);\n\n    std::cout << \"The square root of \" << N << \" is \" \n              << std::fixed << std::setprecision(2) << R << std::endl;\n\n    return 0;\n}",
+      "learner_id": "68150661a62d51ae3b4c6a35",
+      "problemId": "perfectly-rooted-5136456806",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746208499359",
+      "timestamp": "Fri, 02 May 2025 17:55:01 GMT",
+      "version": 2
+    }
+  ],
+  "success": true
+}
