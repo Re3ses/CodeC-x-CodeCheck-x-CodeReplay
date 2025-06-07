@@ -4,37 +4,37 @@ import { ArrowLeft, Code2, ChevronRight, Shield } from 'lucide-react';
 
 const problemSets = [
 	{
-		id: 1,
+		id: "box-formatter-4312784064",
 		name: 'Box Formatter',
 		averageSimilarity: 68.5,
 	},
 	{
-		id: 2,
+		id: "character-inspector-4333782441",
 		name: 'Character Inspector',
 		averageSimilarity: 72.3,
 	},
 	{
-		id: 3,
+		id: "fahrenheit-to-celsius-converter-8133077604",
 		name: 'Fahrenheit To Celsius',
 		averageSimilarity: 65.7,
 	},
 	{
-		id: 4,
+		id: "perfectly-rooted-5136456806",
 		name: 'Perfectly Rooted',
 		averageSimilarity: 70.1,
 	},
 	{
-		id: 5,
+		id: "count-vowels-in-a-string-7746433050",
 		name: 'Count Vowels In A String',
 		averageSimilarity: 75.4,
 	},
 	{
-		id: 6,
+		id: "linear-search-for-odd-numbers-4386603267",
 		name: 'Linear Search For Odd Numbers',
 		averageSimilarity: 69.8,
 	},
 	{
-		id: 7,
+		id: "palindrome-check-6834925212",
 		name: 'Palindrome Check',
 		averageSimilarity: 71.2,
 	},
@@ -80,7 +80,7 @@ export default function RealWorldData() {
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 					{problemSets.map((problem) => (
 						<Link
-							href={`/study-results/real-world-data/problem/${problem.id}`}
+							href={`/study-results/codeHistory/problem/${problem.id}`}
 							key={problem.id}
 							className="bg-gray-800/50 p-6 rounded-xl border border-gray-700/30 
                          hover:bg-gray-700/50 transition-all hover:border-gray-600/50 
