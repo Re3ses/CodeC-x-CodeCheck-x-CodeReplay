@@ -1,0 +1,170 @@
+{
+  "formatted_snapshots": [
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "6811b22f88362505107a6157",
+      "submission_id": "6815f4b039b0463eee4d5639",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string test;\n    cin >> test;\n\n    \n    return 0;\n}",
+      "learner_id": "6811b22f88362505107a6157",
+      "submission_id": "6815f4c939b0463eee4d563d",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string test;\n    cin >> test;\n\n    int len = test.length();\n    for (int i = 0; i < length/2; i++) {\n        if \n    }\n    return 0;\n}",
+      "learner_id": "6811b22f88362505107a6157",
+      "submission_id": "6815f50039b0463eee4d5642",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string test;\n    cin >> test;\n\n    int len = test.length();\n    for (int i = 0; i < length/2; i++) {\n        if (test[i] != test[len - i - 1]) {\n            cout << \"Not a palindrome\";\n            return 0;\n        }\n    }\n\n    cout << \"Palindrome\";\n    return 0;\n}",
+      "learner_id": "6811b22f88362505107a6157",
+      "submission_id": "6815f52c39b0463eee4d5645",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string test;\n    cin >> test;\n\n    int len = test.length();\n    for (int i = 0; i < len/2; i++) {\n        if (test[i] != test[len - i - 1]) {\n            cout << \"Not a palindrome\";\n            return 0;\n        }\n    }\n\n    cout << \"Palindrome\";\n    return 0;\n}",
+      "learner_id": "6811b22f88362505107a6157",
+      "submission_id": "6815f56e39b0463eee4d564a",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string test;\n    cin >> test;\n\n    int len = test.length();\n    for (int i = 0; i <= len/2; i++) {\n        if (test[i] != test[len - i - 1]) {\n            cout << \"Not a palindrome\";\n            return 0;\n        }\n    }\n\n    cout << \"Palindrome\";\n    return 0;\n}",
+      "learner_id": "6811b22f88362505107a6157",
+      "submission_id": "6815f5c939b0463eee4d564f",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string test;\n    cin >> test;\n\n    int len = test.length();\n    for (int i = 0; i < len/2; i++) {\n        if (test[i] != test[len - i - 1]) {\n            cout << \"Not a palindrome\";\n            return 0;\n        }\n    }\n\n    cout << \"Palindrome\";\n    return 0;\n}",
+      "learner_id": "6811b22f88362505107a6157",
+      "submission_id": "6815f60d39b0463eee4d5653",
+      "timestamp": ""
+    }
+  ],
+  "sequentialSimilarities": [
+    {
+      "codebert_score": 67,
+      "from_index": 0,
+      "learner_id": "6811b22f88362505107a6157",
+      "similarity": 67,
+      "to_index": 1
+    },
+    {
+      "codebert_score": 63,
+      "from_index": 1,
+      "learner_id": "6811b22f88362505107a6157",
+      "similarity": 63,
+      "to_index": 2
+    },
+    {
+      "codebert_score": 70,
+      "from_index": 2,
+      "learner_id": "6811b22f88362505107a6157",
+      "similarity": 70,
+      "to_index": 3
+    },
+    {
+      "codebert_score": 93,
+      "from_index": 3,
+      "learner_id": "6811b22f88362505107a6157",
+      "similarity": 93,
+      "to_index": 4
+    },
+    {
+      "codebert_score": 92,
+      "from_index": 4,
+      "learner_id": "6811b22f88362505107a6157",
+      "similarity": 92,
+      "to_index": 5
+    },
+    {
+      "codebert_score": 92,
+      "from_index": 5,
+      "learner_id": "6811b22f88362505107a6157",
+      "similarity": 92,
+      "to_index": 6
+    }
+  ],
+  "snapshots": [
+    {
+      "__v": 0,
+      "_id": "6815f4b039b0463eee4d5639",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "6811b22f88362505107a6157",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746269361007",
+      "timestamp": "Sat, 03 May 2025 10:49:20 GMT",
+      "version": 1
+    },
+    {
+      "__v": 0,
+      "_id": "6815f4c939b0463eee4d563d",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string test;\n    cin >> test;\n\n    \n    return 0;\n}",
+      "learner_id": "6811b22f88362505107a6157",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746269386510",
+      "timestamp": "Sat, 03 May 2025 10:49:45 GMT",
+      "version": 2
+    },
+    {
+      "__v": 0,
+      "_id": "6815f50039b0463eee4d5642",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string test;\n    cin >> test;\n\n    int len = test.length();\n    for (int i = 0; i < length/2; i++) {\n        if \n    }\n    return 0;\n}",
+      "learner_id": "6811b22f88362505107a6157",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746269441256",
+      "timestamp": "Sat, 03 May 2025 10:50:40 GMT",
+      "version": 3
+    },
+    {
+      "__v": 0,
+      "_id": "6815f52c39b0463eee4d5645",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string test;\n    cin >> test;\n\n    int len = test.length();\n    for (int i = 0; i < length/2; i++) {\n        if (test[i] != test[len - i - 1]) {\n            cout << \"Not a palindrome\";\n            return 0;\n        }\n    }\n\n    cout << \"Palindrome\";\n    return 0;\n}",
+      "learner_id": "6811b22f88362505107a6157",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746269485347",
+      "timestamp": "Sat, 03 May 2025 10:51:24 GMT",
+      "version": 4
+    },
+    {
+      "__v": 0,
+      "_id": "6815f56e39b0463eee4d564a",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string test;\n    cin >> test;\n\n    int len = test.length();\n    for (int i = 0; i < len/2; i++) {\n        if (test[i] != test[len - i - 1]) {\n            cout << \"Not a palindrome\";\n            return 0;\n        }\n    }\n\n    cout << \"Palindrome\";\n    return 0;\n}",
+      "learner_id": "6811b22f88362505107a6157",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746269552039",
+      "timestamp": "Sat, 03 May 2025 10:52:30 GMT",
+      "version": 5
+    },
+    {
+      "__v": 0,
+      "_id": "6815f5c939b0463eee4d564f",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string test;\n    cin >> test;\n\n    int len = test.length();\n    for (int i = 0; i <= len/2; i++) {\n        if (test[i] != test[len - i - 1]) {\n            cout << \"Not a palindrome\";\n            return 0;\n        }\n    }\n\n    cout << \"Palindrome\";\n    return 0;\n}",
+      "learner_id": "6811b22f88362505107a6157",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746269642938",
+      "timestamp": "Sat, 03 May 2025 10:54:01 GMT",
+      "version": 6
+    },
+    {
+      "__v": 0,
+      "_id": "6815f60d39b0463eee4d5653",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string test;\n    cin >> test;\n\n    int len = test.length();\n    for (int i = 0; i < len/2; i++) {\n        if (test[i] != test[len - i - 1]) {\n            cout << \"Not a palindrome\";\n            return 0;\n        }\n    }\n\n    cout << \"Palindrome\";\n    return 0;\n}",
+      "learner_id": "6811b22f88362505107a6157",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746269710525",
+      "timestamp": "Sat, 03 May 2025 10:55:09 GMT",
+      "version": 7
+    }
+  ],
+  "success": true
+}

@@ -1,0 +1,266 @@
+{
+  "formatted_snapshots": [
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "68181118113359d27dc46b27",
+      "submission_id": "6818117d968bffa39214c62c",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    return 0;\n}",
+      "learner_id": "68181118113359d27dc46b27",
+      "submission_id": "681811e5968bffa39214c62f",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string s;\n    int count = 0;\n    cin>>s;\n\n    for (int i=0; i < s.length(); i++){\n        \n    }\n    return 0;\n}",
+      "learner_id": "68181118113359d27dc46b27",
+      "submission_id": "68181272968bffa39214c63a",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string s;\n    int count = 0;\n    cin>>s;\n\n    for (int i=0; i < s.length(); i++){\n        if \n    }\n    return 0;\n}",
+      "learner_id": "68181118113359d27dc46b27",
+      "submission_id": "6818127f968bffa39214c63e",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string s;\n    int count = 0;\n    cin>>s;\n\n    for (int i=0; i < s.length(); i++){\n        if (isupper())\n    }\n    return 0;\n}",
+      "learner_id": "68181118113359d27dc46b27",
+      "submission_id": "68181285968bffa39214c642",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string s;\n    int count = 0;\n    cin>>s;\n\n    for (int i=0; i < s.length(); i++){\n        if (isupper(s[i]))\n    }\n    return 0;\n}",
+      "learner_id": "68181118113359d27dc46b27",
+      "submission_id": "68181296968bffa39214c647",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string s;\n    int count = 0;\n    cin>>s;\n\n    for (int i=0; i < s.length(); i++){\n        if (isupper(s[i])){\n            cout<<\"Invalid!\";\n            return 0;\n        }\n    }\n    return 0;\n}",
+      "learner_id": "68181118113359d27dc46b27",
+      "submission_id": "681812bf968bffa39214c64a",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string s;\n    int count = 0;\n    cin>>s;\n\n    for (int i=0; i < s.length(); i++){\n        if (isupper(s[i])){\n            cout<<\"Invalid!\";\n            return 0;\n        }\n\n        if (s[i] == 'a'|| s[i] == 'e' || s[i] == 'i' || s[i] == 'o' || s[i] == 'u'){\n            \n        }\n    }\n    return 0;\n}",
+      "learner_id": "68181118113359d27dc46b27",
+      "submission_id": "6818133b968bffa39214c652",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string s;\n    int count = 0;\n    cin>>s;\n\n    for (int i=0; i < s.length(); i++){\n        if (isupper(s[i])){\n            cout<<\"Invalid!\";\n            return 0;\n        }\n\n        if (s[i] == 'a'|| s[i] == 'e' || s[i] == 'i' || s[i] == 'o' || s[i] == 'u'){\n            count++;\n        }\n    }\n    return 0;\n}",
+      "learner_id": "68181118113359d27dc46b27",
+      "submission_id": "6818135b968bffa39214c655",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string s;\n    int count = 0;\n    cin>>s;\n\n    for (int i=0; i < s.length(); i++){\n        if (isupper(s[i])){\n            cout<<\"Invalid!\";\n            return 0;\n        }\n\n        if (s[i] == 'a'|| s[i] == 'e' || s[i] == 'i' || s[i] == 'o' || s[i] == 'u'){\n            count++;\n        }\n\n        cout<<\"\\n\"<<count;\n    }\n    return 0;\n}",
+      "learner_id": "68181118113359d27dc46b27",
+      "submission_id": "68181383968bffa39214c658",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string s;\n    int count = 0;\n    cin>>s;\n\n    for (int i=0; i < s.length(); i++){\n        if (isupper(s[i])){\n            cout<<\"Invalid!\";\n            return 0;\n        }\n\n        if (s[i] == 'a'|| s[i] == 'e' || s[i] == 'i' || s[i] == 'o' || s[i] == 'u'){\n            count++;\n        }\n    }\n\n    cout<<count;\n    return 0;\n}",
+      "learner_id": "68181118113359d27dc46b27",
+      "submission_id": "681813ab968bffa39214c65b",
+      "timestamp": ""
+    }
+  ],
+  "sequentialSimilarities": [
+    {
+      "codebert_score": 75,
+      "from_index": 0,
+      "learner_id": "68181118113359d27dc46b27",
+      "similarity": 75,
+      "to_index": 1
+    },
+    {
+      "codebert_score": 57,
+      "from_index": 1,
+      "learner_id": "68181118113359d27dc46b27",
+      "similarity": 57,
+      "to_index": 2
+    },
+    {
+      "codebert_score": 89,
+      "from_index": 2,
+      "learner_id": "68181118113359d27dc46b27",
+      "similarity": 89,
+      "to_index": 3
+    },
+    {
+      "codebert_score": 83,
+      "from_index": 3,
+      "learner_id": "68181118113359d27dc46b27",
+      "similarity": 83,
+      "to_index": 4
+    },
+    {
+      "codebert_score": 79,
+      "from_index": 4,
+      "learner_id": "68181118113359d27dc46b27",
+      "similarity": 79,
+      "to_index": 5
+    },
+    {
+      "codebert_score": 79,
+      "from_index": 5,
+      "learner_id": "68181118113359d27dc46b27",
+      "similarity": 79,
+      "to_index": 6
+    },
+    {
+      "codebert_score": 55,
+      "from_index": 6,
+      "learner_id": "68181118113359d27dc46b27",
+      "similarity": 55,
+      "to_index": 7
+    },
+    {
+      "codebert_score": 88,
+      "from_index": 7,
+      "learner_id": "68181118113359d27dc46b27",
+      "similarity": 88,
+      "to_index": 8
+    },
+    {
+      "codebert_score": 87,
+      "from_index": 8,
+      "learner_id": "68181118113359d27dc46b27",
+      "similarity": 87,
+      "to_index": 9
+    },
+    {
+      "codebert_score": 87,
+      "from_index": 9,
+      "learner_id": "68181118113359d27dc46b27",
+      "similarity": 87,
+      "to_index": 10
+    }
+  ],
+  "snapshots": [
+    {
+      "__v": 0,
+      "_id": "6818117d968bffa39214c62c",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "68181118113359d27dc46b27",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746407807421",
+      "timestamp": "Mon, 05 May 2025 01:16:45 GMT",
+      "version": 1
+    },
+    {
+      "__v": 0,
+      "_id": "681811e5968bffa39214c62f",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    return 0;\n}",
+      "learner_id": "68181118113359d27dc46b27",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746407911322",
+      "timestamp": "Mon, 05 May 2025 01:18:29 GMT",
+      "version": 2
+    },
+    {
+      "__v": 0,
+      "_id": "68181272968bffa39214c63a",
+      "code": "#include <iostream>\n#include <string>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string s;\n    int count = 0;\n    cin>>s;\n\n    for (int i=0; i < s.length(); i++){\n        \n    }\n    return 0;\n}",
+      "learner_id": "68181118113359d27dc46b27",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746408052275",
+      "timestamp": "Mon, 05 May 2025 01:20:50 GMT",
+      "version": 3
+    },
+    {
+      "__v": 0,
+      "_id": "6818127f968bffa39214c63e",
+      "code": "#include <iostream>\n#include <string>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string s;\n    int count = 0;\n    cin>>s;\n\n    for (int i=0; i < s.length(); i++){\n        if \n    }\n    return 0;\n}",
+      "learner_id": "68181118113359d27dc46b27",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746408065326",
+      "timestamp": "Mon, 05 May 2025 01:21:03 GMT",
+      "version": 4
+    },
+    {
+      "__v": 0,
+      "_id": "68181285968bffa39214c642",
+      "code": "#include <iostream>\n#include <string>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string s;\n    int count = 0;\n    cin>>s;\n\n    for (int i=0; i < s.length(); i++){\n        if (isupper())\n    }\n    return 0;\n}",
+      "learner_id": "68181118113359d27dc46b27",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746408071162",
+      "timestamp": "Mon, 05 May 2025 01:21:09 GMT",
+      "version": 5
+    },
+    {
+      "__v": 0,
+      "_id": "68181296968bffa39214c647",
+      "code": "#include <iostream>\n#include <string>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string s;\n    int count = 0;\n    cin>>s;\n\n    for (int i=0; i < s.length(); i++){\n        if (isupper(s[i]))\n    }\n    return 0;\n}",
+      "learner_id": "68181118113359d27dc46b27",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746408088422",
+      "timestamp": "Mon, 05 May 2025 01:21:26 GMT",
+      "version": 6
+    },
+    {
+      "__v": 0,
+      "_id": "681812bf968bffa39214c64a",
+      "code": "#include <iostream>\n#include <string>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string s;\n    int count = 0;\n    cin>>s;\n\n    for (int i=0; i < s.length(); i++){\n        if (isupper(s[i])){\n            cout<<\"Invalid!\";\n            return 0;\n        }\n    }\n    return 0;\n}",
+      "learner_id": "68181118113359d27dc46b27",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746408129351",
+      "timestamp": "Mon, 05 May 2025 01:22:07 GMT",
+      "version": 7
+    },
+    {
+      "__v": 0,
+      "_id": "6818133b968bffa39214c652",
+      "code": "#include <iostream>\n#include <string>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string s;\n    int count = 0;\n    cin>>s;\n\n    for (int i=0; i < s.length(); i++){\n        if (isupper(s[i])){\n            cout<<\"Invalid!\";\n            return 0;\n        }\n\n        if (s[i] == 'a'|| s[i] == 'e' || s[i] == 'i' || s[i] == 'o' || s[i] == 'u'){\n            \n        }\n    }\n    return 0;\n}",
+      "learner_id": "68181118113359d27dc46b27",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746408253200",
+      "timestamp": "Mon, 05 May 2025 01:24:11 GMT",
+      "version": 8
+    },
+    {
+      "__v": 0,
+      "_id": "6818135b968bffa39214c655",
+      "code": "#include <iostream>\n#include <string>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string s;\n    int count = 0;\n    cin>>s;\n\n    for (int i=0; i < s.length(); i++){\n        if (isupper(s[i])){\n            cout<<\"Invalid!\";\n            return 0;\n        }\n\n        if (s[i] == 'a'|| s[i] == 'e' || s[i] == 'i' || s[i] == 'o' || s[i] == 'u'){\n            count++;\n        }\n    }\n    return 0;\n}",
+      "learner_id": "68181118113359d27dc46b27",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746408285439",
+      "timestamp": "Mon, 05 May 2025 01:24:43 GMT",
+      "version": 9
+    },
+    {
+      "__v": 0,
+      "_id": "68181383968bffa39214c658",
+      "code": "#include <iostream>\n#include <string>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string s;\n    int count = 0;\n    cin>>s;\n\n    for (int i=0; i < s.length(); i++){\n        if (isupper(s[i])){\n            cout<<\"Invalid!\";\n            return 0;\n        }\n\n        if (s[i] == 'a'|| s[i] == 'e' || s[i] == 'i' || s[i] == 'o' || s[i] == 'u'){\n            count++;\n        }\n\n        cout<<\"\\n\"<<count;\n    }\n    return 0;\n}",
+      "learner_id": "68181118113359d27dc46b27",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746408324816",
+      "timestamp": "Mon, 05 May 2025 01:25:23 GMT",
+      "version": 10
+    },
+    {
+      "__v": 0,
+      "_id": "681813ab968bffa39214c65b",
+      "code": "#include <iostream>\n#include <string>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string s;\n    int count = 0;\n    cin>>s;\n\n    for (int i=0; i < s.length(); i++){\n        if (isupper(s[i])){\n            cout<<\"Invalid!\";\n            return 0;\n        }\n\n        if (s[i] == 'a'|| s[i] == 'e' || s[i] == 'i' || s[i] == 'o' || s[i] == 'u'){\n            count++;\n        }\n    }\n\n    cout<<count;\n    return 0;\n}",
+      "learner_id": "68181118113359d27dc46b27",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746408365230",
+      "timestamp": "Mon, 05 May 2025 01:26:03 GMT",
+      "version": 11
+    }
+  ],
+  "success": true
+}

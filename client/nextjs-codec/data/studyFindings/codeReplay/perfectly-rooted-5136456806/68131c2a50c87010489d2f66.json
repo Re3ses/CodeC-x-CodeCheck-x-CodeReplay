@@ -1,0 +1,746 @@
+{
+  "formatted_snapshots": [
+    {
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int num;\n    cin num;\n\n    result = sqrt num;\n\n    cout << fixed << setprecision(2)  \n \n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "681322356d3e4ab0319dcb39",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int N;\n    cin >> N;\n\n    double total = sqrt(N);\n\n    cout << fixed << setprecision(2) << \"The square root of \";\n    cout << N << \" is \" << total << endl;\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "681324d96d3e4ab0319dcb74",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int N;\n    cin >> N;\n\n    double result = sqrt(N);\n\n    cout << fixed << setprecision(2) << \"The square root of \";\n    cout << N << \" is \" << result << endl;\n    \n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "681324c56d3e4ab0319dcb71",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int N;\n    cin >> N;\n\n    double result = sqrt(N);\n\n    cout << fixed << setprecision(2) << \"The square root of \";\n    cout << N << \" is \" << result << endl;\n\n\n \n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "681324916d3e4ab0319dcb6d",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int num;\n    cin >> num;\n\n    double result = sqrt(num);\n\n    cout << fixed << setprecision(2) << \"The square root of \";\n    cout << num << \" is \" << result << endl;\n\n\n \n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "681324596d3e4ab0319dcb6a",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int num;\n    cin >> num;\n\n    double result = sqrt(num);\n\n    cout << fixed << setprecision(2) << \"The square root of \";\n    cout << num << \"is\" << endl;\n    cout << result << endl;\n\n \n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "681324466d3e4ab0319dcb66",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int num;\n    cin num;\n\n    double result = sqrt(num);\n\n    cout << fixed << setprecision(2) << \"The square root of \";\n    cout << num << \"is\" << endl;\n    cout << result << endl;\n\n \n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "681323446d3e4ab0319dcb61",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int num;\n    cin num;\n\n    double result = sqrt(num);\n\n    cout << fixed << setprecision(2) << \"The square root of \" \n    cout << num << \"is\" << endl;\n    cout << result << endl;\n\n \n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "6813233d6d3e4ab0319dcb5e",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int num;\n    cin num;\n\n    double result = sqrt(num);\n\n    cout << fixed << setprecision(2) << \"The square root of \" \n         << num << \"is\" << endl;\n         << result << endl;\n\n \n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "681323106d3e4ab0319dcb5a",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int num;\n    cin num;\n\n    double result = sqrt num;\n\n    cout << fixed << setprecision(2) << \"The square root of \" \n         << num << \"is\" << endl;\n         << result << endl;\n\n \n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "681323016d3e4ab0319dcb56",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int num;\n    cin num;\n\n    result = sqrt num;\n\n    cout << fixed << setprecision(2) << \"The square root of \" \n         << num << \"is\" << endl;\n         << result << endl;\n\n \n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "681322dc6d3e4ab0319dcb52",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int num;\n    cin num;\n\n    result = sqrt num;\n\n    cout << fixed << setprecision(2) << \"The square root of \" \n         << num << \"is\" << endl;\n         << \n\n \n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "681322c76d3e4ab0319dcb4e",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int num;\n    cin num;\n\n    result = sqrt num;\n\n    cout << fixed << setprecision(2) << \"The square root of \" \n         << num << \"is\" << endl\n    \n \n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "681322bc6d3e4ab0319dcb4a",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int num;\n    cin num;\n\n    result = sqrt num;\n\n    cout << fixed << setprecision(2) << \"Square root\" \n \n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "681322646d3e4ab0319dcb45",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int num;\n    cin num;\n\n    result = sqrt num;\n\n    cout << fixed << setprecision(2) << \"square root    \" \n \n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "681322546d3e4ab0319dcb41",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int num;\n    cin num;\n\n    result = sqrt num;\n\n    cout << fixed << setprecision(2) <<  \n \n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "681322436d3e4ab0319dcb3d",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <csmath>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "68131d2c6d3e4ab0319dcaf0",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int num;\n    cin num;\n\n    result = sqrt num;\n\n    cout << fixed << setprecision  \n \n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "681322296d3e4ab0319dcb35",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int num;\n    cin num;\n\n    result = sqrt num;\n\n    cout << fixed << setpreci \n \n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "681322246d3e4ab0319dcb31",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int num;\n    cin num;\n\n    result = sqrt num;\n\n    cout << fixed <<  \n \n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "6813221c6d3e4ab0319dcb2d",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int num;\n    cin num;\n\n    result = sqrt num;\n\n    cout >>  \n \n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "681322116d3e4ab0319dcb29",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int num;\n    cin num;\n\n    result = sqrt \n \n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "681321f46d3e4ab0319dcb25",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int num;\n    cin num;\n\n    result \n \n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "681321e86d3e4ab0319dcb21",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int num;\n    cin num;\n    \n \n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "681321436d3e4ab0319dcb1c",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int num;\n    cout << \"The square root of \"\n    cin >> num;\n\n    \n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "68131e5d6d3e4ab0319dcb0c",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int num;\n    cout << \"The square root of \"\n    cin >> num;\n\n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "68131dd66d3e4ab0319dcb06",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int num;\n    cout << \"\"\n    cin >> num;\n\n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "68131dad6d3e4ab0319dcb03",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int num;\n    cin >> num;\n\n    \n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "68131d916d3e4ab0319dcb00",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int num;\n    \n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "68131d606d3e4ab0319dcafc",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "68131d516d3e4ab0319dcaf8",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <cmath>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "submission_id": "68131d366d3e4ab0319dcaf4",
+      "timestamp": ""
+    }
+  ],
+  "sequentialSimilarities": [
+    {
+      "codebert_score": 68,
+      "from_index": 0,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 68,
+      "to_index": 1
+    },
+    {
+      "codebert_score": 91,
+      "from_index": 1,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 91,
+      "to_index": 2
+    },
+    {
+      "codebert_score": 100,
+      "from_index": 2,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 100,
+      "to_index": 3
+    },
+    {
+      "codebert_score": 88,
+      "from_index": 3,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 88,
+      "to_index": 4
+    },
+    {
+      "codebert_score": 87,
+      "from_index": 4,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 87,
+      "to_index": 5
+    },
+    {
+      "codebert_score": 88,
+      "from_index": 5,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 88,
+      "to_index": 6
+    },
+    {
+      "codebert_score": 91,
+      "from_index": 6,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 91,
+      "to_index": 7
+    },
+    {
+      "codebert_score": 87,
+      "from_index": 7,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 87,
+      "to_index": 8
+    },
+    {
+      "codebert_score": 89,
+      "from_index": 8,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 89,
+      "to_index": 9
+    },
+    {
+      "codebert_score": 90,
+      "from_index": 9,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 90,
+      "to_index": 10
+    },
+    {
+      "codebert_score": 84,
+      "from_index": 10,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 84,
+      "to_index": 11
+    },
+    {
+      "codebert_score": 89,
+      "from_index": 11,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 89,
+      "to_index": 12
+    },
+    {
+      "codebert_score": 79,
+      "from_index": 12,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 79,
+      "to_index": 13
+    },
+    {
+      "codebert_score": 89,
+      "from_index": 13,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 89,
+      "to_index": 14
+    },
+    {
+      "codebert_score": 86,
+      "from_index": 14,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 86,
+      "to_index": 15
+    },
+    {
+      "codebert_score": 62,
+      "from_index": 15,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 62,
+      "to_index": 16
+    },
+    {
+      "codebert_score": 61,
+      "from_index": 16,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 61,
+      "to_index": 17
+    },
+    {
+      "codebert_score": 89,
+      "from_index": 17,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 89,
+      "to_index": 18
+    },
+    {
+      "codebert_score": 86,
+      "from_index": 18,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 86,
+      "to_index": 19
+    },
+    {
+      "codebert_score": 88,
+      "from_index": 19,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 88,
+      "to_index": 20
+    },
+    {
+      "codebert_score": 83,
+      "from_index": 20,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 83,
+      "to_index": 21
+    },
+    {
+      "codebert_score": 81,
+      "from_index": 21,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 81,
+      "to_index": 22
+    },
+    {
+      "codebert_score": 82,
+      "from_index": 22,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 82,
+      "to_index": 23
+    },
+    {
+      "codebert_score": 75,
+      "from_index": 23,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 75,
+      "to_index": 24
+    },
+    {
+      "codebert_score": 100,
+      "from_index": 24,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 100,
+      "to_index": 25
+    },
+    {
+      "codebert_score": 79,
+      "from_index": 25,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 79,
+      "to_index": 26
+    },
+    {
+      "codebert_score": 82,
+      "from_index": 26,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 82,
+      "to_index": 27
+    },
+    {
+      "codebert_score": 80,
+      "from_index": 27,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 80,
+      "to_index": 28
+    },
+    {
+      "codebert_score": 81,
+      "from_index": 28,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 81,
+      "to_index": 29
+    },
+    {
+      "codebert_score": 68,
+      "from_index": 29,
+      "learner_id": "68131c2a50c87010489d2f66",
+      "similarity": 68,
+      "to_index": 30
+    }
+  ],
+  "snapshots": [
+    {
+      "__v": 0,
+      "_id": "681322356d3e4ab0319dcb39",
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int num;\n    cin num;\n\n    result = sqrt num;\n\n    cout << fixed << setprecision(2)  \n \n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "perfectly-rooted-5136456806",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746084406991",
+      "timestamp": "Thu, 01 May 2025 07:26:45 GMT",
+      "version": 16
+    },
+    {
+      "__v": 0,
+      "_id": "681324d96d3e4ab0319dcb74",
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int N;\n    cin >> N;\n\n    double total = sqrt(N);\n\n    cout << fixed << setprecision(2) << \"The square root of \";\n    cout << N << \" is \" << total << endl;\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "perfectly-rooted-5136456806",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746085082662",
+      "timestamp": "Thu, 01 May 2025 07:38:01 GMT",
+      "version": 31
+    },
+    {
+      "__v": 0,
+      "_id": "681324c56d3e4ab0319dcb71",
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int N;\n    cin >> N;\n\n    double result = sqrt(N);\n\n    cout << fixed << setprecision(2) << \"The square root of \";\n    cout << N << \" is \" << result << endl;\n    \n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "perfectly-rooted-5136456806",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746085062622",
+      "timestamp": "Thu, 01 May 2025 07:37:41 GMT",
+      "version": 30
+    },
+    {
+      "__v": 0,
+      "_id": "681324916d3e4ab0319dcb6d",
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int N;\n    cin >> N;\n\n    double result = sqrt(N);\n\n    cout << fixed << setprecision(2) << \"The square root of \";\n    cout << N << \" is \" << result << endl;\n\n\n \n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "perfectly-rooted-5136456806",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746085010782",
+      "timestamp": "Thu, 01 May 2025 07:36:49 GMT",
+      "version": 29
+    },
+    {
+      "__v": 0,
+      "_id": "681324596d3e4ab0319dcb6a",
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int num;\n    cin >> num;\n\n    double result = sqrt(num);\n\n    cout << fixed << setprecision(2) << \"The square root of \";\n    cout << num << \" is \" << result << endl;\n\n\n \n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "perfectly-rooted-5136456806",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746084954750",
+      "timestamp": "Thu, 01 May 2025 07:35:53 GMT",
+      "version": 28
+    },
+    {
+      "__v": 0,
+      "_id": "681324466d3e4ab0319dcb66",
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int num;\n    cin >> num;\n\n    double result = sqrt(num);\n\n    cout << fixed << setprecision(2) << \"The square root of \";\n    cout << num << \"is\" << endl;\n    cout << result << endl;\n\n \n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "perfectly-rooted-5136456806",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746084935467",
+      "timestamp": "Thu, 01 May 2025 07:35:34 GMT",
+      "version": 27
+    },
+    {
+      "__v": 0,
+      "_id": "681323446d3e4ab0319dcb61",
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int num;\n    cin num;\n\n    double result = sqrt(num);\n\n    cout << fixed << setprecision(2) << \"The square root of \";\n    cout << num << \"is\" << endl;\n    cout << result << endl;\n\n \n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "perfectly-rooted-5136456806",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746084678022",
+      "timestamp": "Thu, 01 May 2025 07:31:16 GMT",
+      "version": 26
+    },
+    {
+      "__v": 0,
+      "_id": "6813233d6d3e4ab0319dcb5e",
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int num;\n    cin num;\n\n    double result = sqrt(num);\n\n    cout << fixed << setprecision(2) << \"The square root of \" \n    cout << num << \"is\" << endl;\n    cout << result << endl;\n\n \n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "perfectly-rooted-5136456806",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746084670342",
+      "timestamp": "Thu, 01 May 2025 07:31:09 GMT",
+      "version": 25
+    },
+    {
+      "__v": 0,
+      "_id": "681323106d3e4ab0319dcb5a",
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int num;\n    cin num;\n\n    double result = sqrt(num);\n\n    cout << fixed << setprecision(2) << \"The square root of \" \n         << num << \"is\" << endl;\n         << result << endl;\n\n \n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "perfectly-rooted-5136456806",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746084625732",
+      "timestamp": "Thu, 01 May 2025 07:30:24 GMT",
+      "version": 24
+    },
+    {
+      "__v": 0,
+      "_id": "681323016d3e4ab0319dcb56",
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int num;\n    cin num;\n\n    double result = sqrt num;\n\n    cout << fixed << setprecision(2) << \"The square root of \" \n         << num << \"is\" << endl;\n         << result << endl;\n\n \n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "perfectly-rooted-5136456806",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746084610182",
+      "timestamp": "Thu, 01 May 2025 07:30:09 GMT",
+      "version": 23
+    },
+    {
+      "__v": 0,
+      "_id": "681322dc6d3e4ab0319dcb52",
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int num;\n    cin num;\n\n    result = sqrt num;\n\n    cout << fixed << setprecision(2) << \"The square root of \" \n         << num << \"is\" << endl;\n         << result << endl;\n\n \n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "perfectly-rooted-5136456806",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746084573574",
+      "timestamp": "Thu, 01 May 2025 07:29:32 GMT",
+      "version": 22
+    },
+    {
+      "__v": 0,
+      "_id": "681322c76d3e4ab0319dcb4e",
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int num;\n    cin num;\n\n    result = sqrt num;\n\n    cout << fixed << setprecision(2) << \"The square root of \" \n         << num << \"is\" << endl;\n         << \n\n \n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "perfectly-rooted-5136456806",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746084552558",
+      "timestamp": "Thu, 01 May 2025 07:29:11 GMT",
+      "version": 21
+    },
+    {
+      "__v": 0,
+      "_id": "681322bc6d3e4ab0319dcb4a",
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int num;\n    cin num;\n\n    result = sqrt num;\n\n    cout << fixed << setprecision(2) << \"The square root of \" \n         << num << \"is\" << endl\n    \n \n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "perfectly-rooted-5136456806",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746084541996",
+      "timestamp": "Thu, 01 May 2025 07:29:00 GMT",
+      "version": 20
+    },
+    {
+      "__v": 0,
+      "_id": "681322646d3e4ab0319dcb45",
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int num;\n    cin num;\n\n    result = sqrt num;\n\n    cout << fixed << setprecision(2) << \"Square root\" \n \n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "perfectly-rooted-5136456806",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746084453237",
+      "timestamp": "Thu, 01 May 2025 07:27:32 GMT",
+      "version": 19
+    },
+    {
+      "__v": 0,
+      "_id": "681322546d3e4ab0319dcb41",
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int num;\n    cin num;\n\n    result = sqrt num;\n\n    cout << fixed << setprecision(2) << \"square root    \" \n \n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "perfectly-rooted-5136456806",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746084437747",
+      "timestamp": "Thu, 01 May 2025 07:27:16 GMT",
+      "version": 18
+    },
+    {
+      "__v": 0,
+      "_id": "681322436d3e4ab0319dcb3d",
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int num;\n    cin num;\n\n    result = sqrt num;\n\n    cout << fixed << setprecision(2) <<  \n \n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "perfectly-rooted-5136456806",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746084420670",
+      "timestamp": "Thu, 01 May 2025 07:26:59 GMT",
+      "version": 17
+    },
+    {
+      "__v": 0,
+      "_id": "68131d2c6d3e4ab0319dcaf0",
+      "code": "#include <iostream>\n#include <csmath>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "perfectly-rooted-5136456806",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746083117881",
+      "timestamp": "Thu, 01 May 2025 07:05:16 GMT",
+      "version": 1
+    },
+    {
+      "__v": 0,
+      "_id": "681322296d3e4ab0319dcb35",
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int num;\n    cin num;\n\n    result = sqrt num;\n\n    cout << fixed << setprecision  \n \n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "perfectly-rooted-5136456806",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746084394827",
+      "timestamp": "Thu, 01 May 2025 07:26:33 GMT",
+      "version": 15
+    },
+    {
+      "__v": 0,
+      "_id": "681322246d3e4ab0319dcb31",
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int num;\n    cin num;\n\n    result = sqrt num;\n\n    cout << fixed << setpreci \n \n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "perfectly-rooted-5136456806",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746084389388",
+      "timestamp": "Thu, 01 May 2025 07:26:28 GMT",
+      "version": 14
+    },
+    {
+      "__v": 0,
+      "_id": "6813221c6d3e4ab0319dcb2d",
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int num;\n    cin num;\n\n    result = sqrt num;\n\n    cout << fixed <<  \n \n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "perfectly-rooted-5136456806",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746084381933",
+      "timestamp": "Thu, 01 May 2025 07:26:20 GMT",
+      "version": 13
+    },
+    {
+      "__v": 0,
+      "_id": "681322116d3e4ab0319dcb29",
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int num;\n    cin num;\n\n    result = sqrt num;\n\n    cout >>  \n \n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "perfectly-rooted-5136456806",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746084370547",
+      "timestamp": "Thu, 01 May 2025 07:26:09 GMT",
+      "version": 12
+    },
+    {
+      "__v": 0,
+      "_id": "681321f46d3e4ab0319dcb25",
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int num;\n    cin num;\n\n    result = sqrt \n \n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "perfectly-rooted-5136456806",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746084341372",
+      "timestamp": "Thu, 01 May 2025 07:25:40 GMT",
+      "version": 11
+    },
+    {
+      "__v": 0,
+      "_id": "681321e86d3e4ab0319dcb21",
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int num;\n    cin num;\n\n    result \n \n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "perfectly-rooted-5136456806",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746084329192",
+      "timestamp": "Thu, 01 May 2025 07:25:28 GMT",
+      "version": 10
+    },
+    {
+      "__v": 0,
+      "_id": "681321436d3e4ab0319dcb1c",
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int num;\n    cin num;\n    \n \n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "perfectly-rooted-5136456806",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746084164862",
+      "timestamp": "Thu, 01 May 2025 07:22:43 GMT",
+      "version": 9
+    },
+    {
+      "__v": 0,
+      "_id": "68131e5d6d3e4ab0319dcb0c",
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int num;\n    cout << \"The square root of \"\n    cin >> num;\n\n    \n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "perfectly-rooted-5136456806",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746083423074",
+      "timestamp": "Thu, 01 May 2025 07:10:21 GMT",
+      "version": 8
+    },
+    {
+      "__v": 0,
+      "_id": "68131dd66d3e4ab0319dcb06",
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int num;\n    cout << \"The square root of \"\n    cin >> num;\n\n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "perfectly-rooted-5136456806",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746083288012",
+      "timestamp": "Thu, 01 May 2025 07:08:06 GMT",
+      "version": 7
+    },
+    {
+      "__v": 0,
+      "_id": "68131dad6d3e4ab0319dcb03",
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int num;\n    cout << \"\"\n    cin >> num;\n\n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "perfectly-rooted-5136456806",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746083246449",
+      "timestamp": "Thu, 01 May 2025 07:07:25 GMT",
+      "version": 6
+    },
+    {
+      "__v": 0,
+      "_id": "68131d916d3e4ab0319dcb00",
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int num;\n    cin >> num;\n\n    \n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "perfectly-rooted-5136456806",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746083218689",
+      "timestamp": "Thu, 01 May 2025 07:06:57 GMT",
+      "version": 5
+    },
+    {
+      "__v": 0,
+      "_id": "68131d606d3e4ab0319dcafc",
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int num;\n    \n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "perfectly-rooted-5136456806",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746083169404",
+      "timestamp": "Thu, 01 May 2025 07:06:08 GMT",
+      "version": 4
+    },
+    {
+      "__v": 0,
+      "_id": "68131d516d3e4ab0319dcaf8",
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n\n\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "perfectly-rooted-5136456806",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746083154492",
+      "timestamp": "Thu, 01 May 2025 07:05:53 GMT",
+      "version": 3
+    },
+    {
+      "__v": 0,
+      "_id": "68131d366d3e4ab0319dcaf4",
+      "code": "#include <iostream>\n#include <cmath>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "68131c2a50c87010489d2f66",
+      "problemId": "perfectly-rooted-5136456806",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746083127221",
+      "timestamp": "Thu, 01 May 2025 07:05:26 GMT",
+      "version": 2
+    }
+  ],
+  "success": true
+}

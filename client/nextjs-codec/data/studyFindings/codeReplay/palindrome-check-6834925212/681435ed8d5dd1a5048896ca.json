@@ -1,0 +1,650 @@
+{
+  "formatted_snapshots": [
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << \"q\";\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "6818369fddce19943515a012",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\n#include <algorithm>\nusing namespace std;\n\nint main(){\n    string s;\n    getline(cin, s);\n\n    string reversedString = s;\n    reverse(reversedString.begin(), reversedString.end());\n\n    if(s==reversedString){\n        cout << \"Palindrome\" << endl;\n    } else {\n        cout << \"Not a palindrome\" << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "6818456cb578ef7fb8722ddf",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\n#include <algorithm>\nusing namespace std;\n\nint main(){\n    string s;\n    getline(cin, s);\n\n    string reversedString = s;\n    reverse(reversedString.begin(), reversedString.end());\n\n    if(s==reversedString){\n        cout << \"Palindrome\" << endl;\n    } else {\n        cout << \"Not a Palindrome\" << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "6818455eb578ef7fb8722ddc",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\n#include <algorithm>\nusing namespace std;\n\nint main(0{\n    string s;\n    getline(cin, s);\n\n    string reversedString = s;\n    reverse(reversedString.begin(), reversedString.end());\n\n    if(s==reversedString){\n        cout << \"Palindrome\" << endl;\n    } else {\n        cout << \"Not a Palindrome\" << endl;\n    }\n})",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "68184551b578ef7fb8722dd4",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\n#include <algorithm> \n\nusing namespace std;\n\nint main() {\n    string s;\n    getline(cin, s);\n\n    string reversedString = s;\n    reverse(reversedString.begin(), reversedString.end());\n\n    if (s==reversedString){\n        cout << \"Palindrome\" << endl;\n    } else {\n        cout <<  \"Not a palindrome\" << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "68184409627d9858dce00c90",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "68184403627d9858dce00c8c",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\n#include <algorithm> \n\nusing namespace std;\n\nint main() {\n    string s;\n    getline(cin, s);\n\n    string reversedString = s;\n    reverse(reversedString.begin(), reversedString.end());\n\n    if (s==reversedString){\n        cout << \"Palindrome\" << endl;\n    } else {\n        cout <<  \"Not a palindrome\" << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "68183fdcb578ef7fb8722d71",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "68183fd4b578ef7fb8722d6d",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << \"y\";\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "68183ee8627d9858dce00c25",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << \"y\";\n    \n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "68183e78627d9858dce00c1c",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << \"y\";\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "68183c02627d9858dce00c01",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\n#include <algorithm> \n\nusing namespace std;\n\nint main() {\n    string s;\n    getline(cin, s);\n\n    string reversedString = s;\n    reverse(reversedString.begin(), reversedString.end());\n\n    if (s==reversedString){\n        cout << \"Palindrome\" << endl;\n    } else {\n        cout <<  \"Not a palindrome\" << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "68183a27b578ef7fb8722cfb",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "68183a25b578ef7fb8722cf8",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << \"qe\";\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "681836dcddce19943515a018",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "68144315d2464a9090df9e0c",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << q;\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "68183698ddce19943515a00f",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n    string s;\n    getline(cin, s);\n\n    string reversedString = s;\n    reverse(reversedString.begin(), reversedString.end());\n\n    if (s==reversedString){\n        cout << \"Palindrome\" << endl;\n    } else{\n        cout << \"Not a palindrome\" << endl;\n    }\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "68183669ddce19943515a00a",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\n#include <algorithm> \n\nusing namespace std;\n\nint main() {\n    string s;\n    getline(cin, s);\n\n    string reversedString = s;\n    reverse(reversedString.begin(), reversedString.end());\n\n    if (s==reversedString){\n        cout << \"Palindrome\" << endl;\n    } else {\n        cout <<  \"Not a palindrome\" << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "68144835d2464a9090df9e28",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\n#include <algorithm> \n\nusing namespace std;\n\nint main() {\n    string s;\n    getline(cin, s);\n\n    string reversedString = s;\n    reverse(reversedString.begin(), reversedString.end());\n\n    if (s==reversedString){\n        cout << \"Palindrome\" << endl;\n    } else {\n        cout <<  \"Not a palindrome\" << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "68144834d2464a9090df9e25",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\n#include <algorithm> \n\nusing namespace std;\n\nint main() {\n    string inputString;\n    getline(cin, inputString);\n\n    string reversedString = inputString;\n    reverse(reversedString.begin(), reversedString.end());\n\n    if (inputString==reversedString) {\n        cout << \"Palindrome\" << endl;\n    } else {\n        cout <<  \"Not a palindrome\" << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "6814452f226d8383ccf80047",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\n#include <algorithm> \n\nusing namespace std;\n\nint main() {\n    string inputString;\n    getline(cin, inputString);\n\n    string reversedString = inputString;\n    reverse(reversedString.begin(), reversedString.end());\n\n    if (inputString == reversedString) {\n        cout << \"Palindrome\" << endl;\n    } else {\n        cout <<  \"Not a palindrome\" << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "6814451e226d8383ccf80044",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\n#include <algorithm> \n\nusing namespace std;\n\nint main() {\n    string inputString;\n    cout << \"Enter a string: \";\n    getline(cin, inputString);\n\n    string reversedString = inputString;\n    reverse(reversedString.begin(), reversedString.end());\n\n    if (inputString == reversedString) {\n        cout << \"Palindrome\" << endl;\n    } else {\n        cout <<  \"Not a palindrome\" << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "68144508226d8383ccf80040",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\n#include <algorithm> \n\nusing namespace std;\n\nint main() {\n    string inputString;\n    cout << \"Enter a string: \";\n    getline(cin, inputString);\n\n    string reversedString = inputString;\n    reverse(reversedString.begin(), reversedString.end());\n\n    if (inputString == reversedString) {\n        cout << inputString << \" is a palindrome!\" << endl;\n    } else {\n        cout << inputString << \" is not a palindrome.\" << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "681444c4226d8383ccf8003d",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\n#include <algorithm> // For std::reverse\n\nusing namespace std;\n\nint main() {\n    int number;\n    cout << \"Enter a number: \";\n    cin >> number;\n\n    string numberStr = to_string(number); \n    string reversedStr = numberStr;       \n    reverse(reversedStr.begin(), reversedStr.end()); \n\n    if (numberStr == reversedStr) {\n        cout << numberStr << \" is a palindrome!\" << endl;\n    } else {\n        cout << numberStr << \" is not a palindrome.\" << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "68144496226d8383ccf80039",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\n#include <algorithm> // For std::reverse\n\nusing namespace std;\n\nint main() {\n    int number;\n    cout << \"Enter a number: \";\n    cin >> number;\n\n    string numberStr = to_string(number); // Convert the integer to a string\n    string reversedStr = numberStr;       // Create a copy for reversal\n    reverse(reversedStr.begin(), reversedStr.end()); // Reverse the copied string\n\n    if (numberStr == reversedStr) {\n        cout << numberStr << \" is a palindrome!\" << endl;\n    } else {\n        cout << numberStr << \" is not a palindrome.\" << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "68144474226d8383ccf80036",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int number, originalNumber, reversedNumber = 0, remainder;\n\n    cout << \"Enter a number: \";\n    cin >> number;\n\n    originalNumber = number; // Store the original number\n\n    // Reverse the number\n    while (number != 0) {\n        remainder = number % 10; // Get the last digit\n        reversedNumber = reversedNumber * 10 + remainder; // Build the reversed number\n        number /= 10; // Remove the last digit\n    }\n\n    // Check if the original number is equal to the reversed number\n    if (originalNumber == reversedNumber) {\n        cout << originalNumber << \" is a palindrome!\" << endl;\n    } else {\n        cout << originalNumber << \" is not a palindrome.\" << endl;\n    }\n\n    return 0;\n}\n",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "68144435226d8383ccf80031",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\n#include <cctype>\nusing namespace std;\n\nbool if_uppercase(const string& msg){\n    for (size_t i = 0; i < msg.length(); ++i ){\n        if(!isupper(msg[i])){\n            return false;\n        }\n    }\n    return true;\n}\n\nint vowel_count(const string& M){\n    int count = 0;\n    for(size_t i=0; i < M.length(); ++i){\n         char lower_char = tolower(M[i]);\n        if (lower_char =='a' || lower_char == 'e'|| lower_char == 'i' || lower_char == 'o' || lower_char == 'u') {\n            count++;\n        }\n    }\n    return count;\n}\n\nint main() {\n    string message;\n    getline(cin, message);\n\n    if(if_uppercase(message)){\n        cout << \"Invalid!\" << endl;\n    } else {\n        cout << vowel_count(message) << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "6814441f226d8383ccf8002d",
+      "timestamp": ""
+    }
+  ],
+  "sequentialSimilarities": [
+    {
+      "codebert_score": 44,
+      "from_index": 0,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 44,
+      "to_index": 1
+    },
+    {
+      "codebert_score": 92,
+      "from_index": 1,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 92,
+      "to_index": 2
+    },
+    {
+      "codebert_score": 80,
+      "from_index": 2,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 80,
+      "to_index": 3
+    },
+    {
+      "codebert_score": 79,
+      "from_index": 3,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 79,
+      "to_index": 4
+    },
+    {
+      "codebert_score": 42,
+      "from_index": 4,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 42,
+      "to_index": 5
+    },
+    {
+      "codebert_score": 42,
+      "from_index": 5,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 42,
+      "to_index": 6
+    },
+    {
+      "codebert_score": 42,
+      "from_index": 6,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 42,
+      "to_index": 7
+    },
+    {
+      "codebert_score": 71,
+      "from_index": 7,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 71,
+      "to_index": 8
+    },
+    {
+      "codebert_score": 100,
+      "from_index": 8,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 100,
+      "to_index": 9
+    },
+    {
+      "codebert_score": 100,
+      "from_index": 9,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 100,
+      "to_index": 10
+    },
+    {
+      "codebert_score": 43,
+      "from_index": 10,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 43,
+      "to_index": 11
+    },
+    {
+      "codebert_score": 42,
+      "from_index": 11,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 42,
+      "to_index": 12
+    },
+    {
+      "codebert_score": 70,
+      "from_index": 12,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 70,
+      "to_index": 13
+    },
+    {
+      "codebert_score": 70,
+      "from_index": 13,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 70,
+      "to_index": 14
+    },
+    {
+      "codebert_score": 72,
+      "from_index": 14,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 72,
+      "to_index": 15
+    },
+    {
+      "codebert_score": 43,
+      "from_index": 15,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 43,
+      "to_index": 16
+    },
+    {
+      "codebert_score": 98,
+      "from_index": 16,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 98,
+      "to_index": 17
+    },
+    {
+      "codebert_score": 99,
+      "from_index": 17,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 99,
+      "to_index": 18
+    },
+    {
+      "codebert_score": 80,
+      "from_index": 18,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 80,
+      "to_index": 19
+    },
+    {
+      "codebert_score": 89,
+      "from_index": 19,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 89,
+      "to_index": 20
+    },
+    {
+      "codebert_score": 84,
+      "from_index": 20,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 84,
+      "to_index": 21
+    },
+    {
+      "codebert_score": 84,
+      "from_index": 21,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 84,
+      "to_index": 22
+    },
+    {
+      "codebert_score": 81,
+      "from_index": 22,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 81,
+      "to_index": 23
+    },
+    {
+      "codebert_score": 76,
+      "from_index": 23,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 76,
+      "to_index": 24
+    },
+    {
+      "codebert_score": 62,
+      "from_index": 24,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 62,
+      "to_index": 25
+    },
+    {
+      "codebert_score": 37,
+      "from_index": 25,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 37,
+      "to_index": 26
+    }
+  ],
+  "snapshots": [
+    {
+      "__v": 0,
+      "_id": "6818369fddce19943515a012",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << \"q\";\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746417141557",
+      "timestamp": "Mon, 05 May 2025 03:55:11 GMT",
+      "version": 13
+    },
+    {
+      "__v": 0,
+      "_id": "6818456cb578ef7fb8722ddf",
+      "code": "#include <iostream>\n#include <string>\n#include <algorithm>\nusing namespace std;\n\nint main(){\n    string s;\n    getline(cin, s);\n\n    string reversedString = s;\n    reverse(reversedString.begin(), reversedString.end());\n\n    if(s==reversedString){\n        cout << \"Palindrome\" << endl;\n    } else {\n        cout << \"Not a palindrome\" << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746420929503",
+      "timestamp": "Mon, 05 May 2025 04:58:20 GMT",
+      "version": 26
+    },
+    {
+      "__v": 0,
+      "_id": "6818455eb578ef7fb8722ddc",
+      "code": "#include <iostream>\n#include <string>\n#include <algorithm>\nusing namespace std;\n\nint main(){\n    string s;\n    getline(cin, s);\n\n    string reversedString = s;\n    reverse(reversedString.begin(), reversedString.end());\n\n    if(s==reversedString){\n        cout << \"Palindrome\" << endl;\n    } else {\n        cout << \"Not a Palindrome\" << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746420915687",
+      "timestamp": "Mon, 05 May 2025 04:58:06 GMT",
+      "version": 25
+    },
+    {
+      "__v": 0,
+      "_id": "68184551b578ef7fb8722dd4",
+      "code": "#include <iostream>\n#include <string>\n#include <algorithm>\nusing namespace std;\n\nint main(0{\n    string s;\n    getline(cin, s);\n\n    string reversedString = s;\n    reverse(reversedString.begin(), reversedString.end());\n\n    if(s==reversedString){\n        cout << \"Palindrome\" << endl;\n    } else {\n        cout << \"Not a Palindrome\" << endl;\n    }\n})",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746420902493",
+      "timestamp": "Mon, 05 May 2025 04:57:53 GMT",
+      "version": 24
+    },
+    {
+      "__v": 0,
+      "_id": "68184409627d9858dce00c90",
+      "code": "#include <iostream>\n#include <string>\n#include <algorithm> \n\nusing namespace std;\n\nint main() {\n    string s;\n    getline(cin, s);\n\n    string reversedString = s;\n    reverse(reversedString.begin(), reversedString.end());\n\n    if (s==reversedString){\n        cout << \"Palindrome\" << endl;\n    } else {\n        cout <<  \"Not a palindrome\" << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746420575022",
+      "timestamp": "Mon, 05 May 2025 04:52:25 GMT",
+      "version": 23
+    },
+    {
+      "__v": 0,
+      "_id": "68184403627d9858dce00c8c",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746420569011",
+      "timestamp": "Mon, 05 May 2025 04:52:19 GMT",
+      "version": 22
+    },
+    {
+      "__v": 0,
+      "_id": "68183fdcb578ef7fb8722d71",
+      "code": "#include <iostream>\n#include <string>\n#include <algorithm> \n\nusing namespace std;\n\nint main() {\n    string s;\n    getline(cin, s);\n\n    string reversedString = s;\n    reverse(reversedString.begin(), reversedString.end());\n\n    if (s==reversedString){\n        cout << \"Palindrome\" << endl;\n    } else {\n        cout <<  \"Not a palindrome\" << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746419505693",
+      "timestamp": "Mon, 05 May 2025 04:34:36 GMT",
+      "version": 21
+    },
+    {
+      "__v": 0,
+      "_id": "68183fd4b578ef7fb8722d6d",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746419497596",
+      "timestamp": "Mon, 05 May 2025 04:34:28 GMT",
+      "version": 20
+    },
+    {
+      "__v": 0,
+      "_id": "68183ee8627d9858dce00c25",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << \"y\";\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746419262278",
+      "timestamp": "Mon, 05 May 2025 04:30:32 GMT",
+      "version": 19
+    },
+    {
+      "__v": 0,
+      "_id": "68183e78627d9858dce00c1c",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << \"y\";\n    \n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746419150175",
+      "timestamp": "Mon, 05 May 2025 04:28:40 GMT",
+      "version": 18
+    },
+    {
+      "__v": 0,
+      "_id": "68183c02627d9858dce00c01",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << \"y\";\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746418520293",
+      "timestamp": "Mon, 05 May 2025 04:18:10 GMT",
+      "version": 17
+    },
+    {
+      "__v": 0,
+      "_id": "68183a27b578ef7fb8722cfb",
+      "code": "#include <iostream>\n#include <string>\n#include <algorithm> \n\nusing namespace std;\n\nint main() {\n    string s;\n    getline(cin, s);\n\n    string reversedString = s;\n    reverse(reversedString.begin(), reversedString.end());\n\n    if (s==reversedString){\n        cout << \"Palindrome\" << endl;\n    } else {\n        cout <<  \"Not a palindrome\" << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746418045403",
+      "timestamp": "Mon, 05 May 2025 04:10:15 GMT",
+      "version": 16
+    },
+    {
+      "__v": 0,
+      "_id": "68183a25b578ef7fb8722cf8",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746418043453",
+      "timestamp": "Mon, 05 May 2025 04:10:13 GMT",
+      "version": 15
+    },
+    {
+      "__v": 0,
+      "_id": "681836dcddce19943515a018",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << \"qe\";\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746417202412",
+      "timestamp": "Mon, 05 May 2025 03:56:12 GMT",
+      "version": 14
+    },
+    {
+      "__v": 0,
+      "_id": "68144315d2464a9090df9e0c",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746158355801",
+      "timestamp": "Fri, 02 May 2025 03:59:17 GMT",
+      "version": 1
+    },
+    {
+      "__v": 0,
+      "_id": "68183698ddce19943515a00f",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << q;\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746417133860",
+      "timestamp": "Mon, 05 May 2025 03:55:04 GMT",
+      "version": 12
+    },
+    {
+      "__v": 0,
+      "_id": "68183669ddce19943515a00a",
+      "code": "#include <iostream>\n#include <string>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n    string s;\n    getline(cin, s);\n\n    string reversedString = s;\n    reverse(reversedString.begin(), reversedString.end());\n\n    if (s==reversedString){\n        cout << \"Palindrome\" << endl;\n    } else{\n        cout << \"Not a palindrome\" << endl;\n    }\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746417086709",
+      "timestamp": "Mon, 05 May 2025 03:54:17 GMT",
+      "version": 11
+    },
+    {
+      "__v": 0,
+      "_id": "68144835d2464a9090df9e28",
+      "code": "#include <iostream>\n#include <string>\n#include <algorithm> \n\nusing namespace std;\n\nint main() {\n    string s;\n    getline(cin, s);\n\n    string reversedString = s;\n    reverse(reversedString.begin(), reversedString.end());\n\n    if (s==reversedString){\n        cout << \"Palindrome\" << endl;\n    } else {\n        cout <<  \"Not a palindrome\" << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746159667625",
+      "timestamp": "Fri, 02 May 2025 04:21:09 GMT",
+      "version": 10
+    },
+    {
+      "__v": 0,
+      "_id": "68144834d2464a9090df9e25",
+      "code": "#include <iostream>\n#include <string>\n#include <algorithm> \n\nusing namespace std;\n\nint main() {\n    string s;\n    getline(cin, s);\n\n    string reversedString = s;\n    reverse(reversedString.begin(), reversedString.end());\n\n    if (s==reversedString){\n        cout << \"Palindrome\" << endl;\n    } else {\n        cout <<  \"Not a palindrome\" << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746159666613",
+      "timestamp": "Fri, 02 May 2025 04:21:08 GMT",
+      "version": 10
+    },
+    {
+      "__v": 0,
+      "_id": "6814452f226d8383ccf80047",
+      "code": "#include <iostream>\n#include <string>\n#include <algorithm> \n\nusing namespace std;\n\nint main() {\n    string inputString;\n    getline(cin, inputString);\n\n    string reversedString = inputString;\n    reverse(reversedString.begin(), reversedString.end());\n\n    if (inputString==reversedString) {\n        cout << \"Palindrome\" << endl;\n    } else {\n        cout <<  \"Not a palindrome\" << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746158893670",
+      "timestamp": "Fri, 02 May 2025 04:08:15 GMT",
+      "version": 9
+    },
+    {
+      "__v": 0,
+      "_id": "6814451e226d8383ccf80044",
+      "code": "#include <iostream>\n#include <string>\n#include <algorithm> \n\nusing namespace std;\n\nint main() {\n    string inputString;\n    getline(cin, inputString);\n\n    string reversedString = inputString;\n    reverse(reversedString.begin(), reversedString.end());\n\n    if (inputString == reversedString) {\n        cout << \"Palindrome\" << endl;\n    } else {\n        cout <<  \"Not a palindrome\" << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746158876710",
+      "timestamp": "Fri, 02 May 2025 04:07:58 GMT",
+      "version": 8
+    },
+    {
+      "__v": 0,
+      "_id": "68144508226d8383ccf80040",
+      "code": "#include <iostream>\n#include <string>\n#include <algorithm> \n\nusing namespace std;\n\nint main() {\n    string inputString;\n    cout << \"Enter a string: \";\n    getline(cin, inputString);\n\n    string reversedString = inputString;\n    reverse(reversedString.begin(), reversedString.end());\n\n    if (inputString == reversedString) {\n        cout << \"Palindrome\" << endl;\n    } else {\n        cout <<  \"Not a palindrome\" << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746158854446",
+      "timestamp": "Fri, 02 May 2025 04:07:36 GMT",
+      "version": 7
+    },
+    {
+      "__v": 0,
+      "_id": "681444c4226d8383ccf8003d",
+      "code": "#include <iostream>\n#include <string>\n#include <algorithm> \n\nusing namespace std;\n\nint main() {\n    string inputString;\n    cout << \"Enter a string: \";\n    getline(cin, inputString);\n\n    string reversedString = inputString;\n    reverse(reversedString.begin(), reversedString.end());\n\n    if (inputString == reversedString) {\n        cout << inputString << \" is a palindrome!\" << endl;\n    } else {\n        cout << inputString << \" is not a palindrome.\" << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746158786193",
+      "timestamp": "Fri, 02 May 2025 04:06:28 GMT",
+      "version": 6
+    },
+    {
+      "__v": 0,
+      "_id": "68144496226d8383ccf80039",
+      "code": "#include <iostream>\n#include <string>\n#include <algorithm> // For std::reverse\n\nusing namespace std;\n\nint main() {\n    int number;\n    cout << \"Enter a number: \";\n    cin >> number;\n\n    string numberStr = to_string(number); \n    string reversedStr = numberStr;       \n    reverse(reversedStr.begin(), reversedStr.end()); \n\n    if (numberStr == reversedStr) {\n        cout << numberStr << \" is a palindrome!\" << endl;\n    } else {\n        cout << numberStr << \" is not a palindrome.\" << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746158740755",
+      "timestamp": "Fri, 02 May 2025 04:05:42 GMT",
+      "version": 5
+    },
+    {
+      "__v": 0,
+      "_id": "68144474226d8383ccf80036",
+      "code": "#include <iostream>\n#include <string>\n#include <algorithm> // For std::reverse\n\nusing namespace std;\n\nint main() {\n    int number;\n    cout << \"Enter a number: \";\n    cin >> number;\n\n    string numberStr = to_string(number); // Convert the integer to a string\n    string reversedStr = numberStr;       // Create a copy for reversal\n    reverse(reversedStr.begin(), reversedStr.end()); // Reverse the copied string\n\n    if (numberStr == reversedStr) {\n        cout << numberStr << \" is a palindrome!\" << endl;\n    } else {\n        cout << numberStr << \" is not a palindrome.\" << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746158706721",
+      "timestamp": "Fri, 02 May 2025 04:05:08 GMT",
+      "version": 4
+    },
+    {
+      "__v": 0,
+      "_id": "68144435226d8383ccf80031",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int number, originalNumber, reversedNumber = 0, remainder;\n\n    cout << \"Enter a number: \";\n    cin >> number;\n\n    originalNumber = number; // Store the original number\n\n    // Reverse the number\n    while (number != 0) {\n        remainder = number % 10; // Get the last digit\n        reversedNumber = reversedNumber * 10 + remainder; // Build the reversed number\n        number /= 10; // Remove the last digit\n    }\n\n    // Check if the original number is equal to the reversed number\n    if (originalNumber == reversedNumber) {\n        cout << originalNumber << \" is a palindrome!\" << endl;\n    } else {\n        cout << originalNumber << \" is not a palindrome.\" << endl;\n    }\n\n    return 0;\n}\n",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746158643372",
+      "timestamp": "Fri, 02 May 2025 04:04:05 GMT",
+      "version": 3
+    },
+    {
+      "__v": 0,
+      "_id": "6814441f226d8383ccf8002d",
+      "code": "#include <iostream>\n#include <string>\n#include <cctype>\nusing namespace std;\n\nbool if_uppercase(const string& msg){\n    for (size_t i = 0; i < msg.length(); ++i ){\n        if(!isupper(msg[i])){\n            return false;\n        }\n    }\n    return true;\n}\n\nint vowel_count(const string& M){\n    int count = 0;\n    for(size_t i=0; i < M.length(); ++i){\n         char lower_char = tolower(M[i]);\n        if (lower_char =='a' || lower_char == 'e'|| lower_char == 'i' || lower_char == 'o' || lower_char == 'u') {\n            count++;\n        }\n    }\n    return count;\n}\n\nint main() {\n    string message;\n    getline(cin, message);\n\n    if(if_uppercase(message)){\n        cout << \"Invalid!\" << endl;\n    } else {\n        cout << vowel_count(message) << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746158621967",
+      "timestamp": "Fri, 02 May 2025 04:03:43 GMT",
+      "version": 2
+    }
+  ],
+  "success": true
+}

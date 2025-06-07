@@ -1,0 +1,98 @@
+{
+  "formatted_snapshots": [
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "6814bda36cceec68ee3bd7c5",
+      "submission_id": "6814e1819c29c776bbea8fc3",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    \n    return 0;\n}",
+      "learner_id": "6814bda36cceec68ee3bd7c5",
+      "submission_id": "6814e24a56c3a8f3394c9955",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int N;\n    cin >> N;\n\n    double R = sqrt(N);\n\n    cout << fixed << setprecision(2);\n    cout << \n\n    return 0;\n}",
+      "learner_id": "6814bda36cceec68ee3bd7c5",
+      "submission_id": "6814e2be9c29c776bbea8ff0",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int N;\n    cin >> N;\n\n    double R = sqrt(N);\n\n    cout << fixed << setprecision(2);\n    cout << \"The square root of \" << N << \" is \" << R <<endl;\n\n    return 0;\n}",
+      "learner_id": "6814bda36cceec68ee3bd7c5",
+      "submission_id": "6814e2f79c29c776bbea8fff",
+      "timestamp": ""
+    }
+  ],
+  "sequentialSimilarities": [
+    {
+      "codebert_score": 58,
+      "from_index": 0,
+      "learner_id": "6814bda36cceec68ee3bd7c5",
+      "similarity": 58,
+      "to_index": 1
+    },
+    {
+      "codebert_score": 59,
+      "from_index": 1,
+      "learner_id": "6814bda36cceec68ee3bd7c5",
+      "similarity": 59,
+      "to_index": 2
+    },
+    {
+      "codebert_score": 78,
+      "from_index": 2,
+      "learner_id": "6814bda36cceec68ee3bd7c5",
+      "similarity": 78,
+      "to_index": 3
+    }
+  ],
+  "snapshots": [
+    {
+      "__v": 0,
+      "_id": "6814e1819c29c776bbea8fc3",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "6814bda36cceec68ee3bd7c5",
+      "problemId": "perfectly-rooted-5136456806",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746198912294",
+      "timestamp": "Fri, 02 May 2025 15:15:13 GMT",
+      "version": 1
+    },
+    {
+      "__v": 0,
+      "_id": "6814e24a56c3a8f3394c9955",
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    \n    return 0;\n}",
+      "learner_id": "6814bda36cceec68ee3bd7c5",
+      "problemId": "perfectly-rooted-5136456806",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746199113274",
+      "timestamp": "Fri, 02 May 2025 15:18:34 GMT",
+      "version": 2
+    },
+    {
+      "__v": 0,
+      "_id": "6814e2be9c29c776bbea8ff0",
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int N;\n    cin >> N;\n\n    double R = sqrt(N);\n\n    cout << fixed << setprecision(2);\n    cout << \n\n    return 0;\n}",
+      "learner_id": "6814bda36cceec68ee3bd7c5",
+      "problemId": "perfectly-rooted-5136456806",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746199229619",
+      "timestamp": "Fri, 02 May 2025 15:20:30 GMT",
+      "version": 3
+    },
+    {
+      "__v": 0,
+      "_id": "6814e2f79c29c776bbea8fff",
+      "code": "#include <iostream>\n#include <cmath>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    int N;\n    cin >> N;\n\n    double R = sqrt(N);\n\n    cout << fixed << setprecision(2);\n    cout << \"The square root of \" << N << \" is \" << R <<endl;\n\n    return 0;\n}",
+      "learner_id": "6814bda36cceec68ee3bd7c5",
+      "problemId": "perfectly-rooted-5136456806",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746199286157",
+      "timestamp": "Fri, 02 May 2025 15:21:27 GMT",
+      "version": 4
+    }
+  ],
+  "success": true
+}

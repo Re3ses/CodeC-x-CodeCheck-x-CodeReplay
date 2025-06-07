@@ -1,0 +1,386 @@
+{
+  "formatted_snapshots": [
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    string text;\n    return 0;\n}",
+      "learner_id": "68183a999e78853aee675c67",
+      "submission_id": "68183b5eb578ef7fb8722d15",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    string text;\n    \n    return 0;\n}",
+      "learner_id": "68183a999e78853aee675c67",
+      "submission_id": "68183b6fb578ef7fb8722d1a",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    string text;\n    cin>>text;\n    if(text = \"madam\"){\n        cout<<\"Palindrome\";\n    } else {\n        cout<<\"Not a palindrome\";\n    }\n    return 0;\n}",
+      "learner_id": "68183a999e78853aee675c67",
+      "submission_id": "68183bacb578ef7fb8722d28",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    string text;\n    cin>>text;\n    if(text == \"madam\"){\n        cout<<\"Palindrome\";\n    } else {\n        cout<<\"Not a palindrome\";\n    }\n    return 0;\n}",
+      "learner_id": "68183a999e78853aee675c67",
+      "submission_id": "68183bdbb578ef7fb8722d2c",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    string text;\n    if(text == \"madam\"){\n        cout<<\"Palindrome\";\n    } else {\n        cout<<\"Not a palindrome\";\n    }\n    return 0;\n}",
+      "learner_id": "68183a999e78853aee675c67",
+      "submission_id": "68183c00627d9858dce00bfe",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string text;\n    if(text == \"madam\"){\n        cout<<\"Palindrome\";\n    } else {\n        cout<<\"Not a palindrome\";\n    }\n    return 0;\n}",
+      "learner_id": "68183a999e78853aee675c67",
+      "submission_id": "68183c39627d9858dce00c06",
+      "timestamp": ""
+    },
+    {
+      "code": "#include<iostream>\n#include<string>\nusing namespace std;\nint main(){\n    \n}",
+      "learner_id": "68183a999e78853aee675c67",
+      "submission_id": "68183c5fb578ef7fb8722d35",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n string text;",
+      "learner_id": "68183a999e78853aee675c67",
+      "submission_id": "681847cc627d9858dce00cdb",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    cin>>s;\n    string reverse=\"\";\n    for(int i=word.length(); )\n    return 0;\n}",
+      "learner_id": "68183a999e78853aee675c67",
+      "submission_id": "68186e8714be389929cb69e9",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    cin>>s;\n    string reverse=\"\";\n    for(int i=word.length(); i>0; i--){\n        reverse+=word[i];\n    }\n    if(word==reverse){\n        cout<<\"Palindrome\";\n    } else {\n        cout<<\"Not a palindrome\";\n    }\n    return 0;\n}",
+      "learner_id": "68183a999e78853aee675c67",
+      "submission_id": "68186ecf14be389929cb69ec",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    cin>>s;\n    string reverse=\"\";\n    for(int i=s.length(); i>0; i--){\n        reverse+=s[i];\n    }\n    if(s==reverse){\n        cout<<\"Palindrome\";\n    } else {\n        cout<<\"Not a palindrome\";\n    }\n    return 0;\n}",
+      "learner_id": "68183a999e78853aee675c67",
+      "submission_id": "68186ef614be389929cb69ef",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    cin>>s;\n    string reverse=\"\";\n    for(int i=s.length(); i>=0; i--){\n        reverse+=s[i];\n    }\n    if(s==reverse){\n        cout<<\"Palindrome\";\n    } else {\n        cout<<\"Not a palindrome\";\n    }\n    return 0;\n}",
+      "learner_id": "68183a999e78853aee675c67",
+      "submission_id": "68186f3d14be389929cb69f6",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    cin>>s;\n    string reverse=\"\";\n    for(int i=s.length()-1; i>=0; i--){\n        reverse+=s[i];\n    }\n    if(s==reverse){\n        cout<<\"Palindrome\";\n    } else {\n        cout<<\"Not a palindrome\";\n    }\n    return 0;\n}",
+      "learner_id": "68183a999e78853aee675c67",
+      "submission_id": "68186f4d14be389929cb69f9",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    cin>>s;\n    string reverse=\"\";\n    for(int i=s.length(); i>1; i--){\n        reverse+=s[i];\n    }\n    if(s==reverse){\n        cout<<\"Palindrome\";\n    } else {\n        cout<<\"Not a palindrome\";\n    }\n    return 0;\n}",
+      "learner_id": "68183a999e78853aee675c67",
+      "submission_id": "68186f5b14be389929cb69fc",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    cin>>s;\n    string reverse=\"\";\n    for(int i=s.length()-1; i>1; i--){\n        reverse+=s[i];\n    }\n    if(s==reverse){\n        cout<<\"Palindrome\";\n    } else {\n        cout<<\"Not a palindrome\";\n    }\n    return 0;\n}",
+      "learner_id": "68183a999e78853aee675c67",
+      "submission_id": "68186f6614be389929cb69ff",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    cin>>s;\n    string reverse=\"\";\n    for(int i=s.length()-1; i>=0; i--){\n        reverse+=s[i];\n    }\n    if(s==reverse){\n        cout<<\"Palindrome\";\n    } else {\n        cout<<\"Not a palindrome\";\n    }\n    return 0;\n}",
+      "learner_id": "68183a999e78853aee675c67",
+      "submission_id": "68186f7014be389929cb6a02",
+      "timestamp": ""
+    }
+  ],
+  "sequentialSimilarities": [
+    {
+      "codebert_score": 99,
+      "from_index": 0,
+      "learner_id": "68183a999e78853aee675c67",
+      "similarity": 99,
+      "to_index": 1
+    },
+    {
+      "codebert_score": 61,
+      "from_index": 1,
+      "learner_id": "68183a999e78853aee675c67",
+      "similarity": 61,
+      "to_index": 2
+    },
+    {
+      "codebert_score": 85,
+      "from_index": 2,
+      "learner_id": "68183a999e78853aee675c67",
+      "similarity": 85,
+      "to_index": 3
+    },
+    {
+      "codebert_score": 80,
+      "from_index": 3,
+      "learner_id": "68183a999e78853aee675c67",
+      "similarity": 80,
+      "to_index": 4
+    },
+    {
+      "codebert_score": 84,
+      "from_index": 4,
+      "learner_id": "68183a999e78853aee675c67",
+      "similarity": 84,
+      "to_index": 5
+    },
+    {
+      "codebert_score": 56,
+      "from_index": 5,
+      "learner_id": "68183a999e78853aee675c67",
+      "similarity": 56,
+      "to_index": 6
+    },
+    {
+      "codebert_score": 66,
+      "from_index": 6,
+      "learner_id": "68183a999e78853aee675c67",
+      "similarity": 66,
+      "to_index": 7
+    },
+    {
+      "codebert_score": 62,
+      "from_index": 7,
+      "learner_id": "68183a999e78853aee675c67",
+      "similarity": 62,
+      "to_index": 8
+    },
+    {
+      "codebert_score": 48,
+      "from_index": 8,
+      "learner_id": "68183a999e78853aee675c67",
+      "similarity": 48,
+      "to_index": 9
+    },
+    {
+      "codebert_score": 88,
+      "from_index": 9,
+      "learner_id": "68183a999e78853aee675c67",
+      "similarity": 88,
+      "to_index": 10
+    },
+    {
+      "codebert_score": 92,
+      "from_index": 10,
+      "learner_id": "68183a999e78853aee675c67",
+      "similarity": 92,
+      "to_index": 11
+    },
+    {
+      "codebert_score": 85,
+      "from_index": 11,
+      "learner_id": "68183a999e78853aee675c67",
+      "similarity": 85,
+      "to_index": 12
+    },
+    {
+      "codebert_score": 84,
+      "from_index": 12,
+      "learner_id": "68183a999e78853aee675c67",
+      "similarity": 84,
+      "to_index": 13
+    },
+    {
+      "codebert_score": 84,
+      "from_index": 13,
+      "learner_id": "68183a999e78853aee675c67",
+      "similarity": 84,
+      "to_index": 14
+    },
+    {
+      "codebert_score": 91,
+      "from_index": 14,
+      "learner_id": "68183a999e78853aee675c67",
+      "similarity": 91,
+      "to_index": 15
+    }
+  ],
+  "snapshots": [
+    {
+      "__v": 0,
+      "_id": "68183b5eb578ef7fb8722d15",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    string text;\n    return 0;\n}",
+      "learner_id": "68183a999e78853aee675c67",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746418512693",
+      "timestamp": "Mon, 05 May 2025 04:15:26 GMT",
+      "version": 1
+    },
+    {
+      "__v": 0,
+      "_id": "68183b6fb578ef7fb8722d1a",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    string text;\n    \n    return 0;\n}",
+      "learner_id": "68183a999e78853aee675c67",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746418529081",
+      "timestamp": "Mon, 05 May 2025 04:15:43 GMT",
+      "version": 2
+    },
+    {
+      "__v": 0,
+      "_id": "68183bacb578ef7fb8722d28",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    string text;\n    cin>>text;\n    if(text = \"madam\"){\n        cout<<\"Palindrome\";\n    } else {\n        cout<<\"Not a palindrome\";\n    }\n    return 0;\n}",
+      "learner_id": "68183a999e78853aee675c67",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746418590426",
+      "timestamp": "Mon, 05 May 2025 04:16:44 GMT",
+      "version": 3
+    },
+    {
+      "__v": 0,
+      "_id": "68183bdbb578ef7fb8722d2c",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    string text;\n    cin>>text;\n    if(text == \"madam\"){\n        cout<<\"Palindrome\";\n    } else {\n        cout<<\"Not a palindrome\";\n    }\n    return 0;\n}",
+      "learner_id": "68183a999e78853aee675c67",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746418637121",
+      "timestamp": "Mon, 05 May 2025 04:17:31 GMT",
+      "version": 4
+    },
+    {
+      "__v": 0,
+      "_id": "68183c00627d9858dce00bfe",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    string text;\n    if(text == \"madam\"){\n        cout<<\"Palindrome\";\n    } else {\n        cout<<\"Not a palindrome\";\n    }\n    return 0;\n}",
+      "learner_id": "68183a999e78853aee675c67",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746418674878",
+      "timestamp": "Mon, 05 May 2025 04:18:08 GMT",
+      "version": 5
+    },
+    {
+      "__v": 0,
+      "_id": "68183c39627d9858dce00c06",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string text;\n    if(text == \"madam\"){\n        cout<<\"Palindrome\";\n    } else {\n        cout<<\"Not a palindrome\";\n    }\n    return 0;\n}",
+      "learner_id": "68183a999e78853aee675c67",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746418731722",
+      "timestamp": "Mon, 05 May 2025 04:19:05 GMT",
+      "version": 6
+    },
+    {
+      "__v": 0,
+      "_id": "68183c5fb578ef7fb8722d35",
+      "code": "#include<iostream>\n#include<string>\nusing namespace std;\nint main(){\n    \n}",
+      "learner_id": "68183a999e78853aee675c67",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746418769373",
+      "timestamp": "Mon, 05 May 2025 04:19:43 GMT",
+      "version": 7
+    },
+    {
+      "__v": 0,
+      "_id": "681847cc627d9858dce00cdb",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n string text;",
+      "learner_id": "68183a999e78853aee675c67",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746421694353",
+      "timestamp": "Mon, 05 May 2025 05:08:28 GMT",
+      "version": 8
+    },
+    {
+      "__v": 0,
+      "_id": "68186e8714be389929cb69e9",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    cin>>s;\n    string reverse=\"\";\n    for(int i=word.length(); )\n    return 0;\n}",
+      "learner_id": "68183a999e78853aee675c67",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746431623051",
+      "timestamp": "Mon, 05 May 2025 07:53:43 GMT",
+      "version": 9
+    },
+    {
+      "__v": 0,
+      "_id": "68186ecf14be389929cb69ec",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    cin>>s;\n    string reverse=\"\";\n    for(int i=word.length(); i>0; i--){\n        reverse+=word[i];\n    }\n    if(word==reverse){\n        cout<<\"Palindrome\";\n    } else {\n        cout<<\"Not a palindrome\";\n    }\n    return 0;\n}",
+      "learner_id": "68183a999e78853aee675c67",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746431695827",
+      "timestamp": "Mon, 05 May 2025 07:54:55 GMT",
+      "version": 10
+    },
+    {
+      "__v": 0,
+      "_id": "68186ef614be389929cb69ef",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    cin>>s;\n    string reverse=\"\";\n    for(int i=s.length(); i>0; i--){\n        reverse+=s[i];\n    }\n    if(s==reverse){\n        cout<<\"Palindrome\";\n    } else {\n        cout<<\"Not a palindrome\";\n    }\n    return 0;\n}",
+      "learner_id": "68183a999e78853aee675c67",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746431734413",
+      "timestamp": "Mon, 05 May 2025 07:55:34 GMT",
+      "version": 11
+    },
+    {
+      "__v": 0,
+      "_id": "68186f3d14be389929cb69f6",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    cin>>s;\n    string reverse=\"\";\n    for(int i=s.length(); i>=0; i--){\n        reverse+=s[i];\n    }\n    if(s==reverse){\n        cout<<\"Palindrome\";\n    } else {\n        cout<<\"Not a palindrome\";\n    }\n    return 0;\n}",
+      "learner_id": "68183a999e78853aee675c67",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746431806026",
+      "timestamp": "Mon, 05 May 2025 07:56:45 GMT",
+      "version": 12
+    },
+    {
+      "__v": 0,
+      "_id": "68186f4d14be389929cb69f9",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    cin>>s;\n    string reverse=\"\";\n    for(int i=s.length()-1; i>=0; i--){\n        reverse+=s[i];\n    }\n    if(s==reverse){\n        cout<<\"Palindrome\";\n    } else {\n        cout<<\"Not a palindrome\";\n    }\n    return 0;\n}",
+      "learner_id": "68183a999e78853aee675c67",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746431821803",
+      "timestamp": "Mon, 05 May 2025 07:57:01 GMT",
+      "version": 13
+    },
+    {
+      "__v": 0,
+      "_id": "68186f5b14be389929cb69fc",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    cin>>s;\n    string reverse=\"\";\n    for(int i=s.length(); i>1; i--){\n        reverse+=s[i];\n    }\n    if(s==reverse){\n        cout<<\"Palindrome\";\n    } else {\n        cout<<\"Not a palindrome\";\n    }\n    return 0;\n}",
+      "learner_id": "68183a999e78853aee675c67",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746431835348",
+      "timestamp": "Mon, 05 May 2025 07:57:15 GMT",
+      "version": 14
+    },
+    {
+      "__v": 0,
+      "_id": "68186f6614be389929cb69ff",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    cin>>s;\n    string reverse=\"\";\n    for(int i=s.length()-1; i>1; i--){\n        reverse+=s[i];\n    }\n    if(s==reverse){\n        cout<<\"Palindrome\";\n    } else {\n        cout<<\"Not a palindrome\";\n    }\n    return 0;\n}",
+      "learner_id": "68183a999e78853aee675c67",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746431846084",
+      "timestamp": "Mon, 05 May 2025 07:57:26 GMT",
+      "version": 15
+    },
+    {
+      "__v": 0,
+      "_id": "68186f7014be389929cb6a02",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    cin>>s;\n    string reverse=\"\";\n    for(int i=s.length()-1; i>=0; i--){\n        reverse+=s[i];\n    }\n    if(s==reverse){\n        cout<<\"Palindrome\";\n    } else {\n        cout<<\"Not a palindrome\";\n    }\n    return 0;\n}",
+      "learner_id": "68183a999e78853aee675c67",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746431856510",
+      "timestamp": "Mon, 05 May 2025 07:57:36 GMT",
+      "version": 16
+    }
+  ],
+  "success": true
+}

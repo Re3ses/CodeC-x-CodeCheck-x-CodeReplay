@@ -1,0 +1,50 @@
+{
+  "formatted_snapshots": [
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "68183d828909a8f1649aad5b",
+      "submission_id": "6818b2e8d62e463bea8bb5c3",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n\n    if (n == 0) {\n        cout << \"No odd number found\" << endl;\n        return 0;\n    }\n\n    int x;\n    bool found = false;\n\n    for (int i = 0; i < n; i++) {\n        cin >> x;\n        if (!found && x % 2 != 0) {\n            cout << x << endl;\n            found = true;\n        }\n    }\n\n    if (!found) {\n        cout << \"No odd number found\" << endl;\n    }\n\n    return 0;\n}\n",
+      "learner_id": "68183d828909a8f1649aad5b",
+      "submission_id": "6818b2fdd62e463bea8bb5c9",
+      "timestamp": ""
+    }
+  ],
+  "sequentialSimilarities": [
+    {
+      "codebert_score": 39,
+      "from_index": 0,
+      "learner_id": "68183d828909a8f1649aad5b",
+      "similarity": 39,
+      "to_index": 1
+    }
+  ],
+  "snapshots": [
+    {
+      "__v": 0,
+      "_id": "6818b2e8d62e463bea8bb5c3",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "68183d828909a8f1649aad5b",
+      "problemId": "linear-search-for-odd-numbers-4386603267",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746449128440",
+      "timestamp": "Mon, 05 May 2025 12:45:28 GMT",
+      "version": 1
+    },
+    {
+      "__v": 0,
+      "_id": "6818b2fdd62e463bea8bb5c9",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n\n    if (n == 0) {\n        cout << \"No odd number found\" << endl;\n        return 0;\n    }\n\n    int x;\n    bool found = false;\n\n    for (int i = 0; i < n; i++) {\n        cin >> x;\n        if (!found && x % 2 != 0) {\n            cout << x << endl;\n            found = true;\n        }\n    }\n\n    if (!found) {\n        cout << \"No odd number found\" << endl;\n    }\n\n    return 0;\n}\n",
+      "learner_id": "68183d828909a8f1649aad5b",
+      "problemId": "linear-search-for-odd-numbers-4386603267",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746449149074",
+      "timestamp": "Mon, 05 May 2025 12:45:49 GMT",
+      "version": 2
+    }
+  ],
+  "success": true
+}

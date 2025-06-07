@@ -1,0 +1,314 @@
+{
+  "formatted_snapshots": [
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "681445cf226d8383ccf8005a",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <vector>\n#include <string> \n\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n\n    vector<int> arr(n);\n    for (int i = 0; i < n; ++i) {\n        cin >> arr[i];\n    }\n\n    if (n == 0) {\n        cout << \"No odd number found\" << endl;\n        return 0;\n    }\n\n    for (int i = 0; i < n; ++i) {\n        if (arr[i] % 2 != 0) {\n            cout << arr[i] << endl;\n            return 0; \n        }\n    }\n    \n     cout << \"No odd number found\" << endl;\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "68146eb16cc20c7e84e64149",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << \"q\";\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "68183722ddce19943515a01e",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\n#include <algorithm> \n\nusing namespace std;\n\nint main() {\n    string s;\n    getline(cin, s);\n\n    string reversedString = s;\n    reverse(reversedString.begin(), reversedString.end());\n\n    if (s==reversedString){\n        cout << \"Palindrome\" << endl;\n    } else {\n        cout <<  \"Not a palindrome\" << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "681837f0ddce19943515a022",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\n#include <algorithm> \n\nusing namespace std;\n\nint main() {\n    string s;\n    getline(cin, s);\n\n    string reversedString = s;\n    reverse(reversedString.begin(), reversedString.end());\n\n    if (s==reversedString){\n        cout << \"Palindrome\" << endl;\n    } else {\n        cout <<  \"Not a palindrom\" << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "68183925b578ef7fb8722ce3",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\n#include <algorithm> \n\nusing namespace std;\n\nint main() {\n    string s;\n    getline(cin, s);\n\n    string reversedString = s;\n    reverse(reversedString.begin(), reversedString.end());\n\n    if (s==reversedString){\n        cout << \"Palindrome\" << endl;\n    } else {\n        cout <<  \"Not a palindrome\" << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "68183954b578ef7fb8722ce8",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "6818397ab578ef7fb8722ced",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\n#include <algorithm> \n\nusing namespace std;\n\nint main() {\n    string s;\n    getline(cin, s);\n\n    string reversedString = s;\n    reverse(reversedString.begin(), reversedString.end());\n\n    if (s==reversedString){\n        cout << \"Palindrome\" << endl;\n    } else {\n        cout <<  \"Not a palindrome\" << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "6818397db578ef7fb8722cf0",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "68184041627d9858dce00c31",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <vector>\n#include <string> \n\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n\n    vector<int> arr(n);\n    for (int i = 0; i < n; ++i) {\n        cin >> arr[i];\n    }\n\n    if (n == 0) {\n        cout << \"No odd number found\" << endl;\n        return 0;\n    }\n\n    for (int i = 0; i < n; ++i) {\n        if (arr[i] % 2 != 0) {\n            cout << arr[i] << endl;\n            return 0; \n        }\n    }\n    \n     cout << \"No odd number found\" << endl;\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "6818405a627d9858dce00c36",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <vector>\n#include <string> \n\nusing namespace std;\n\nint main() {\n    cout << \"c\";\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "68184085627d9858dce00c3d",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    \n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "681845a0b578ef7fb8722ded",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <vector>\n#include <string>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n\n    vector<int> arr(n);\n    for (int i=0; i<n; ++i){\n        cin >> arr[i];\n    }\n\n    if(n==0){\n        cout << \"No odd number found\" << endl;\n        return 0;\n    }\n\n    for (int i=0; i<n; ++i){\n        if(arr[i] % 2 !=0){\n            cout << arr[i] << endl;\n            return 0;\n        }\n    }\n\n    cout << \"No odd number found\" << endl;\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "681846ceb578ef7fb8722e13",
+      "timestamp": ""
+    }
+  ],
+  "sequentialSimilarities": [
+    {
+      "codebert_score": 32,
+      "from_index": 0,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 32,
+      "to_index": 1
+    },
+    {
+      "codebert_score": 32,
+      "from_index": 1,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 32,
+      "to_index": 2
+    },
+    {
+      "codebert_score": 44,
+      "from_index": 2,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 44,
+      "to_index": 3
+    },
+    {
+      "codebert_score": 96,
+      "from_index": 3,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 96,
+      "to_index": 4
+    },
+    {
+      "codebert_score": 96,
+      "from_index": 4,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 96,
+      "to_index": 5
+    },
+    {
+      "codebert_score": 42,
+      "from_index": 5,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 42,
+      "to_index": 6
+    },
+    {
+      "codebert_score": 42,
+      "from_index": 6,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 42,
+      "to_index": 7
+    },
+    {
+      "codebert_score": 42,
+      "from_index": 7,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 42,
+      "to_index": 8
+    },
+    {
+      "codebert_score": 32,
+      "from_index": 8,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 32,
+      "to_index": 9
+    },
+    {
+      "codebert_score": 41,
+      "from_index": 9,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 41,
+      "to_index": 10
+    },
+    {
+      "codebert_score": 65,
+      "from_index": 10,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 65,
+      "to_index": 11
+    },
+    {
+      "codebert_score": 38,
+      "from_index": 11,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 38,
+      "to_index": 12
+    }
+  ],
+  "snapshots": [
+    {
+      "__v": 0,
+      "_id": "681445cf226d8383ccf8005a",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "linear-search-for-odd-numbers-4386603267",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746159053294",
+      "timestamp": "Fri, 02 May 2025 04:10:55 GMT",
+      "version": 1
+    },
+    {
+      "__v": 0,
+      "_id": "68146eb16cc20c7e84e64149",
+      "code": "#include <iostream>\n#include <vector>\n#include <string> \n\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n\n    vector<int> arr(n);\n    for (int i = 0; i < n; ++i) {\n        cin >> arr[i];\n    }\n\n    if (n == 0) {\n        cout << \"No odd number found\" << endl;\n        return 0;\n    }\n\n    for (int i = 0; i < n; ++i) {\n        if (arr[i] % 2 != 0) {\n            cout << arr[i] << endl;\n            return 0; \n        }\n    }\n    \n     cout << \"No odd number found\" << endl;\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "linear-search-for-odd-numbers-4386603267",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746169519485",
+      "timestamp": "Fri, 02 May 2025 07:05:21 GMT",
+      "version": 2
+    },
+    {
+      "__v": 0,
+      "_id": "68183722ddce19943515a01e",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << \"q\";\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "linear-search-for-odd-numbers-4386603267",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746417271660",
+      "timestamp": "Mon, 05 May 2025 03:57:22 GMT",
+      "version": 3
+    },
+    {
+      "__v": 0,
+      "_id": "681837f0ddce19943515a022",
+      "code": "#include <iostream>\n#include <string>\n#include <algorithm> \n\nusing namespace std;\n\nint main() {\n    string s;\n    getline(cin, s);\n\n    string reversedString = s;\n    reverse(reversedString.begin(), reversedString.end());\n\n    if (s==reversedString){\n        cout << \"Palindrome\" << endl;\n    } else {\n        cout <<  \"Not a palindrome\" << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "linear-search-for-odd-numbers-4386603267",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746417478460",
+      "timestamp": "Mon, 05 May 2025 04:00:48 GMT",
+      "version": 4
+    },
+    {
+      "__v": 0,
+      "_id": "68183925b578ef7fb8722ce3",
+      "code": "#include <iostream>\n#include <string>\n#include <algorithm> \n\nusing namespace std;\n\nint main() {\n    string s;\n    getline(cin, s);\n\n    string reversedString = s;\n    reverse(reversedString.begin(), reversedString.end());\n\n    if (s==reversedString){\n        cout << \"Palindrome\" << endl;\n    } else {\n        cout <<  \"Not a palindrom\" << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "linear-search-for-odd-numbers-4386603267",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746417786725",
+      "timestamp": "Mon, 05 May 2025 04:05:57 GMT",
+      "version": 5
+    },
+    {
+      "__v": 0,
+      "_id": "68183954b578ef7fb8722ce8",
+      "code": "#include <iostream>\n#include <string>\n#include <algorithm> \n\nusing namespace std;\n\nint main() {\n    string s;\n    getline(cin, s);\n\n    string reversedString = s;\n    reverse(reversedString.begin(), reversedString.end());\n\n    if (s==reversedString){\n        cout << \"Palindrome\" << endl;\n    } else {\n        cout <<  \"Not a palindrome\" << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "linear-search-for-odd-numbers-4386603267",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746417834196",
+      "timestamp": "Mon, 05 May 2025 04:06:44 GMT",
+      "version": 6
+    },
+    {
+      "__v": 0,
+      "_id": "6818397ab578ef7fb8722ced",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "linear-search-for-odd-numbers-4386603267",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746417871929",
+      "timestamp": "Mon, 05 May 2025 04:07:22 GMT",
+      "version": 7
+    },
+    {
+      "__v": 0,
+      "_id": "6818397db578ef7fb8722cf0",
+      "code": "#include <iostream>\n#include <string>\n#include <algorithm> \n\nusing namespace std;\n\nint main() {\n    string s;\n    getline(cin, s);\n\n    string reversedString = s;\n    reverse(reversedString.begin(), reversedString.end());\n\n    if (s==reversedString){\n        cout << \"Palindrome\" << endl;\n    } else {\n        cout <<  \"Not a palindrome\" << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "linear-search-for-odd-numbers-4386603267",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746417874651",
+      "timestamp": "Mon, 05 May 2025 04:07:25 GMT",
+      "version": 8
+    },
+    {
+      "__v": 0,
+      "_id": "68184041627d9858dce00c31",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "linear-search-for-odd-numbers-4386603267",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746419607144",
+      "timestamp": "Mon, 05 May 2025 04:36:17 GMT",
+      "version": 9
+    },
+    {
+      "__v": 0,
+      "_id": "6818405a627d9858dce00c36",
+      "code": "#include <iostream>\n#include <vector>\n#include <string> \n\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n\n    vector<int> arr(n);\n    for (int i = 0; i < n; ++i) {\n        cin >> arr[i];\n    }\n\n    if (n == 0) {\n        cout << \"No odd number found\" << endl;\n        return 0;\n    }\n\n    for (int i = 0; i < n; ++i) {\n        if (arr[i] % 2 != 0) {\n            cout << arr[i] << endl;\n            return 0; \n        }\n    }\n    \n     cout << \"No odd number found\" << endl;\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "linear-search-for-odd-numbers-4386603267",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746419631677",
+      "timestamp": "Mon, 05 May 2025 04:36:42 GMT",
+      "version": 10
+    },
+    {
+      "__v": 0,
+      "_id": "68184085627d9858dce00c3d",
+      "code": "#include <iostream>\n#include <vector>\n#include <string> \n\nusing namespace std;\n\nint main() {\n    cout << \"c\";\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "linear-search-for-odd-numbers-4386603267",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746419674958",
+      "timestamp": "Mon, 05 May 2025 04:37:25 GMT",
+      "version": 11
+    },
+    {
+      "__v": 0,
+      "_id": "681845a0b578ef7fb8722ded",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    \n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "linear-search-for-odd-numbers-4386603267",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746420981793",
+      "timestamp": "Mon, 05 May 2025 04:59:12 GMT",
+      "version": 12
+    },
+    {
+      "__v": 0,
+      "_id": "681846ceb578ef7fb8722e13",
+      "code": "#include <iostream>\n#include <vector>\n#include <string>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n\n    vector<int> arr(n);\n    for (int i=0; i<n; ++i){\n        cin >> arr[i];\n    }\n\n    if(n==0){\n        cout << \"No odd number found\" << endl;\n        return 0;\n    }\n\n    for (int i=0; i<n; ++i){\n        if(arr[i] % 2 !=0){\n            cout << arr[i] << endl;\n            return 0;\n        }\n    }\n\n    cout << \"No odd number found\" << endl;\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "linear-search-for-odd-numbers-4386603267",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746421283188",
+      "timestamp": "Mon, 05 May 2025 05:04:14 GMT",
+      "version": 13
+    }
+  ],
+  "success": true
+}

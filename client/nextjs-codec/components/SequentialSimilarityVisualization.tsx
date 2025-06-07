@@ -54,12 +54,26 @@ interface SequentialSimilarityVisualizationProps {
   snapshots: CodeSnapshot[];
   pastedSnippets: EnhancedPasteInfo[];
   learnerId?: string;
+  anonymize?: boolean;
+  problemId?: string; // New prop for the problem slug
 }
+
+const studyProblems = [
+  "box-formatter-4312784064",
+  "fahrenheit-to-celsius-converter-8133077604",
+  "count-vowels-in-a-string-7746433050",
+  "palindrome-check-6834925212",
+  "character-inspector-4333782441",
+  "perfectly-rooted-5136456806",
+  "linear-search-for-odd-numbers-4386603267"
+]
 
 const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizationProps> = ({
   snapshots,
   pastedSnippets,
   learnerId,
+  anonymize = false,
+  problemId
 }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentSnapshotIndex, setCurrentSnapshotIndex] = useState(0);
@@ -73,6 +87,14 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
 
   const notEnoughSnapshots = snapshots.length <= 2;
 
+  const toggleCard = (index: number) => {
+    setExpandedCards(prev =>
+      prev.includes(index)
+        ? prev.filter(i => i !== index)
+        : [...prev, index]
+    );
+  };
+
   useEffect(() => {
     if (notEnoughSnapshots) {
       return;
@@ -82,48 +104,57 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
       setLoading(true);
       try {
         const learner_id = learnerId ? learnerId : snapshotsToCompare[0].learner_id;
-        const problemId = snapshotsToCompare[0].problemId;
-        const roomId = snapshotsToCompare[0].roomId;
 
-        // const API_URL = process.env.FLASK_API_URL || 'https://codecflaskapi.duckdns.org';
-        const API_URL = process.env.FLASK_API_URL || 'http://localhost:5000';
-        const response = await fetch(`${API_URL}/api/similarity/sequential?learner_id=${learner_id}&problemId=${problemId}&roomId=${roomId}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            snapshots
-          })
-        });
-
-        const data = await response.json();
-        // console.log("Sequential Similarities Response:", data);
-        if (response.ok) {
-          // console.log("Response OK");
-          setSequentialSimilarities(data.sequentialSimilarities);
+        // Check if this is a study problem and we should use local data
+        if (problemId && studyProblems.includes(problemId)) {
+          console.log(`Loading local sequential similarity data for: ${problemId}, learner: ${learner_id}`);
+          try {
+            // Import data from local JSON file
+            const data = await import(`@/data/studyFindings/codeReplay/${problemId}/${learner_id}.json`);
+            if (data) {
+              setSequentialSimilarities(data.sequentialSimilarities);
+              console.log("Loaded local sequential similarities:", data.sequentialSimilarities);
+            }
+          } catch (error) {
+            console.error('Error loading local sequential data:', error);
+            // Fall back to API if local data failed to load
+            await fetchSequentialSimilaritiesFromAPI(learner_id, snapshotsToCompare);
+          }
+        } else {
+          // Use API for non-study problems
+          await fetchSequentialSimilaritiesFromAPI(learner_id, snapshotsToCompare);
         }
-        // console.log("Sequential Similarities:", sequentialSimilarities);
       } catch (error) {
         console.error('Sequential similarity calculation error:', error);
+      } finally {
+        setLoading(false);
       }
     };
-    setLoading(false);
+
     calculateSequentialSimilarities(snapshots);
-  }, [snapshots, notEnoughSnapshots]);
+  }, [snapshots, notEnoughSnapshots, learnerId, problemId]);
 
-  // useEffect(() => {
-  //   console.log("Sequential similarities updated:", sequentialSimilarities);
-  // }, [sequentialSimilarities]);
+  const fetchSequentialSimilaritiesFromAPI = async (learner_id: string, snapshotsToCompare: CodeSnapshot[]) => {
+    try {
+      const problemId = snapshotsToCompare[0].problemId;
+      const roomId = snapshotsToCompare[0].roomId;
 
-  // useEffect(() => {
-  //   console.log("Received Snapshots:", snapshots);
-  // }, [snapshots]);
+      const API_URL = process.env.NEXT_PUBLIC_FLASK_API_URL || 'http://localhost:5000';
+      const response = await fetch(`${API_URL}/api/similarity/sequential?learner_id=${learner_id}&problemId=${problemId}&roomId=${roomId}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          snapshots
+        })
+      });
 
-  const toggleCard = (index: number) => {
-    setExpandedCards(prev =>
-      prev.includes(index)
-        ? prev.filter(i => i !== index)
-        : [...prev, index]
-    );
+      const data = await response.json();
+      if (response.ok) {
+        setSequentialSimilarities(data.sequentialSimilarities);
+      }
+    } catch (error) {
+      console.error('API fetch error:', error);
+    }
   };
 
   // Add handlers for next and previous
@@ -182,7 +213,7 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
     const normalizedVariance = (variance / 2500) * 100;
     const weightedScore =
       (maxChange) * 0.05 +
-      (100 - averageSimilarity) * 0.3+
+      (100 - averageSimilarity) * 0.3 +
       (100 - minSimilarity) * 0.6 +
       (normalizedVariance) * 0.05;
 
@@ -325,7 +356,7 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
         </div>
       )}
 
-      {!loading ? (
+      {loading ? (
         <div className='w-full h-full flex items-center justify-center'>Loading...</div>
       ) : (
         advancedMetrics && !notEnoughSnapshots && (

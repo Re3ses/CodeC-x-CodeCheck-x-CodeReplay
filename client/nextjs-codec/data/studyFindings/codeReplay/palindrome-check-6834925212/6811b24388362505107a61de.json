@@ -1,0 +1,74 @@
+{
+  "formatted_snapshots": [
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "6811b24388362505107a61de",
+      "submission_id": "68176908e7010ff37c986b0c",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    cin >> s;\n\n    for (char c : s) {\n        if (c < 'a' || c > 'z') {\n            cout << \"Invalid!\" << endl;\n            return 0;\n        }\n    }\n\n    bool same = true;\n    int n = s.length();\n\n    for (int i = 0; i < n / 2; i++) {\n        if (s[i] != s[n - 1 - i]) {\n            same = false;\n            break;\n        }\n    }\n\n    if (same)\n        cout << \"Yes\" << endl;\n    else\n        cout << \"No\" << endl;\n\n    return 0;\n}\n",
+      "learner_id": "6811b24388362505107a61de",
+      "submission_id": "68176962e7010ff37c986b12",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    cin >> s;\n\n    for (char c : s) {\n        if (c < 'a' || c > 'z') {\n            cout << \"Invalid!\" << endl;\n            return 0;\n        }\n    }\n\n    bool same = true;\n    int n = s.length();\n\n    for (int i = 0; i < n / 2; i++) {\n        if (s[i] != s[n - 1 - i]) {\n            same = false;\n            break;\n        }\n    }\n\n    if (same)\n        cout << \"Palindrome\" << endl;\n    else\n        cout << \"Not a palindrome\" << endl;\n\n    return 0;\n}\n",
+      "learner_id": "6811b24388362505107a61de",
+      "submission_id": "68176978e7010ff37c986b17",
+      "timestamp": ""
+    }
+  ],
+  "sequentialSimilarities": [
+    {
+      "codebert_score": 36,
+      "from_index": 0,
+      "learner_id": "6811b24388362505107a61de",
+      "similarity": 36,
+      "to_index": 1
+    },
+    {
+      "codebert_score": 87,
+      "from_index": 1,
+      "learner_id": "6811b24388362505107a61de",
+      "similarity": 87,
+      "to_index": 2
+    }
+  ],
+  "snapshots": [
+    {
+      "__v": 0,
+      "_id": "68176908e7010ff37c986b0c",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "6811b24388362505107a61de",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746364681340",
+      "timestamp": "Sun, 04 May 2025 13:18:00 GMT",
+      "version": 1
+    },
+    {
+      "__v": 0,
+      "_id": "68176962e7010ff37c986b12",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    cin >> s;\n\n    for (char c : s) {\n        if (c < 'a' || c > 'z') {\n            cout << \"Invalid!\" << endl;\n            return 0;\n        }\n    }\n\n    bool same = true;\n    int n = s.length();\n\n    for (int i = 0; i < n / 2; i++) {\n        if (s[i] != s[n - 1 - i]) {\n            same = false;\n            break;\n        }\n    }\n\n    if (same)\n        cout << \"Yes\" << endl;\n    else\n        cout << \"No\" << endl;\n\n    return 0;\n}\n",
+      "learner_id": "6811b24388362505107a61de",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746364772186",
+      "timestamp": "Sun, 04 May 2025 13:19:30 GMT",
+      "version": 2
+    },
+    {
+      "__v": 0,
+      "_id": "68176978e7010ff37c986b17",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    cin >> s;\n\n    for (char c : s) {\n        if (c < 'a' || c > 'z') {\n            cout << \"Invalid!\" << endl;\n            return 0;\n        }\n    }\n\n    bool same = true;\n    int n = s.length();\n\n    for (int i = 0; i < n / 2; i++) {\n        if (s[i] != s[n - 1 - i]) {\n            same = false;\n            break;\n        }\n    }\n\n    if (same)\n        cout << \"Palindrome\" << endl;\n    else\n        cout << \"Not a palindrome\" << endl;\n\n    return 0;\n}\n",
+      "learner_id": "6811b24388362505107a61de",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746364793665",
+      "timestamp": "Sun, 04 May 2025 13:19:52 GMT",
+      "version": 3
+    }
+  ],
+  "success": true
+}

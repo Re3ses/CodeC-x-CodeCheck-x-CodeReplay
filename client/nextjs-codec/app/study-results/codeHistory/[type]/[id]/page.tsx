@@ -277,6 +277,8 @@ export default function CodeReplayApp() {
                               snapshots={snapshots.filter(s => s.learner_id === snippet.learner_id)}
                               learnerId={snippet.learner_id}
                               pastedSnippets={enhancedPastes.filter(s => s.learner_id === snippet.learner_id)}
+                              anonymize={true} // Always anonymize
+                              problemId={params.id}
                             />
                           </CardContent>
                         )}
