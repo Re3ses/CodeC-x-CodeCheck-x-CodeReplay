@@ -108,34 +108,34 @@ export default function CodeReplayApp() {
   useEffect(() => {
     const fetchLearnerSnapshots = async () => {
       try {
-        if (studyProblems.includes(params.id)) {
-          // Load from local JSON file
-          const data = await import(`@/data/study-problems/${params.id}-snapshots.json`);
-          if (data.success) {
-            const sortedSnapshots = data.snapshots.sort((a: CodeSnapshot, b: CodeSnapshot) => {
-              if (a.version && b.version) {
-                return a.version - b.version;
-              }
-              return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
-            });
-            setSnapshots(sortedSnapshots);
-          }
-        } else {
-          // Fetch from API
-          const response = await fetch(
-            `/api/codereplay/code-snapshots?problemId=${params.id}`
-          );
-          const data = await response.json();
-          if (data.success) {
-            const sortedSnapshots = data.snapshots.sort((a: CodeSnapshot, b: CodeSnapshot) => {
-              if (a.version && b.version) {
-                return a.version - b.version;
-              }
-              return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
-            });
-            setSnapshots(sortedSnapshots);
-          }
+        // if (studyProblems.includes(params.id)) {
+        //   // Load from local JSON file
+        //   const data = await import(`@/data/study-problems/${params.id}-snapshots.json`);
+        //   if (data.success) {
+        //     const sortedSnapshots = data.snapshots.sort((a: CodeSnapshot, b: CodeSnapshot) => {
+        //       if (a.version && b.version) {
+        //         return a.version - b.version;
+        //       }
+        //       return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
+        //     });
+        //     setSnapshots(sortedSnapshots);
+        //   }
+        // } else {
+        // Fetch from API
+        const response = await fetch(
+          `/api/codereplay/code-snapshots?problemId=${params.id}`
+        );
+        const data = await response.json();
+        if (data.success) {
+          const sortedSnapshots = data.snapshots.sort((a: CodeSnapshot, b: CodeSnapshot) => {
+            if (a.version && b.version) {
+              return a.version - b.version;
+            }
+            return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
+          });
+          setSnapshots(sortedSnapshots);
         }
+        // }
       } catch (error) {
         console.error('Error fetching snapshots:', error);
       }
