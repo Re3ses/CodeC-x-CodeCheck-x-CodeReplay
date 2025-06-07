@@ -152,10 +152,9 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
     calculateSequentialSimilarities(snapshots);
   }, [snapshots, notEnoughSnapshots, learnerId, problemId]);
 
-  useEffect(() => {
-    console.log("Sequential similarities updated:", sequentialSimilarities);
-    setLoading(false);
-  }, [sequentialSimilarities]);
+  // useEffect(() => {
+  //   console.log("Sequential similarities updated:", sequentialSimilarities);
+  // }, [sequentialSimilarities]);
 
   // useEffect(() => {
   //   console.log("Received Snapshots:", snapshots);
@@ -360,7 +359,7 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
 
   return (
     <div className="bg-gray-800 rounded-lg p-4 space-y-6">
-      {loading ? (
+      {loading ? (<Loading message="Loading Similarity Data..." />) : (
         <>
           {notEnoughSnapshots && (
             <div className="bg-blue-900/30 border border-blue-700 text-blue-300 rounded-lg p-4 text-center">
@@ -621,7 +620,7 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
           <ReactTooltip id="pastesTooltip" place="top" />
           <ReactTooltip id="bigPastesTooltip" place="top" />
         </>
-      ) : (<Loading message="Loading Similarity Data..." />)}
+      )}
 
     </div>
   );
