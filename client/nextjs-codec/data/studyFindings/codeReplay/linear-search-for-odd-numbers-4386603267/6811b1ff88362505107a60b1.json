@@ -1,0 +1,1010 @@
+{
+  "formatted_snapshots": [
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, odd; \n    int num[n];\n    \n    cin >> n;\n\n    if (n == 0){\n        cout <<\"Empty Array\";\n    }\n\n    for (int i = 0; i < n; i++){\n        cin >> num[i];\n    }\n    \n   \n    for (int i = 0; i < n; i++){\n        if (num[i] % 2 !=0){\n            cout << num[i];\n            return 0;\n        }\n    }\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "submission_id": "6818dcf3c6f35daa8625639d",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, num, odd; \n    int num[n];\n    \n    cin >> n;\n\n    if (n == 0){\n        cout <<\"No Odd number found\"\n    }\n\n    for (int i = 0; i < n; i++){\n        cin >> num[i];\n    }\n    \n   \n    for (int i = 0; i < n; i++){\n        num[i]\n        cout << num[i];\n    }\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "submission_id": "6818dbc4c6f35daa86256363",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, num, odd; \n    int num[n];\n    \n    cin >> n;\n\n    if (n == 0){\n        cout <<\"Empty Array\";\n    }\n\n    for (int i = 0; i < n; i++){\n        cin >> num[i];\n    }\n    \n   \n    for (int i = 0; i < n; i++){\n        num[i]\n        cout << num[i];\n    }\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "submission_id": "6818dbd6c6f35daa86256368",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, num, odd; \n    int num[n];\n    \n    cin >> n;\n\n    if (n == 0){\n        cout <<\"Empty Array\";\n    }\n\n    for (int i = 0; i < n; i++){\n        cin >> num[i];\n    }\n    \n   \n    for (int i = 0; i < n; i++){\n        if (num[i] % \n        cout << num[i];\n    }\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "submission_id": "6818dbf5c6f35daa8625636d",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, num, odd; \n    int num[n];\n    \n    cin >> n;\n\n    if (n == 0){\n        cout <<\"Empty Array\";\n    }\n\n    for (int i = 0; i < n; i++){\n        cin >> num[i];\n    }\n    \n   \n    for (int i = 0; i < n; i++){\n        if (num[i] % 2 \n        cout << num[i];\n    }\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "submission_id": "6818dbfbc6f35daa86256371",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, num, odd; \n    int num[n];\n    \n    cin >> n;\n\n    if (n == 0){\n        cout <<\"Empty Array\";\n    }\n\n    for (int i = 0; i < n; i++){\n        cin >> num[i];\n    }\n    \n   \n    for (int i = 0; i < n; i++){\n        if (num[i] % 2 !=0){\n            \n        }\n        cout << num[i];\n    }\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "submission_id": "6818dc03c6f35daa86256375",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, num, odd; \n    int num[n];\n    \n    cin >> n;\n\n    if (n == 0){\n        cout <<\"Empty Array\";\n    }\n\n    for (int i = 0; i < n; i++){\n        cin >> num[i];\n    }\n    \n   \n    for (int i = 0; i < n; i++){\n        if (num[i] % 2 !=0){\n            cout << num[i]\n        }\n        cout << num[i];\n    }\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "submission_id": "6818dc14c6f35daa8625637a",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, num, odd; \n    int num[n];\n    \n    cin >> n;\n\n    if (n == 0){\n        cout <<\"Empty Array\";\n    }\n\n    for (int i = 0; i < n; i++){\n        cin >> num[i];\n    }\n    \n   \n    for (int i = 0; i < n; i++){\n        if (num[i] % 2 !=0){\n            cout << num[i];\n            break;\n        }\n        cout << num[i];\n    }\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "submission_id": "6818dc1ec6f35daa8625637f",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, num, odd; \n    int num[n];\n    \n    cin >> n;\n\n    if (n == 0){\n        cout <<\"Empty Array\";\n    }\n\n    for (int i = 0; i < n; i++){\n        cin >> num[i];\n    }\n    \n   \n    for (int i = 0; i < n; i++){\n        if (num[i] % 2 !=0){\n            cout << num[i];\n        }else{\n            cout << \"No odd number found\";\n        }\n    }\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "submission_id": "6818dc5dc6f35daa86256385",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, odd; \n    int num[n];\n    \n    cin >> n;\n\n    if (n == 0){\n        cout <<\"Empty Array\";\n    }\n\n    for (int i = 0; i < n; i++){\n        cin >> num[i];\n    }\n    \n   \n    for (int i = 0; i < n; i++){\n        if (num[i] % 2 !=0){\n            cout << num[i];\n        }else{\n            cout << \"No odd number found\";\n        }\n    }\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "submission_id": "6818dc81c6f35daa8625638d",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, odd; \n    int num[n];\n    \n    cin >> n;\n\n    if (n == 0){\n        cout <<\"Empty Array\";\n    }\n\n    for (int i = 0; i < n; i++){\n        cin >> num[i];\n    }\n    \n   \n    for (int i = 0; i < n; i++){\n        if (num[i] % 2 !=0){\n            cout << num[i];\n        }\n    }\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "submission_id": "6818dca4c6f35daa86256391",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, num, odd; \n    int num[n];\n    \n    cin >> n;\n\n    for (int i = 0; i < n; i++){\n        cin >> num[i];\n    }\n    \n   \n    for (int i = 0; i < n; i++){\n        num[i]\n        cout << num[i];\n    }\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "submission_id": "6818db98c6f35daa8625635b",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, odd; \n    int num[n];\n    \n    cin >> n;\n\n    if (n == 0){\n        cout <<\"Empty Array\";\n    }\n\n    for (int i = 0; i < n; i++){\n        cin >> num[i];\n    }\n    \n   \n    for (int i = 0; i < n; i++){\n        if (num[i] % 2 !=0){\n            cout << num[i];\n            return 0;\n        }\n    }\n    cout << \"No odd number found\";\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "submission_id": "6818dd002ab084db565f66fd",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, odd; \n    int num[n];\n    \n    cin >> n;\n\n    if (n == 0){\n        cout <<\"Empty Array\";\n    }\n\n    for (int i = 0; i < n; i++){\n        cin >> num[i];\n    }\n    \n   \n    for (int i = 0; i < n; i++){\n        if (num[i] % 2 !=0){\n            cout << num[i];\n            return 0;\n        }\n    }\n    cout << \"No odd number found\";\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "submission_id": "6818dd9d2ab084db565f6707",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, odd; \n    int num[n];\n    \n    cin >> n;\n\n    if (n == 0){\n        cout <<\"Empty Array\";\n    }\n\n    for (int i = 0; i < n; i++){\n        cin >> num[i];\n    }\n    \n   \n    for (int i = 0; i < n; i++){\n        if (num[i] % 2 !=0){\n            cout << num[i];\n            return 0;\n        }\n    }\n    cout << \"No odd number found\";\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "submission_id": "6818ddb82ab084db565f670b",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, odd; \n    \n    cin >> n;\n\n    if (n == 0){\n        cout <<\"Empty Array\";\n    }\n    \n    int num[n];\n        \n    for (int i = 0; i < n; i++){\n        cin >> num[i];\n    }\n    \n   \n    for (int i = 0; i < n; i++){\n        if (num[i] % 2 !=0){\n            cout << num[i];\n            return 0;\n        }\n    }\n    cout << \"No odd number found\";\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "submission_id": "6818ddec2ab084db565f6713",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    \n    cin >> n;\n\n    if (n == 0){\n        cout <<\"Empty Array\";\n    }\n\n    int num[n];\n        \n    for (int i = 0; i < n; i++){\n        cin >> num[i];\n    }\n    \n   \n    for (int i = 0; i < n; i++){\n        if (num[i] % 2 !=0){\n            cout << num[i];\n            return 0;\n        }\n    }\n    cout << \"No odd number found\";\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "submission_id": "6818de272ab084db565f6720",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    \n    cin >> n;\n\n    if (n == 0){\n        cout <<\"Empty Array\";\n        return 0;\n    }\n\n    int num[n];\n        \n    for (int i = 0; i < n; i++){\n        cin >> num[i];\n    }\n    \n   \n    for (int i = 0; i < n; i++){\n        if (num[i] % 2 !=0){\n            cout << num[i];\n            return 0;\n        }\n    }\n    cout << \"No odd number found\";\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "submission_id": "6818de5d2ab084db565f6726",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n\n    cin >> n;\n\n    if (n == 0){\n        cout << \"Empty Array\";\n    }\n\n    int num[n];\n\n    for (int i = 0; i < n; i++){\n        cin >> num[i];\n    }\n\n    for (int i = 0; i < n; i++){\n        if (num[i] % 2 != 0){\n            cout << num[i];\n            return 0;\n        }\n    }\n    \n    cout << \"No odd number found\";\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "submission_id": "6818e5412ab084db565f6740",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n\n    cin >> n;\n\n    if (n == 0){\n        cout << \"No odd number found\";\n    }\n\n    int num[n];\n\n    for (int i = 0; i < n; i++){\n        cin >> num[i];\n    }\n\n    for (int i = 0; i < n; i++){\n        if (num[i] % 2 != 0){\n            cout << num[i];\n            return 0;\n        }\n    }\n    \n    cout << \"No odd number found\";\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "submission_id": "6818e7332ab084db565f6745",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n\n    cin >> n;\n    \n    int num[n];\n\n    for (int i = 0; i < n; i++){\n        cin >> num[i];\n    }\n\n    for (int i = 0; i < n; i++){\n        if (num[i] % 2 != 0){\n            cout << num[i];\n            return 0;\n        }\n    }\n    \n    cout << \"No odd number found\";\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "submission_id": "6818e7452ab084db565f6748",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, num; \n    arr odd[n];\n    \n    for (int i = 0; i < n; j++){\n        cin >> odd[i];\n    }\n    cout << odd[i];\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "submission_id": "6818da69c6f35daa8625632e",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    arr\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "submission_id": "6818cd54316dcef9f91bc5ca",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "submission_id": "6818cd6b316dcef9f91bc5cd",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    arr\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "submission_id": "6818d04c13b682afa695798a",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "submission_id": "6818d6a2f381ccab3ab2ef81",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n; \n    arr [n];\n    \n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "submission_id": "6818d6bbf381ccab3ab2ef87",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, num; \n    arr [n];\n    \n    for (int j )\n    cin << num;\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "submission_id": "6818d6f7f381ccab3ab2ef8d",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, num; \n    arr [n];\n    \n    for (int j = 0; j < n; j++)\n    cin << num;\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "submission_id": "6818d723f381ccab3ab2ef94",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, num; \n    arr [n];\n    \n    for (int j = 0; j < n; j++)\n    cin << num;\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "submission_id": "6818d7282ab084db565f66ce",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, num; \n    arr [n];\n    \n    for (int i = 0; i < n; j++){\n        cin >> num;\n    }\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "submission_id": "6818da15c6f35daa8625631a",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, num; \n    arr odd[n];\n    \n    for (int i = 0; i < n; j++){\n        cin >> num;\n    }\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "submission_id": "6818da4bc6f35daa86256327",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "submission_id": "6818cd15316dcef9f91bc5c6",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, num; \n    arr odd[n];\n    \n    for (int i = 0; i <= n; j++){\n        cin >> odd[i];\n    }\n    cout << odd[i];\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "submission_id": "6818da93c6f35daa86256334",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, num; \n    arr odd[n];\n    \n    cin >> n;\n    \n    for (int i = 0; i <= n; j++){\n        cin >> odd[i];\n    }\n    cout << odd[i];\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "submission_id": "6818daa7c6f35daa8625633a",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, num; \n    int odd[n];\n    \n    cin >> n;\n\n    for (int i = 0; i <= n; j++){\n        cin >> odd[i];\n    }\n    cout << odd[i];\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "submission_id": "6818dad0c6f35daa8625633f",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, num; \n    int odd[n];\n    \n    cin >> n;\n\n    for (int i = 0; i <= n; i++){\n        cin >> odd[i];\n    }\n    cout << odd[i];\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "submission_id": "6818daddc6f35daa86256344",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, num; \n    int odd[n];\n    \n    cin >> n;\n\n    for (int i = 0; i <= n; i++){\n        cin >> odd[i];\n    }\n    cout << odd[i];\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "submission_id": "6818dadd2ab084db565f66f2",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, num; \n    int odd[n];\n    \n    cin >> n;\n\n    for (int i = 0; i <= n; i++){\n        cin >> odd[i];\n    }\n    \n   \n    for (int i = 0; i <= n; i++){\n        cout << odd[i];\n    }\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "submission_id": "6818daf6c6f35daa8625634a",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, num; \n    int odd[n];\n    \n    cin >> n;\n\n    for (int i = 0; i < n; i++){\n        cin >> odd[i];\n    }\n    \n   \n    for (int i = 0; i <= n; i++){\n        cout << odd[i];\n    }\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "submission_id": "6818db07c6f35daa8625634d",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, num; \n    int odd[n];\n    \n    cin >> n;\n\n    for (int i = 0; i < n; i++){\n        cin >> odd[i];\n    }\n    \n   \n    for (int i = 0; i < n; i++){\n        cout << odd[i];\n    }\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "submission_id": "6818db12c6f35daa86256350",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, num; \n    int num[n];\n    \n    cin >> n;\n\n    for (int i = 0; i < n; i++){\n        cin >> num[i];\n    }\n    \n   \n    for (int i = 0; i < n; i++){\n        cout << num[i];\n    }\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "submission_id": "6818db77c6f35daa86256358",
+      "timestamp": ""
+    }
+  ],
+  "sequentialSimilarities": [
+    {
+      "codebert_score": 80,
+      "from_index": 0,
+      "learner_id": "6811b1ff88362505107a60b1",
+      "similarity": 80,
+      "to_index": 1
+    },
+    {
+      "codebert_score": 87,
+      "from_index": 1,
+      "learner_id": "6811b1ff88362505107a60b1",
+      "similarity": 87,
+      "to_index": 2
+    },
+    {
+      "codebert_score": 81,
+      "from_index": 2,
+      "learner_id": "6811b1ff88362505107a60b1",
+      "similarity": 81,
+      "to_index": 3
+    },
+    {
+      "codebert_score": 89,
+      "from_index": 3,
+      "learner_id": "6811b1ff88362505107a60b1",
+      "similarity": 89,
+      "to_index": 4
+    },
+    {
+      "codebert_score": 82,
+      "from_index": 4,
+      "learner_id": "6811b1ff88362505107a60b1",
+      "similarity": 82,
+      "to_index": 5
+    },
+    {
+      "codebert_score": 89,
+      "from_index": 5,
+      "learner_id": "6811b1ff88362505107a60b1",
+      "similarity": 89,
+      "to_index": 6
+    },
+    {
+      "codebert_score": 88,
+      "from_index": 6,
+      "learner_id": "6811b1ff88362505107a60b1",
+      "similarity": 88,
+      "to_index": 7
+    },
+    {
+      "codebert_score": 85,
+      "from_index": 7,
+      "learner_id": "6811b1ff88362505107a60b1",
+      "similarity": 85,
+      "to_index": 8
+    },
+    {
+      "codebert_score": 89,
+      "from_index": 8,
+      "learner_id": "6811b1ff88362505107a60b1",
+      "similarity": 89,
+      "to_index": 9
+    },
+    {
+      "codebert_score": 84,
+      "from_index": 9,
+      "learner_id": "6811b1ff88362505107a60b1",
+      "similarity": 84,
+      "to_index": 10
+    },
+    {
+      "codebert_score": 77,
+      "from_index": 10,
+      "learner_id": "6811b1ff88362505107a60b1",
+      "similarity": 77,
+      "to_index": 11
+    },
+    {
+      "codebert_score": 74,
+      "from_index": 11,
+      "learner_id": "6811b1ff88362505107a60b1",
+      "similarity": 74,
+      "to_index": 12
+    },
+    {
+      "codebert_score": 77,
+      "from_index": 12,
+      "learner_id": "6811b1ff88362505107a60b1",
+      "similarity": 77,
+      "to_index": 13
+    },
+    {
+      "codebert_score": 77,
+      "from_index": 13,
+      "learner_id": "6811b1ff88362505107a60b1",
+      "similarity": 77,
+      "to_index": 14
+    },
+    {
+      "codebert_score": 91,
+      "from_index": 14,
+      "learner_id": "6811b1ff88362505107a60b1",
+      "similarity": 91,
+      "to_index": 15
+    },
+    {
+      "codebert_score": 91,
+      "from_index": 15,
+      "learner_id": "6811b1ff88362505107a60b1",
+      "similarity": 91,
+      "to_index": 16
+    },
+    {
+      "codebert_score": 88,
+      "from_index": 16,
+      "learner_id": "6811b1ff88362505107a60b1",
+      "similarity": 88,
+      "to_index": 17
+    },
+    {
+      "codebert_score": 88,
+      "from_index": 17,
+      "learner_id": "6811b1ff88362505107a60b1",
+      "similarity": 88,
+      "to_index": 18
+    },
+    {
+      "codebert_score": 88,
+      "from_index": 18,
+      "learner_id": "6811b1ff88362505107a60b1",
+      "similarity": 88,
+      "to_index": 19
+    },
+    {
+      "codebert_score": 82,
+      "from_index": 19,
+      "learner_id": "6811b1ff88362505107a60b1",
+      "similarity": 82,
+      "to_index": 20
+    },
+    {
+      "codebert_score": 58,
+      "from_index": 20,
+      "learner_id": "6811b1ff88362505107a60b1",
+      "similarity": 58,
+      "to_index": 21
+    },
+    {
+      "codebert_score": 54,
+      "from_index": 21,
+      "learner_id": "6811b1ff88362505107a60b1",
+      "similarity": 54,
+      "to_index": 22
+    },
+    {
+      "codebert_score": 83,
+      "from_index": 22,
+      "learner_id": "6811b1ff88362505107a60b1",
+      "similarity": 83,
+      "to_index": 23
+    },
+    {
+      "codebert_score": 84,
+      "from_index": 23,
+      "learner_id": "6811b1ff88362505107a60b1",
+      "similarity": 84,
+      "to_index": 24
+    },
+    {
+      "codebert_score": 66,
+      "from_index": 24,
+      "learner_id": "6811b1ff88362505107a60b1",
+      "similarity": 66,
+      "to_index": 25
+    },
+    {
+      "codebert_score": 68,
+      "from_index": 25,
+      "learner_id": "6811b1ff88362505107a60b1",
+      "similarity": 68,
+      "to_index": 26
+    },
+    {
+      "codebert_score": 73,
+      "from_index": 26,
+      "learner_id": "6811b1ff88362505107a60b1",
+      "similarity": 73,
+      "to_index": 27
+    },
+    {
+      "codebert_score": 68,
+      "from_index": 27,
+      "learner_id": "6811b1ff88362505107a60b1",
+      "similarity": 68,
+      "to_index": 28
+    },
+    {
+      "codebert_score": 99,
+      "from_index": 28,
+      "learner_id": "6811b1ff88362505107a60b1",
+      "similarity": 99,
+      "to_index": 29
+    },
+    {
+      "codebert_score": 79,
+      "from_index": 29,
+      "learner_id": "6811b1ff88362505107a60b1",
+      "similarity": 79,
+      "to_index": 30
+    },
+    {
+      "codebert_score": 89,
+      "from_index": 30,
+      "learner_id": "6811b1ff88362505107a60b1",
+      "similarity": 89,
+      "to_index": 31
+    },
+    {
+      "codebert_score": 55,
+      "from_index": 31,
+      "learner_id": "6811b1ff88362505107a60b1",
+      "similarity": 55,
+      "to_index": 32
+    },
+    {
+      "codebert_score": 53,
+      "from_index": 32,
+      "learner_id": "6811b1ff88362505107a60b1",
+      "similarity": 53,
+      "to_index": 33
+    },
+    {
+      "codebert_score": 86,
+      "from_index": 33,
+      "learner_id": "6811b1ff88362505107a60b1",
+      "similarity": 86,
+      "to_index": 34
+    },
+    {
+      "codebert_score": 89,
+      "from_index": 34,
+      "learner_id": "6811b1ff88362505107a60b1",
+      "similarity": 89,
+      "to_index": 35
+    },
+    {
+      "codebert_score": 80,
+      "from_index": 35,
+      "learner_id": "6811b1ff88362505107a60b1",
+      "similarity": 80,
+      "to_index": 36
+    },
+    {
+      "codebert_score": 100,
+      "from_index": 36,
+      "learner_id": "6811b1ff88362505107a60b1",
+      "similarity": 100,
+      "to_index": 37
+    },
+    {
+      "codebert_score": 64,
+      "from_index": 37,
+      "learner_id": "6811b1ff88362505107a60b1",
+      "similarity": 64,
+      "to_index": 38
+    },
+    {
+      "codebert_score": 91,
+      "from_index": 38,
+      "learner_id": "6811b1ff88362505107a60b1",
+      "similarity": 91,
+      "to_index": 39
+    },
+    {
+      "codebert_score": 90,
+      "from_index": 39,
+      "learner_id": "6811b1ff88362505107a60b1",
+      "similarity": 90,
+      "to_index": 40
+    },
+    {
+      "codebert_score": 88,
+      "from_index": 40,
+      "learner_id": "6811b1ff88362505107a60b1",
+      "similarity": 88,
+      "to_index": 41
+    }
+  ],
+  "snapshots": [
+    {
+      "__v": 0,
+      "_id": "6818dcf3c6f35daa8625639d",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, odd; \n    int num[n];\n    \n    cin >> n;\n\n    if (n == 0){\n        cout <<\"Empty Array\";\n    }\n\n    for (int i = 0; i < n; i++){\n        cin >> num[i];\n    }\n    \n   \n    for (int i = 0; i < n; i++){\n        if (num[i] % 2 !=0){\n            cout << num[i];\n            return 0;\n        }\n    }\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "problemId": "linear-search-for-odd-numbers-4386603267",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746459889583",
+      "timestamp": "Mon, 05 May 2025 15:44:51 GMT",
+      "version": 31
+    },
+    {
+      "__v": 0,
+      "_id": "6818dbc4c6f35daa86256363",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, num, odd; \n    int num[n];\n    \n    cin >> n;\n\n    if (n == 0){\n        cout <<\"No Odd number found\"\n    }\n\n    for (int i = 0; i < n; i++){\n        cin >> num[i];\n    }\n    \n   \n    for (int i = 0; i < n; i++){\n        num[i]\n        cout << num[i];\n    }\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "problemId": "linear-search-for-odd-numbers-4386603267",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746459586207",
+      "timestamp": "Mon, 05 May 2025 15:39:48 GMT",
+      "version": 21
+    },
+    {
+      "__v": 0,
+      "_id": "6818dbd6c6f35daa86256368",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, num, odd; \n    int num[n];\n    \n    cin >> n;\n\n    if (n == 0){\n        cout <<\"Empty Array\";\n    }\n\n    for (int i = 0; i < n; i++){\n        cin >> num[i];\n    }\n    \n   \n    for (int i = 0; i < n; i++){\n        num[i]\n        cout << num[i];\n    }\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "problemId": "linear-search-for-odd-numbers-4386603267",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746459603927",
+      "timestamp": "Mon, 05 May 2025 15:40:06 GMT",
+      "version": 22
+    },
+    {
+      "__v": 0,
+      "_id": "6818dbf5c6f35daa8625636d",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, num, odd; \n    int num[n];\n    \n    cin >> n;\n\n    if (n == 0){\n        cout <<\"Empty Array\";\n    }\n\n    for (int i = 0; i < n; i++){\n        cin >> num[i];\n    }\n    \n   \n    for (int i = 0; i < n; i++){\n        if (num[i] % \n        cout << num[i];\n    }\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "problemId": "linear-search-for-odd-numbers-4386603267",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746459634767",
+      "timestamp": "Mon, 05 May 2025 15:40:37 GMT",
+      "version": 23
+    },
+    {
+      "__v": 0,
+      "_id": "6818dbfbc6f35daa86256371",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, num, odd; \n    int num[n];\n    \n    cin >> n;\n\n    if (n == 0){\n        cout <<\"Empty Array\";\n    }\n\n    for (int i = 0; i < n; i++){\n        cin >> num[i];\n    }\n    \n   \n    for (int i = 0; i < n; i++){\n        if (num[i] % 2 \n        cout << num[i];\n    }\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "problemId": "linear-search-for-odd-numbers-4386603267",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746459640759",
+      "timestamp": "Mon, 05 May 2025 15:40:43 GMT",
+      "version": 24
+    },
+    {
+      "__v": 0,
+      "_id": "6818dc03c6f35daa86256375",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, num, odd; \n    int num[n];\n    \n    cin >> n;\n\n    if (n == 0){\n        cout <<\"Empty Array\";\n    }\n\n    for (int i = 0; i < n; i++){\n        cin >> num[i];\n    }\n    \n   \n    for (int i = 0; i < n; i++){\n        if (num[i] % 2 !=0){\n            \n        }\n        cout << num[i];\n    }\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "problemId": "linear-search-for-odd-numbers-4386603267",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746459648630",
+      "timestamp": "Mon, 05 May 2025 15:40:51 GMT",
+      "version": 25
+    },
+    {
+      "__v": 0,
+      "_id": "6818dc14c6f35daa8625637a",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, num, odd; \n    int num[n];\n    \n    cin >> n;\n\n    if (n == 0){\n        cout <<\"Empty Array\";\n    }\n\n    for (int i = 0; i < n; i++){\n        cin >> num[i];\n    }\n    \n   \n    for (int i = 0; i < n; i++){\n        if (num[i] % 2 !=0){\n            cout << num[i]\n        }\n        cout << num[i];\n    }\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "problemId": "linear-search-for-odd-numbers-4386603267",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746459666423",
+      "timestamp": "Mon, 05 May 2025 15:41:08 GMT",
+      "version": 26
+    },
+    {
+      "__v": 0,
+      "_id": "6818dc1ec6f35daa8625637f",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, num, odd; \n    int num[n];\n    \n    cin >> n;\n\n    if (n == 0){\n        cout <<\"Empty Array\";\n    }\n\n    for (int i = 0; i < n; i++){\n        cin >> num[i];\n    }\n    \n   \n    for (int i = 0; i < n; i++){\n        if (num[i] % 2 !=0){\n            cout << num[i];\n            break;\n        }\n        cout << num[i];\n    }\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "problemId": "linear-search-for-odd-numbers-4386603267",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746459676095",
+      "timestamp": "Mon, 05 May 2025 15:41:18 GMT",
+      "version": 27
+    },
+    {
+      "__v": 0,
+      "_id": "6818dc5dc6f35daa86256385",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, num, odd; \n    int num[n];\n    \n    cin >> n;\n\n    if (n == 0){\n        cout <<\"Empty Array\";\n    }\n\n    for (int i = 0; i < n; i++){\n        cin >> num[i];\n    }\n    \n   \n    for (int i = 0; i < n; i++){\n        if (num[i] % 2 !=0){\n            cout << num[i];\n        }else{\n            cout << \"No odd number found\";\n        }\n    }\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "problemId": "linear-search-for-odd-numbers-4386603267",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746459739057",
+      "timestamp": "Mon, 05 May 2025 15:42:21 GMT",
+      "version": 28
+    },
+    {
+      "__v": 0,
+      "_id": "6818dc81c6f35daa8625638d",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, odd; \n    int num[n];\n    \n    cin >> n;\n\n    if (n == 0){\n        cout <<\"Empty Array\";\n    }\n\n    for (int i = 0; i < n; i++){\n        cin >> num[i];\n    }\n    \n   \n    for (int i = 0; i < n; i++){\n        if (num[i] % 2 !=0){\n            cout << num[i];\n        }else{\n            cout << \"No odd number found\";\n        }\n    }\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "problemId": "linear-search-for-odd-numbers-4386603267",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746459774729",
+      "timestamp": "Mon, 05 May 2025 15:42:57 GMT",
+      "version": 29
+    },
+    {
+      "__v": 0,
+      "_id": "6818dca4c6f35daa86256391",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, odd; \n    int num[n];\n    \n    cin >> n;\n\n    if (n == 0){\n        cout <<\"Empty Array\";\n    }\n\n    for (int i = 0; i < n; i++){\n        cin >> num[i];\n    }\n    \n   \n    for (int i = 0; i < n; i++){\n        if (num[i] % 2 !=0){\n            cout << num[i];\n        }\n    }\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "problemId": "linear-search-for-odd-numbers-4386603267",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746459809656",
+      "timestamp": "Mon, 05 May 2025 15:43:32 GMT",
+      "version": 30
+    },
+    {
+      "__v": 0,
+      "_id": "6818db98c6f35daa8625635b",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, num, odd; \n    int num[n];\n    \n    cin >> n;\n\n    for (int i = 0; i < n; i++){\n        cin >> num[i];\n    }\n    \n   \n    for (int i = 0; i < n; i++){\n        num[i]\n        cout << num[i];\n    }\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "problemId": "linear-search-for-odd-numbers-4386603267",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746459542096",
+      "timestamp": "Mon, 05 May 2025 15:39:04 GMT",
+      "version": 20
+    },
+    {
+      "__v": 0,
+      "_id": "6818dd002ab084db565f66fd",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, odd; \n    int num[n];\n    \n    cin >> n;\n\n    if (n == 0){\n        cout <<\"Empty Array\";\n    }\n\n    for (int i = 0; i < n; i++){\n        cin >> num[i];\n    }\n    \n   \n    for (int i = 0; i < n; i++){\n        if (num[i] % 2 !=0){\n            cout << num[i];\n            return 0;\n        }\n    }\n    cout << \"No odd number found\";\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "problemId": "linear-search-for-odd-numbers-4386603267",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746459902393",
+      "timestamp": "Mon, 05 May 2025 15:45:04 GMT",
+      "version": 32
+    },
+    {
+      "__v": 0,
+      "_id": "6818dd9d2ab084db565f6707",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, odd; \n    int num[n];\n    \n    cin >> n;\n\n    if (n == 0){\n        cout <<\"Empty Array\";\n    }\n\n    for (int i = 0; i < n; i++){\n        cin >> num[i];\n    }\n    \n   \n    for (int i = 0; i < n; i++){\n        if (num[i] % 2 !=0){\n            cout << num[i];\n            return 0;\n        }\n    }\n    cout << \"No odd number found\";\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "problemId": "linear-search-for-odd-numbers-4386603267",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746460058810",
+      "timestamp": "Mon, 05 May 2025 15:47:41 GMT",
+      "version": 33
+    },
+    {
+      "__v": 0,
+      "_id": "6818ddb82ab084db565f670b",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, odd; \n    int num[n];\n    \n    cin >> n;\n\n    if (n == 0){\n        cout <<\"Empty Array\";\n    }\n\n    for (int i = 0; i < n; i++){\n        cin >> num[i];\n    }\n    \n   \n    for (int i = 0; i < n; i++){\n        if (num[i] % 2 !=0){\n            cout << num[i];\n            return 0;\n        }\n    }\n    cout << \"No odd number found\";\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "problemId": "linear-search-for-odd-numbers-4386603267",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746460085865",
+      "timestamp": "Mon, 05 May 2025 15:48:08 GMT",
+      "version": 34
+    },
+    {
+      "__v": 0,
+      "_id": "6818ddec2ab084db565f6713",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, odd; \n    \n    cin >> n;\n\n    if (n == 0){\n        cout <<\"Empty Array\";\n    }\n    \n    int num[n];\n        \n    for (int i = 0; i < n; i++){\n        cin >> num[i];\n    }\n    \n   \n    for (int i = 0; i < n; i++){\n        if (num[i] % 2 !=0){\n            cout << num[i];\n            return 0;\n        }\n    }\n    cout << \"No odd number found\";\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "problemId": "linear-search-for-odd-numbers-4386603267",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746460138201",
+      "timestamp": "Mon, 05 May 2025 15:49:00 GMT",
+      "version": 35
+    },
+    {
+      "__v": 0,
+      "_id": "6818de272ab084db565f6720",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    \n    cin >> n;\n\n    if (n == 0){\n        cout <<\"Empty Array\";\n    }\n\n    int num[n];\n        \n    for (int i = 0; i < n; i++){\n        cin >> num[i];\n    }\n    \n   \n    for (int i = 0; i < n; i++){\n        if (num[i] % 2 !=0){\n            cout << num[i];\n            return 0;\n        }\n    }\n    cout << \"No odd number found\";\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "problemId": "linear-search-for-odd-numbers-4386603267",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746460197361",
+      "timestamp": "Mon, 05 May 2025 15:49:59 GMT",
+      "version": 36
+    },
+    {
+      "__v": 0,
+      "_id": "6818de5d2ab084db565f6726",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    \n    cin >> n;\n\n    if (n == 0){\n        cout <<\"Empty Array\";\n        return 0;\n    }\n\n    int num[n];\n        \n    for (int i = 0; i < n; i++){\n        cin >> num[i];\n    }\n    \n   \n    for (int i = 0; i < n; i++){\n        if (num[i] % 2 !=0){\n            cout << num[i];\n            return 0;\n        }\n    }\n    cout << \"No odd number found\";\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "problemId": "linear-search-for-odd-numbers-4386603267",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746460250673",
+      "timestamp": "Mon, 05 May 2025 15:50:53 GMT",
+      "version": 37
+    },
+    {
+      "__v": 0,
+      "_id": "6818e5412ab084db565f6740",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n\n    cin >> n;\n\n    if (n == 0){\n        cout << \"Empty Array\";\n    }\n\n    int num[n];\n\n    for (int i = 0; i < n; i++){\n        cin >> num[i];\n    }\n\n    for (int i = 0; i < n; i++){\n        if (num[i] % 2 != 0){\n            cout << num[i];\n            return 0;\n        }\n    }\n    \n    cout << \"No odd number found\";\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "problemId": "linear-search-for-odd-numbers-4386603267",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746462015048",
+      "timestamp": "Mon, 05 May 2025 16:20:17 GMT",
+      "version": 38
+    },
+    {
+      "__v": 0,
+      "_id": "6818e7332ab084db565f6745",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n\n    cin >> n;\n\n    if (n == 0){\n        cout << \"No odd number found\";\n    }\n\n    int num[n];\n\n    for (int i = 0; i < n; i++){\n        cin >> num[i];\n    }\n\n    for (int i = 0; i < n; i++){\n        if (num[i] % 2 != 0){\n            cout << num[i];\n            return 0;\n        }\n    }\n    \n    cout << \"No odd number found\";\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "problemId": "linear-search-for-odd-numbers-4386603267",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746462512663",
+      "timestamp": "Mon, 05 May 2025 16:28:35 GMT",
+      "version": 39
+    },
+    {
+      "__v": 0,
+      "_id": "6818e7452ab084db565f6748",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n\n    cin >> n;\n    \n    int num[n];\n\n    for (int i = 0; i < n; i++){\n        cin >> num[i];\n    }\n\n    for (int i = 0; i < n; i++){\n        if (num[i] % 2 != 0){\n            cout << num[i];\n            return 0;\n        }\n    }\n    \n    cout << \"No odd number found\";\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "problemId": "linear-search-for-odd-numbers-4386603267",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746462530807",
+      "timestamp": "Mon, 05 May 2025 16:28:53 GMT",
+      "version": 40
+    },
+    {
+      "__v": 0,
+      "_id": "6818da69c6f35daa8625632e",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, num; \n    arr odd[n];\n    \n    for (int i = 0; i < n; j++){\n        cin >> odd[i];\n    }\n    cout << odd[i];\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "problemId": "linear-search-for-odd-numbers-4386603267",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746459239226",
+      "timestamp": "Mon, 05 May 2025 15:34:01 GMT",
+      "version": 11
+    },
+    {
+      "__v": 0,
+      "_id": "6818cd54316dcef9f91bc5ca",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    arr\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "problemId": "linear-search-for-odd-numbers-4386603267",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746455890773",
+      "timestamp": "Mon, 05 May 2025 14:38:12 GMT",
+      "version": 2
+    },
+    {
+      "__v": 0,
+      "_id": "6818cd6b316dcef9f91bc5cd",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "problemId": "linear-search-for-odd-numbers-4386603267",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746455913303",
+      "timestamp": "Mon, 05 May 2025 14:38:35 GMT",
+      "version": 3
+    },
+    {
+      "__v": 0,
+      "_id": "6818d04c13b682afa695798a",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    arr\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "problemId": "linear-search-for-odd-numbers-4386603267",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746456649917",
+      "timestamp": "Mon, 05 May 2025 14:50:52 GMT",
+      "version": 4
+    },
+    {
+      "__v": 0,
+      "_id": "6818d6a2f381ccab3ab2ef81",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "problemId": "linear-search-for-odd-numbers-4386603267",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746458272530",
+      "timestamp": "Mon, 05 May 2025 15:17:54 GMT",
+      "version": 5
+    },
+    {
+      "__v": 0,
+      "_id": "6818d6bbf381ccab3ab2ef87",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n; \n    arr [n];\n    \n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "problemId": "linear-search-for-odd-numbers-4386603267",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746458296997",
+      "timestamp": "Mon, 05 May 2025 15:18:19 GMT",
+      "version": 6
+    },
+    {
+      "__v": 0,
+      "_id": "6818d6f7f381ccab3ab2ef8d",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, num; \n    arr [n];\n    \n    for (int j )\n    cin << num;\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "problemId": "linear-search-for-odd-numbers-4386603267",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746458357544",
+      "timestamp": "Mon, 05 May 2025 15:19:19 GMT",
+      "version": 7
+    },
+    {
+      "__v": 0,
+      "_id": "6818d723f381ccab3ab2ef94",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, num; \n    arr [n];\n    \n    for (int j = 0; j < n; j++)\n    cin << num;\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "problemId": "linear-search-for-odd-numbers-4386603267",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746458400956",
+      "timestamp": "Mon, 05 May 2025 15:20:03 GMT",
+      "version": 8
+    },
+    {
+      "__v": 0,
+      "_id": "6818d7282ab084db565f66ce",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, num; \n    arr [n];\n    \n    for (int j = 0; j < n; j++)\n    cin << num;\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "problemId": "linear-search-for-odd-numbers-4386603267",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746458400964",
+      "timestamp": "Mon, 05 May 2025 15:20:08 GMT",
+      "version": 8
+    },
+    {
+      "__v": 0,
+      "_id": "6818da15c6f35daa8625631a",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, num; \n    arr [n];\n    \n    for (int i = 0; i < n; j++){\n        cin >> num;\n    }\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "problemId": "linear-search-for-odd-numbers-4386603267",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746459155583",
+      "timestamp": "Mon, 05 May 2025 15:32:37 GMT",
+      "version": 9
+    },
+    {
+      "__v": 0,
+      "_id": "6818da4bc6f35daa86256327",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, num; \n    arr odd[n];\n    \n    for (int i = 0; i < n; j++){\n        cin >> num;\n    }\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "problemId": "linear-search-for-odd-numbers-4386603267",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746459209127",
+      "timestamp": "Mon, 05 May 2025 15:33:31 GMT",
+      "version": 10
+    },
+    {
+      "__v": 0,
+      "_id": "6818cd15316dcef9f91bc5c6",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "problemId": "linear-search-for-odd-numbers-4386603267",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746455827041",
+      "timestamp": "Mon, 05 May 2025 14:37:09 GMT",
+      "version": 1
+    },
+    {
+      "__v": 0,
+      "_id": "6818da93c6f35daa86256334",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, num; \n    arr odd[n];\n    \n    for (int i = 0; i <= n; j++){\n        cin >> odd[i];\n    }\n    cout << odd[i];\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "problemId": "linear-search-for-odd-numbers-4386603267",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746459281375",
+      "timestamp": "Mon, 05 May 2025 15:34:43 GMT",
+      "version": 12
+    },
+    {
+      "__v": 0,
+      "_id": "6818daa7c6f35daa8625633a",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, num; \n    arr odd[n];\n    \n    cin >> n;\n    \n    for (int i = 0; i <= n; j++){\n        cin >> odd[i];\n    }\n    cout << odd[i];\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "problemId": "linear-search-for-odd-numbers-4386603267",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746459301529",
+      "timestamp": "Mon, 05 May 2025 15:35:03 GMT",
+      "version": 13
+    },
+    {
+      "__v": 0,
+      "_id": "6818dad0c6f35daa8625633f",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, num; \n    int odd[n];\n    \n    cin >> n;\n\n    for (int i = 0; i <= n; j++){\n        cin >> odd[i];\n    }\n    cout << odd[i];\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "problemId": "linear-search-for-odd-numbers-4386603267",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746459341849",
+      "timestamp": "Mon, 05 May 2025 15:35:44 GMT",
+      "version": 14
+    },
+    {
+      "__v": 0,
+      "_id": "6818daddc6f35daa86256344",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, num; \n    int odd[n];\n    \n    cin >> n;\n\n    for (int i = 0; i <= n; i++){\n        cin >> odd[i];\n    }\n    cout << odd[i];\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "problemId": "linear-search-for-odd-numbers-4386603267",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746459355145",
+      "timestamp": "Mon, 05 May 2025 15:35:57 GMT",
+      "version": 15
+    },
+    {
+      "__v": 0,
+      "_id": "6818dadd2ab084db565f66f2",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, num; \n    int odd[n];\n    \n    cin >> n;\n\n    for (int i = 0; i <= n; i++){\n        cin >> odd[i];\n    }\n    cout << odd[i];\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "problemId": "linear-search-for-odd-numbers-4386603267",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746459355518",
+      "timestamp": "Mon, 05 May 2025 15:35:57 GMT",
+      "version": 15
+    },
+    {
+      "__v": 0,
+      "_id": "6818daf6c6f35daa8625634a",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, num; \n    int odd[n];\n    \n    cin >> n;\n\n    for (int i = 0; i <= n; i++){\n        cin >> odd[i];\n    }\n    \n   \n    for (int i = 0; i <= n; i++){\n        cout << odd[i];\n    }\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "problemId": "linear-search-for-odd-numbers-4386603267",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746459380242",
+      "timestamp": "Mon, 05 May 2025 15:36:22 GMT",
+      "version": 16
+    },
+    {
+      "__v": 0,
+      "_id": "6818db07c6f35daa8625634d",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, num; \n    int odd[n];\n    \n    cin >> n;\n\n    for (int i = 0; i < n; i++){\n        cin >> odd[i];\n    }\n    \n   \n    for (int i = 0; i <= n; i++){\n        cout << odd[i];\n    }\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "problemId": "linear-search-for-odd-numbers-4386603267",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746459397249",
+      "timestamp": "Mon, 05 May 2025 15:36:39 GMT",
+      "version": 17
+    },
+    {
+      "__v": 0,
+      "_id": "6818db12c6f35daa86256350",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, num; \n    int odd[n];\n    \n    cin >> n;\n\n    for (int i = 0; i < n; i++){\n        cin >> odd[i];\n    }\n    \n   \n    for (int i = 0; i < n; i++){\n        cout << odd[i];\n    }\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "problemId": "linear-search-for-odd-numbers-4386603267",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746459407913",
+      "timestamp": "Mon, 05 May 2025 15:36:50 GMT",
+      "version": 18
+    },
+    {
+      "__v": 0,
+      "_id": "6818db77c6f35daa86256358",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, num; \n    int num[n];\n    \n    cin >> n;\n\n    for (int i = 0; i < n; i++){\n        cin >> num[i];\n    }\n    \n   \n    for (int i = 0; i < n; i++){\n        cout << num[i];\n    }\n    return 0;\n}",
+      "learner_id": "6811b1ff88362505107a60b1",
+      "problemId": "linear-search-for-odd-numbers-4386603267",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746459509328",
+      "timestamp": "Mon, 05 May 2025 15:38:31 GMT",
+      "version": 19
+    }
+  ],
+  "success": true
+}

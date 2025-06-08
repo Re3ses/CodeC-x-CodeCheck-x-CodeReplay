@@ -1,0 +1,1130 @@
+{
+  "formatted_snapshots": [
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nusing namespace std;\n\ndouble toCelsiius(double fahrenheit) {\n    return (fahrenheit - 32) * 5 / 9;\n}\n\nint main() {\n    double fahrenheit;\n\n    cin >> fahrenheit;\n\n    double celsius\n\n}\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "681518557feb1949530cbd2c",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32) * 5.0 / 9.0;\n}\n\nint main() {\n    double f;\n    std::cin >> f;\n\n    std::cout << std::fixed << std::setprecision(2);\n    std::cout << f << \" F is \" << toCelsius(f) << \" C\";\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6813037ca200735ad7fb6cec",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32) * 5.0 / 9.0;\n}\n\nint main() {\n    double f;\n    std::cin >> f;\n\n    double c = toCelsius(f);\n    std::cout << std::fixed << std::setprecision(2);\n    std::cout << f << \" F is \" << c << \" C\";\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "681303c4a200735ad7fb6cf0",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6815030a8045fd889c1c5251",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6815030b2972465a06288220",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>  // For setprecision and fixed\n\nusing namespace std;\n\n// User-defined function to convert Fahrenheit to Celsius\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32) * 5 / 9;\n}\n\nint main() {\n    double fahrenheit;\n    \n    // Input temperature in Fahrenheit\n    cin >> fahrenheit;\n    \n    // Convert the temperature to Celsius using the user-defined function\n    double celsius = toCelsius(fahrenheit);\n    \n    // Output the result with exactly two decimal places\n    cout << fixed << setprecision(2);\n    cout << fahrenheit << \" F is \" << celsius << \" C\" << endl;\n    \n    return 0;\n}\n",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "68150f9b0f4ba6f29b39572e",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>  // For setprecision and fixed\n\nusing namespace std;\n\n// User-defined function to convert Fahrenheit to Celsius\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32) * 5 / 9;\n}\n\nint main() {\n    double fahrenheit;\n    \n    // Input temperature in Fahrenheit\n    cin >> fahrenheit;\n    \n    // Convert the temperature to Celsius using the user-defined function\n    double celsius = toCelsius(fahrenheit);\n    \n    // Output the result without decimals for Fahrenheit\n    // Format Celsius to 2 decimal places\n    cout << fixed << setprecision(2);\n    \n    // Print Fahrenheit without decimals if it is a whole number\n    if (fahrenheit == static_cast<int>(fahrenheit)) {\n        cout << static_cast<int>(fahrenheit);  // Print as integer if it's a whole number\n    } else {\n        cout << fahrenheit;  // Otherwise print as a float\n    }\n\n    cout << \" F is \" << celsius << \" C\" << endl;\n    \n    return 0;\n}\n",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "681510190f4ba6f29b395733",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>  // For setprecision and fixed\n\nusing namespace std;\n\n// User-defined function to convert Fahrenheit to Celsius\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32) * 5 / 9;\n}\n\nint main() {\n    double fahrenheit;\n    \n    // Input temperature in Fahrenheit\n    cin >> fahrenheit;\n    \n    // Convert the temperature to Celsius using the user-defined function\n    double celsius = toCelsius(fahrenheit);\n    \n    // Output the result without decimals for Fahrenheit\n    // Format Celsius to 2 decimal places\n    cout << fixed << setprecision(2);\n\n    if (fahrenheit == static_cast<int>(fahrenheit)) {\n        cout << static_cast<int>(fahrenheit);\n    } else {\n        cout << fahrenheit;\n    }\n\n    cout << \" F is \" << celsius << \" C\" << endl;\n    \n    return 0;\n}\n",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "681510e80f4ba6f29b395736",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nusing namespace std;\n\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32) * 5 / 9;\n}\n\nint main() {\n    double fahrenheit;\n    \n    cin >> fahrenheit;\n    \n    double celsius = toCelsius(fahrenheit);\n    \n    cout << fixed << setprecision(2);\n\n    if (fahrenheit == static_cast<int>(fahrenheit)) {\n        cout << static_cast<int>(fahrenheit);\n    } else {\n        cout << fahrenheit;\n    }\n\n    cout << \" F is \" << celsius << \" C\" << endl;\n    \n    return 0;\n}\n",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6815133072d259eb8feed2ab",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nusing namespace std;\n\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32) * 5 / 9;\n}\n\nint main() {\n    double fahrenheit;\n    \n    cin >> fahrenheit;\n    \n    double celsius = toCelsius(fahrenheit);\n    \n    cout << fixed << setprecision(2);\n\n    if (fahrenheit == static_cast<int>(fahrenheit)) {\n        cout << static_cast<int>(fahrenheit);\n    } else {\n        cout << fahrenheit;\n    }\n\n    cout << \" F is \" << celsius << \" C\" << endl;\n    \n    return 0;\n}\n",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "681513346a1efc64da9c3af4",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "681517a77feb1949530cbd26",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nusing namespace std;\n\ndouble \n    // Your code here\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "681517c57feb1949530cbd29",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32) * 5.0 / 9.0;\n}\n\nint main() {\n    double f;\n    std::cin >> f;\n\n    std::cout << std::fixed << std::setprecision(2);\n    std::cout << f << \" F is \" << toCelsius(f) << \" C \";\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6813035ca200735ad7fb6ce8",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nusing namespace std;\n\ndouble toCelsiius(double fahrenheit) {\n    return (fahrenheit - 32) * 5 / 9;\n}\n\nint main() {\n    double fahrenheit;\n\n    cin >> fahrenheit;\n\n    double celsius = toCelsius(fahrenheit);\n\n    cout << fixed << setprecision(2);\n\n    if (fahre)\n\n}\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "681518957feb1949530cbd32",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nusing namespace std;\n\ndouble toCelsiius(double fahrenheit) {\n    return (fahrenheit - 32) * 5 / 9;\n}\n\nint main() {\n    double fahrenheit;\n\n    cin >> fahrenheit;\n\n    double celsius = toCelsius(fahrenheit);\n\n    cout << fixed << setprecision(2);\n\n    if (fahrenheit == s)\n\n}\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "681519267feb1949530cbd3e",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nusing namespace std;\n\ndouble toCelsiius(double fahrenheit) {\n    return (fahrenheit - 32) * 5 / 9;\n}\n\nint main() {\n    double fahrenheit;\n\n    cin >> fahrenheit;\n\n    double celsius = toCelsius(fahrenheit);\n\n    cout << fixed << setprecision(2);\n\n    if (fahrenheit == static_cast<int>(fahrenheit)) {\n        cout << static\n    }\n\n}\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "681519fe7feb1949530cbd50",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nusing namespace std;\n\ndouble toCelsiius(double fahrenheit) {\n    return (fahrenheit - 32) * 5 / 9;\n}\n\nint main() {\n    double fahrenheit;\n\n    cin >> fahrenheit;\n\n    double celsius = toCelsius(fahrenheit);\n\n    cout << fixed << setprecision(2);\n\n    if (fahrenheit == static_cast<int>(fahrenheit)) {\n        cout << static_cast<int>(fahrenheit);\n    } else {\n        cout << fahrenheit;\n    }\n    }\n\n}\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "68151a5d7feb1949530cbd59",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nusing namespace std;\n\ndouble toCelsiius(double fahrenheit) {\n    return (fahrenheit - 32) * 5 / 9;\n}\n\nint main() {\n    double fahrenheit;\n\n    cin >> fahrenheit;\n\n    double celsius = toCelsius(fahrenheit);\n\n    cout << fixed << setprecision(2);\n\n    if (fahrenheit == static_cast<int>(fahrenheit)) {\n        cout << static_cast<int>(fahrenheit);\n    } else {\n        cout << fahrenheit;\n    }\n    \n\n}\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "68151a887feb1949530cbd5c",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nusing namespace std;\n\ndouble toCelsiius(double fahrenheit) {\n    return (fahrenheit - 32) * 5 / 9;\n}\n\nint main() {\n    double fahrenheit;\n\n    cin >> fahrenheit;\n\n    double celsius = toCelsius(fahrenheit);\n\n    cout << fixed << setprecision(2);\n\n    if (fahrenheit == static_cast<int>(fahrenheit)) {\n        cout << static_cast<int>(fahrenheit);\n    } else {\n        cout << fahrenheit;\n    }\n    \n    \n\n}\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "68151a957feb1949530cbd5f",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nusing namespace std;\n\ndouble toCelsiius(double fahrenheit) {\n    return (fahrenheit - 32) * 5 / 9;\n}\n\nint main() {\n    double fahrenheit;\n\n    cin >> fahrenheit;\n\n    double celsius = toCelsius(fahrenheit);\n\n    cout << fixed << setprecision(2);\n\n    if (fahrenheit == static_cast<int>(fahrenheit)) {\n        cout << static_cast<int>(fahrenheit);\n    } else {\n        cout << fahrenheit;\n    }\n    \n    cout << \" F is \" << celsius << \" C\" <<\n\n}\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "68151aee7feb1949530cbd6b",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nusing namespace std;\n\ndouble toCelsiius(double fahrenheit) {\n    return (fahrenheit - 32) * 5 / 9;\n}\n\nint main() {\n    double fahrenheit;\n\n    cin >> fahrenheit;\n\n    double celsius = toCelsius(fahrenheit);\n\n    cout << fixed << setprecision(2);\n\n    if (fahrenheit == static_cast<int>(fahrenheit)) {\n        cout << static_cast<int>(fahrenheit);\n    } else {\n        cout << fahrenheit;\n    }\n    \n    cout << \" F is \" << celsius << \" C\" << endl;\n\n}\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "68151b427feb1949530cbd74",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nusing namespace std;\n\ndouble toCelsiius(double fahrenheit) {\n    return (fahrenheit - 32) * 5 / 9;\n}\n\nint main() {\n    double fahrenheit;\n\n    cin >> fahrenheit;\n\n    double celsius = toCelsius(fahrenheit);\n\n    cout << fixed << setprecision(2);\n\n    if (fahrenheit == static_cast<int>(fahrenheit)) {\n        cout << static_cast<int>(fahrenheit);\n    } else {\n        cout << fahrenheit;\n    }\n    \n    cout << \" F is \" << celsius << \" C\" << endl;\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "68151b487feb1949530cbd77",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>  // For setprecision and fixed\n\nusing namespace std;\n\n// User-defined function to convert Fahrenheit to Celsius\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32) * 5 / 9;\n}\n\nint main() {\n    double fahrenheit;\n    \n    // Input temperature in Fahrenheit\n    cin >> fahrenheit;\n    \n    // Convert the temperature to Celsius using the user-defined function\n    double celsius = toCelsius(fahrenheit);\n    \n    // Output the result without decimals for Fahrenheit\n    // Format Celsius to 2 decimal places\n    cout << fixed << setprecision(2);\n    \n    // Print Fahrenheit without decimals if it is a whole number\n    if (fahrenheit == static_cast<int>(fahrenheit)) {\n        cout << static_cast<int>(fahrenheit);  // Print as integer if it's a whole number\n    } else {\n        cout << fahrenheit;  // Otherwise print as a float\n    }\n\n    cout << \" F is \" << celsius << \" C\" << endl;\n    \n    return 0;\n}\n",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "68151c3b7feb1949530cbd85",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>  // For setprecision and fixed\n\nusing namespace std;\n\n// User-defined function to convert Fahrenheit to Celsius\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32) * 5 / 9;\n}\n\nint main() {\n    double fahrenheit;\n    \n    // Input temperature in Fahrenheit\n    cin >> fahrenheit;\n    \n    // Convert the temperature to Celsius using the user-defined function\n    double celsius = toCelsius(fahrenheit);\n    \n    // Output the result without decimals for Fahrenheit\n    // Format Celsius to 2 decimal places\n    cout << fixed << setprecision(2);\n    \n    // Print Fahrenheit without decimals if it is a whole number\n    if (fahrenheit == static_cast<int>(fahrenheit)) {\n        cout << static_cast<int>(fahrenheit);  // Print as integer if it's a whole number\n    } else {\n        cout << fahrenheit;  // Otherwise print as a float\n    }\n\n    cout << \" F is \" << celsius << \" C\" << endl;\n    \n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "68151c817feb1949530cbd8e",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32) * 5.0 / 9.0;\n}\n\nint main() {\n    double f;\n    std::cin >> f;\n\n    std::cout << static_cast<int>(f) << \" F is \";\n    std::cout << std::fixed << std::setprecision(2) << c << \" C\";\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6813021ca200735ad7fb6cc4",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\ndouble toCelsius(double fahrenheit) [\n    return (fahrenheit - 32) * 5 / 9;\n]\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812fdb0a200735ad7fb6c90",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32) * 5 / 9;\n}\n\nint main() {\n    double f;\n    std::cin >> f;\n\n    double c = toCelsius(f);\n    std::cout << std::fixed << std;;setprecision(2);\n    std::cout << f << \" F is \" << c << \" C\";\n    \n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812fe37a200735ad7fb6c93",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32) * 5 / 9;\n}\n\nint main() {\n    double f;\n    std::cin >> f;\n\n    std::cout << std::fixed << std::setprecision(2);\n    std::cout << f << \" F is \" << toCelsius(f) << \" C\";\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812ff08a200735ad7fb6c99",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32) * 5.0 / 9.0;\n}\n\nint main() {\n    double f;\n    std::cin >> f;\n\n    std::cout << std::fixed << std::setprecision(2);\n    std::cout << f << \" F is \" << toCelsius(f) << \" C\";\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "68130032a200735ad7fb6ca1",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32) * 5 / 9;\n}\n\nint main() {\n    double f;\n    std::cin >> f;\n\n    std::cout << std::fixed << std::setprecision(2);\n    std::cout << f << \" F is \" << toCelsius(f) << \" C\";\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "68130080a200735ad7fb6ca7",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32.00) * 5.00 / 9.00;\n}\n\nint main() {\n    double f;\n    std::cin >> f;\n\n    std::cout << std::fixed << std::setprecision(2);\n    std::cout << f << \" F is \" << toCelsius(f) << \" C\";\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "68130098a200735ad7fb6caa",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32.0) * 5.0 / 9.0;\n}\n\nint main() {\n    double f;\n    std::cin >> f;\n\n    std::cout << std::fixed << std::setprecision(2);\n    std::cout << f << \" F is \" << toCelsius(f) << \" C\";\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "681300b2a200735ad7fb6cae",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32) * 5.0 / 9.0;\n}\n\nint main() {\n    double f;\n    std::cin >> f;\n\n    std::cout << std::fixed << std::setprecision(2);\n    std::cout << f << \" F is \" << toCelsius(f) << \" C\";\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "681300c5a200735ad7fb6cb1",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32) * 5.0 / 9.0;\n}\n\nint main() {\n    double f;\n    std::cin >> f;\n\n    double c = toCelsius(f);\n\n    std::cout << static_cast<int>(f) << std::setprecision(2);\n    std::cout << f << \" F is \" << toCelsius(f) << \" C\";\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "68130172a200735ad7fb6cb7",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32) * 5.0 / 9.0;\n}\n\nint main() {\n    double f;\n    std::cin >> f;\n\n    double c = toCelsius(f);\n\n    std::cout << static_cast<int>(f) << \" F is \";\n    std::cout << std::fixed << std::setprecision(2) << c toCelsius(f) << \" C\";\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "681301a5a200735ad7fb6cba",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32) * 5.0 / 9.0;\n}\n\nint main() {\n    double f;\n    std::cin >> f;\n\n    double c = toCelsius(f);\n\n    std::cout << static_cast<int>(f) << \" F is \";\n    std::cout << std::fixed << std::setprecision(2) << c << \" C\";\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "681301b3a200735ad7fb6cbe",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812fd0ea200735ad7fb6c8a",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32) * 5.0 / 9.0;\n}\n\nint main() {\n    double f;\n    std::cin >> f;\n\n    \n\n    std::cout << static_cast<int>(f) << \" F is \";\n    std::cout << std::fixed << std::setprecision(2) << c << \" C\";\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6813022fa200735ad7fb6cc7",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32) * 5.0 / 9.0;\n}\n\nint main() {\n    double f;\n    std::cin >> f;\n\n    std::cout << std::fixed << std::setprecision(2);\n    std::cout << static_cast<int>(f) << \" F is \" << toCelsius(f) << \" C\";\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6813023ca200735ad7fb6cca",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32) * 5 / 9;\n}\n\nint main() {\n    double f;\n    std::cin >> f;\n\n    std::cout << std::fixed << std::setprecision(2);\n    std::cout << static_cast<int>(f) << \" F is \" << toCelsius(f) << \" C\";\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6813026aa200735ad7fb6cce",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32.00) * 5.00 / 9.00;\n}\n\nint main() {\n    double f;\n    std::cin >> f;\n\n    std::cout << std::fixed << std::setprecision(2);\n    std::cout << static_cast<int>(f) << \" F is \" << toCelsius(f) << \" C\";\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "68130288a200735ad7fb6cd1",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32.00) * 5.00 / 9.00;\n}\n\nint main() {\n    double f;\n    std::cin >> f;\n\n    double c = toCelsius(f);\n\n    std::cout << static_cast<int>(f) << \" F is \";\n    std::cout << std::fixed << std::setprecision(2) << c << \" C\";\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "681302d5a200735ad7fb6cd5",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32) * 5 / 9;\n}\n\nint main() {\n    double f;\n    std::cin >> f;\n\n    double c = toCelsius(f);\n\n    std::cout << static_cast<int>(f) << \" F is \";\n    std::cout << std::fixed << std::setprecision(2) << c << \" C\";\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "681302eea200735ad7fb6cd8",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32) * 5 / 9;\n}\n\nint main() {\n    double f;\n    std::cin >> f;\n\n    std::cout << std::fixed << std::setprecision(2);\n    std::cout << f << \" F is \" << toCelsius(f) << \" C\";\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "68130305a200735ad7fb6cdc",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32) * 5.0 / 9.0;\n}\n\nint main() {\n    double f;\n    std::cin >> f;\n\n    std::cout << std::fixed << std::setprecision(2);\n    std::cout << f << \" F is \" << toCelsius(f) << \" C\";\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6813031aa200735ad7fb6cdf",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32) * 5.0 / 9.0;\n}\n\nint main() {\n    double f;\n    std::cin >> f;\n\n    std::cout << std::fixed << std::setprecision(2);\n    std::cout << f << \" F is \" << toCelsius(f) << \" C \";\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "68130329a200735ad7fb6ce2",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32) * 5.0 / 9.0;\n}\n\nint main() {\n    double f;\n    std::cin >> f;\n\n    std::cout << std::fixed << std::setprecision(2);\n    std::cout << f << \" F is \" << toCelsius(f) << \"C\";\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6813033fa200735ad7fb6ce5",
+      "timestamp": ""
+    }
+  ],
+  "sequentialSimilarities": [
+    {
+      "codebert_score": 65,
+      "from_index": 0,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 65,
+      "to_index": 1
+    },
+    {
+      "codebert_score": 86,
+      "from_index": 1,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 86,
+      "to_index": 2
+    },
+    {
+      "codebert_score": 47,
+      "from_index": 2,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 47,
+      "to_index": 3
+    },
+    {
+      "codebert_score": 99,
+      "from_index": 3,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 99,
+      "to_index": 4
+    },
+    {
+      "codebert_score": 44,
+      "from_index": 4,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 44,
+      "to_index": 5
+    },
+    {
+      "codebert_score": 83,
+      "from_index": 5,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 83,
+      "to_index": 6
+    },
+    {
+      "codebert_score": 100,
+      "from_index": 6,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 100,
+      "to_index": 7
+    },
+    {
+      "codebert_score": 66,
+      "from_index": 7,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 66,
+      "to_index": 8
+    },
+    {
+      "codebert_score": 100,
+      "from_index": 8,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 100,
+      "to_index": 9
+    },
+    {
+      "codebert_score": 40,
+      "from_index": 9,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 40,
+      "to_index": 10
+    },
+    {
+      "codebert_score": 66,
+      "from_index": 10,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 66,
+      "to_index": 11
+    },
+    {
+      "codebert_score": 49,
+      "from_index": 11,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 49,
+      "to_index": 12
+    },
+    {
+      "codebert_score": 67,
+      "from_index": 12,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 67,
+      "to_index": 13
+    },
+    {
+      "codebert_score": 87,
+      "from_index": 13,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 87,
+      "to_index": 14
+    },
+    {
+      "codebert_score": 79,
+      "from_index": 14,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 79,
+      "to_index": 15
+    },
+    {
+      "codebert_score": 81,
+      "from_index": 15,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 81,
+      "to_index": 16
+    },
+    {
+      "codebert_score": 88,
+      "from_index": 16,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 88,
+      "to_index": 17
+    },
+    {
+      "codebert_score": 99,
+      "from_index": 17,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 99,
+      "to_index": 18
+    },
+    {
+      "codebert_score": 84,
+      "from_index": 18,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 84,
+      "to_index": 19
+    },
+    {
+      "codebert_score": 90,
+      "from_index": 19,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 90,
+      "to_index": 20
+    },
+    {
+      "codebert_score": 91,
+      "from_index": 20,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 91,
+      "to_index": 21
+    },
+    {
+      "codebert_score": 66,
+      "from_index": 21,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 66,
+      "to_index": 22
+    },
+    {
+      "codebert_score": 100,
+      "from_index": 22,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 100,
+      "to_index": 23
+    },
+    {
+      "codebert_score": 62,
+      "from_index": 23,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 62,
+      "to_index": 24
+    },
+    {
+      "codebert_score": 62,
+      "from_index": 24,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 62,
+      "to_index": 25
+    },
+    {
+      "codebert_score": 62,
+      "from_index": 25,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 62,
+      "to_index": 26
+    },
+    {
+      "codebert_score": 82,
+      "from_index": 26,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 82,
+      "to_index": 27
+    },
+    {
+      "codebert_score": 86,
+      "from_index": 27,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 86,
+      "to_index": 28
+    },
+    {
+      "codebert_score": 86,
+      "from_index": 28,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 86,
+      "to_index": 29
+    },
+    {
+      "codebert_score": 82,
+      "from_index": 29,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 82,
+      "to_index": 30
+    },
+    {
+      "codebert_score": 90,
+      "from_index": 30,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 90,
+      "to_index": 31
+    },
+    {
+      "codebert_score": 91,
+      "from_index": 31,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 91,
+      "to_index": 32
+    },
+    {
+      "codebert_score": 79,
+      "from_index": 32,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 79,
+      "to_index": 33
+    },
+    {
+      "codebert_score": 87,
+      "from_index": 33,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 87,
+      "to_index": 34
+    },
+    {
+      "codebert_score": 89,
+      "from_index": 34,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 89,
+      "to_index": 35
+    },
+    {
+      "codebert_score": 47,
+      "from_index": 35,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 47,
+      "to_index": 36
+    },
+    {
+      "codebert_score": 49,
+      "from_index": 36,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 49,
+      "to_index": 37
+    },
+    {
+      "codebert_score": 86,
+      "from_index": 37,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 86,
+      "to_index": 38
+    },
+    {
+      "codebert_score": 86,
+      "from_index": 38,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 86,
+      "to_index": 39
+    },
+    {
+      "codebert_score": 83,
+      "from_index": 39,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 83,
+      "to_index": 40
+    },
+    {
+      "codebert_score": 86,
+      "from_index": 40,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 86,
+      "to_index": 41
+    },
+    {
+      "codebert_score": 83,
+      "from_index": 41,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 83,
+      "to_index": 42
+    },
+    {
+      "codebert_score": 81,
+      "from_index": 42,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 81,
+      "to_index": 43
+    },
+    {
+      "codebert_score": 86,
+      "from_index": 43,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 86,
+      "to_index": 44
+    },
+    {
+      "codebert_score": 85,
+      "from_index": 44,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 85,
+      "to_index": 45
+    },
+    {
+      "codebert_score": 85,
+      "from_index": 45,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 85,
+      "to_index": 46
+    }
+  ],
+  "snapshots": [
+    {
+      "__v": 0,
+      "_id": "681518557feb1949530cbd2c",
+      "code": "#include <iostream>\n#include <iomanip>\n\nusing namespace std;\n\ndouble toCelsiius(double fahrenheit) {\n    return (fahrenheit - 32) * 5 / 9;\n}\n\nint main() {\n    double fahrenheit;\n\n    cin >> fahrenheit;\n\n    double celsius\n\n}\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "fahrenheit-to-celsius-converter-8133077604",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746212948155",
+      "timestamp": "Fri, 02 May 2025 19:09:09 GMT",
+      "version": 34
+    },
+    {
+      "__v": 0,
+      "_id": "6813037ca200735ad7fb6cec",
+      "code": "#include <iostream>\n#include <iomanip>\n\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32) * 5.0 / 9.0;\n}\n\nint main() {\n    double f;\n    std::cin >> f;\n\n    std::cout << std::fixed << std::setprecision(2);\n    std::cout << f << \" F is \" << toCelsius(f) << \" C\";\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "fahrenheit-to-celsius-converter-8133077604",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746076539382",
+      "timestamp": "Thu, 01 May 2025 05:15:40 GMT",
+      "version": 25
+    },
+    {
+      "__v": 0,
+      "_id": "681303c4a200735ad7fb6cf0",
+      "code": "#include <iostream>\n#include <iomanip>\n\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32) * 5.0 / 9.0;\n}\n\nint main() {\n    double f;\n    std::cin >> f;\n\n    double c = toCelsius(f);\n    std::cout << std::fixed << std::setprecision(2);\n    std::cout << f << \" F is \" << c << \" C\";\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "fahrenheit-to-celsius-converter-8133077604",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746076612007",
+      "timestamp": "Thu, 01 May 2025 05:16:52 GMT",
+      "version": 26
+    },
+    {
+      "__v": 0,
+      "_id": "6815030a8045fd889c1c5251",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "fahrenheit-to-celsius-converter-8133077604",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746207497735",
+      "timestamp": "Fri, 02 May 2025 17:38:18 GMT",
+      "version": 27
+    },
+    {
+      "__v": 0,
+      "_id": "6815030b2972465a06288220",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "fahrenheit-to-celsius-converter-8133077604",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746207498135",
+      "timestamp": "Fri, 02 May 2025 17:38:19 GMT",
+      "version": 27
+    },
+    {
+      "__v": 0,
+      "_id": "68150f9b0f4ba6f29b39572e",
+      "code": "#include <iostream>\n#include <iomanip>  // For setprecision and fixed\n\nusing namespace std;\n\n// User-defined function to convert Fahrenheit to Celsius\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32) * 5 / 9;\n}\n\nint main() {\n    double fahrenheit;\n    \n    // Input temperature in Fahrenheit\n    cin >> fahrenheit;\n    \n    // Convert the temperature to Celsius using the user-defined function\n    double celsius = toCelsius(fahrenheit);\n    \n    // Output the result with exactly two decimal places\n    cout << fixed << setprecision(2);\n    cout << fahrenheit << \" F is \" << celsius << \" C\" << endl;\n    \n    return 0;\n}\n",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "fahrenheit-to-celsius-converter-8133077604",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746210712947",
+      "timestamp": "Fri, 02 May 2025 18:31:55 GMT",
+      "version": 28
+    },
+    {
+      "__v": 0,
+      "_id": "681510190f4ba6f29b395733",
+      "code": "#include <iostream>\n#include <iomanip>  // For setprecision and fixed\n\nusing namespace std;\n\n// User-defined function to convert Fahrenheit to Celsius\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32) * 5 / 9;\n}\n\nint main() {\n    double fahrenheit;\n    \n    // Input temperature in Fahrenheit\n    cin >> fahrenheit;\n    \n    // Convert the temperature to Celsius using the user-defined function\n    double celsius = toCelsius(fahrenheit);\n    \n    // Output the result without decimals for Fahrenheit\n    // Format Celsius to 2 decimal places\n    cout << fixed << setprecision(2);\n    \n    // Print Fahrenheit without decimals if it is a whole number\n    if (fahrenheit == static_cast<int>(fahrenheit)) {\n        cout << static_cast<int>(fahrenheit);  // Print as integer if it's a whole number\n    } else {\n        cout << fahrenheit;  // Otherwise print as a float\n    }\n\n    cout << \" F is \" << celsius << \" C\" << endl;\n    \n    return 0;\n}\n",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "fahrenheit-to-celsius-converter-8133077604",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746210840856",
+      "timestamp": "Fri, 02 May 2025 18:34:01 GMT",
+      "version": 29
+    },
+    {
+      "__v": 0,
+      "_id": "681510e80f4ba6f29b395736",
+      "code": "#include <iostream>\n#include <iomanip>  // For setprecision and fixed\n\nusing namespace std;\n\n// User-defined function to convert Fahrenheit to Celsius\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32) * 5 / 9;\n}\n\nint main() {\n    double fahrenheit;\n    \n    // Input temperature in Fahrenheit\n    cin >> fahrenheit;\n    \n    // Convert the temperature to Celsius using the user-defined function\n    double celsius = toCelsius(fahrenheit);\n    \n    // Output the result without decimals for Fahrenheit\n    // Format Celsius to 2 decimal places\n    cout << fixed << setprecision(2);\n\n    if (fahrenheit == static_cast<int>(fahrenheit)) {\n        cout << static_cast<int>(fahrenheit);\n    } else {\n        cout << fahrenheit;\n    }\n\n    cout << \" F is \" << celsius << \" C\" << endl;\n    \n    return 0;\n}\n",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "fahrenheit-to-celsius-converter-8133077604",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746211047097",
+      "timestamp": "Fri, 02 May 2025 18:37:28 GMT",
+      "version": 30
+    },
+    {
+      "__v": 0,
+      "_id": "6815133072d259eb8feed2ab",
+      "code": "#include <iostream>\n#include <iomanip>\n\nusing namespace std;\n\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32) * 5 / 9;\n}\n\nint main() {\n    double fahrenheit;\n    \n    cin >> fahrenheit;\n    \n    double celsius = toCelsius(fahrenheit);\n    \n    cout << fixed << setprecision(2);\n\n    if (fahrenheit == static_cast<int>(fahrenheit)) {\n        cout << static_cast<int>(fahrenheit);\n    } else {\n        cout << fahrenheit;\n    }\n\n    cout << \" F is \" << celsius << \" C\" << endl;\n    \n    return 0;\n}\n",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "fahrenheit-to-celsius-converter-8133077604",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746211626752",
+      "timestamp": "Fri, 02 May 2025 18:47:12 GMT",
+      "version": 31
+    },
+    {
+      "__v": 0,
+      "_id": "681513346a1efc64da9c3af4",
+      "code": "#include <iostream>\n#include <iomanip>\n\nusing namespace std;\n\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32) * 5 / 9;\n}\n\nint main() {\n    double fahrenheit;\n    \n    cin >> fahrenheit;\n    \n    double celsius = toCelsius(fahrenheit);\n    \n    cout << fixed << setprecision(2);\n\n    if (fahrenheit == static_cast<int>(fahrenheit)) {\n        cout << static_cast<int>(fahrenheit);\n    } else {\n        cout << fahrenheit;\n    }\n\n    cout << \" F is \" << celsius << \" C\" << endl;\n    \n    return 0;\n}\n",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "fahrenheit-to-celsius-converter-8133077604",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746211631209",
+      "timestamp": "Fri, 02 May 2025 18:47:16 GMT",
+      "version": 31
+    },
+    {
+      "__v": 0,
+      "_id": "681517a77feb1949530cbd26",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "fahrenheit-to-celsius-converter-8133077604",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746212773957",
+      "timestamp": "Fri, 02 May 2025 19:06:15 GMT",
+      "version": 32
+    },
+    {
+      "__v": 0,
+      "_id": "681517c57feb1949530cbd29",
+      "code": "#include <iostream>\n#include <iomanip>\n\nusing namespace std;\n\ndouble \n    // Your code here\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "fahrenheit-to-celsius-converter-8133077604",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746212804368",
+      "timestamp": "Fri, 02 May 2025 19:06:45 GMT",
+      "version": 33
+    },
+    {
+      "__v": 0,
+      "_id": "6813035ca200735ad7fb6ce8",
+      "code": "#include <iostream>\n#include <iomanip>\n\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32) * 5.0 / 9.0;\n}\n\nint main() {\n    double f;\n    std::cin >> f;\n\n    std::cout << std::fixed << std::setprecision(2);\n    std::cout << f << \" F is \" << toCelsius(f) << \" C \";\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "fahrenheit-to-celsius-converter-8133077604",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746076507174",
+      "timestamp": "Thu, 01 May 2025 05:15:08 GMT",
+      "version": 24
+    },
+    {
+      "__v": 0,
+      "_id": "681518957feb1949530cbd32",
+      "code": "#include <iostream>\n#include <iomanip>\n\nusing namespace std;\n\ndouble toCelsiius(double fahrenheit) {\n    return (fahrenheit - 32) * 5 / 9;\n}\n\nint main() {\n    double fahrenheit;\n\n    cin >> fahrenheit;\n\n    double celsius = toCelsius(fahrenheit);\n\n    cout << fixed << setprecision(2);\n\n    if (fahre)\n\n}\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "fahrenheit-to-celsius-converter-8133077604",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746213012182",
+      "timestamp": "Fri, 02 May 2025 19:10:13 GMT",
+      "version": 35
+    },
+    {
+      "__v": 0,
+      "_id": "681519267feb1949530cbd3e",
+      "code": "#include <iostream>\n#include <iomanip>\n\nusing namespace std;\n\ndouble toCelsiius(double fahrenheit) {\n    return (fahrenheit - 32) * 5 / 9;\n}\n\nint main() {\n    double fahrenheit;\n\n    cin >> fahrenheit;\n\n    double celsius = toCelsius(fahrenheit);\n\n    cout << fixed << setprecision(2);\n\n    if (fahrenheit == s)\n\n}\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "fahrenheit-to-celsius-converter-8133077604",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746213157377",
+      "timestamp": "Fri, 02 May 2025 19:12:38 GMT",
+      "version": 36
+    },
+    {
+      "__v": 0,
+      "_id": "681519fe7feb1949530cbd50",
+      "code": "#include <iostream>\n#include <iomanip>\n\nusing namespace std;\n\ndouble toCelsiius(double fahrenheit) {\n    return (fahrenheit - 32) * 5 / 9;\n}\n\nint main() {\n    double fahrenheit;\n\n    cin >> fahrenheit;\n\n    double celsius = toCelsius(fahrenheit);\n\n    cout << fixed << setprecision(2);\n\n    if (fahrenheit == static_cast<int>(fahrenheit)) {\n        cout << static\n    }\n\n}\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "fahrenheit-to-celsius-converter-8133077604",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746213373216",
+      "timestamp": "Fri, 02 May 2025 19:16:14 GMT",
+      "version": 37
+    },
+    {
+      "__v": 0,
+      "_id": "68151a5d7feb1949530cbd59",
+      "code": "#include <iostream>\n#include <iomanip>\n\nusing namespace std;\n\ndouble toCelsiius(double fahrenheit) {\n    return (fahrenheit - 32) * 5 / 9;\n}\n\nint main() {\n    double fahrenheit;\n\n    cin >> fahrenheit;\n\n    double celsius = toCelsius(fahrenheit);\n\n    cout << fixed << setprecision(2);\n\n    if (fahrenheit == static_cast<int>(fahrenheit)) {\n        cout << static_cast<int>(fahrenheit);\n    } else {\n        cout << fahrenheit;\n    }\n    }\n\n}\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "fahrenheit-to-celsius-converter-8133077604",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746213468692",
+      "timestamp": "Fri, 02 May 2025 19:17:49 GMT",
+      "version": 38
+    },
+    {
+      "__v": 0,
+      "_id": "68151a887feb1949530cbd5c",
+      "code": "#include <iostream>\n#include <iomanip>\n\nusing namespace std;\n\ndouble toCelsiius(double fahrenheit) {\n    return (fahrenheit - 32) * 5 / 9;\n}\n\nint main() {\n    double fahrenheit;\n\n    cin >> fahrenheit;\n\n    double celsius = toCelsius(fahrenheit);\n\n    cout << fixed << setprecision(2);\n\n    if (fahrenheit == static_cast<int>(fahrenheit)) {\n        cout << static_cast<int>(fahrenheit);\n    } else {\n        cout << fahrenheit;\n    }\n    \n\n}\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "fahrenheit-to-celsius-converter-8133077604",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746213510730",
+      "timestamp": "Fri, 02 May 2025 19:18:32 GMT",
+      "version": 39
+    },
+    {
+      "__v": 0,
+      "_id": "68151a957feb1949530cbd5f",
+      "code": "#include <iostream>\n#include <iomanip>\n\nusing namespace std;\n\ndouble toCelsiius(double fahrenheit) {\n    return (fahrenheit - 32) * 5 / 9;\n}\n\nint main() {\n    double fahrenheit;\n\n    cin >> fahrenheit;\n\n    double celsius = toCelsius(fahrenheit);\n\n    cout << fixed << setprecision(2);\n\n    if (fahrenheit == static_cast<int>(fahrenheit)) {\n        cout << static_cast<int>(fahrenheit);\n    } else {\n        cout << fahrenheit;\n    }\n    \n    \n\n}\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "fahrenheit-to-celsius-converter-8133077604",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746213524600",
+      "timestamp": "Fri, 02 May 2025 19:18:45 GMT",
+      "version": 40
+    },
+    {
+      "__v": 0,
+      "_id": "68151aee7feb1949530cbd6b",
+      "code": "#include <iostream>\n#include <iomanip>\n\nusing namespace std;\n\ndouble toCelsiius(double fahrenheit) {\n    return (fahrenheit - 32) * 5 / 9;\n}\n\nint main() {\n    double fahrenheit;\n\n    cin >> fahrenheit;\n\n    double celsius = toCelsius(fahrenheit);\n\n    cout << fixed << setprecision(2);\n\n    if (fahrenheit == static_cast<int>(fahrenheit)) {\n        cout << static_cast<int>(fahrenheit);\n    } else {\n        cout << fahrenheit;\n    }\n    \n    cout << \" F is \" << celsius << \" C\" <<\n\n}\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "fahrenheit-to-celsius-converter-8133077604",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746213613634",
+      "timestamp": "Fri, 02 May 2025 19:20:14 GMT",
+      "version": 41
+    },
+    {
+      "__v": 0,
+      "_id": "68151b427feb1949530cbd74",
+      "code": "#include <iostream>\n#include <iomanip>\n\nusing namespace std;\n\ndouble toCelsiius(double fahrenheit) {\n    return (fahrenheit - 32) * 5 / 9;\n}\n\nint main() {\n    double fahrenheit;\n\n    cin >> fahrenheit;\n\n    double celsius = toCelsius(fahrenheit);\n\n    cout << fixed << setprecision(2);\n\n    if (fahrenheit == static_cast<int>(fahrenheit)) {\n        cout << static_cast<int>(fahrenheit);\n    } else {\n        cout << fahrenheit;\n    }\n    \n    cout << \" F is \" << celsius << \" C\" << endl;\n\n}\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "fahrenheit-to-celsius-converter-8133077604",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746213697026",
+      "timestamp": "Fri, 02 May 2025 19:21:38 GMT",
+      "version": 42
+    },
+    {
+      "__v": 0,
+      "_id": "68151b487feb1949530cbd77",
+      "code": "#include <iostream>\n#include <iomanip>\n\nusing namespace std;\n\ndouble toCelsiius(double fahrenheit) {\n    return (fahrenheit - 32) * 5 / 9;\n}\n\nint main() {\n    double fahrenheit;\n\n    cin >> fahrenheit;\n\n    double celsius = toCelsius(fahrenheit);\n\n    cout << fixed << setprecision(2);\n\n    if (fahrenheit == static_cast<int>(fahrenheit)) {\n        cout << static_cast<int>(fahrenheit);\n    } else {\n        cout << fahrenheit;\n    }\n    \n    cout << \" F is \" << celsius << \" C\" << endl;\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "fahrenheit-to-celsius-converter-8133077604",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746213702663",
+      "timestamp": "Fri, 02 May 2025 19:21:44 GMT",
+      "version": 43
+    },
+    {
+      "__v": 0,
+      "_id": "68151c3b7feb1949530cbd85",
+      "code": "#include <iostream>\n#include <iomanip>  // For setprecision and fixed\n\nusing namespace std;\n\n// User-defined function to convert Fahrenheit to Celsius\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32) * 5 / 9;\n}\n\nint main() {\n    double fahrenheit;\n    \n    // Input temperature in Fahrenheit\n    cin >> fahrenheit;\n    \n    // Convert the temperature to Celsius using the user-defined function\n    double celsius = toCelsius(fahrenheit);\n    \n    // Output the result without decimals for Fahrenheit\n    // Format Celsius to 2 decimal places\n    cout << fixed << setprecision(2);\n    \n    // Print Fahrenheit without decimals if it is a whole number\n    if (fahrenheit == static_cast<int>(fahrenheit)) {\n        cout << static_cast<int>(fahrenheit);  // Print as integer if it's a whole number\n    } else {\n        cout << fahrenheit;  // Otherwise print as a float\n    }\n\n    cout << \" F is \" << celsius << \" C\" << endl;\n    \n    return 0;\n}\n",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "fahrenheit-to-celsius-converter-8133077604",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746213945868",
+      "timestamp": "Fri, 02 May 2025 19:25:47 GMT",
+      "version": 44
+    },
+    {
+      "__v": 0,
+      "_id": "68151c817feb1949530cbd8e",
+      "code": "#include <iostream>\n#include <iomanip>  // For setprecision and fixed\n\nusing namespace std;\n\n// User-defined function to convert Fahrenheit to Celsius\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32) * 5 / 9;\n}\n\nint main() {\n    double fahrenheit;\n    \n    // Input temperature in Fahrenheit\n    cin >> fahrenheit;\n    \n    // Convert the temperature to Celsius using the user-defined function\n    double celsius = toCelsius(fahrenheit);\n    \n    // Output the result without decimals for Fahrenheit\n    // Format Celsius to 2 decimal places\n    cout << fixed << setprecision(2);\n    \n    // Print Fahrenheit without decimals if it is a whole number\n    if (fahrenheit == static_cast<int>(fahrenheit)) {\n        cout << static_cast<int>(fahrenheit);  // Print as integer if it's a whole number\n    } else {\n        cout << fahrenheit;  // Otherwise print as a float\n    }\n\n    cout << \" F is \" << celsius << \" C\" << endl;\n    \n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "fahrenheit-to-celsius-converter-8133077604",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746214016629",
+      "timestamp": "Fri, 02 May 2025 19:26:57 GMT",
+      "version": 45
+    },
+    {
+      "__v": 0,
+      "_id": "6813021ca200735ad7fb6cc4",
+      "code": "#include <iostream>\n#include <iomanip>\n\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32) * 5.0 / 9.0;\n}\n\nint main() {\n    double f;\n    std::cin >> f;\n\n    std::cout << static_cast<int>(f) << \" F is \";\n    std::cout << std::fixed << std::setprecision(2) << c << \" C\";\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "fahrenheit-to-celsius-converter-8133077604",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746076187580",
+      "timestamp": "Thu, 01 May 2025 05:09:48 GMT",
+      "version": 13
+    },
+    {
+      "__v": 0,
+      "_id": "6812fdb0a200735ad7fb6c90",
+      "code": "#include <iostream>\n#include <iomanip>\n\ndouble toCelsius(double fahrenheit) [\n    return (fahrenheit - 32) * 5 / 9;\n]\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "fahrenheit-to-celsius-converter-8133077604",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746075055704",
+      "timestamp": "Thu, 01 May 2025 04:50:56 GMT",
+      "version": 2
+    },
+    {
+      "__v": 0,
+      "_id": "6812fe37a200735ad7fb6c93",
+      "code": "#include <iostream>\n#include <iomanip>\n\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32) * 5 / 9;\n}\n\nint main() {\n    double f;\n    std::cin >> f;\n\n    double c = toCelsius(f);\n    std::cout << std::fixed << std;;setprecision(2);\n    std::cout << f << \" F is \" << c << \" C\";\n    \n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "fahrenheit-to-celsius-converter-8133077604",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746075190731",
+      "timestamp": "Thu, 01 May 2025 04:53:11 GMT",
+      "version": 3
+    },
+    {
+      "__v": 0,
+      "_id": "6812ff08a200735ad7fb6c99",
+      "code": "#include <iostream>\n#include <iomanip>\n\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32) * 5 / 9;\n}\n\nint main() {\n    double f;\n    std::cin >> f;\n\n    std::cout << std::fixed << std::setprecision(2);\n    std::cout << f << \" F is \" << toCelsius(f) << \" C\";\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "fahrenheit-to-celsius-converter-8133077604",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746075399998",
+      "timestamp": "Thu, 01 May 2025 04:56:40 GMT",
+      "version": 4
+    },
+    {
+      "__v": 0,
+      "_id": "68130032a200735ad7fb6ca1",
+      "code": "#include <iostream>\n#include <iomanip>\n\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32) * 5.0 / 9.0;\n}\n\nint main() {\n    double f;\n    std::cin >> f;\n\n    std::cout << std::fixed << std::setprecision(2);\n    std::cout << f << \" F is \" << toCelsius(f) << \" C\";\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "fahrenheit-to-celsius-converter-8133077604",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746075697660",
+      "timestamp": "Thu, 01 May 2025 05:01:38 GMT",
+      "version": 5
+    },
+    {
+      "__v": 0,
+      "_id": "68130080a200735ad7fb6ca7",
+      "code": "#include <iostream>\n#include <iomanip>\n\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32) * 5 / 9;\n}\n\nint main() {\n    double f;\n    std::cin >> f;\n\n    std::cout << std::fixed << std::setprecision(2);\n    std::cout << f << \" F is \" << toCelsius(f) << \" C\";\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "fahrenheit-to-celsius-converter-8133077604",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746075776012",
+      "timestamp": "Thu, 01 May 2025 05:02:56 GMT",
+      "version": 6
+    },
+    {
+      "__v": 0,
+      "_id": "68130098a200735ad7fb6caa",
+      "code": "#include <iostream>\n#include <iomanip>\n\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32.00) * 5.00 / 9.00;\n}\n\nint main() {\n    double f;\n    std::cin >> f;\n\n    std::cout << std::fixed << std::setprecision(2);\n    std::cout << f << \" F is \" << toCelsius(f) << \" C\";\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "fahrenheit-to-celsius-converter-8133077604",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746075799529",
+      "timestamp": "Thu, 01 May 2025 05:03:20 GMT",
+      "version": 7
+    },
+    {
+      "__v": 0,
+      "_id": "681300b2a200735ad7fb6cae",
+      "code": "#include <iostream>\n#include <iomanip>\n\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32.0) * 5.0 / 9.0;\n}\n\nint main() {\n    double f;\n    std::cin >> f;\n\n    std::cout << std::fixed << std::setprecision(2);\n    std::cout << f << \" F is \" << toCelsius(f) << \" C\";\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "fahrenheit-to-celsius-converter-8133077604",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746075825142",
+      "timestamp": "Thu, 01 May 2025 05:03:46 GMT",
+      "version": 8
+    },
+    {
+      "__v": 0,
+      "_id": "681300c5a200735ad7fb6cb1",
+      "code": "#include <iostream>\n#include <iomanip>\n\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32) * 5.0 / 9.0;\n}\n\nint main() {\n    double f;\n    std::cin >> f;\n\n    std::cout << std::fixed << std::setprecision(2);\n    std::cout << f << \" F is \" << toCelsius(f) << \" C\";\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "fahrenheit-to-celsius-converter-8133077604",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746075844132",
+      "timestamp": "Thu, 01 May 2025 05:04:05 GMT",
+      "version": 9
+    },
+    {
+      "__v": 0,
+      "_id": "68130172a200735ad7fb6cb7",
+      "code": "#include <iostream>\n#include <iomanip>\n\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32) * 5.0 / 9.0;\n}\n\nint main() {\n    double f;\n    std::cin >> f;\n\n    double c = toCelsius(f);\n\n    std::cout << static_cast<int>(f) << std::setprecision(2);\n    std::cout << f << \" F is \" << toCelsius(f) << \" C\";\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "fahrenheit-to-celsius-converter-8133077604",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746076017905",
+      "timestamp": "Thu, 01 May 2025 05:06:58 GMT",
+      "version": 10
+    },
+    {
+      "__v": 0,
+      "_id": "681301a5a200735ad7fb6cba",
+      "code": "#include <iostream>\n#include <iomanip>\n\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32) * 5.0 / 9.0;\n}\n\nint main() {\n    double f;\n    std::cin >> f;\n\n    double c = toCelsius(f);\n\n    std::cout << static_cast<int>(f) << \" F is \";\n    std::cout << std::fixed << std::setprecision(2) << c toCelsius(f) << \" C\";\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "fahrenheit-to-celsius-converter-8133077604",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746076068436",
+      "timestamp": "Thu, 01 May 2025 05:07:49 GMT",
+      "version": 11
+    },
+    {
+      "__v": 0,
+      "_id": "681301b3a200735ad7fb6cbe",
+      "code": "#include <iostream>\n#include <iomanip>\n\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32) * 5.0 / 9.0;\n}\n\nint main() {\n    double f;\n    std::cin >> f;\n\n    double c = toCelsius(f);\n\n    std::cout << static_cast<int>(f) << \" F is \";\n    std::cout << std::fixed << std::setprecision(2) << c << \" C\";\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "fahrenheit-to-celsius-converter-8133077604",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746076082052",
+      "timestamp": "Thu, 01 May 2025 05:08:03 GMT",
+      "version": 12
+    },
+    {
+      "__v": 0,
+      "_id": "6812fd0ea200735ad7fb6c8a",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "fahrenheit-to-celsius-converter-8133077604",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746074893080",
+      "timestamp": "Thu, 01 May 2025 04:48:14 GMT",
+      "version": 1
+    },
+    {
+      "__v": 0,
+      "_id": "6813022fa200735ad7fb6cc7",
+      "code": "#include <iostream>\n#include <iomanip>\n\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32) * 5.0 / 9.0;\n}\n\nint main() {\n    double f;\n    std::cin >> f;\n\n    \n\n    std::cout << static_cast<int>(f) << \" F is \";\n    std::cout << std::fixed << std::setprecision(2) << c << \" C\";\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "fahrenheit-to-celsius-converter-8133077604",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746076206223",
+      "timestamp": "Thu, 01 May 2025 05:10:07 GMT",
+      "version": 14
+    },
+    {
+      "__v": 0,
+      "_id": "6813023ca200735ad7fb6cca",
+      "code": "#include <iostream>\n#include <iomanip>\n\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32) * 5.0 / 9.0;\n}\n\nint main() {\n    double f;\n    std::cin >> f;\n\n    std::cout << std::fixed << std::setprecision(2);\n    std::cout << static_cast<int>(f) << \" F is \" << toCelsius(f) << \" C\";\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "fahrenheit-to-celsius-converter-8133077604",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746076219479",
+      "timestamp": "Thu, 01 May 2025 05:10:20 GMT",
+      "version": 15
+    },
+    {
+      "__v": 0,
+      "_id": "6813026aa200735ad7fb6cce",
+      "code": "#include <iostream>\n#include <iomanip>\n\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32) * 5 / 9;\n}\n\nint main() {\n    double f;\n    std::cin >> f;\n\n    std::cout << std::fixed << std::setprecision(2);\n    std::cout << static_cast<int>(f) << \" F is \" << toCelsius(f) << \" C\";\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "fahrenheit-to-celsius-converter-8133077604",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746076265082",
+      "timestamp": "Thu, 01 May 2025 05:11:06 GMT",
+      "version": 16
+    },
+    {
+      "__v": 0,
+      "_id": "68130288a200735ad7fb6cd1",
+      "code": "#include <iostream>\n#include <iomanip>\n\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32.00) * 5.00 / 9.00;\n}\n\nint main() {\n    double f;\n    std::cin >> f;\n\n    std::cout << std::fixed << std::setprecision(2);\n    std::cout << static_cast<int>(f) << \" F is \" << toCelsius(f) << \" C\";\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "fahrenheit-to-celsius-converter-8133077604",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746076295081",
+      "timestamp": "Thu, 01 May 2025 05:11:36 GMT",
+      "version": 17
+    },
+    {
+      "__v": 0,
+      "_id": "681302d5a200735ad7fb6cd5",
+      "code": "#include <iostream>\n#include <iomanip>\n\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32.00) * 5.00 / 9.00;\n}\n\nint main() {\n    double f;\n    std::cin >> f;\n\n    double c = toCelsius(f);\n\n    std::cout << static_cast<int>(f) << \" F is \";\n    std::cout << std::fixed << std::setprecision(2) << c << \" C\";\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "fahrenheit-to-celsius-converter-8133077604",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746076372601",
+      "timestamp": "Thu, 01 May 2025 05:12:53 GMT",
+      "version": 18
+    },
+    {
+      "__v": 0,
+      "_id": "681302eea200735ad7fb6cd8",
+      "code": "#include <iostream>\n#include <iomanip>\n\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32) * 5 / 9;\n}\n\nint main() {\n    double f;\n    std::cin >> f;\n\n    double c = toCelsius(f);\n\n    std::cout << static_cast<int>(f) << \" F is \";\n    std::cout << std::fixed << std::setprecision(2) << c << \" C\";\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "fahrenheit-to-celsius-converter-8133077604",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746076397115",
+      "timestamp": "Thu, 01 May 2025 05:13:18 GMT",
+      "version": 19
+    },
+    {
+      "__v": 0,
+      "_id": "68130305a200735ad7fb6cdc",
+      "code": "#include <iostream>\n#include <iomanip>\n\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32) * 5 / 9;\n}\n\nint main() {\n    double f;\n    std::cin >> f;\n\n    std::cout << std::fixed << std::setprecision(2);\n    std::cout << f << \" F is \" << toCelsius(f) << \" C\";\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "fahrenheit-to-celsius-converter-8133077604",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746076420707",
+      "timestamp": "Thu, 01 May 2025 05:13:41 GMT",
+      "version": 20
+    },
+    {
+      "__v": 0,
+      "_id": "6813031aa200735ad7fb6cdf",
+      "code": "#include <iostream>\n#include <iomanip>\n\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32) * 5.0 / 9.0;\n}\n\nint main() {\n    double f;\n    std::cin >> f;\n\n    std::cout << std::fixed << std::setprecision(2);\n    std::cout << f << \" F is \" << toCelsius(f) << \" C\";\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "fahrenheit-to-celsius-converter-8133077604",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746076441354",
+      "timestamp": "Thu, 01 May 2025 05:14:02 GMT",
+      "version": 21
+    },
+    {
+      "__v": 0,
+      "_id": "68130329a200735ad7fb6ce2",
+      "code": "#include <iostream>\n#include <iomanip>\n\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32) * 5.0 / 9.0;\n}\n\nint main() {\n    double f;\n    std::cin >> f;\n\n    std::cout << std::fixed << std::setprecision(2);\n    std::cout << f << \" F is \" << toCelsius(f) << \" C \";\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "fahrenheit-to-celsius-converter-8133077604",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746076456961",
+      "timestamp": "Thu, 01 May 2025 05:14:17 GMT",
+      "version": 22
+    },
+    {
+      "__v": 0,
+      "_id": "6813033fa200735ad7fb6ce5",
+      "code": "#include <iostream>\n#include <iomanip>\n\ndouble toCelsius(double fahrenheit) {\n    return (fahrenheit - 32) * 5.0 / 9.0;\n}\n\nint main() {\n    double f;\n    std::cin >> f;\n\n    std::cout << std::fixed << std::setprecision(2);\n    std::cout << f << \" F is \" << toCelsius(f) << \"C\";\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "fahrenheit-to-celsius-converter-8133077604",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746076478968",
+      "timestamp": "Thu, 01 May 2025 05:14:39 GMT",
+      "version": 23
+    }
+  ],
+  "success": true
+}

@@ -56,21 +56,11 @@ interface SimilarityDashboardProps {
   snippets: Snippet[];
 }
 
-interface SimilarStructure {
-  cluster_id: number;
-  type: string;
-  similarity: number;
-  code_a: string[];
-  code_b: string[];
-}
-
-// Add this interface to your file
 interface MyNodeDatum extends d3.SimulationNodeDatum {
-  id: number; // Changed from string to number
+  id: number;
   learner?: string;
   learner_id?: string;
   timestamp?: string;
-  // Other optional properties
   similarity?: number;
 }
 
@@ -148,9 +138,7 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ anonymize = f
   });
 
   const [uiState, setUiState] = useState({
-    showHighSimilaritySection: true,
-    isHighlightingCode: false,
-    structures: [] as SimilarStructure[]
+    showHighSimilaritySection: true
   });
 
   const width = 500;
@@ -276,53 +264,14 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ anonymize = f
 
   const handleSnippetClick = useCallback((snippetId: number) => {
     if (snippets[snippetId]) {
-      // Clear structures to reset any previous comparison
-      setUiState(prev => ({
-        ...prev,
-        structures: []
-      }));
-
       // Update selection state
       setSelection(prev => ({
         ...prev,
         snippetCode: snippets[snippetId].code,
         comparisonUserId: snippets[snippetId].learner
       }));
-
-      // Log to verify state updates are happening
-      console.log(`Selected comparison: ${snippets[snippetId].learner}`);
     }
   }, [snippets]);
-
-  // Debug useEffect for highlight button conditions
-  useEffect(() => {
-    console.log("Highlight button conditions changed:");
-    console.log("- isHighlightingCode:", uiState.isHighlightingCode);
-    console.log("- selection.nodeId:", selection.nodeId);
-    console.log("- selection.snippetCode:", selection.snippetCode ? "exists" : "null");
-
-    const isSameCode = selection.nodeId !== null &&
-      snippets[selection.nodeId] &&
-      snippets[selection.nodeId].code === selection.snippetCode;
-    console.log("- Same code:", isSameCode);
-
-    const isSameUser = selection.nodeId !== null &&
-      snippets[selection.nodeId] &&
-      snippets[selection.nodeId].learner_id === selection.comparisonUserId;
-    console.log("- Same user:", isSameUser);
-
-    const buttonDisabled = uiState.isHighlightingCode ||
-      !selection.nodeId ||
-      !selection.snippetCode ||
-      (isSameCode && isSameUser);
-    console.log("- Button disabled:", buttonDisabled);
-  }, [
-    uiState.isHighlightingCode,
-    selection.nodeId,
-    selection.snippetCode,
-    selection.comparisonUserId,
-    snippets
-  ]);
 
   // Replace custom simulation with D3
   useEffect(() => {
@@ -460,53 +409,6 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ anonymize = f
     </div>
   );
 
-  const highlightCode = async () => {
-    setUiState(prev => ({
-      ...prev,
-      isHighlightingCode: true
-    }));
-
-    console.log("highlight code requested")
-    if (!selection.nodeId === null || !selection.snippetCode) return;
-
-    const API_URL = process.env.NEXT_PUBLIC_FLASK_API_URL || 'https://codecflaskapi.duckdns.org';
-    // const API_URL = process.env.NEXT_PUBLIC_FLASK_API_URL || 'http://localhost:5000';
-    try {
-      const structuralResponse = await fetch(`${API_URL}/api/visualize-similarity`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          code1: selection.nodeId !== null ? snippets[selection.nodeId].code.trim() : "",
-          code2: selection.snippetCode.trim()
-        }),
-      })
-
-      const structuralData = await structuralResponse.json();
-      if (!structuralResponse.ok) {
-        throw new Error('Failed to fetch structural data');
-      }
-
-      if (structuralData.success) {
-        setUiState(prev => ({
-          ...prev,
-          structures: structuralData.structures
-        }));
-      } else {
-        throw new Error(structuralData.error || 'Structural analysis failed');
-      }
-    } catch {
-      console.error('Error fetching structural data');
-    } finally {
-      setUiState(prev => ({
-        ...prev,
-        isHighlightingCode: false
-      }));
-    }
-  }
-
-
   return (
     <Card className="bg-gray-800 border-0">
       <CardContent>
@@ -637,7 +539,6 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ anonymize = f
           <div className="gap-6 mt-6 flex flex-col">
             {/* Code comparison section */}
             <div className="bg-gray-700 rounded-lg p-4 mt-4">
-
               <CodeComparison
                 anonymize={anonymize}
                 code1={selection.nodeId !== null && snippets[selection.nodeId]
@@ -653,17 +554,7 @@ const SimilarityDashboard: React.FC<SimilarityDashboardProps> = ({ anonymize = f
                   ? `${selection.comparisonUserId}'s Code`
                   : "Select a snippet to compare"
                 }
-                structures={uiState.structures || []}
-                onButtonClick={highlightCode}
-                disableButton={
-                  uiState.isHighlightingCode ||
-                  !selection.nodeId === null ||
-                  !selection.snippetCode ||
-                  (selection.nodeId !== null &&
-                    snippets[selection.nodeId] &&
-                    snippets[selection.nodeId].code === selection.snippetCode &&
-                    snippets[selection.nodeId].learner_id === selection.comparisonUserId)
-                }
+                structures={[]}
               />
             </div>
           </div>
