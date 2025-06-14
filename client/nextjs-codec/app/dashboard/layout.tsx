@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getUser, refreshToken } from '@/lib/auth';
 import { createContext } from 'react';
 import { UserContext } from './contexts';
-import Loading from '@/components/loading';
+import LoadingAnimation from './loading';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const { data: user, isLoading } = useQuery({
@@ -29,7 +29,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       {user !== undefined ? (
         <UserContext.Provider value={user}>{children}</UserContext.Provider>
       ) : (
-        <Loading message="Loading" />
+        <LoadingAnimation />
       )}
     </div>
   );

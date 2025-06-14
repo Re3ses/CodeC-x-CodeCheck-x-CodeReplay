@@ -1,6 +1,7 @@
 import React from 'react';
 import { Trophy } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
+import LoadingAnimation from './loading';
 
 const inspirationalQuotes = [
   "Every coding challenge is an opportunity to grow and innovate together.",

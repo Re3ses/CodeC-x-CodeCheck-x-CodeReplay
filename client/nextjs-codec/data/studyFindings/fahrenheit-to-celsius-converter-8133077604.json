@@ -2,6 +2,7 @@
   "matrix": [
     [
       100,
+<<<<<<< HEAD
       64,
       60,
       60,
@@ -838,6 +839,28 @@
       62,
       62,
       63,
+=======
+      62,
+      68,
+      57
+    ],
+    [
+      62,
+      100,
+      73,
+      76
+    ],
+    [
+      68,
+      73,
+      100,
+      68
+    ],
+    [
+      57,
+      76,
+      68,
+>>>>>>> studyFindings
       100
     ]
   ],
@@ -850,6 +873,7 @@
       "timestamp": "2025-05-02 06:25:44.185000"
     },
     {
+<<<<<<< HEAD
       "code": "#include <iostream>\r\n#include <iomanip>\r\nusing namespace std;\r\n\r\ndouble toCelsius (double fahrenheit) {\r\n    return (fahrenheit - 32) * 5  / 9;\r\n}\r\n    \r\nint main() {\r\n    int fahrenheit;\r\n    cin >> fahrenheit;\r\n\r\n    double celsius = toCelsius (fahrenheit);\r\n\r\n    cout << fixed << setprecision (2);\r\n    cout << fahrenheit << \" F is \" << celsius << \" C\" << endl;\r\n\r\n    return 0;\r\n}",
       "fileName": "jgab_fahrenheit-to-celsius-converter-8133077604.js",
       "learner": "jgab",
@@ -925,6 +949,13 @@
       "learner": "vladiberks",
       "learner_id": "681309193ce25f1b7c4bbe22",
       "timestamp": "2025-05-02 16:03:25.346000"
+=======
+      "code": "#include <iostream>\r\n#include <iomanip>\r\nusing namespace std;\r\n\r\ndouble toCelsius(double fahrenheit) {\r\n    fahrenheit = (fahrenheit - 32) * 5/9;\r\n    return fahrenheit;\r\n}\r\n\r\nint main() {\r\n    double F;\r\n    cin >> F;\r\n\r\n    if (F >= -100 && F <= 500) {\r\n        cout << F << \" F is \" << setprecision(2) << fixed << toCelsius(F) << \" C\";\r\n    }\r\n    return 0;\r\n}",
+      "fileName": "kyle_fahrenheit-to-celsius-converter-8133077604.js",
+      "learner": "kyle",
+      "learner_id": "6818a151121fbec68421fa4b",
+      "timestamp": "2025-05-05 11:54:13.938000"
+>>>>>>> studyFindings
     },
     {
       "code": "#include <iostream>\r\n#include <iomanip> \r\n\r\nusing namespace std;\r\n\r\ndouble toCelsius(double fahrenheit){\r\n    return (fahrenheit - 32) * 5.0 / 9.0;\r\n}\r\n\r\nint main() {\r\n    float F;\r\n    cin >> F;\r\n\r\n    float C = toCelsius(F);\r\n\r\n    cout << F << \" F is \" << fixed << setprecision(2) << C << \" C\" << endl;\r\n    \r\n\r\n    return 0;\r\n}",
@@ -939,6 +970,7 @@
       "learner": "rorot",
       "learner_id": "6814f0d30ea6b2d92afface5",
       "timestamp": "2025-05-02 16:53:00.328000"
+<<<<<<< HEAD
     },
     {
       "code": "#include <iostream>\r\n#include <iomanip>\r\nusing namespace std;\r\n\r\n// User-defined function to convert Fahrenheit to Celsius\r\ndouble toCelsius(double fahrenheit) {\r\n    return (fahrenheit - 32) * 5.0 / 9.0;\r\n}\r\n\r\nint main() {\r\n    double F;\r\n    cin >> F;\r\n\r\n    double C = toCelsius(F);\r\n\r\n    cout << fixed << setprecision(2);\r\n    cout << (int)F << \" F is \" << C << \" C\" << endl;  \r\n\r\n}\r\n\r\n",
@@ -1037,6 +1069,8 @@
       "learner": "kyle",
       "learner_id": "6818a151121fbec68421fa4b",
       "timestamp": "2025-05-05 11:54:13.938000"
+=======
+>>>>>>> studyFindings
     }
   ],
   "success": true

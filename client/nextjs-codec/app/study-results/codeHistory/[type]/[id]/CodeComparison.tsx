@@ -139,7 +139,11 @@ export default function CodeComparison({ anonymize = true, code1, code2, learner
 
   return (
     <div className="space-y-4">
+<<<<<<< HEAD
       {/* <div className="flex justify-start mb-2 gap-2">
+=======
+      <div className="flex justify-start mb-2 gap-2">
+>>>>>>> studyFindings
         <button
           onClick={onButtonClick}
           disabled={disableButton}
@@ -159,7 +163,11 @@ export default function CodeComparison({ anonymize = true, code1, code2, learner
             className="rounded text-blue-500"
           />
         </div>
+<<<<<<< HEAD
       </div> */}
+=======
+      </div>
+>>>>>>> studyFindings
 
       <div className="grid md:grid-cols-2 gap-4">
         <div className="space-y-2">

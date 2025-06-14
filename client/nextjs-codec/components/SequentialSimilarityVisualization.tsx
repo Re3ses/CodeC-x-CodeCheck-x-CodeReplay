@@ -57,6 +57,7 @@ interface SequentialSimilarityVisualizationProps {
   snapshots: CodeSnapshot[];
   pastedSnippets: EnhancedPasteInfo[];
   learnerId?: string;
+<<<<<<< HEAD
   problemId?: string;
   anonymize?: boolean;
 }
@@ -70,6 +71,13 @@ interface MetricCardProps {
 
 // Constants
 const STUDY_PROBLEMS = [
+=======
+  anonymize?: boolean;
+  problemId?: string;
+}
+
+const studyProblems = [
+>>>>>>> studyFindings
   "box-formatter-4312784064",
   "fahrenheit-to-celsius-converter-8133077604",
   "count-vowels-in-a-string-7746433050",
@@ -77,17 +85,26 @@ const STUDY_PROBLEMS = [
   "character-inspector-4333782441",
   "perfectly-rooted-5136456806",
   "linear-search-for-odd-numbers-4386603267"
+<<<<<<< HEAD
 ];
 
 const API_URL = process.env.NEXT_PUBLIC_FLASK_API_URL || 'https://codecflaskapi.duckdns.org';
 const REPLAY_SPEED = 500; // ms between snapshots
+=======
+]
+>>>>>>> studyFindings
 
 const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizationProps> = ({
   snapshots,
   pastedSnippets,
   learnerId,
+<<<<<<< HEAD
   problemId,
   anonymize = false
+=======
+  anonymize = false,
+  problemId
+>>>>>>> studyFindings
 }) => {
   // State hooks
   const [isPlaying, setIsPlaying] = useState(false);
@@ -103,6 +120,7 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
 
   // Fetch sequential similarities data
   useEffect(() => {
+<<<<<<< HEAD
     if (!(snapshots.length > 1)) return;
 
     fetchSequentialSimilarities(snapshots);
@@ -199,6 +217,74 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
 
     return () => clearInterval(interval);
   }, [isPlaying, currentSnapshotIndex, snapshots.length]);
+=======
+    console.log("Snapshots received:", snapshots);
+    console.log("Pasted snippets received:", pastedSnippets);
+    console.log("Learner ID:", learnerId);
+    console.log("Problem ID:", problemId);
+    console.log("Anonymize:", anonymize);
+  }, [])
+
+  useEffect(() => {
+    if (!(snapshots.length > 1)) return;
+
+    const calculateSequentialSimilarities = async (snapshotsToCompare: CodeSnapshot[]) => {
+      setLoading(true);
+      try {
+        const learner_id = learnerId ? learnerId : snapshotsToCompare[0].learner_id;
+
+        // Check if this is a study problem and we should use local data
+        if (problemId && studyProblems.includes(problemId)) {
+          console.log(`Loading local sequential similarity data for: ${problemId}, learner: ${learner_id}`);
+          try {
+            // Import data from local JSON file
+            const data = await import(`@/data/studyFindings/codeReplay/${problemId}/${learner_id}.json`);
+            if (data) {
+              setSequentialSimilarities(data.sequentialSimilarities);
+              console.log("Loaded local sequential similarities:", data.sequentialSimilarities);
+            }
+          } catch (error) {
+            console.error('Error loading local sequential data:', error);
+            // Fall back to API if local data failed to load
+            await fetchSequentialSimilaritiesFromAPI(learner_id, snapshotsToCompare);
+          }
+        } else {
+          // Use API for non-study problems
+          await fetchSequentialSimilaritiesFromAPI(learner_id, snapshotsToCompare);
+        }
+      } catch (error) {
+        console.error('Sequential similarity calculation error:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    calculateSequentialSimilarities(snapshots);
+  }, [snapshots, notEnoughSnapshots, learnerId, problemId]);
+
+  const fetchSequentialSimilaritiesFromAPI = async (learner_id: string, snapshotsToCompare: CodeSnapshot[]) => {
+    try {
+      const problemId = snapshotsToCompare[0].problemId;
+      const roomId = snapshotsToCompare[0].roomId;
+
+      const API_URL = process.env.NEXT_PUBLIC_FLASK_API_URL || 'https://codecflaskapi.duckdns.org';
+      const response = await fetch(`${API_URL}/api/similarity/sequential?learner_id=${learner_id}&problemId=${problemId}&roomId=${roomId}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          snapshots
+        })
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        setSequentialSimilarities(data.sequentialSimilarities);
+      }
+    } catch (error) {
+      console.error('API fetch error:', error);
+    }
+  };
+>>>>>>> studyFindings
 
   // Card expansion toggle
   const toggleCard = (index: number) => {
@@ -226,10 +312,26 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
     }
   };
 
+<<<<<<< HEAD
   const handleSliderChange = (value: React.SetStateAction<number>[]) => {
     setCurrentSnapshotIndex(value[0]);
     setIsPlaying(false);
   };
+=======
+  // Add useEffect to log and set local state for snippets
+  useEffect(() => {
+    if (pastedSnippets && pastedSnippets.length > 0) {
+      setPasteCount(pastedSnippets.length);
+      let count = 0;
+      for (let i = 0; i < pastedSnippets.length; i++) {
+        if (pastedSnippets[i].text.length > 200) {
+          count++;
+        }
+      }
+      setBigPasteCount(prevCount => prevCount + count);
+    }
+  }, [pastedSnippets]);
+>>>>>>> studyFindings
 
   // Compute advanced metrics
   const advancedMetrics = useMemo(() => {
@@ -245,7 +347,11 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
       Math.abs(val - similarityValues[i])
     );
     const maxChange = Math.max(...changes);
+<<<<<<< HEAD
     const maxChangePct = (maxChange / maxSimilarity) * 100;
+=======
+    const maxChangePct = (maxChange / Math.max(...cssValues)) * 100;
+>>>>>>> studyFindings
 
     // Average and minimum similarity
     const averageSimilarity = similarityValues.reduce((a, b) => a + b, 0) / similarityValues.length;
@@ -256,14 +362,27 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
       (acc, val) => acc + Math.pow(val - averageSimilarity, 2), 0
     ) / similarityValues.length;
 
+<<<<<<< HEAD
+=======
+    // Variance Calculation
+    const mean = averageSimilarity;
+    const variance = cssValues.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / cssValues.length;
+>>>>>>> studyFindings
     const normalizedVariance = (variance / 2500) * 100;
 
     // Calculate weighted plagiarism score
     const weightedScore =
+<<<<<<< HEAD
       maxChange * 0.05 +
       (100 - averageSimilarity) * 0.20 +
       (100 - minSimilarity) * 0.70 +
       normalizedVariance * 0.05;
+=======
+      (maxChange) * 0.05 +
+      (100 - averageSimilarity) * 0.20 +
+      (100 - minSimilarity) * 0.70 +
+      (normalizedVariance) * 0.05;
+>>>>>>> studyFindings
 
     return {
       maxChange: Math.round(maxChange),
@@ -278,6 +397,7 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
     };
   }, [sequentialSimilarities, pasteCount, bigPasteCount, notEnoughSnapshots]);
 
+<<<<<<< HEAD
   // Determine plagiarism risk level and color
   const getPlagiarismRiskDetails = (score: number) => {
     if (score <= 40) return {
@@ -300,6 +420,38 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
       color: 'bg-red-600',
       textColor: 'text-red-600'
     };
+=======
+
+  useEffect(() => {
+    // Prepare data for the chart
+    setChartData(sequentialSimilarities.map((similarity, index) => ({
+      name: `Snapshot ${Number.isFinite(similarity.from_index) ? similarity.from_index + 1 : '?'} to ${Number.isFinite(similarity.to_index) ? similarity.to_index + 1 : '?'}`,
+      similarity: similarity.similarity,
+      codebertScore: similarity.codebertScore
+    })));
+  }, [sequentialSimilarities]);
+
+
+  // Replay system logic
+  useEffect(() => {
+    let interval: string | number | NodeJS.Timeout | undefined;
+    if (isPlaying && currentSnapshotIndex < snapshots.length - 1) {
+      interval = setInterval(() => {
+        setCurrentSnapshotIndex(prev => {
+          if (prev >= snapshots.length - 1) {
+            setIsPlaying(false);
+            return prev;
+          }
+          return prev + 1;
+        });
+      }, 500); // Change snapshot every 500ms
+    }
+    return () => clearInterval(interval);
+  }, [isPlaying, currentSnapshotIndex, snapshots.length]);
+
+  const handlePlayPause = () => {
+    setIsPlaying(!isPlaying);
+>>>>>>> studyFindings
   };
 
   // Custom slider component
@@ -609,10 +761,21 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
 
   return (
     <div className="bg-gray-800 rounded-lg p-4 space-y-6">
+<<<<<<< HEAD
+=======
+      {notEnoughSnapshots && (
+        <div className="bg-blue-900/30 border border-blue-700 text-blue-300 rounded-lg p-4 text-center">
+          <h4 className="text-md font-semibold">Not Enough Snapshots Detected</h4>
+          <p>Similarity analysis statistics requires multiple code snapshots. Only Code Replay is available.</p>
+        </div>
+      )}
+
+>>>>>>> studyFindings
       {loading ? (
         <Loading message="Loading Similarity Data..." />
       ) : (
         <>
+<<<<<<< HEAD
           {notEnoughSnapshots && renderNotEnoughSnapshotsWarning()}
           {renderSimilarityMetrics()}
 
@@ -629,6 +792,259 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
           <ReactTooltip id="bigPastesTooltip" place="top" />
         </>
       )}
+=======
+          {advancedMetrics && !notEnoughSnapshots && (
+            <div className="bg-gray-700 rounded-lg p-4">
+              <h4 className="text-md font-semibold mb-4">Advanced Similarity Metrics</h4>
+
+              <div className="grid grid-cols-3 gap-4 mb-4">
+                {(() => {
+                  const plagiarismRisk = getPlagiarismRiskDetails(advancedMetrics.weightedPlagiarismScore);
+                  return (
+                    <div className={`
+                    col-span-2 p-4 rounded-lg text-center 
+                    ${advancedMetrics.weightedPlagiarismScore > 80 ? 'bg-red-600' :
+                        advancedMetrics.weightedPlagiarismScore > 60 ? 'bg-orange-600' :
+                          advancedMetrics.weightedPlagiarismScore > 40 ? 'bg-yellow-600' :
+                            'bg-green-600'} text-white`}
+                    >
+                      <div className="text-xs uppercase tracking-wide mb-1">Plagiarism Risk</div>
+                      <div className="text-4xl font-bold mb-2">{advancedMetrics.weightedPlagiarismScore}%</div>
+                      <div className="text-lg font-semibold">
+                        {plagiarismRisk.level}
+                      </div>
+                    </div>
+                  );
+                })()}
+
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button variant="secondary" className="w-full h-full">
+                      View Pasted Snippets ({pastedSnippets.length})
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+                    <DialogHeader>
+                      <DialogTitle>Pasted Code Snippets</DialogTitle>
+                    </DialogHeader>
+                    <div className="space-y-4">
+                      {pastedSnippets.map((snippet, index) => (
+                        <div key={index} className="bg-gray-800 rounded-lg">
+                          <button
+                            onClick={() => toggleCard(index)}
+                            className="w-full p-4 flex items-center justify-between text-left hover:bg-gray-700"
+                          >
+                            <div>
+                              <div className="font-semibold">Paste {index + 1}</div>
+                              <div className="text-sm text-gray-400">
+                                {new Date(snippet.timestamp).toLocaleString()}
+                              </div>
+                            </div>
+                            <div className="text-sm text-gray-400">
+                              {snippet.length} characters at line {snippet.contextRange.startLine}
+                            </div>
+                          </button>
+
+                          {expandedCards.includes(index) && (
+                            <div className="p-4 border-t border-gray-700">
+                              <Editor
+                                height="200px"
+                                defaultLanguage="javascript"
+                                value={snippet.fullCode}
+                                theme="vs-dark"
+                                options={{
+                                  readOnly: true,
+                                  minimap: { enabled: false },
+                                  fontSize: 12,
+                                  scrollBeyondLastLine: false,
+                                  wordWrap: 'on',
+                                  renderLineHighlight: 'none',
+                                  hideCursorInOverviewRuler: true,
+                                  overviewRulerBorder: false,
+                                }}
+                                onMount={(editor) => {
+                                  const decoration = {
+                                    range: new (window as any).monaco.Range(
+                                      snippet.contextRange.startLine,
+                                      snippet.contextRange.startColumn,
+                                      snippet.contextRange.endLine,
+                                      snippet.contextRange.endColumn
+                                    ),
+                                    options: {
+                                      inlineClassName: 'bg-yellow-500 bg-opacity-20',
+                                      isWholeLine: false,
+                                      overviewRuler: {
+                                        color: '#ffd700',
+                                        position: 1
+                                      }
+                                    }
+                                  };
+                                  editor.createDecorationsCollection([decoration]);
+
+                                  setTimeout(() => {
+                                    editor.revealLineInCenter(snippet.contextRange.startLine);
+                                  }, 100);
+                                }}
+                              />
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </DialogContent>
+                </Dialog>
+              </div>
+
+              <div className="grid grid-cols-5 gap-4">
+                <MetricCard
+                  label="Max Change"
+                  value={`${advancedMetrics.maxChange}%`}
+                  tooltipId="maxChangeTooltip"
+                  tooltipContent="Maximum difference in similarity between consecutive snapshots, higher values indicate higher plagiarism risk"
+                />
+                <MetricCard
+                  label="Average Similarity"
+                  value={`${advancedMetrics.averageSimilarity}%`}
+                  tooltipId="averageSimilarityTooltip"
+                  tooltipContent="Mean value of all similarity scores, lower values indicate higher plagiarism risk"
+                />
+                <MetricCard
+                  label="Minimum Similarity"
+                  value={`${advancedMetrics.minSimilarity}%`}
+                  tooltipId="minSimilarityTooltip"
+                  tooltipContent="Lowest similarity score observed, lower values indicate higher plagiarism risk"
+                />
+                <MetricCard
+                  label="Variance"
+                  value={`${advancedMetrics.normalizedVariance}%`}
+                  tooltipId="varianceTooltip"
+                  tooltipContent="Measure of similarity score fluctuation, higher values indicate higher plagiarism risk"
+                />
+                <MetricCard
+                  label="Big Pastes"
+                  value={bigPasteCount}
+                  tooltipId="bigPastesTooltip"
+                  tooltipContent="Number of large paste (More than 200 Characters) operations detected"
+                />
+              </div>
+            </div>
+          )}
+
+          <div className="grid grid-cols-4 gap-6">
+            {!notEnoughSnapshots ? (
+              <div className="bg-gray-700 rounded-lg p-4 col-span-2">
+                <h4 className="text-md font-semibold mb-4">Similarity Trends</h4>
+
+                <ResponsiveContainer width="100%" height={400}>
+                  <LineChart data={chartData}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                    <XAxis dataKey="name" stroke="#9CA3AF" />
+                    <YAxis stroke="#9CA3AF" />
+                    <RechartsTooltip
+                      contentStyle={{ backgroundColor: '#1F2937', color: '#fff' }}
+                      labelStyle={{ color: '#fff' }}
+                    />
+                    <Legend />
+                    <Line
+                      type="monotone"
+                      dataKey="similarity"
+                      stroke="#8884d8"
+                      activeDot={{ r: 8 }}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>) : (
+              <div className="bg-gray-700 rounded-lg p-4 grid-span-1">
+                <h4 className="text-md font-semibold mb-4">Similarity Trends</h4>
+                <div className="flex items-center justify-center h-[400px] text-gray-400">
+                  <p className='text-center'>Not enough snapshots to calculate similarity trends.</p>
+                </div>
+              </div>
+            )}
+
+            <div className={`bg-gray-700 rounded-lg p-4 ${notEnoughSnapshots ? 'col-span-3' : 'col-span-2'}`}>
+              <h4 className="text-md font-semibold mb-4">Code Evolution Replay</h4>
+
+              <div className="h-64 mb-4">
+                <Editor
+                  height="100%"
+                  defaultLanguage="javascript"
+                  value={snapshots[currentSnapshotIndex]?.code || ''}
+                  theme="vs-dark"
+                  options={{
+                    readOnly: true,
+                    minimap: { enabled: false },
+                    fontSize: 12,
+                    scrollBeyondLastLine: false,
+                    wordWrap: 'on'
+                  }}
+                />
+              </div>
+
+              <div className="space-y-4">
+                <div className="flex items-center space-x-4 px-2">
+                  <div className="flex items-center space-x-2">
+                    <Button
+                      onClick={handlePrevious}
+                      variant="outline"
+                      size="icon"
+                      disabled={currentSnapshotIndex === 0}
+                      className="h-8 w-8">
+                      <ChevronLeft className="h-4 w-4" />
+                    </Button>
+
+                    {snapshots.length > 1 && (
+                      <Button
+                        onClick={handlePlayPause}
+                        variant="secondary"
+                        size="sm"
+                        className="flex items-center space-x-2 px-3"
+                      >
+                        {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+                        <span className="hidden sm:inline">{isPlaying ? 'Pause' : 'Play'}</span>
+                      </Button>)
+                    }
+
+                    <Button
+                      onClick={handleNext}
+                      variant="outline"
+                      size="icon"
+                      disabled={currentSnapshotIndex === snapshots.length - 1}
+                      className="h-8 w-8"
+                    >
+                      <ChevronRight className="h-4 w-4" />
+                    </Button>
+                  </div>
+
+                  <div className="flex-1">
+                    <CustomSlider
+                      value={[currentSnapshotIndex]}
+                      max={snapshots.length - 1}
+                      step={1}
+                      onValueChange={handleSliderChange}
+                    />
+                  </div>
+                </div>
+
+                <div className="text-center text-sm text-gray-400">
+                  Snapshot {currentSnapshotIndex + 1} of {snapshots.length}
+                  <br />
+                  {snapshots[currentSnapshotIndex]?.timestamp &&
+                    new Date(snapshots[currentSnapshotIndex].timestamp).toLocaleString()}
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+
+      <ReactTooltip id="maxChangeTooltip" place="top" />
+      <ReactTooltip id="averageSimilarityTooltip" place="top" />
+      <ReactTooltip id="minSimilarityTooltip" place="top" />
+      <ReactTooltip id="varianceTooltip" place="top" />
+      <ReactTooltip id="pastesTooltip" place="top" />
+      <ReactTooltip id="bigPastesTooltip" place="top" />
+>>>>>>> studyFindings
     </div>
   );
 };

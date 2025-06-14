@@ -81,7 +81,11 @@ export default function CodeReplayApp() {
         );
 
         const data = await response.json();
+<<<<<<< HEAD
         console.log("Fetched user submissions:", data);
+=======
+
+>>>>>>> studyFindings
         // Ensure that 'submissions' exists before calling map
         const enhancedPastes = data.submissions?.map((submission: any) => {
           const pasteHistory = JSON.parse(submission.paste_history);
