@@ -117,7 +117,7 @@ export default function StudyResults() {
                 <h3 className="text-lg font-semibold text-yellow-500">CodeCheck</h3>
               </div>
               <p className="text-white/80 text-sm leading-relaxed">
-                A fingerprinting-based similarity detection tool that leverages CodeBERT's embeddings.
+                A fingerprinting-based similarity detection tool that leverages CodeBERT&apos;s embeddings.
                 It extracts semantic representations of code snippets and computes their similarity
                 using cosine similarity, providing a more nuanced measure of code similarity that can
                 detect subtle modifications and variations in implementation.
@@ -193,7 +193,7 @@ export default function StudyResults() {
               <p className="text-sm text-white/80">
                 Mean similarity score analysis revealed systematic differences in detection thresholds. CodeCheck
                 demonstrated higher sensitivity (<span className="text-yellow-500">70.2%</span> average), while MOSS
-                implemented more conservative thresholds. CodeReplay's behavioral analysis produced moderate scores
+                implemented more conservative thresholds. CodeReplay&apos;s behavioral analysis produced moderate scores
                 (<span className="text-yellow-500">49.4%</span>), reflecting its unique temporal evaluation approach.
               </p>
             </div>
