@@ -20,6 +20,14 @@ const nextConfig = {
     ],
   },
   reactStrictMode: false,
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: 'http://localhost:5000/api/:path*' // Assuming Flask runs on port 5000
+      }
+    ]
+  }
 };
 
 module.exports = nextConfig;

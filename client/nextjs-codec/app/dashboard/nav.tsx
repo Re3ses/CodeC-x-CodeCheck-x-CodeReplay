@@ -9,6 +9,9 @@ import {
   Code2,
   Trophy,
   Shield,
+  Database,  // for IR-Plag (represents dataset)
+  Network,  // for Visualizer (represents visualization)
+  BarChart2,  // Add this import for the new icon
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
@@ -20,16 +23,12 @@ export default function Nav(props: { variant?: string; name?: string; type?: str
 
   // Navigation links; Code Room should be disabled when active (i.e. already on that route)
   const navLinks = [
-    { id: 'coderoom', label: 'Code Room', href: `/${path}/coderoom`, icon: Code2, disabled: !path },
+    { id: 'coderoom', label: 'Code Room', href: `/${path}/coderoom`, icon: Code2 },
     // { id: 'codebox', label: 'Code Box', href: `/codebox`, icon: Box },
     // { id: 'leaderboards', label: 'Leaderboards', href: '/leaderboards?page=1&perPage=10', icon: Trophy },
-    // { id: 'codeReplay', label: 'CodeCheck', href: `/codereplay`, icon: Shield },
-    // { id: 'codeReplayV3', label: 'CodeReplay', href: `/codereplayV3`, icon: Play },
-    // { id: 'highlighting', label: 'Highlighting', href: `/highlighting`, icon: Highlighter },
-    // { id: 'attention', label: 'Attention', href: `/attention`, icon: Shield, disabled: false },
-    // { id: 'ir-plag', label: 'IR-Plag', href: `/ir-plag`, icon: Shield, disabled: false },
-    // { id: 'visualizer', label: 'Visualizer', href: `/visualizer`, icon: Shield, disabled: false },
-
+    { id: 'ir-plag', label: 'IR-Plag', href: `/ir-plag`, icon: Database },
+    { id: 'visualizer', label: 'Visualizer', href: `/visualizer`, icon: Network },
+    { id: 'agreement', label: 'Agreement Analysis', href: `/agreement`, icon: BarChart2 }, // Add this line
   ];
 
   const handleNavigation = (href: string) => {

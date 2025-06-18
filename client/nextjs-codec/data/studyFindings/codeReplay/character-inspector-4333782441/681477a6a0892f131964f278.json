@@ -1,0 +1,842 @@
+{
+  "formatted_snapshots": [
+    {
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    getline (cin, line);\n\n    stringstream ss (line);\n    char name;\n    int count = 0;\n\n    while (ss >> name && count < 20) {\n        if (isalpha (name)) {\n            cout << name << \" is a letter!\"\n        } else if (isdigit (name))\n    }\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68147c16facc1d1d0689273f",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    getline (cin, line);\n\n    stringstream ss (line);\n    char name;\n    int count = 0;\n\n    while (ss >> name && count < 20) {\n        if \n    }\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68147ba7facc1d1d0689271d",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    getline (cin, line);\n\n    stringstream ss (line);\n    char name;\n    int count = 0;\n\n    while (ss >> name && count < 20) {\n        if (isalpha)\n    }\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68147bb1facc1d1d06892721",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    getline (cin, line);\n\n    stringstream ss (line);\n    char name;\n    int count = 0;\n\n    while (ss >> name && count < 20) {\n        if (isalpha (name))\n    }\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68147bb9facc1d1d06892725",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    getline (cin, line);\n\n    stringstream ss (line);\n    char name;\n    int count = 0;\n\n    while (ss >> name && count < 20) {\n        if (isalpha (name)) {\n            else \n        }\n    }\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68147bc6facc1d1d0689272a",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    getline (cin, line);\n\n    stringstream ss (line);\n    char name;\n    int count = 0;\n\n    while (ss >> name && count < 20) {\n        if (isalpha (name)) {\n        } else if \n    }\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68147bdffacc1d1d0689272e",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    getline (cin, line);\n\n    stringstream ss (line);\n    char name;\n    int count = 0;\n\n    while (ss >> name && count < 20) {\n        if (isalpha (name)) {\n        } else if (isdigit (name))\n    }\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68147bf0facc1d1d06892732",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    getline (cin, line);\n\n    stringstream ss (line);\n    char name;\n    int count = 0;\n\n    while (ss >> name && count < 20) {\n        if (isalpha (name)) {\n            cout << \n        } else if (isdigit (name))\n    }\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68147c02facc1d1d06892737",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    getline (cin, line);\n\n    stringstream ss (line);\n    char name;\n    int count = 0;\n\n    while (ss >> name && count < 20) {\n        if (isalpha (name)) {\n            cout << name << \n        } else if (isdigit (name))\n    }\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68147c0dfacc1d1d0689273b",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    getline (cin, line);\n\n    stringstream ss (line);\n    char name;\n    int count = 0;\n\n    while (ss >> name && count < 20) {\n        \n    }\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68147ba1facc1d1d06892719",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    getline (cin, line);\n\n    stringstream ss (line);\n    char name;\n    int count = 0;\n\n    while (ss >> name && count < 20) {\n        if (isalpha (name)) {\n            cout << name << \" is a letter!\" << endl;\n        } else if (isdigit (name))\n    }\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68147c20facc1d1d06892743",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    getline (cin, line);\n\n    stringstream ss (line);\n    char name;\n    int count = 0;\n\n    while (ss >> name && count < 20) {\n        if (isalpha (name)) {\n            cout << name << \" is a letter!\" << endl;\n        } else if (isdigit (name)) {\n            cout << \n        }\n    }\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68147c2cfacc1d1d06892747",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    getline (cin, line);\n\n    stringstream ss (line);\n    char name;\n    int count = 0;\n\n    while (ss >> name && count < 20) {\n        if (isalpha (name)) {\n            cout << name << \" is a letter!\" << endl;\n        } else if (isdigit (name)) {\n            cout << name << \"is a number!\" << endl;\n        } \n    }\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68147c3efacc1d1d0689274b",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    getline (cin, line);\n\n    stringstream ss (line);\n    char name;\n    int count = 0;\n\n    while (ss >> name && count < 20) {\n        if (isalpha (name)) {\n            cout << name << \" is a letter!\" << endl;\n        } else if (isdigit (name)) {\n            cout << name << \"is a number!\" << endl;\n        } else if (ispunct (name)) {\n            cout << name << \"is a punctuation character!\" << endl;\n        }\n    }\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68147c7efacc1d1d0689274f",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    getline (cin, line);\n\n    stringstream ss (line);\n    char name;\n    int count = 0;\n\n    while (ss >> name && count < 20) {\n        if (isalpha (name)) {\n            cout << name << \" is a letter!\" << endl;\n        } else if (isdigit (name)) {\n            cout << name << \"is a number!\" << endl;\n        } else if (ispunct (name)) {\n            cout << name << \"is a punctuation character!\" << endl;\n        }\n        count++\n    }\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68147c8efacc1d1d06892754",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    getline (cin, line);\n\n    stringstream ss (line);\n    char name;\n    int count = 0;\n\n    while (ss >> name && count < 20) {\n        if (isalpha (name)) {\n            cout << name << \" is a letter!\" << endl;\n        } else if (isdigit (name)) {\n            cout << name << \"is a number!\" << endl;\n        } else if (ispunct (name)) {\n            cout << name << \"is a punctuation character!\" << endl;\n        }\n        count++;\n    }\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68147c93facc1d1d06892758",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    getline (cin, line);\n\n    stringstream ss (line);\n    char name;\n    int count = 0;\n\n    while (ss >> name && count < 20) {\n        if (isalpha (name)) {\n            cout << name << \" is a letter!\" << endl;\n        } else if (isdigit (name)) {\n            cout << name << \" is a number!\" << endl;\n        } else if (ispunct (name)) {\n            cout << name << \" is a punctuation character!\" << endl;\n        }\n        count++;\n    }\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68147cabfacc1d1d0689275c",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    getline (cin, line);\n\n    stringstream ss (line);\n    char name;\n    int count = 0;\n\n    while (ss >> name && count < 20) {\n        if (isalpha (name)) {\n            cout << name << \" is a letter!\" << endl;\n        } else if (isdigit (name)) {\n            cout << name << \" is a digit!\" << endl;\n        } else if (ispunct (name)) {\n            cout << name << \" is a punctuation character!\" << endl;\n        }\n        count++;\n    }\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68147ccbfacc1d1d06892760",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    getline (cin, line);\n\n    stringstream\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68147b48facc1d1d068926f9",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68147aeafacc1d1d068926d6",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <sstream>\n#include <\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68147af8facc1d1d068926dd",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68147afefacc1d1d068926e1",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    \n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68147b06facc1d1d068926e5",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    get \n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68147b12facc1d1d068926e9",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    stringstream line;\n    get \n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68147b1bfacc1d1d068926ed",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    get \n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68147b26facc1d1d068926f1",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    getline (cin, line);\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68147b36facc1d1d068926f5",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68147ab3facc1d1d068926cc",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    getline (cin, line);\n\n    stringstream ss (line);\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68147b52facc1d1d068926fd",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    getline (cin, line);\n\n    stringstream ss (line);\n    char name;\n    \n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68147b69facc1d1d06892701",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    getline (cin, line);\n\n    stringstream ss (line);\n    char name;\n    int count = 0;\n\n    \n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68147b74facc1d1d06892705",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    getline (cin, line);\n\n    stringstream ss (line);\n    char name;\n    int count = 0;\n\n    while (ss >> s)\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68147b85facc1d1d06892709",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    getline (cin, line);\n\n    stringstream ss (line);\n    char name;\n    int count = 0;\n\n    while (ss >> name)\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68147b8efacc1d1d0689270d",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    getline (cin, line);\n\n    stringstream ss (line);\n    char name;\n    int count = 0;\n\n    while (ss >> name && )\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68147b92facc1d1d06892711",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    getline (cin, line);\n\n    stringstream ss (line);\n    char name;\n    int count = 0;\n\n    while (ss >> name && count < 20)\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "submission_id": "68147b9afacc1d1d06892715",
+      "timestamp": ""
+    }
+  ],
+  "sequentialSimilarities": [
+    {
+      "codebert_score": 75,
+      "from_index": 0,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 75,
+      "to_index": 1
+    },
+    {
+      "codebert_score": 85,
+      "from_index": 1,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 85,
+      "to_index": 2
+    },
+    {
+      "codebert_score": 84,
+      "from_index": 2,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 84,
+      "to_index": 3
+    },
+    {
+      "codebert_score": 87,
+      "from_index": 3,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 87,
+      "to_index": 4
+    },
+    {
+      "codebert_score": 87,
+      "from_index": 4,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 87,
+      "to_index": 5
+    },
+    {
+      "codebert_score": 81,
+      "from_index": 5,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 81,
+      "to_index": 6
+    },
+    {
+      "codebert_score": 90,
+      "from_index": 6,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 90,
+      "to_index": 7
+    },
+    {
+      "codebert_score": 92,
+      "from_index": 7,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 92,
+      "to_index": 8
+    },
+    {
+      "codebert_score": 76,
+      "from_index": 8,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 76,
+      "to_index": 9
+    },
+    {
+      "codebert_score": 73,
+      "from_index": 9,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 73,
+      "to_index": 10
+    },
+    {
+      "codebert_score": 85,
+      "from_index": 10,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 85,
+      "to_index": 11
+    },
+    {
+      "codebert_score": 77,
+      "from_index": 11,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 77,
+      "to_index": 12
+    },
+    {
+      "codebert_score": 77,
+      "from_index": 12,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 77,
+      "to_index": 13
+    },
+    {
+      "codebert_score": 87,
+      "from_index": 13,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 87,
+      "to_index": 14
+    },
+    {
+      "codebert_score": 93,
+      "from_index": 14,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 93,
+      "to_index": 15
+    },
+    {
+      "codebert_score": 96,
+      "from_index": 15,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 96,
+      "to_index": 16
+    },
+    {
+      "codebert_score": 95,
+      "from_index": 16,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 95,
+      "to_index": 17
+    },
+    {
+      "codebert_score": 51,
+      "from_index": 17,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 51,
+      "to_index": 18
+    },
+    {
+      "codebert_score": 59,
+      "from_index": 18,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 59,
+      "to_index": 19
+    },
+    {
+      "codebert_score": 69,
+      "from_index": 19,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 69,
+      "to_index": 20
+    },
+    {
+      "codebert_score": 76,
+      "from_index": 20,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 76,
+      "to_index": 21
+    },
+    {
+      "codebert_score": 78,
+      "from_index": 21,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 78,
+      "to_index": 22
+    },
+    {
+      "codebert_score": 74,
+      "from_index": 22,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 74,
+      "to_index": 23
+    },
+    {
+      "codebert_score": 88,
+      "from_index": 23,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 88,
+      "to_index": 24
+    },
+    {
+      "codebert_score": 88,
+      "from_index": 24,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 88,
+      "to_index": 25
+    },
+    {
+      "codebert_score": 70,
+      "from_index": 25,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 70,
+      "to_index": 26
+    },
+    {
+      "codebert_score": 54,
+      "from_index": 26,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 54,
+      "to_index": 27
+    },
+    {
+      "codebert_score": 55,
+      "from_index": 27,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 55,
+      "to_index": 28
+    },
+    {
+      "codebert_score": 85,
+      "from_index": 28,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 85,
+      "to_index": 29
+    },
+    {
+      "codebert_score": 84,
+      "from_index": 29,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 84,
+      "to_index": 30
+    },
+    {
+      "codebert_score": 78,
+      "from_index": 30,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 78,
+      "to_index": 31
+    },
+    {
+      "codebert_score": 90,
+      "from_index": 31,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 90,
+      "to_index": 32
+    },
+    {
+      "codebert_score": 87,
+      "from_index": 32,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 87,
+      "to_index": 33
+    },
+    {
+      "codebert_score": 82,
+      "from_index": 33,
+      "learner_id": "681477a6a0892f131964f278",
+      "similarity": 82,
+      "to_index": 34
+    }
+  ],
+  "snapshots": [
+    {
+      "__v": 0,
+      "_id": "68147c16facc1d1d0689273f",
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    getline (cin, line);\n\n    stringstream ss (line);\n    char name;\n    int count = 0;\n\n    while (ss >> name && count < 20) {\n        if (isalpha (name)) {\n            cout << name << \" is a letter!\"\n        } else if (isdigit (name))\n    }\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "character-inspector-4333782441",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746172949429",
+      "timestamp": "Fri, 02 May 2025 08:02:30 GMT",
+      "version": 27
+    },
+    {
+      "__v": 0,
+      "_id": "68147ba7facc1d1d0689271d",
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    getline (cin, line);\n\n    stringstream ss (line);\n    char name;\n    int count = 0;\n\n    while (ss >> name && count < 20) {\n        if \n    }\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "character-inspector-4333782441",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746172838886",
+      "timestamp": "Fri, 02 May 2025 08:00:39 GMT",
+      "version": 19
+    },
+    {
+      "__v": 0,
+      "_id": "68147bb1facc1d1d06892721",
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    getline (cin, line);\n\n    stringstream ss (line);\n    char name;\n    int count = 0;\n\n    while (ss >> name && count < 20) {\n        if (isalpha)\n    }\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "character-inspector-4333782441",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746172848590",
+      "timestamp": "Fri, 02 May 2025 08:00:49 GMT",
+      "version": 20
+    },
+    {
+      "__v": 0,
+      "_id": "68147bb9facc1d1d06892725",
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    getline (cin, line);\n\n    stringstream ss (line);\n    char name;\n    int count = 0;\n\n    while (ss >> name && count < 20) {\n        if (isalpha (name))\n    }\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "character-inspector-4333782441",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746172857134",
+      "timestamp": "Fri, 02 May 2025 08:00:57 GMT",
+      "version": 21
+    },
+    {
+      "__v": 0,
+      "_id": "68147bc6facc1d1d0689272a",
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    getline (cin, line);\n\n    stringstream ss (line);\n    char name;\n    int count = 0;\n\n    while (ss >> name && count < 20) {\n        if (isalpha (name)) {\n            else \n        }\n    }\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "character-inspector-4333782441",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746172869678",
+      "timestamp": "Fri, 02 May 2025 08:01:10 GMT",
+      "version": 22
+    },
+    {
+      "__v": 0,
+      "_id": "68147bdffacc1d1d0689272e",
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    getline (cin, line);\n\n    stringstream ss (line);\n    char name;\n    int count = 0;\n\n    while (ss >> name && count < 20) {\n        if (isalpha (name)) {\n        } else if \n    }\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "character-inspector-4333782441",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746172895150",
+      "timestamp": "Fri, 02 May 2025 08:01:35 GMT",
+      "version": 23
+    },
+    {
+      "__v": 0,
+      "_id": "68147bf0facc1d1d06892732",
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    getline (cin, line);\n\n    stringstream ss (line);\n    char name;\n    int count = 0;\n\n    while (ss >> name && count < 20) {\n        if (isalpha (name)) {\n        } else if (isdigit (name))\n    }\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "character-inspector-4333782441",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746172911973",
+      "timestamp": "Fri, 02 May 2025 08:01:52 GMT",
+      "version": 24
+    },
+    {
+      "__v": 0,
+      "_id": "68147c02facc1d1d06892737",
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    getline (cin, line);\n\n    stringstream ss (line);\n    char name;\n    int count = 0;\n\n    while (ss >> name && count < 20) {\n        if (isalpha (name)) {\n            cout << \n        } else if (isdigit (name))\n    }\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "character-inspector-4333782441",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746172929398",
+      "timestamp": "Fri, 02 May 2025 08:02:10 GMT",
+      "version": 25
+    },
+    {
+      "__v": 0,
+      "_id": "68147c0dfacc1d1d0689273b",
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    getline (cin, line);\n\n    stringstream ss (line);\n    char name;\n    int count = 0;\n\n    while (ss >> name && count < 20) {\n        if (isalpha (name)) {\n            cout << name << \n        } else if (isdigit (name))\n    }\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "character-inspector-4333782441",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746172940877",
+      "timestamp": "Fri, 02 May 2025 08:02:21 GMT",
+      "version": 26
+    },
+    {
+      "__v": 0,
+      "_id": "68147ba1facc1d1d06892719",
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    getline (cin, line);\n\n    stringstream ss (line);\n    char name;\n    int count = 0;\n\n    while (ss >> name && count < 20) {\n        \n    }\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "character-inspector-4333782441",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746172832383",
+      "timestamp": "Fri, 02 May 2025 08:00:33 GMT",
+      "version": 18
+    },
+    {
+      "__v": 0,
+      "_id": "68147c20facc1d1d06892743",
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    getline (cin, line);\n\n    stringstream ss (line);\n    char name;\n    int count = 0;\n\n    while (ss >> name && count < 20) {\n        if (isalpha (name)) {\n            cout << name << \" is a letter!\" << endl;\n        } else if (isdigit (name))\n    }\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "character-inspector-4333782441",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746172959772",
+      "timestamp": "Fri, 02 May 2025 08:02:40 GMT",
+      "version": 28
+    },
+    {
+      "__v": 0,
+      "_id": "68147c2cfacc1d1d06892747",
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    getline (cin, line);\n\n    stringstream ss (line);\n    char name;\n    int count = 0;\n\n    while (ss >> name && count < 20) {\n        if (isalpha (name)) {\n            cout << name << \" is a letter!\" << endl;\n        } else if (isdigit (name)) {\n            cout << \n        }\n    }\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "character-inspector-4333782441",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746172971564",
+      "timestamp": "Fri, 02 May 2025 08:02:52 GMT",
+      "version": 29
+    },
+    {
+      "__v": 0,
+      "_id": "68147c3efacc1d1d0689274b",
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    getline (cin, line);\n\n    stringstream ss (line);\n    char name;\n    int count = 0;\n\n    while (ss >> name && count < 20) {\n        if (isalpha (name)) {\n            cout << name << \" is a letter!\" << endl;\n        } else if (isdigit (name)) {\n            cout << name << \"is a number!\" << endl;\n        } \n    }\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "character-inspector-4333782441",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746172989932",
+      "timestamp": "Fri, 02 May 2025 08:03:10 GMT",
+      "version": 30
+    },
+    {
+      "__v": 0,
+      "_id": "68147c7efacc1d1d0689274f",
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    getline (cin, line);\n\n    stringstream ss (line);\n    char name;\n    int count = 0;\n\n    while (ss >> name && count < 20) {\n        if (isalpha (name)) {\n            cout << name << \" is a letter!\" << endl;\n        } else if (isdigit (name)) {\n            cout << name << \"is a number!\" << endl;\n        } else if (ispunct (name)) {\n            cout << name << \"is a punctuation character!\" << endl;\n        }\n    }\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "character-inspector-4333782441",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746173054172",
+      "timestamp": "Fri, 02 May 2025 08:04:14 GMT",
+      "version": 31
+    },
+    {
+      "__v": 0,
+      "_id": "68147c8efacc1d1d06892754",
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    getline (cin, line);\n\n    stringstream ss (line);\n    char name;\n    int count = 0;\n\n    while (ss >> name && count < 20) {\n        if (isalpha (name)) {\n            cout << name << \" is a letter!\" << endl;\n        } else if (isdigit (name)) {\n            cout << name << \"is a number!\" << endl;\n        } else if (ispunct (name)) {\n            cout << name << \"is a punctuation character!\" << endl;\n        }\n        count++\n    }\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "character-inspector-4333782441",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746173069514",
+      "timestamp": "Fri, 02 May 2025 08:04:30 GMT",
+      "version": 32
+    },
+    {
+      "__v": 0,
+      "_id": "68147c93facc1d1d06892758",
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    getline (cin, line);\n\n    stringstream ss (line);\n    char name;\n    int count = 0;\n\n    while (ss >> name && count < 20) {\n        if (isalpha (name)) {\n            cout << name << \" is a letter!\" << endl;\n        } else if (isdigit (name)) {\n            cout << name << \"is a number!\" << endl;\n        } else if (ispunct (name)) {\n            cout << name << \"is a punctuation character!\" << endl;\n        }\n        count++;\n    }\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "character-inspector-4333782441",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746173074475",
+      "timestamp": "Fri, 02 May 2025 08:04:35 GMT",
+      "version": 33
+    },
+    {
+      "__v": 0,
+      "_id": "68147cabfacc1d1d0689275c",
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    getline (cin, line);\n\n    stringstream ss (line);\n    char name;\n    int count = 0;\n\n    while (ss >> name && count < 20) {\n        if (isalpha (name)) {\n            cout << name << \" is a letter!\" << endl;\n        } else if (isdigit (name)) {\n            cout << name << \" is a number!\" << endl;\n        } else if (ispunct (name)) {\n            cout << name << \" is a punctuation character!\" << endl;\n        }\n        count++;\n    }\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "character-inspector-4333782441",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746173099151",
+      "timestamp": "Fri, 02 May 2025 08:04:59 GMT",
+      "version": 34
+    },
+    {
+      "__v": 0,
+      "_id": "68147ccbfacc1d1d06892760",
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    getline (cin, line);\n\n    stringstream ss (line);\n    char name;\n    int count = 0;\n\n    while (ss >> name && count < 20) {\n        if (isalpha (name)) {\n            cout << name << \" is a letter!\" << endl;\n        } else if (isdigit (name)) {\n            cout << name << \" is a digit!\" << endl;\n        } else if (ispunct (name)) {\n            cout << name << \" is a punctuation character!\" << endl;\n        }\n        count++;\n    }\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "character-inspector-4333782441",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746173130991",
+      "timestamp": "Fri, 02 May 2025 08:05:31 GMT",
+      "version": 35
+    },
+    {
+      "__v": 0,
+      "_id": "68147b48facc1d1d068926f9",
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    getline (cin, line);\n\n    stringstream\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "character-inspector-4333782441",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746172744256",
+      "timestamp": "Fri, 02 May 2025 07:59:04 GMT",
+      "version": 10
+    },
+    {
+      "__v": 0,
+      "_id": "68147aeafacc1d1d068926d6",
+      "code": "#include <iostream>\n#include <\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "character-inspector-4333782441",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746172649386",
+      "timestamp": "Fri, 02 May 2025 07:57:30 GMT",
+      "version": 2
+    },
+    {
+      "__v": 0,
+      "_id": "68147af8facc1d1d068926dd",
+      "code": "#include <iostream>\n#include <sstream>\n#include <\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "character-inspector-4333782441",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746172663761",
+      "timestamp": "Fri, 02 May 2025 07:57:44 GMT",
+      "version": 3
+    },
+    {
+      "__v": 0,
+      "_id": "68147afefacc1d1d068926e1",
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "character-inspector-4333782441",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746172669801",
+      "timestamp": "Fri, 02 May 2025 07:57:50 GMT",
+      "version": 4
+    },
+    {
+      "__v": 0,
+      "_id": "68147b06facc1d1d068926e5",
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    \n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "character-inspector-4333782441",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746172677977",
+      "timestamp": "Fri, 02 May 2025 07:57:58 GMT",
+      "version": 5
+    },
+    {
+      "__v": 0,
+      "_id": "68147b12facc1d1d068926e9",
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    get \n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "character-inspector-4333782441",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746172689929",
+      "timestamp": "Fri, 02 May 2025 07:58:10 GMT",
+      "version": 6
+    },
+    {
+      "__v": 0,
+      "_id": "68147b1bfacc1d1d068926ed",
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    stringstream line;\n    get \n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "character-inspector-4333782441",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746172699001",
+      "timestamp": "Fri, 02 May 2025 07:58:19 GMT",
+      "version": 7
+    },
+    {
+      "__v": 0,
+      "_id": "68147b26facc1d1d068926f1",
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    get \n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "character-inspector-4333782441",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746172710017",
+      "timestamp": "Fri, 02 May 2025 07:58:30 GMT",
+      "version": 8
+    },
+    {
+      "__v": 0,
+      "_id": "68147b36facc1d1d068926f5",
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    getline (cin, line);\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "character-inspector-4333782441",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746172725961",
+      "timestamp": "Fri, 02 May 2025 07:58:46 GMT",
+      "version": 9
+    },
+    {
+      "__v": 0,
+      "_id": "68147ab3facc1d1d068926cc",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "character-inspector-4333782441",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746172594481",
+      "timestamp": "Fri, 02 May 2025 07:56:35 GMT",
+      "version": 1
+    },
+    {
+      "__v": 0,
+      "_id": "68147b52facc1d1d068926fd",
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    getline (cin, line);\n\n    stringstream ss (line);\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "character-inspector-4333782441",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746172753576",
+      "timestamp": "Fri, 02 May 2025 07:59:14 GMT",
+      "version": 11
+    },
+    {
+      "__v": 0,
+      "_id": "68147b69facc1d1d06892701",
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    getline (cin, line);\n\n    stringstream ss (line);\n    char name;\n    \n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "character-inspector-4333782441",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746172776639",
+      "timestamp": "Fri, 02 May 2025 07:59:37 GMT",
+      "version": 12
+    },
+    {
+      "__v": 0,
+      "_id": "68147b74facc1d1d06892705",
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    getline (cin, line);\n\n    stringstream ss (line);\n    char name;\n    int count = 0;\n\n    \n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "character-inspector-4333782441",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746172787655",
+      "timestamp": "Fri, 02 May 2025 07:59:48 GMT",
+      "version": 13
+    },
+    {
+      "__v": 0,
+      "_id": "68147b85facc1d1d06892709",
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    getline (cin, line);\n\n    stringstream ss (line);\n    char name;\n    int count = 0;\n\n    while (ss >> s)\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "character-inspector-4333782441",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746172804473",
+      "timestamp": "Fri, 02 May 2025 08:00:05 GMT",
+      "version": 14
+    },
+    {
+      "__v": 0,
+      "_id": "68147b8efacc1d1d0689270d",
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    getline (cin, line);\n\n    stringstream ss (line);\n    char name;\n    int count = 0;\n\n    while (ss >> name)\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "character-inspector-4333782441",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746172813728",
+      "timestamp": "Fri, 02 May 2025 08:00:14 GMT",
+      "version": 15
+    },
+    {
+      "__v": 0,
+      "_id": "68147b92facc1d1d06892711",
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    getline (cin, line);\n\n    stringstream ss (line);\n    char name;\n    int count = 0;\n\n    while (ss >> name && )\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "character-inspector-4333782441",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746172818302",
+      "timestamp": "Fri, 02 May 2025 08:00:18 GMT",
+      "version": 16
+    },
+    {
+      "__v": 0,
+      "_id": "68147b9afacc1d1d06892715",
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    getline (cin, line);\n\n    stringstream ss (line);\n    char name;\n    int count = 0;\n\n    while (ss >> name && count < 20)\n    return 0;\n}",
+      "learner_id": "681477a6a0892f131964f278",
+      "problemId": "character-inspector-4333782441",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746172825567",
+      "timestamp": "Fri, 02 May 2025 08:00:26 GMT",
+      "version": 17
+    }
+  ],
+  "success": true
+}

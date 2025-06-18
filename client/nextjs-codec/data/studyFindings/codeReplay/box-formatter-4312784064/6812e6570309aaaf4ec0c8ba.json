@@ -1,0 +1,1418 @@
+{
+  "formatted_snapshots": [
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    std::string row(w,c)\n    for (int i = 0; i < h; ++i) {\n        for (int j = 0; j < w; ++j) {\n            std::cout << c;\n        }\n        std::cout << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812fbaaa200735ad7fb6c51",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    for (int i = 0; i < h; ++i) {\n        for (int j\n        std::cout << std::setfill(c) << std::setw(w) << \"\" << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812f1fffe7bbf1273012daa",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    for (int i = 0; i < h; ++i) {\n        for (int j = 0\n        std::cout << std::setfill(c) << std::setw(w) << \"\" << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812f205fe7bbf1273012dae",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    for (int i = 0; i < h; ++i) {\n        for (int j = 0; j \n        std::cout << std::setfill(c) << std::setw(w) << \"\" << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812f20bfe7bbf1273012db2",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    for (int i = 0; i < h; ++i) {\n        for (int j = 0; j < w\n        std::cout << std::setfill(c) << std::setw(w) << \"\" << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812f210fe7bbf1273012db6",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    for (int i = 0; i < h; ++i) {\n        for (int j = 0; j < w; \n        std::cout << std::setfill(c) << std::setw(w) << \"\" << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812f215fe7bbf1273012dba",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    for (int i = 0; i < h; ++i) {\n        for (int j = 0; j < w; ++j\n        std::cout << std::setfill(c) << std::setw(w) << \"\" << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812f21afe7bbf1273012dbe",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    for (int i = 0; i < h; ++i) {\n        for (int j = 0; j < w; ++j) {\n            \n        }\n        std::cout << std::setfill(c) << std::setw(w) << \"\" << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812f225fe7bbf1273012dc2",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    for (int i = 0; i < h; ++i) {\n        for (int j = 0; j < w; ++j) {\n            std::cout\n        }\n        std::cout << std::setfill(c) << std::setw(w) << \"\" << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812f22efe7bbf1273012dc6",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    for (int i = 0; i < h; ++i) {\n        for (int j = 0; j < w; ++j) {\n            std::cout << c;\n        }\n        std::cout << std::setfill(c) << std::setw(w) << \"\" << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812f235fe7bbf1273012dca",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    for (int i = 0; i < h; ++i) {\n        for (int j = 0; j < w; ++j) {\n            std::cout << c;\n        }\n        std::cout << \n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812f23ffe7bbf1273012dce",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    for (int i = 0; i < h; ++i) {\n        for (int j = 0; j < w; ++j) {\n            std::cout << c;\n        }\n        std::cout << std::endl;;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812f248fe7bbf1273012dd2",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    for (int i = 0; i < h; ++i) {\n        for (int j = 0; j < w; ++j) {\n            std::cout << c;\n        }\n        std::cout << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812f24dfe7bbf1273012dd6",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    std\n    for (int i = 0; i < h; ++i) {\n        for (int j = 0; j < w; ++j) {\n            std::cout << c;\n        }\n        std::cout << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812f33efe7bbf1273012de3",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    std::string\n    for (int i = 0; i < h; ++i) {\n        for (int j = 0; j < w; ++j) {\n            std::cout << c;\n        }\n        std::cout << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812fba4a200735ad7fb6c4d",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    for (int i = 0; i < h; ++i) {\n        for int j\n        std::cout << std::setfill(c) << std::setw(w) << \"\" << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812f1f5fe7bbf1273012da6",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    std::string row(w, c);\n    for (int i = 0; i < h; ++i) {\n        for (int j = 0; j < w; ++j) {\n            std::cout << c;\n        }\n        std::cout << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812fbb0a200735ad7fb6c55",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    std::string row(w, c);\n    \n    for (int i = 0; i < h; ++i) {\n        for (int j = 0; j < w; ++j) {\n            std::cout << c;\n        }\n        std::cout << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812fbb5a200735ad7fb6c59",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    std::string row(w, c);\n\n    for (int i = 0; i < h; ++i) {\n        std::cout << c;\n        }\n        std::cout << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812fbcca200735ad7fb6c5f",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    std::string row(w, c);\n\n    for (int i = 0; i < h; ++i) {\n        std::cout << \n        }\n        std::cout << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812fbd2a200735ad7fb6c63",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    std::string row(w, c);\n\n    for (int i = 0; i < h; ++i) {\n        std::cout << std::setfill\n        }\n        std::cout << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812fbdda200735ad7fb6c67",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    std::string row(w, c);\n\n    for (int i = 0; i < h; ++i) {\n        std::cout << std::setfill(c)\n        }\n        std::cout << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812fbe2a200735ad7fb6c6b",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    std::string row(w, c);\n\n    for (int i = 0; i < h; ++i) {\n        std::cout << std::setfill(c) << std::set(w)\n        }\n        std::cout << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812fbeba200735ad7fb6c6f",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    std::string row(w, c);\n\n    for (int i = 0; i < h; ++i) {\n        std::cout << std::setfill(c) << std::setw(w)\n        }\n        std::cout << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812fbf4a200735ad7fb6c73",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    std::string row(w, c);\n\n    for (int i = 0; i < h; ++i) {\n        std::cout << std::setfill(c) << std::setw(w) << row << \n        }\n        std::cout << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812fbfaa200735ad7fb6c77",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    std::string row(w, c);\n\n    for (int i = 0; i < h; ++i) {\n        std::cout << std::setfill(c) << std::setw(w) << row << std::endl\n        }\n        std::cout << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812fc01a200735ad7fb6c7b",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    std::string row(w, c);\n\n    for (int i = 0; i < h; ++i) {\n        std::cout << std::setfill(c) << std::setw(w) << row << std::endl;\n        }\n        std::cout << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812fc04a200735ad7fb6c7f",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    std::string row(w, c);\n\n    for (int i = 0; i < h; ++i) {\n        std::cout << std::setfill(c) << std::setw(w) << row << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812fc0fa200735ad7fb6c83",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "68151cb47feb1949530cbd9a",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nusing namespace std;\n\nint main() {\n    char C;\n    int W, H;\n    \n    cin >> C >> W >> H;\n    \n    for (int i = 0; i < H; i++) {\n        cout << setfill(C) << setw(W) << \"\" << endl;\n    }\n    \n    return 0;\n}\n",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "68151fa77feb1949530cbdb6",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n\n    std::cin >> c >> w >> h;\n\n    for (int 1 = 0; i < h; ++i){\n        \n    }\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812f0bafe7bbf1273012d68",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812f04dfe7bbf1273012d30",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812f055fe7bbf1273012d34",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    \n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812f064fe7bbf1273012d38",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int \n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812f06dfe7bbf1273012d3c",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812f071fe7bbf1273012d40",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    \n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812f075fe7bbf1273012d44",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n\n    std::cin\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812f07dfe7bbf1273012d48",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n\n    std::cin >> c >> w >> \n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812f087fe7bbf1273012d4c",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n\n    std::cin >> c >> w >> h;\n    \n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812f08bfe7bbf1273012d50",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n\n    std::cin >> c >> w >> h;\n\n    for (int)\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812f094fe7bbf1273012d54",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n\n    std::cin >> c >> w >> h;\n\n    for (int 1 = 0)\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812f09efe7bbf1273012d58",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n\n    std::cin >> c >> w >> h;\n\n    for (int 1 = 0; i)\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812f0a4fe7bbf1273012d5c",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n\n    std::cin >> c >> w >> h;\n\n    for (int 1 = 0; i < h)\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812f0a9fe7bbf1273012d60",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n\n    std::cin >> c >> w >> h;\n\n    for (int 1 = 0; i < h; ++i)\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812f0b1fe7bbf1273012d64",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812eff4fe7bbf1273012d2a",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n\n    std::cin >> c >> w >> h;\n\n    for (int 1 = 0; i < h; ++i) {\n        \n    }\n    }\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812f0c2fe7bbf1273012d6c",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n\n    std::cin >> c >> w >> h;\n\n    for (int 1 = 0; i < h; ++i) {\n        std::cout\n    }\n    }\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812f0cbfe7bbf1273012d70",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n\n    std::cin >> c >> w >> h;\n\n    for (int 1 = 0; i < h; ++i) {\n        std::cout << std::setf\n    }\n    }\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812f0d4fe7bbf1273012d74",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n\n    std::cin >> c >> w >> h;\n\n    for (int 1 = 0; i < h; ++i) {\n        std::cout << std::setfill(c)\n    }\n    }\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812f0dafe7bbf1273012d78",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n\n    std::cin >> c >> w >> h;\n\n    for (int 1 = 0; i < h; ++i) {\n        std::cout << std::setfill(c) << std::\n    }\n    }\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812f0e2fe7bbf1273012d7c",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n\n    std::cin >> c >> w >> h;\n\n    for (int 1 = 0; i < h; ++i) {\n        std::cout << std::setfill(c) << std::setw(w)\n    }\n    }\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812f0e9fe7bbf1273012d80",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n\n    std::cin >> c >> w >> h;\n\n    for (int 1 = 0; i < h; ++i) {\n        std::cout << std::setfill(c) << std::setw(w) << \n    }\n    }\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812f0edfe7bbf1273012d84",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n\n    std::cin >> c >> w >> h;\n\n    for (int 1 = 0; i < h; ++i) {\n        std::cout << std::setfill(c) << std::setw(w) << \"\" << \n    }\n    }\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812f0fcfe7bbf1273012d88",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n\n    std::cin >> c >> w >> h;\n\n    for (int 1 = 0; i < h; ++i) {\n        std::cout << std::setfill(c) << std::setw(w) << \"\" << std::endl\n    }\n    }\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812f104fe7bbf1273012d8c",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n\n    std::cin >> c >> w >> h;\n\n    for (int 1 = 0; i < h; ++i) {\n        std::cout << std::setfill(c) << std::setw(w) << \"\" << std::endl;\n    }\n    }\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812f109fe7bbf1273012d90",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n\n    std::cin >> c >> w >> h;\n\n    for (int 1 = 0; i < h; ++i) {\n        std::cout << std::setfill(c) << std::setw(w) << \"\" << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812f110fe7bbf1273012d94",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n\n    std::cin >> c >> w >> h;\n\n    for (int i = 0; i < h; ++i) {\n        std::cout << std::setfill(c) << std::setw(w) << \"\" << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812f151fe7bbf1273012d9b",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    for (int i = 0; i < h; ++i) {\n        std::cout << std::setfill(c) << std::setw(w) << \"\" << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812f1cefe7bbf1273012d9f",
+      "timestamp": ""
+    }
+  ],
+  "sequentialSimilarities": [
+    {
+      "codebert_score": 61,
+      "from_index": 0,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 61,
+      "to_index": 1
+    },
+    {
+      "codebert_score": 88,
+      "from_index": 1,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 88,
+      "to_index": 2
+    },
+    {
+      "codebert_score": 87,
+      "from_index": 2,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 87,
+      "to_index": 3
+    },
+    {
+      "codebert_score": 86,
+      "from_index": 3,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 86,
+      "to_index": 4
+    },
+    {
+      "codebert_score": 88,
+      "from_index": 4,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 88,
+      "to_index": 5
+    },
+    {
+      "codebert_score": 79,
+      "from_index": 5,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 79,
+      "to_index": 6
+    },
+    {
+      "codebert_score": 64,
+      "from_index": 6,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 64,
+      "to_index": 7
+    },
+    {
+      "codebert_score": 85,
+      "from_index": 7,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 85,
+      "to_index": 8
+    },
+    {
+      "codebert_score": 85,
+      "from_index": 8,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 85,
+      "to_index": 9
+    },
+    {
+      "codebert_score": 76,
+      "from_index": 9,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 76,
+      "to_index": 10
+    },
+    {
+      "codebert_score": 83,
+      "from_index": 10,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 83,
+      "to_index": 11
+    },
+    {
+      "codebert_score": 84,
+      "from_index": 11,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 84,
+      "to_index": 12
+    },
+    {
+      "codebert_score": 86,
+      "from_index": 12,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 86,
+      "to_index": 13
+    },
+    {
+      "codebert_score": 88,
+      "from_index": 13,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 88,
+      "to_index": 14
+    },
+    {
+      "codebert_score": 68,
+      "from_index": 14,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 68,
+      "to_index": 15
+    },
+    {
+      "codebert_score": 72,
+      "from_index": 15,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 72,
+      "to_index": 16
+    },
+    {
+      "codebert_score": 100,
+      "from_index": 16,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 100,
+      "to_index": 17
+    },
+    {
+      "codebert_score": 67,
+      "from_index": 17,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 67,
+      "to_index": 18
+    },
+    {
+      "codebert_score": 87,
+      "from_index": 18,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 87,
+      "to_index": 19
+    },
+    {
+      "codebert_score": 84,
+      "from_index": 19,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 84,
+      "to_index": 20
+    },
+    {
+      "codebert_score": 85,
+      "from_index": 20,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 85,
+      "to_index": 21
+    },
+    {
+      "codebert_score": 86,
+      "from_index": 21,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 86,
+      "to_index": 22
+    },
+    {
+      "codebert_score": 92,
+      "from_index": 22,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 92,
+      "to_index": 23
+    },
+    {
+      "codebert_score": 85,
+      "from_index": 23,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 85,
+      "to_index": 24
+    },
+    {
+      "codebert_score": 85,
+      "from_index": 24,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 85,
+      "to_index": 25
+    },
+    {
+      "codebert_score": 91,
+      "from_index": 25,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 91,
+      "to_index": 26
+    },
+    {
+      "codebert_score": 81,
+      "from_index": 26,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 81,
+      "to_index": 27
+    },
+    {
+      "codebert_score": 45,
+      "from_index": 27,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 45,
+      "to_index": 28
+    },
+    {
+      "codebert_score": 51,
+      "from_index": 28,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 51,
+      "to_index": 29
+    },
+    {
+      "codebert_score": 72,
+      "from_index": 29,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 72,
+      "to_index": 30
+    },
+    {
+      "codebert_score": 53,
+      "from_index": 30,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 53,
+      "to_index": 31
+    },
+    {
+      "codebert_score": 71,
+      "from_index": 31,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 71,
+      "to_index": 32
+    },
+    {
+      "codebert_score": 65,
+      "from_index": 32,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 65,
+      "to_index": 33
+    },
+    {
+      "codebert_score": 65,
+      "from_index": 33,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 65,
+      "to_index": 34
+    },
+    {
+      "codebert_score": 81,
+      "from_index": 34,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 81,
+      "to_index": 35
+    },
+    {
+      "codebert_score": 80,
+      "from_index": 35,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 80,
+      "to_index": 36
+    },
+    {
+      "codebert_score": 74,
+      "from_index": 36,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 74,
+      "to_index": 37
+    },
+    {
+      "codebert_score": 77,
+      "from_index": 37,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 77,
+      "to_index": 38
+    },
+    {
+      "codebert_score": 79,
+      "from_index": 38,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 79,
+      "to_index": 39
+    },
+    {
+      "codebert_score": 78,
+      "from_index": 39,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 78,
+      "to_index": 40
+    },
+    {
+      "codebert_score": 84,
+      "from_index": 40,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 84,
+      "to_index": 41
+    },
+    {
+      "codebert_score": 82,
+      "from_index": 41,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 82,
+      "to_index": 42
+    },
+    {
+      "codebert_score": 86,
+      "from_index": 42,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 86,
+      "to_index": 43
+    },
+    {
+      "codebert_score": 73,
+      "from_index": 43,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 73,
+      "to_index": 44
+    },
+    {
+      "codebert_score": 55,
+      "from_index": 44,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 55,
+      "to_index": 45
+    },
+    {
+      "codebert_score": 55,
+      "from_index": 45,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 55,
+      "to_index": 46
+    },
+    {
+      "codebert_score": 83,
+      "from_index": 46,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 83,
+      "to_index": 47
+    },
+    {
+      "codebert_score": 85,
+      "from_index": 47,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 85,
+      "to_index": 48
+    },
+    {
+      "codebert_score": 83,
+      "from_index": 48,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 83,
+      "to_index": 49
+    },
+    {
+      "codebert_score": 84,
+      "from_index": 49,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 84,
+      "to_index": 50
+    },
+    {
+      "codebert_score": 80,
+      "from_index": 50,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 80,
+      "to_index": 51
+    },
+    {
+      "codebert_score": 83,
+      "from_index": 51,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 83,
+      "to_index": 52
+    },
+    {
+      "codebert_score": 90,
+      "from_index": 52,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 90,
+      "to_index": 53
+    },
+    {
+      "codebert_score": 87,
+      "from_index": 53,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 87,
+      "to_index": 54
+    },
+    {
+      "codebert_score": 88,
+      "from_index": 54,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 88,
+      "to_index": 55
+    },
+    {
+      "codebert_score": 80,
+      "from_index": 55,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 80,
+      "to_index": 56
+    },
+    {
+      "codebert_score": 88,
+      "from_index": 56,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 88,
+      "to_index": 57
+    },
+    {
+      "codebert_score": 100,
+      "from_index": 57,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 100,
+      "to_index": 58
+    }
+  ],
+  "snapshots": [
+    {
+      "__v": 0,
+      "_id": "6812fbaaa200735ad7fb6c51",
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    std::string row(w,c)\n    for (int i = 0; i < h; ++i) {\n        for (int j = 0; j < w; ++j) {\n            std::cout << c;\n        }\n        std::cout << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746074537632",
+      "timestamp": "Thu, 01 May 2025 04:42:18 GMT",
+      "version": 45
+    },
+    {
+      "__v": 0,
+      "_id": "6812f1fffe7bbf1273012daa",
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    for (int i = 0; i < h; ++i) {\n        for (int j\n        std::cout << std::setfill(c) << std::setw(w) << \"\" << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746072062626",
+      "timestamp": "Thu, 01 May 2025 04:01:03 GMT",
+      "version": 31
+    },
+    {
+      "__v": 0,
+      "_id": "6812f205fe7bbf1273012dae",
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    for (int i = 0; i < h; ++i) {\n        for (int j = 0\n        std::cout << std::setfill(c) << std::setw(w) << \"\" << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746072069105",
+      "timestamp": "Thu, 01 May 2025 04:01:09 GMT",
+      "version": 32
+    },
+    {
+      "__v": 0,
+      "_id": "6812f20bfe7bbf1273012db2",
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    for (int i = 0; i < h; ++i) {\n        for (int j = 0; j \n        std::cout << std::setfill(c) << std::setw(w) << \"\" << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746072074753",
+      "timestamp": "Thu, 01 May 2025 04:01:15 GMT",
+      "version": 33
+    },
+    {
+      "__v": 0,
+      "_id": "6812f210fe7bbf1273012db6",
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    for (int i = 0; i < h; ++i) {\n        for (int j = 0; j < w\n        std::cout << std::setfill(c) << std::setw(w) << \"\" << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746072079484",
+      "timestamp": "Thu, 01 May 2025 04:01:20 GMT",
+      "version": 34
+    },
+    {
+      "__v": 0,
+      "_id": "6812f215fe7bbf1273012dba",
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    for (int i = 0; i < h; ++i) {\n        for (int j = 0; j < w; \n        std::cout << std::setfill(c) << std::setw(w) << \"\" << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746072084585",
+      "timestamp": "Thu, 01 May 2025 04:01:25 GMT",
+      "version": 35
+    },
+    {
+      "__v": 0,
+      "_id": "6812f21afe7bbf1273012dbe",
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    for (int i = 0; i < h; ++i) {\n        for (int j = 0; j < w; ++j\n        std::cout << std::setfill(c) << std::setw(w) << \"\" << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746072090036",
+      "timestamp": "Thu, 01 May 2025 04:01:30 GMT",
+      "version": 36
+    },
+    {
+      "__v": 0,
+      "_id": "6812f225fe7bbf1273012dc2",
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    for (int i = 0; i < h; ++i) {\n        for (int j = 0; j < w; ++j) {\n            \n        }\n        std::cout << std::setfill(c) << std::setw(w) << \"\" << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746072100572",
+      "timestamp": "Thu, 01 May 2025 04:01:41 GMT",
+      "version": 37
+    },
+    {
+      "__v": 0,
+      "_id": "6812f22efe7bbf1273012dc6",
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    for (int i = 0; i < h; ++i) {\n        for (int j = 0; j < w; ++j) {\n            std::cout\n        }\n        std::cout << std::setfill(c) << std::setw(w) << \"\" << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746072109788",
+      "timestamp": "Thu, 01 May 2025 04:01:50 GMT",
+      "version": 38
+    },
+    {
+      "__v": 0,
+      "_id": "6812f235fe7bbf1273012dca",
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    for (int i = 0; i < h; ++i) {\n        for (int j = 0; j < w; ++j) {\n            std::cout << c;\n        }\n        std::cout << std::setfill(c) << std::setw(w) << \"\" << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746072116472",
+      "timestamp": "Thu, 01 May 2025 04:01:57 GMT",
+      "version": 39
+    },
+    {
+      "__v": 0,
+      "_id": "6812f23ffe7bbf1273012dce",
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    for (int i = 0; i < h; ++i) {\n        for (int j = 0; j < w; ++j) {\n            std::cout << c;\n        }\n        std::cout << \n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746072126967",
+      "timestamp": "Thu, 01 May 2025 04:02:07 GMT",
+      "version": 40
+    },
+    {
+      "__v": 0,
+      "_id": "6812f248fe7bbf1273012dd2",
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    for (int i = 0; i < h; ++i) {\n        for (int j = 0; j < w; ++j) {\n            std::cout << c;\n        }\n        std::cout << std::endl;;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746072135362",
+      "timestamp": "Thu, 01 May 2025 04:02:16 GMT",
+      "version": 41
+    },
+    {
+      "__v": 0,
+      "_id": "6812f24dfe7bbf1273012dd6",
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    for (int i = 0; i < h; ++i) {\n        for (int j = 0; j < w; ++j) {\n            std::cout << c;\n        }\n        std::cout << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746072141098",
+      "timestamp": "Thu, 01 May 2025 04:02:21 GMT",
+      "version": 42
+    },
+    {
+      "__v": 0,
+      "_id": "6812f33efe7bbf1273012de3",
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    std\n    for (int i = 0; i < h; ++i) {\n        for (int j = 0; j < w; ++j) {\n            std::cout << c;\n        }\n        std::cout << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746072382118",
+      "timestamp": "Thu, 01 May 2025 04:06:22 GMT",
+      "version": 43
+    },
+    {
+      "__v": 0,
+      "_id": "6812fba4a200735ad7fb6c4d",
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    std::string\n    for (int i = 0; i < h; ++i) {\n        for (int j = 0; j < w; ++j) {\n            std::cout << c;\n        }\n        std::cout << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746074530642",
+      "timestamp": "Thu, 01 May 2025 04:42:12 GMT",
+      "version": 44
+    },
+    {
+      "__v": 0,
+      "_id": "6812f1f5fe7bbf1273012da6",
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    for (int i = 0; i < h; ++i) {\n        for int j\n        std::cout << std::setfill(c) << std::setw(w) << \"\" << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746072052697",
+      "timestamp": "Thu, 01 May 2025 04:00:53 GMT",
+      "version": 30
+    },
+    {
+      "__v": 0,
+      "_id": "6812fbb0a200735ad7fb6c55",
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    std::string row(w, c);\n    for (int i = 0; i < h; ++i) {\n        for (int j = 0; j < w; ++j) {\n            std::cout << c;\n        }\n        std::cout << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746074543804",
+      "timestamp": "Thu, 01 May 2025 04:42:24 GMT",
+      "version": 46
+    },
+    {
+      "__v": 0,
+      "_id": "6812fbb5a200735ad7fb6c59",
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    std::string row(w, c);\n    \n    for (int i = 0; i < h; ++i) {\n        for (int j = 0; j < w; ++j) {\n            std::cout << c;\n        }\n        std::cout << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746074548965",
+      "timestamp": "Thu, 01 May 2025 04:42:29 GMT",
+      "version": 47
+    },
+    {
+      "__v": 0,
+      "_id": "6812fbcca200735ad7fb6c5f",
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    std::string row(w, c);\n\n    for (int i = 0; i < h; ++i) {\n        std::cout << c;\n        }\n        std::cout << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746074571063",
+      "timestamp": "Thu, 01 May 2025 04:42:52 GMT",
+      "version": 48
+    },
+    {
+      "__v": 0,
+      "_id": "6812fbd2a200735ad7fb6c63",
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    std::string row(w, c);\n\n    for (int i = 0; i < h; ++i) {\n        std::cout << \n        }\n        std::cout << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746074577678",
+      "timestamp": "Thu, 01 May 2025 04:42:58 GMT",
+      "version": 49
+    },
+    {
+      "__v": 0,
+      "_id": "6812fbdda200735ad7fb6c67",
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    std::string row(w, c);\n\n    for (int i = 0; i < h; ++i) {\n        std::cout << std::setfill\n        }\n        std::cout << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746074588136",
+      "timestamp": "Thu, 01 May 2025 04:43:09 GMT",
+      "version": 50
+    },
+    {
+      "__v": 0,
+      "_id": "6812fbe2a200735ad7fb6c6b",
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    std::string row(w, c);\n\n    for (int i = 0; i < h; ++i) {\n        std::cout << std::setfill(c)\n        }\n        std::cout << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746074593358",
+      "timestamp": "Thu, 01 May 2025 04:43:14 GMT",
+      "version": 51
+    },
+    {
+      "__v": 0,
+      "_id": "6812fbeba200735ad7fb6c6f",
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    std::string row(w, c);\n\n    for (int i = 0; i < h; ++i) {\n        std::cout << std::setfill(c) << std::set(w)\n        }\n        std::cout << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746074602601",
+      "timestamp": "Thu, 01 May 2025 04:43:23 GMT",
+      "version": 52
+    },
+    {
+      "__v": 0,
+      "_id": "6812fbf4a200735ad7fb6c73",
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    std::string row(w, c);\n\n    for (int i = 0; i < h; ++i) {\n        std::cout << std::setfill(c) << std::setw(w)\n        }\n        std::cout << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746074611941",
+      "timestamp": "Thu, 01 May 2025 04:43:32 GMT",
+      "version": 53
+    },
+    {
+      "__v": 0,
+      "_id": "6812fbfaa200735ad7fb6c77",
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    std::string row(w, c);\n\n    for (int i = 0; i < h; ++i) {\n        std::cout << std::setfill(c) << std::setw(w) << row << \n        }\n        std::cout << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746074617726",
+      "timestamp": "Thu, 01 May 2025 04:43:38 GMT",
+      "version": 54
+    },
+    {
+      "__v": 0,
+      "_id": "6812fc01a200735ad7fb6c7b",
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    std::string row(w, c);\n\n    for (int i = 0; i < h; ++i) {\n        std::cout << std::setfill(c) << std::setw(w) << row << std::endl\n        }\n        std::cout << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746074624086",
+      "timestamp": "Thu, 01 May 2025 04:43:45 GMT",
+      "version": 55
+    },
+    {
+      "__v": 0,
+      "_id": "6812fc04a200735ad7fb6c7f",
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    std::string row(w, c);\n\n    for (int i = 0; i < h; ++i) {\n        std::cout << std::setfill(c) << std::setw(w) << row << std::endl;\n        }\n        std::cout << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746074627468",
+      "timestamp": "Thu, 01 May 2025 04:43:48 GMT",
+      "version": 56
+    },
+    {
+      "__v": 0,
+      "_id": "6812fc0fa200735ad7fb6c83",
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    std::string row(w, c);\n\n    for (int i = 0; i < h; ++i) {\n        std::cout << std::setfill(c) << std::setw(w) << row << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746074638892",
+      "timestamp": "Thu, 01 May 2025 04:43:59 GMT",
+      "version": 57
+    },
+    {
+      "__v": 0,
+      "_id": "68151cb47feb1949530cbd9a",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746214067258",
+      "timestamp": "Fri, 02 May 2025 19:27:48 GMT",
+      "version": 58
+    },
+    {
+      "__v": 0,
+      "_id": "68151fa77feb1949530cbdb6",
+      "code": "#include <iostream>\n#include <iomanip>\n\nusing namespace std;\n\nint main() {\n    char C;\n    int W, H;\n    \n    cin >> C >> W >> H;\n    \n    for (int i = 0; i < H; i++) {\n        cout << setfill(C) << setw(W) << \"\" << endl;\n    }\n    \n    return 0;\n}\n",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746214821973",
+      "timestamp": "Fri, 02 May 2025 19:40:23 GMT",
+      "version": 59
+    },
+    {
+      "__v": 0,
+      "_id": "6812f0bafe7bbf1273012d68",
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n\n    std::cin >> c >> w >> h;\n\n    for (int 1 = 0; i < h; ++i){\n        \n    }\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746071737532",
+      "timestamp": "Thu, 01 May 2025 03:55:38 GMT",
+      "version": 16
+    },
+    {
+      "__v": 0,
+      "_id": "6812f04dfe7bbf1273012d30",
+      "code": "#include <iostream>\n#include <\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746071628525",
+      "timestamp": "Thu, 01 May 2025 03:53:49 GMT",
+      "version": 2
+    },
+    {
+      "__v": 0,
+      "_id": "6812f055fe7bbf1273012d34",
+      "code": "#include <iostream>\n#include <iomanip>\n\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746071637061",
+      "timestamp": "Thu, 01 May 2025 03:53:57 GMT",
+      "version": 3
+    },
+    {
+      "__v": 0,
+      "_id": "6812f064fe7bbf1273012d38",
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    \n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746071651469",
+      "timestamp": "Thu, 01 May 2025 03:54:12 GMT",
+      "version": 4
+    },
+    {
+      "__v": 0,
+      "_id": "6812f06dfe7bbf1273012d3c",
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int \n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746071660259",
+      "timestamp": "Thu, 01 May 2025 03:54:21 GMT",
+      "version": 5
+    },
+    {
+      "__v": 0,
+      "_id": "6812f071fe7bbf1273012d40",
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746071664883",
+      "timestamp": "Thu, 01 May 2025 03:54:25 GMT",
+      "version": 6
+    },
+    {
+      "__v": 0,
+      "_id": "6812f075fe7bbf1273012d44",
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    \n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746071669019",
+      "timestamp": "Thu, 01 May 2025 03:54:29 GMT",
+      "version": 7
+    },
+    {
+      "__v": 0,
+      "_id": "6812f07dfe7bbf1273012d48",
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n\n    std::cin\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746071676923",
+      "timestamp": "Thu, 01 May 2025 03:54:37 GMT",
+      "version": 8
+    },
+    {
+      "__v": 0,
+      "_id": "6812f087fe7bbf1273012d4c",
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n\n    std::cin >> c >> w >> \n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746071686955",
+      "timestamp": "Thu, 01 May 2025 03:54:47 GMT",
+      "version": 9
+    },
+    {
+      "__v": 0,
+      "_id": "6812f08bfe7bbf1273012d50",
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n\n    std::cin >> c >> w >> h;\n    \n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746071691132",
+      "timestamp": "Thu, 01 May 2025 03:54:51 GMT",
+      "version": 10
+    },
+    {
+      "__v": 0,
+      "_id": "6812f094fe7bbf1273012d54",
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n\n    std::cin >> c >> w >> h;\n\n    for (int)\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746071700093",
+      "timestamp": "Thu, 01 May 2025 03:55:00 GMT",
+      "version": 11
+    },
+    {
+      "__v": 0,
+      "_id": "6812f09efe7bbf1273012d58",
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n\n    std::cin >> c >> w >> h;\n\n    for (int 1 = 0)\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746071710134",
+      "timestamp": "Thu, 01 May 2025 03:55:10 GMT",
+      "version": 12
+    },
+    {
+      "__v": 0,
+      "_id": "6812f0a4fe7bbf1273012d5c",
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n\n    std::cin >> c >> w >> h;\n\n    for (int 1 = 0; i)\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746071715955",
+      "timestamp": "Thu, 01 May 2025 03:55:16 GMT",
+      "version": 13
+    },
+    {
+      "__v": 0,
+      "_id": "6812f0a9fe7bbf1273012d60",
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n\n    std::cin >> c >> w >> h;\n\n    for (int 1 = 0; i < h)\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746071720525",
+      "timestamp": "Thu, 01 May 2025 03:55:21 GMT",
+      "version": 14
+    },
+    {
+      "__v": 0,
+      "_id": "6812f0b1fe7bbf1273012d64",
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n\n    std::cin >> c >> w >> h;\n\n    for (int 1 = 0; i < h; ++i)\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746071728871",
+      "timestamp": "Thu, 01 May 2025 03:55:29 GMT",
+      "version": 15
+    },
+    {
+      "__v": 0,
+      "_id": "6812eff4fe7bbf1273012d2a",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746071539464",
+      "timestamp": "Thu, 01 May 2025 03:52:20 GMT",
+      "version": 1
+    },
+    {
+      "__v": 0,
+      "_id": "6812f0c2fe7bbf1273012d6c",
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n\n    std::cin >> c >> w >> h;\n\n    for (int 1 = 0; i < h; ++i) {\n        \n    }\n    }\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746071745706",
+      "timestamp": "Thu, 01 May 2025 03:55:46 GMT",
+      "version": 17
+    },
+    {
+      "__v": 0,
+      "_id": "6812f0cbfe7bbf1273012d70",
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n\n    std::cin >> c >> w >> h;\n\n    for (int 1 = 0; i < h; ++i) {\n        std::cout\n    }\n    }\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746071754424",
+      "timestamp": "Thu, 01 May 2025 03:55:55 GMT",
+      "version": 18
+    },
+    {
+      "__v": 0,
+      "_id": "6812f0d4fe7bbf1273012d74",
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n\n    std::cin >> c >> w >> h;\n\n    for (int 1 = 0; i < h; ++i) {\n        std::cout << std::setf\n    }\n    }\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746071763607",
+      "timestamp": "Thu, 01 May 2025 03:56:04 GMT",
+      "version": 19
+    },
+    {
+      "__v": 0,
+      "_id": "6812f0dafe7bbf1273012d78",
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n\n    std::cin >> c >> w >> h;\n\n    for (int 1 = 0; i < h; ++i) {\n        std::cout << std::setfill(c)\n    }\n    }\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746071769741",
+      "timestamp": "Thu, 01 May 2025 03:56:10 GMT",
+      "version": 20
+    },
+    {
+      "__v": 0,
+      "_id": "6812f0e2fe7bbf1273012d7c",
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n\n    std::cin >> c >> w >> h;\n\n    for (int 1 = 0; i < h; ++i) {\n        std::cout << std::setfill(c) << std::\n    }\n    }\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746071777222",
+      "timestamp": "Thu, 01 May 2025 03:56:18 GMT",
+      "version": 21
+    },
+    {
+      "__v": 0,
+      "_id": "6812f0e9fe7bbf1273012d80",
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n\n    std::cin >> c >> w >> h;\n\n    for (int 1 = 0; i < h; ++i) {\n        std::cout << std::setfill(c) << std::setw(w)\n    }\n    }\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746071784288",
+      "timestamp": "Thu, 01 May 2025 03:56:25 GMT",
+      "version": 22
+    },
+    {
+      "__v": 0,
+      "_id": "6812f0edfe7bbf1273012d84",
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n\n    std::cin >> c >> w >> h;\n\n    for (int 1 = 0; i < h; ++i) {\n        std::cout << std::setfill(c) << std::setw(w) << \n    }\n    }\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746071788988",
+      "timestamp": "Thu, 01 May 2025 03:56:29 GMT",
+      "version": 23
+    },
+    {
+      "__v": 0,
+      "_id": "6812f0fcfe7bbf1273012d88",
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n\n    std::cin >> c >> w >> h;\n\n    for (int 1 = 0; i < h; ++i) {\n        std::cout << std::setfill(c) << std::setw(w) << \"\" << \n    }\n    }\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746071804074",
+      "timestamp": "Thu, 01 May 2025 03:56:44 GMT",
+      "version": 24
+    },
+    {
+      "__v": 0,
+      "_id": "6812f104fe7bbf1273012d8c",
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n\n    std::cin >> c >> w >> h;\n\n    for (int 1 = 0; i < h; ++i) {\n        std::cout << std::setfill(c) << std::setw(w) << \"\" << std::endl\n    }\n    }\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746071811224",
+      "timestamp": "Thu, 01 May 2025 03:56:52 GMT",
+      "version": 25
+    },
+    {
+      "__v": 0,
+      "_id": "6812f109fe7bbf1273012d90",
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n\n    std::cin >> c >> w >> h;\n\n    for (int 1 = 0; i < h; ++i) {\n        std::cout << std::setfill(c) << std::setw(w) << \"\" << std::endl;\n    }\n    }\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746071816847",
+      "timestamp": "Thu, 01 May 2025 03:56:57 GMT",
+      "version": 26
+    },
+    {
+      "__v": 0,
+      "_id": "6812f110fe7bbf1273012d94",
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n\n    std::cin >> c >> w >> h;\n\n    for (int 1 = 0; i < h; ++i) {\n        std::cout << std::setfill(c) << std::setw(w) << \"\" << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746071823917",
+      "timestamp": "Thu, 01 May 2025 03:57:04 GMT",
+      "version": 27
+    },
+    {
+      "__v": 0,
+      "_id": "6812f151fe7bbf1273012d9b",
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n\n    std::cin >> c >> w >> h;\n\n    for (int i = 0; i < h; ++i) {\n        std::cout << std::setfill(c) << std::setw(w) << \"\" << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746071888877",
+      "timestamp": "Thu, 01 May 2025 03:58:09 GMT",
+      "version": 28
+    },
+    {
+      "__v": 0,
+      "_id": "6812f1cefe7bbf1273012d9f",
+      "code": "#include <iostream>\n#include <iomanip>\n\nint main() {\n    char c;\n    int w, h;\n    std::cin >> c >> w >> h;\n\n    for (int i = 0; i < h; ++i) {\n        std::cout << std::setfill(c) << std::setw(w) << \"\" << std::endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746072013354",
+      "timestamp": "Thu, 01 May 2025 04:00:14 GMT",
+      "version": 29
+    }
+  ],
+  "success": true
+}

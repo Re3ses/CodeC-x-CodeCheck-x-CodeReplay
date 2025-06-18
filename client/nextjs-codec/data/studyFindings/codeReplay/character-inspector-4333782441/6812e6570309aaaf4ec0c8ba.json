@@ -1,0 +1,122 @@
+{
+  "formatted_snapshots": [
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812ea632a4d66a61d5ea3d9",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\n\nint main() {\n    std::string line;\n    std::getline(std::cin, line);\n\n    std::istringstream stream(line);\n    char ch;\n\n    while (stream >> ch) {\n        if (isalpha(ch)) {\n            std::cout << ch << \" is a letter!\" <<\n        }\n    }\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812ee54fe7bbf1273012d13",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\n\nint main() {\n    std::string line;\n    std::getline(std::cin, line);\n\n    std::istringstream stream(line);\n    char ch;\n\n    while (stream >> ch) {\n        if (isalpha(ch)) {\n            std::cout << ch << \" is a letter!\" << std::endl;\n        } else if (isdigit(ch)) {\n            std::cout << ch << \" is a digit!\" << std::endl;\n        } else if (ispunct(ch)) {\n            std::cout << ch << \" is a punctuation character!\" << std::endl;\n        }\n        }\n        }\n    }\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812eef7fe7bbf1273012d16",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\n\nint main() {\n    std::string line;\n    std::getline(std::cin, line);\n\n    std::istringstream stream(line);\n    char ch;\n\n    while (stream >> ch) {\n        if (isalpha(ch)) {\n            std::cout << ch << \" is a letter!\" << std::endl;\n        } else if (isdigit(ch)) {\n            std::cout << ch << \" is a digit!\" << std::endl;\n        } else if (ispunct(ch)) {\n            std::cout << ch << \" is a punctuation character!\" << std::endl;\n        }\n    }\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812ef16fe7bbf1273012d1a",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\n\nint main() {\n    std::string line;\n    std::getline(std::cin, line);\n\n    std::istringstream stream(line);\n    char ch;\n\n    while (stream >> ch) {\n        if (isalpha(ch)) {\n            std::cout << ch << \" is a letter!\" << std::endl;\n        } else if (isdigit(ch)) {\n            std::cout << ch << \" is a digit!\" << std::endl;\n        } else if (ispunct(ch)) {\n            std::cout << ch << \" is a punctuation character!\" << std::endl;\n        }\n    }\n    \n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "submission_id": "6812ef26fe7bbf1273012d20",
+      "timestamp": ""
+    }
+  ],
+  "sequentialSimilarities": [
+    {
+      "codebert_score": 50,
+      "from_index": 0,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 50,
+      "to_index": 1
+    },
+    {
+      "codebert_score": 61,
+      "from_index": 1,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 61,
+      "to_index": 2
+    },
+    {
+      "codebert_score": 80,
+      "from_index": 2,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 80,
+      "to_index": 3
+    },
+    {
+      "codebert_score": 100,
+      "from_index": 3,
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "similarity": 100,
+      "to_index": 4
+    }
+  ],
+  "snapshots": [
+    {
+      "__v": 0,
+      "_id": "6812ea632a4d66a61d5ea3d9",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "character-inspector-4333782441",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746070114893",
+      "timestamp": "Thu, 01 May 2025 03:28:35 GMT",
+      "version": 1
+    },
+    {
+      "__v": 0,
+      "_id": "6812ee54fe7bbf1273012d13",
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\n\nint main() {\n    std::string line;\n    std::getline(std::cin, line);\n\n    std::istringstream stream(line);\n    char ch;\n\n    while (stream >> ch) {\n        if (isalpha(ch)) {\n            std::cout << ch << \" is a letter!\" <<\n        }\n    }\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "character-inspector-4333782441",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746071122508",
+      "timestamp": "Thu, 01 May 2025 03:45:24 GMT",
+      "version": 2
+    },
+    {
+      "__v": 0,
+      "_id": "6812eef7fe7bbf1273012d16",
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\n\nint main() {\n    std::string line;\n    std::getline(std::cin, line);\n\n    std::istringstream stream(line);\n    char ch;\n\n    while (stream >> ch) {\n        if (isalpha(ch)) {\n            std::cout << ch << \" is a letter!\" << std::endl;\n        } else if (isdigit(ch)) {\n            std::cout << ch << \" is a digit!\" << std::endl;\n        } else if (ispunct(ch)) {\n            std::cout << ch << \" is a punctuation character!\" << std::endl;\n        }\n        }\n        }\n    }\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "character-inspector-4333782441",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746071286612",
+      "timestamp": "Thu, 01 May 2025 03:48:07 GMT",
+      "version": 3
+    },
+    {
+      "__v": 0,
+      "_id": "6812ef16fe7bbf1273012d1a",
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\n\nint main() {\n    std::string line;\n    std::getline(std::cin, line);\n\n    std::istringstream stream(line);\n    char ch;\n\n    while (stream >> ch) {\n        if (isalpha(ch)) {\n            std::cout << ch << \" is a letter!\" << std::endl;\n        } else if (isdigit(ch)) {\n            std::cout << ch << \" is a digit!\" << std::endl;\n        } else if (ispunct(ch)) {\n            std::cout << ch << \" is a punctuation character!\" << std::endl;\n        }\n    }\n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "character-inspector-4333782441",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746071317691",
+      "timestamp": "Thu, 01 May 2025 03:48:38 GMT",
+      "version": 4
+    },
+    {
+      "__v": 0,
+      "_id": "6812ef26fe7bbf1273012d20",
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\n\nint main() {\n    std::string line;\n    std::getline(std::cin, line);\n\n    std::istringstream stream(line);\n    char ch;\n\n    while (stream >> ch) {\n        if (isalpha(ch)) {\n            std::cout << ch << \" is a letter!\" << std::endl;\n        } else if (isdigit(ch)) {\n            std::cout << ch << \" is a digit!\" << std::endl;\n        } else if (ispunct(ch)) {\n            std::cout << ch << \" is a punctuation character!\" << std::endl;\n        }\n    }\n    \n    return 0;\n}",
+      "learner_id": "6812e6570309aaaf4ec0c8ba",
+      "problemId": "character-inspector-4333782441",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746071334039",
+      "timestamp": "Thu, 01 May 2025 03:48:54 GMT",
+      "version": 5
+    }
+  ],
+  "success": true
+}

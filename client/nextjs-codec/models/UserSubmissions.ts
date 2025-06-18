@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 
-export interface UserSubmissions extends mongoose.Document {
+
+interface UserSubmissions extends mongoose.Document {
   language_used: string;
   code: string;
   score: number;
@@ -8,7 +9,7 @@ export interface UserSubmissions extends mongoose.Document {
   verdict: string;
   user_type: string;
   learner: string;
-  learner_id: mongoose.ObjectId;
+  learner_id: mongoose.Types.ObjectId;
   problem: string;
   room: string;
   submission_date: Date;
@@ -19,7 +20,7 @@ export interface UserSubmissions extends mongoose.Document {
   paste_history: string;
 }
 
-const UserSubmissionsSchema = new mongoose.Schema<UserSubmissions>({
+const UserSubmissionsSchema = new mongoose.Schema({
   language_used: {
     type: String,
     required: [true, 'Enter language used'],
@@ -89,4 +90,4 @@ const UserSubmissionsSchema = new mongoose.Schema<UserSubmissions>({
   }
 });
 
-export default mongoose.models.UserSubmission || mongoose.model<UserSubmissions>('UserSubmission', UserSubmissionsSchema);
+module.exports = mongoose.models.UserSubmission || mongoose.model<UserSubmissions>('UserSubmission', UserSubmissionsSchema);

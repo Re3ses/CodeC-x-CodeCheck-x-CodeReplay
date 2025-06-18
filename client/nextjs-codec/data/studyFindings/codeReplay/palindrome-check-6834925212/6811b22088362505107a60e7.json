@@ -1,0 +1,74 @@
+{
+  "formatted_snapshots": [
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "6811b22088362505107a60e7",
+      "submission_id": "68156675caa27ad611ebf004",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n    // Your code here\n    \n    return 0;\n}",
+      "learner_id": "6811b22088362505107a60e7",
+      "submission_id": "681846cfb578ef7fb8722e16",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n    // Your code here\n    string word;\n    getline(cin, word);\n    \n    string reversed = word;\n    reverse(reversed.begin(), reversed.end());\n    \n    if(reversed == word){\n        cout << \"Palindrome\" << endl;\n    }\n    else{\n        cout << \"Not a palindrome\" << endl;\n    }\n    \n    return 0;\n}",
+      "learner_id": "6811b22088362505107a60e7",
+      "submission_id": "68184719b578ef7fb8722e2b",
+      "timestamp": ""
+    }
+  ],
+  "sequentialSimilarities": [
+    {
+      "codebert_score": 66,
+      "from_index": 0,
+      "learner_id": "6811b22088362505107a60e7",
+      "similarity": 66,
+      "to_index": 1
+    },
+    {
+      "codebert_score": 56,
+      "from_index": 1,
+      "learner_id": "6811b22088362505107a60e7",
+      "similarity": 56,
+      "to_index": 2
+    }
+  ],
+  "snapshots": [
+    {
+      "__v": 0,
+      "_id": "68156675caa27ad611ebf004",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "6811b22088362505107a60e7",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746232945994",
+      "timestamp": "Sat, 03 May 2025 00:42:29 GMT",
+      "version": 1
+    },
+    {
+      "__v": 0,
+      "_id": "681846cfb578ef7fb8722e16",
+      "code": "#include <iostream>\n#include <string>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n    // Your code here\n    \n    return 0;\n}",
+      "learner_id": "6811b22088362505107a60e7",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746421486715",
+      "timestamp": "Mon, 05 May 2025 05:04:15 GMT",
+      "version": 2
+    },
+    {
+      "__v": 0,
+      "_id": "68184719b578ef7fb8722e2b",
+      "code": "#include <iostream>\n#include <string>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n    // Your code here\n    string word;\n    getline(cin, word);\n    \n    string reversed = word;\n    reverse(reversed.begin(), reversed.end());\n    \n    if(reversed == word){\n        cout << \"Palindrome\" << endl;\n    }\n    else{\n        cout << \"Not a palindrome\" << endl;\n    }\n    \n    return 0;\n}",
+      "learner_id": "6811b22088362505107a60e7",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746421560272",
+      "timestamp": "Mon, 05 May 2025 05:05:29 GMT",
+      "version": 3
+    }
+  ],
+  "success": true
+}

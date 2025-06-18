@@ -1,0 +1,50 @@
+{
+  "formatted_snapshots": [
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "6814fadd80b316ddbdb518d8",
+      "submission_id": "6814fb906d1d093413f9f731",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    getline(cin, line);\n\n    stringstream ss(line);\n    char ch;\n    int count = 0;\n\n    while (ss >> ch && count < 20) {\n        if (isalpha(ch)) {\n            cout << ch << \" is a letter!\" << endl;\n        } else if (isdigit(ch)) {\n            cout << ch << \" is a digit!\" << endl;\n        } else if (ispunct(ch)) {\n            cout << ch << \" is a punctuation character!\" << endl;\n        }\n        count++;\n    }\n}\n",
+      "learner_id": "6814fadd80b316ddbdb518d8",
+      "submission_id": "6814fbb26d1d093413f9f735",
+      "timestamp": ""
+    }
+  ],
+  "sequentialSimilarities": [
+    {
+      "codebert_score": 39,
+      "from_index": 0,
+      "learner_id": "6814fadd80b316ddbdb518d8",
+      "similarity": 39,
+      "to_index": 1
+    }
+  ],
+  "snapshots": [
+    {
+      "__v": 0,
+      "_id": "6814fb906d1d093413f9f731",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "6814fadd80b316ddbdb518d8",
+      "problemId": "character-inspector-4333782441",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746205651467",
+      "timestamp": "Fri, 02 May 2025 17:06:24 GMT",
+      "version": 1
+    },
+    {
+      "__v": 0,
+      "_id": "6814fbb26d1d093413f9f735",
+      "code": "#include <iostream>\n#include <sstream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string line;\n    getline(cin, line);\n\n    stringstream ss(line);\n    char ch;\n    int count = 0;\n\n    while (ss >> ch && count < 20) {\n        if (isalpha(ch)) {\n            cout << ch << \" is a letter!\" << endl;\n        } else if (isdigit(ch)) {\n            cout << ch << \" is a digit!\" << endl;\n        } else if (ispunct(ch)) {\n            cout << ch << \" is a punctuation character!\" << endl;\n        }\n        count++;\n    }\n}\n",
+      "learner_id": "6814fadd80b316ddbdb518d8",
+      "problemId": "character-inspector-4333782441",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746205686108",
+      "timestamp": "Fri, 02 May 2025 17:06:58 GMT",
+      "version": 2
+    }
+  ],
+  "success": true
+}

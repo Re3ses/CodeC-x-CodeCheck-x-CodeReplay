@@ -1,0 +1,938 @@
+{
+  "formatted_snapshots": [
+    {
+      "code": "#include <iostream>\n#include <string>\n#include <cctype>\nusing namespace std;\n\nbool if_uppercase(const string& msg){\n    for (size_t i = 0; i < msg.length(); ++i ){\n        if(!isupper(msg[i])){\n            return true;\n        }\n    }\n    return false;\n}\n\nint vowel_count(const string& M){\n    int count = 0;\n    for(size_t i=0; i < M.length(); ++i){\n         char lower_char = tolower(M[i]);\n        if (lower_char =='a' || lower_char == 'e'|| lower_char == 'i' || lower_char == 'o' || lower_char == 'u') {\n            count++;\n        }\n    }\n    return count;\n}\n\nint main() {\n    string message;\n    getline(cin, message);\n\n    if(if_upper(message)){\n        cout << \"Invalid!\" << endl;\n    } else {\n        cout << vowel_count(message) << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "681440ac362a31d46b05b831",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nbool if_uppercase(const string msg){\n    for (size_t i = 0; msg[i] <= msm.length(); ++i ){\n        if(!isupper(msg[i])){\n            return false;\n        }\n    }\n    return true;\n}\n\nint vowel_count(const string M){\n    int count = 0;\n    for(size_t i=0; M[i] <=M.length(); ++i){\n        if (M[i] = {'a', 'e', 'i', 'o', 'u'}){\n                count++;\n        }\n    }\n    return count;\n}\n\nint main() {\n    string message;\n    getline(cin, message);\n\n    if(if_upper(message)){\n        cout << \"Invalid!\" << endl;\n    } else {\n        (vowel_count(message));\n    }\n    \n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "68143f4a362a31d46b05b7ec",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nbool if_uppercase(const string msg){\n    for (size_t i = 0; msg[i] <= msm.length(); ++i ){\n        if(!isupper(msg[i])){\n            return false;\n        }\n    }\n    return true;\n}\n\nint vowel_count(const string M){\n    int count = 0;\n    for(size_t i=0; M[i] <=M.length(); ++i){\n         char lower_char = tolower(m[i]); // Convert to lowercase for consistent checking\n        if (lower_char == 'a' || lower_char == 'e' || lower_char == 'i' || lower_char == 'o' || lower_char == 'u') {\n            count++;\n        }\n    }\n    return count;\n}\n\nint main() {\n    string message;\n    getline(cin, message);\n\n    if(if_upper(message)){\n        cout << \"Invalid!\" << endl;\n    } else {\n        (vowel_count(message));\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "68143fc699d20d389efd8174",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nbool if_uppercase(const string msg){\n    for (size_t i = 0; msg[i] <= msm.length(); ++i ){\n        if(!isupper(msg[i])){\n            return false;\n        }\n    }\n    return true;\n}\n\nint vowel_count(const string M){\n    int count = 0;\n    for(size_t i=0; M[i] <=M.length(); ++i){\n         char lower_char = tolower(m[i]);\n        if (lower_char == 'a' || lower_char == 'e' || lower_char == 'i' || lower_char == 'o' || lower_char == 'u') {\n            count++;\n        }\n    }\n    return count;\n}\n\nint main() {\n    string message;\n    getline(cin, message);\n\n    if(if_upper(message)){\n        cout << \"Invalid!\" << endl;\n    } else {\n        (vowel_count(message));\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "68143fd899d20d389efd8179",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nbool if_uppercase(const string& msg){\n    for (size_t i = 0; msg[i] <= msm.length(); ++i ){\n        if(!isupper(msg[i])){\n            return true;\n        }\n    }\n    return false;\n}\n\nint vowel_count(const string& M){\n    int count = 0;\n    for(size_t i=0; M[i] <=M.length(); ++i){\n         char lower_char = tolower(m[i]);\n        if (lower_char == 'a' || lower_char == 'e' || lower_char == 'i' || lower_char == 'o' || lower_char == 'u') {\n            count++;\n        }\n    }\n    return count;\n}\n\nint main() {\n    string message;\n    getline(cin, message);\n\n    if(if_upper(message)){\n        cout << \"Invalid!\" << endl;\n    } else {\n        (vowel_count(message));\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "68143ffc362a31d46b05b802",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nbool if_uppercase(const string& msg){\n    for (size_t i = 0; msg[i] <= msm.length(); ++i ){\n        if(!isupper(msg[i])){\n            return true;\n        }\n    }\n    return false;\n}\n\nint vowel_count(const string& M){\n    int count = 0;\n    for(size_t i=0; M[i] <=M.length(); ++i){\n         char lower_char = tolower(M[i]);\n        if (lower_char == 'a' || lower_char == 'e' || lower_char == 'i' || lower_char == 'o' || lower_char == 'u') {\n            count++;\n        }\n    }\n    return count;\n}\n\nint main() {\n    string message;\n    getline(cin, message);\n\n    if(if_upper(message)){\n        cout << \"Invalid!\" << endl;\n    } else {\n        (vowel_count(message));\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "68144005362a31d46b05b805",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\n#include <\nusing namespace std;\n\nbool if_uppercase(const string& msg){\n    for (size_t i = 0; msg[i] <= msm.length(); ++i ){\n        if(!isupper(msg[i])){\n            return true;\n        }\n    }\n    return false;\n}\n\nint vowel_count(const string& M){\n    int count = 0;\n    for(size_t i=0; M[i] <=M.length(); ++i){\n         char lower_char = tolower(M[i]);\n        if (lower_char == 'a' || lower_char == 'e' || lower_char == 'i' || lower_char == 'o' || lower_char == 'u') {\n            count++;\n        }\n    }\n    return count;\n}\n\nint main() {\n    string message;\n    getline(cin, message);\n\n    if(if_upper(message)){\n        cout << \"Invalid!\" << endl;\n    } else {\n        cout << vowel_count(message) << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "6814402b362a31d46b05b80d",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\n#include <cctype>\nusing namespace std;\n\nbool if_uppercase(const string& msg){\n    for (size_t i = 0; msg[i] <= msm.length(); ++i ){\n        if(!isupper(msg[i])){\n            return true;\n        }\n    }\n    return false;\n}\n\nint vowel_count(const string& M){\n    int count = 0;\n    for(size_t i=0; M[i] <=M.length(); ++i){\n         char lower_char = tolower(M[i]);\n        if (lower_char == 'a' || lower_char == 'e' || lower_char == 'i' || lower_char == 'o' || lower_char == 'u') {\n            count++;\n        }\n    }\n    return count;\n}\n\nint main() {\n    string message;\n    getline(cin, message);\n\n    if(if_upper(message)){\n        cout << \"Invalid!\" << endl;\n    } else {\n        cout << vowel_count(message) << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "6814403d362a31d46b05b814",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\n#include <cctype>\nusing namespace std;\n\nbool if_uppercase(const string& msg){\n    for (size_t i = 0; msg[i] <= msm.length(); ++i ){\n        if(!isupper(msg[i])){\n            return true;\n        }\n    }\n    return false;\n}\n\nint vowel_count(const string& M){\n    int count = 0;\n    for(size_t i=0; M[i] <=M.length(); ++i){\n         char lower_char = tolower(M[i]);\n        if (lower_char =='a' || lower_char == 'e' || lower_char == 'i' || lower_char == 'o' || lower_char == 'u') {\n            count++;\n        }\n    }\n    return count;\n}\n\nint main() {\n    string message;\n    getline(cin, message);\n\n    if(if_upper(message)){\n        cout << \"Invalid!\" << endl;\n    } else {\n        cout << vowel_count(message) << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "6814404a362a31d46b05b817",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\n#include <cctype>\nusing namespace std;\n\nbool if_uppercase(const string& msg){\n    for (size_t i = 0; msg[i]<= msm.length(); ++i ){\n        if(!isupper(msg[i])){\n            return true;\n        }\n    }\n    return false;\n}\n\nint vowel_count(const string& M){\n    int count = 0;\n    for(size_t i=0; M[i] <=M.length(); ++i){\n         char lower_char = tolower(M[i]);\n        if (lower_char =='a' || lower_char == 'e'|| lower_char == 'i' || lower_char == 'o' || lower_char == 'u') {\n            count++;\n        }\n    }\n    return count;\n}\n\nint main() {\n    string message;\n    getline(cin, message);\n\n    if(if_upper(message)){\n        cout << \"Invalid!\" << endl;\n    } else {\n        cout << vowel_count(message) << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "68144061362a31d46b05b81d",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nbool if_uppercase(const string msg){\n    for (size_t i = 0; msg[i] <= msm.length(); ++i ){\n        if(!isupper(msg[i])){\n            return false;\n        }\n    }\n    return true;\n}\n\nint vowel_count(const string M){\n    int count = 0;\n    for(size_t i=0; M[i] <=M.length(); ++i){\n        if (M[i] = {'a', 'e', 'i', 'o', 'u'}){\n                count++;\n        }\n    }\n    return count;\n}\n\nint main() {\n    string message;\n    getline(cin, message);\n\n    if(if_upper(message)){\n        cout << \"Invalid!\" << endl;\n    } else {(vowel_count(message))\n\n\n    }\n\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "68143f21362a31d46b05b7dd",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\n#include <cctype>\nusing namespace std;\n\nbool if_uppercase(const string& msg){\n    for (size_t i = 0; i < msg.length(); ++i ){\n        if(!isupper(msg[i])){\n            return true;\n        }\n    }\n    return false;\n}\n\nint vowel_count(const string& M){\n    int count = 0;\n    for(size_t i=0; i < M.length(); ++i){\n         char lower_char = tolower(M[i]);\n        if (lower_char =='a' || lower_char == 'e'|| lower_char == 'i' || lower_char == 'o' || lower_char == 'u') {\n            count++;\n        }\n    }\n    return count;\n}\n\nint main() {\n    string message;\n    getline(cin, message);\n\n    if(if_uppercase(message)){\n        cout << \"Invalid!\" << endl;\n    } else {\n        cout << vowel_count(message) << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "681440de226d8383ccf80018",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\n#include <cctype>\nusing namespace std;\n\nbool if_uppercase(const string& msg){\n    for (size_t i = 0; i < msg.length(); ++i ){\n        if(!isupper(msg[i])){\n            return false;\n        }\n    }\n    return true;\n}\n\nint vowel_count(const string& M){\n    int count = 0;\n    for(size_t i=0; i < M.length(); ++i){\n         char lower_char = tolower(M[i]);\n        if (lower_char =='a' || lower_char == 'e'|| lower_char == 'i' || lower_char == 'o' || lower_char == 'u') {\n            count++;\n        }\n    }\n    return count;\n}\n\nint main() {\n    string message;\n    getline(cin, message);\n\n    if(if_uppercase(message)){\n        cout << \"Invalid!\" << endl;\n    } else {\n        cout << vowel_count(message) << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "681441b7d2464a9090df9df1",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "68146ef94998726cbd288cd1",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\n#include <cctype>\nusing namespace std;\n\nbool if_uppercase(const string& msg){\n    for (size_t i = 0; i < msg.length(); ++i ){\n        if(!isupper(msg[i])){\n            return false;\n        }\n    }\n    return true;\n}\n\nint vowel_count(const string& M){\n    int count = 0;\n    for(size_t i=0; i < M.length(); ++i){\n         char lower_char = tolower(M[i]);\n        if (lower_char =='a' || lower_char == 'e'|| lower_char == 'i' || lower_char == 'o' || lower_char == 'u') {\n            count++;\n        }\n    }\n    return count;\n}\n\nint main() {\n    string message;\n    getline(cin, message);\n\n    if(if_uppercase(message)){\n        cout << \"Invalid!\" << endl;\n    } else {\n        cout << vowel_count(message) << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "68146f6f4998726cbd288cd5",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "68146ffa4998726cbd288cda",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\n#include <cctype>\nusing namespace std;\n\nbool if_uppercase(const string& msg){\n    for (size_t i = 0; i < msg.length(); ++i ){\n        if(!isupper(msg[i])){\n            return false;\n        }\n    }\n    return true;\n}\n\nint vowel_count(const string& M){\n    int count = 0;\n    for(size_t i=0; i < M.length(); ++i){\n         char lower_char = tolower(M[i]);\n        if (lower_char =='a' || lower_char == 'e'|| lower_char == 'i' || lower_char == 'o' || lower_char == 'u') {\n            count++;\n        }\n    }\n    return count;\n}\n\nint main() {\n    string message;\n    getline(cin, message);\n\n    if(if_uppercase(message)){\n        cout << \"Invalid!\" << endl;\n    } else {\n        cout << vowel_count(message) << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "68146ffd4998726cbd288cdd",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\n#include <cctype>\nusing namespace std;\n\nbool if_uppercase(const string& msg){\n    for (size_t i = 0; i< msg.length(); ++i ){\n        if(!isupper(msg[i])){\n            return false;\n        }\n    }\n    return true;\n}\n\nint vowel_count(const string& M){\n    int count = 0;\n    for(size_t i=0; i< M.length(); ++i){\n         char lower_char = tolower(M[i]);\n        if (lower_char =='a' || lower_char == 'e'|| lower_char == 'i' || lower_char == 'o' || lower_char == 'u') {\n            count++;\n        }\n    }\n    return count;\n}\n\nint main() {\n    string message;\n    getline(cin, message);\n\n    if(if_uppercase(message)){\n        cout << \"Invalid!\" << endl;\n    } else {\n        cout <<vowel_count(message) << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "681688fa09438c944b7b67ed",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\n#include <cctype>\nusing namespace std;\n\nbool if_uppercase(const string& msg){\n    for (size_t i = 0; i< msg.length(); ++i ){\n        if(!isupper(msg[i])){\n            return false;\n        }\n    }\n    return true;\n}\n\nint vowel_count(const string& M){\n    int count = 0;\n    for(size_t i=0; i< M.length(); ++i){\n         char lower_char = tolower(M[i]);\n        if (lower_char =='a' || lower_char == 'e'|| lower_char == 'i' || lower_char == 'o' || lower_char == 'u') {\n            count++;\n        }\n    }\n    return count;\n}\n\nint main() {\n    string message;\n    getline(cin, message);\n\n    if(if_uppercase(message)){\n        cout << \"Invalid!\" << endl;\n    } else {\n        cout <<vowel_count(message) << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "681688fa398380765396b292",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\n#include <cctype>\nusing namespace std;\n\nbool if_uppercase(const string& msg){\n    for (size_t i = 0; i< msg.length(); ++i ){\n        if(!isupper(msg[i])){\n            return false;\n        }\n    }\n    return true;\n}\n\nint vowel_count(const string& M){\n    int count = 0;\n    for(size_t i=0; i< M.length(); ++i){\n         char lower_char = tolower(M[i]);\n        if (lower_char =='a' || lower_char == 'e'||lower_char == 'i' || lower_char == 'o' || lower_char == 'u') {\n            count++;\n        }\n    }\n    return count;\n}\n\nint main() {\n    string message;\n    getline(cin, message);\n\n    if(if_uppercase(message)){\n        cout << \"Invalid!\" << endl;\n    } else {\n        cout <<vowel_count(message) << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "6816890e398380765396b295",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nbool if_uppercase(const string msg){\n    for (int i = 0; msg[i] <= msm.length(); ++i ){\n        if \n    }\n}\nint main() {\n    string message;\n    cin >> message;\n\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "68143b9f014541a7ad61d074",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    \n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "68143794a572b159570be5d8",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    string \n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "681437d8a572b159570be5e1",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    string message;\n\n    \n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "681437f5a572b159570be5e4",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    string message;\n    cin >> message;\n\n    \n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "6814380aa572b159570be5e7",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nbool \nint main() {\n    string message;\n    cin >> message;\n\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "681439eb014541a7ad61d044",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nbool if_uppercase()\nint main() {\n    string message;\n    cin >> message;\n\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "681439fe014541a7ad61d047",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nbool if_uppercase(const string msg){\n    for (int i = 0; )\n}\nint main() {\n    string message;\n    cin >> message;\n\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "68143ac3014541a7ad61d05e",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nbool if_uppercase(const string msg){\n    for (int i = 0; str[1] != '0')\n}\nint main() {\n    string message;\n    cin >> message;\n\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "68143add014541a7ad61d061",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nbool if_uppercase(const string msg){\n    for (int i = 0; str[i] != )\n}\nint main() {\n    string message;\n    cin >> message;\n\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "68143af3014541a7ad61d064",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "68143741014541a7ad61d02b",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nbool if_uppercase(const string msg){\n    for (size_t i = 0; msg[i] <= msm.length(); ++i ){\n        if(!msg[i])\n    }\n}\nint main() {\n    string message;\n    cin >> message;\n\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "68143c1d014541a7ad61d07e",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nbool if_uppercase(const string msg){\n    for (size_t i = 0; msg[i] <= msm.length(); ++i ){\n        if(!isupper(msg[i])){\n            return false;\n        }\n    }\n    return true;\n}\nint main() {\n    string message;\n    cin >> message;\n\n    \n\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "68143c69014541a7ad61d081",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nbool if_uppercase(const string msg){\n    for (size_t i = 0; msg[i] <= msm.length(); ++i ){\n        if(!isupper(msg[i])){\n            return false;\n        }\n    }\n    return true;\n}\nint main() {\n    string message;\n    cin >> message;\n\n    if(if_upper(message)){\n        cout << \"Invalid!\" << endl;\n    } else{\n        \n    }\n\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "68143cc3014541a7ad61d085",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nbool if_uppercase(const string msg){\n    for (size_t i = 0; msg[i] <= msm.length(); ++i ){\n        if(!isupper(msg[i])){\n            return false;\n        }\n    }\n    return true;\n}\n\nint vowel_count(const string M){\n    \n}\nint main() {\n    string message;\n    cin >> message;\n\n    if(if_upper(message)){\n        cout << \"Invalid!\" << endl;\n    } else{\n\n    }\n\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "68143d0ac2f7265096707842",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nbool if_uppercase(const string msg){\n    for (size_t i = 0; msg[i] <= msm.length(); ++i ){\n        if(!isupper(msg[i])){\n            return false;\n        }\n    }\n    return true;\n}\n\nint vowel_count(const string M){\n\n}\nint main() {\n    string message;\n    getline(cin, message);\n\n    if(if_upper(message)){\n        cout << \"Invalid!\" << endl;\n    } else{\n\n    }\n\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "68143d9ec2f7265096707855",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nbool if_uppercase(const string msg){\n    for (size_t i = 0; msg[i] <= msm.length(); ++i ){\n        if(!isupper(msg[i])){\n            return false;\n        }\n    }\n    return true;\n}\n\nint vowel_count(const string M){\n    \n}\nint main() {\n    string message;\n    getline(cin, message);\n\n    if(if_upper(message)){\n        cout << \"Invalid!\" << endl;\n    } else{\n\n    }\n\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "68143dabc2f7265096707858",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nbool if_uppercase(const string msg){\n    for (size_t i = 0; msg[i] <= msm.length(); ++i ){\n        if(!isupper(msg[i])){\n            return false;\n        }\n    }\n    return true;\n}\n\nint vowel_count(const string M){\n    for(size_t i=0; M[i] <=M.length(); ++i){\n        if (M[i] == 'a', ')\n    }\n}\nint main() {\n    string message;\n    getline(cin, message);\n\n    if(if_upper(message)){\n        cout << \"Invalid!\" << endl;\n    } else{\n\n    }\n\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "68143e02c2f726509670785f",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nbool if_uppercase(const string msg){\n    for (size_t i = 0; msg[i] <= msm.length(); ++i ){\n        if(!isupper(msg[i])){\n            return false;\n        }\n    }\n    return true;\n}\n\nint vowel_count(const string M){\n    for(size_t i=0; M[i] <=M.length(); ++i){\n        if (M[i] = {'a', 'e', 'i', 'o', 'u'}){\n            \n        }\n    }\n}\nint main() {\n    string message;\n    getline(cin, message);\n\n    if(if_upper(message)){\n        cout << \"Invalid!\" << endl;\n    } else{\n\n    }\n\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "submission_id": "68143e991d0d27b4ad35700f",
+      "timestamp": ""
+    }
+  ],
+  "sequentialSimilarities": [
+    {
+      "codebert_score": 65,
+      "from_index": 0,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 65,
+      "to_index": 1
+    },
+    {
+      "codebert_score": 64,
+      "from_index": 1,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 64,
+      "to_index": 2
+    },
+    {
+      "codebert_score": 86,
+      "from_index": 2,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 86,
+      "to_index": 3
+    },
+    {
+      "codebert_score": 84,
+      "from_index": 3,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 84,
+      "to_index": 4
+    },
+    {
+      "codebert_score": 96,
+      "from_index": 4,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 96,
+      "to_index": 5
+    },
+    {
+      "codebert_score": 90,
+      "from_index": 5,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 90,
+      "to_index": 6
+    },
+    {
+      "codebert_score": 90,
+      "from_index": 6,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 90,
+      "to_index": 7
+    },
+    {
+      "codebert_score": 94,
+      "from_index": 7,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 94,
+      "to_index": 8
+    },
+    {
+      "codebert_score": 92,
+      "from_index": 8,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 92,
+      "to_index": 9
+    },
+    {
+      "codebert_score": 67,
+      "from_index": 9,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 67,
+      "to_index": 10
+    },
+    {
+      "codebert_score": 64,
+      "from_index": 10,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 64,
+      "to_index": 11
+    },
+    {
+      "codebert_score": 93,
+      "from_index": 11,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 93,
+      "to_index": 12
+    },
+    {
+      "codebert_score": 21,
+      "from_index": 12,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 21,
+      "to_index": 13
+    },
+    {
+      "codebert_score": 21,
+      "from_index": 13,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 21,
+      "to_index": 14
+    },
+    {
+      "codebert_score": 21,
+      "from_index": 14,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 21,
+      "to_index": 15
+    },
+    {
+      "codebert_score": 21,
+      "from_index": 15,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 21,
+      "to_index": 16
+    },
+    {
+      "codebert_score": 98,
+      "from_index": 16,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 98,
+      "to_index": 17
+    },
+    {
+      "codebert_score": 99,
+      "from_index": 17,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 99,
+      "to_index": 18
+    },
+    {
+      "codebert_score": 91,
+      "from_index": 18,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 91,
+      "to_index": 19
+    },
+    {
+      "codebert_score": 34,
+      "from_index": 19,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 34,
+      "to_index": 20
+    },
+    {
+      "codebert_score": 58,
+      "from_index": 20,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 58,
+      "to_index": 21
+    },
+    {
+      "codebert_score": 70,
+      "from_index": 21,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 70,
+      "to_index": 22
+    },
+    {
+      "codebert_score": 74,
+      "from_index": 22,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 74,
+      "to_index": 23
+    },
+    {
+      "codebert_score": 78,
+      "from_index": 23,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 78,
+      "to_index": 24
+    },
+    {
+      "codebert_score": 85,
+      "from_index": 24,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 85,
+      "to_index": 25
+    },
+    {
+      "codebert_score": 76,
+      "from_index": 25,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 76,
+      "to_index": 26
+    },
+    {
+      "codebert_score": 70,
+      "from_index": 26,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 70,
+      "to_index": 27
+    },
+    {
+      "codebert_score": 81,
+      "from_index": 27,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 81,
+      "to_index": 28
+    },
+    {
+      "codebert_score": 81,
+      "from_index": 28,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 81,
+      "to_index": 29
+    },
+    {
+      "codebert_score": 58,
+      "from_index": 29,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 58,
+      "to_index": 30
+    },
+    {
+      "codebert_score": 53,
+      "from_index": 30,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 53,
+      "to_index": 31
+    },
+    {
+      "codebert_score": 68,
+      "from_index": 31,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 68,
+      "to_index": 32
+    },
+    {
+      "codebert_score": 80,
+      "from_index": 32,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 80,
+      "to_index": 33
+    },
+    {
+      "codebert_score": 85,
+      "from_index": 33,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 85,
+      "to_index": 34
+    },
+    {
+      "codebert_score": 87,
+      "from_index": 34,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 87,
+      "to_index": 35
+    },
+    {
+      "codebert_score": 100,
+      "from_index": 35,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 100,
+      "to_index": 36
+    },
+    {
+      "codebert_score": 74,
+      "from_index": 36,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 74,
+      "to_index": 37
+    },
+    {
+      "codebert_score": 82,
+      "from_index": 37,
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "similarity": 82,
+      "to_index": 38
+    }
+  ],
+  "snapshots": [
+    {
+      "__v": 0,
+      "_id": "681440ac362a31d46b05b831",
+      "code": "#include <iostream>\n#include <string>\n#include <cctype>\nusing namespace std;\n\nbool if_uppercase(const string& msg){\n    for (size_t i = 0; i < msg.length(); ++i ){\n        if(!isupper(msg[i])){\n            return true;\n        }\n    }\n    return false;\n}\n\nint vowel_count(const string& M){\n    int count = 0;\n    for(size_t i=0; i < M.length(); ++i){\n         char lower_char = tolower(M[i]);\n        if (lower_char =='a' || lower_char == 'e'|| lower_char == 'i' || lower_char == 'o' || lower_char == 'u') {\n            count++;\n        }\n    }\n    return count;\n}\n\nint main() {\n    string message;\n    getline(cin, message);\n\n    if(if_upper(message)){\n        cout << \"Invalid!\" << endl;\n    } else {\n        cout << vowel_count(message) << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746157738242",
+      "timestamp": "Fri, 02 May 2025 03:49:00 GMT",
+      "version": 30
+    },
+    {
+      "__v": 0,
+      "_id": "68143f4a362a31d46b05b7ec",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nbool if_uppercase(const string msg){\n    for (size_t i = 0; msg[i] <= msm.length(); ++i ){\n        if(!isupper(msg[i])){\n            return false;\n        }\n    }\n    return true;\n}\n\nint vowel_count(const string M){\n    int count = 0;\n    for(size_t i=0; M[i] <=M.length(); ++i){\n        if (M[i] = {'a', 'e', 'i', 'o', 'u'}){\n                count++;\n        }\n    }\n    return count;\n}\n\nint main() {\n    string message;\n    getline(cin, message);\n\n    if(if_upper(message)){\n        cout << \"Invalid!\" << endl;\n    } else {\n        (vowel_count(message));\n    }\n    \n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746157383789",
+      "timestamp": "Fri, 02 May 2025 03:43:06 GMT",
+      "version": 21
+    },
+    {
+      "__v": 0,
+      "_id": "68143fc699d20d389efd8174",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nbool if_uppercase(const string msg){\n    for (size_t i = 0; msg[i] <= msm.length(); ++i ){\n        if(!isupper(msg[i])){\n            return false;\n        }\n    }\n    return true;\n}\n\nint vowel_count(const string M){\n    int count = 0;\n    for(size_t i=0; M[i] <=M.length(); ++i){\n         char lower_char = tolower(m[i]); // Convert to lowercase for consistent checking\n        if (lower_char == 'a' || lower_char == 'e' || lower_char == 'i' || lower_char == 'o' || lower_char == 'u') {\n            count++;\n        }\n    }\n    return count;\n}\n\nint main() {\n    string message;\n    getline(cin, message);\n\n    if(if_upper(message)){\n        cout << \"Invalid!\" << endl;\n    } else {\n        (vowel_count(message));\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746157508115",
+      "timestamp": "Fri, 02 May 2025 03:45:10 GMT",
+      "version": 22
+    },
+    {
+      "__v": 0,
+      "_id": "68143fd899d20d389efd8179",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nbool if_uppercase(const string msg){\n    for (size_t i = 0; msg[i] <= msm.length(); ++i ){\n        if(!isupper(msg[i])){\n            return false;\n        }\n    }\n    return true;\n}\n\nint vowel_count(const string M){\n    int count = 0;\n    for(size_t i=0; M[i] <=M.length(); ++i){\n         char lower_char = tolower(m[i]);\n        if (lower_char == 'a' || lower_char == 'e' || lower_char == 'i' || lower_char == 'o' || lower_char == 'u') {\n            count++;\n        }\n    }\n    return count;\n}\n\nint main() {\n    string message;\n    getline(cin, message);\n\n    if(if_upper(message)){\n        cout << \"Invalid!\" << endl;\n    } else {\n        (vowel_count(message));\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746157525893",
+      "timestamp": "Fri, 02 May 2025 03:45:28 GMT",
+      "version": 23
+    },
+    {
+      "__v": 0,
+      "_id": "68143ffc362a31d46b05b802",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nbool if_uppercase(const string& msg){\n    for (size_t i = 0; msg[i] <= msm.length(); ++i ){\n        if(!isupper(msg[i])){\n            return true;\n        }\n    }\n    return false;\n}\n\nint vowel_count(const string& M){\n    int count = 0;\n    for(size_t i=0; M[i] <=M.length(); ++i){\n         char lower_char = tolower(m[i]);\n        if (lower_char == 'a' || lower_char == 'e' || lower_char == 'i' || lower_char == 'o' || lower_char == 'u') {\n            count++;\n        }\n    }\n    return count;\n}\n\nint main() {\n    string message;\n    getline(cin, message);\n\n    if(if_upper(message)){\n        cout << \"Invalid!\" << endl;\n    } else {\n        (vowel_count(message));\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746157562943",
+      "timestamp": "Fri, 02 May 2025 03:46:04 GMT",
+      "version": 24
+    },
+    {
+      "__v": 0,
+      "_id": "68144005362a31d46b05b805",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nbool if_uppercase(const string& msg){\n    for (size_t i = 0; msg[i] <= msm.length(); ++i ){\n        if(!isupper(msg[i])){\n            return true;\n        }\n    }\n    return false;\n}\n\nint vowel_count(const string& M){\n    int count = 0;\n    for(size_t i=0; M[i] <=M.length(); ++i){\n         char lower_char = tolower(M[i]);\n        if (lower_char == 'a' || lower_char == 'e' || lower_char == 'i' || lower_char == 'o' || lower_char == 'u') {\n            count++;\n        }\n    }\n    return count;\n}\n\nint main() {\n    string message;\n    getline(cin, message);\n\n    if(if_upper(message)){\n        cout << \"Invalid!\" << endl;\n    } else {\n        (vowel_count(message));\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746157571218",
+      "timestamp": "Fri, 02 May 2025 03:46:13 GMT",
+      "version": 25
+    },
+    {
+      "__v": 0,
+      "_id": "6814402b362a31d46b05b80d",
+      "code": "#include <iostream>\n#include <string>\n#include <\nusing namespace std;\n\nbool if_uppercase(const string& msg){\n    for (size_t i = 0; msg[i] <= msm.length(); ++i ){\n        if(!isupper(msg[i])){\n            return true;\n        }\n    }\n    return false;\n}\n\nint vowel_count(const string& M){\n    int count = 0;\n    for(size_t i=0; M[i] <=M.length(); ++i){\n         char lower_char = tolower(M[i]);\n        if (lower_char == 'a' || lower_char == 'e' || lower_char == 'i' || lower_char == 'o' || lower_char == 'u') {\n            count++;\n        }\n    }\n    return count;\n}\n\nint main() {\n    string message;\n    getline(cin, message);\n\n    if(if_upper(message)){\n        cout << \"Invalid!\" << endl;\n    } else {\n        cout << vowel_count(message) << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746157609316",
+      "timestamp": "Fri, 02 May 2025 03:46:51 GMT",
+      "version": 26
+    },
+    {
+      "__v": 0,
+      "_id": "6814403d362a31d46b05b814",
+      "code": "#include <iostream>\n#include <string>\n#include <cctype>\nusing namespace std;\n\nbool if_uppercase(const string& msg){\n    for (size_t i = 0; msg[i] <= msm.length(); ++i ){\n        if(!isupper(msg[i])){\n            return true;\n        }\n    }\n    return false;\n}\n\nint vowel_count(const string& M){\n    int count = 0;\n    for(size_t i=0; M[i] <=M.length(); ++i){\n         char lower_char = tolower(M[i]);\n        if (lower_char == 'a' || lower_char == 'e' || lower_char == 'i' || lower_char == 'o' || lower_char == 'u') {\n            count++;\n        }\n    }\n    return count;\n}\n\nint main() {\n    string message;\n    getline(cin, message);\n\n    if(if_upper(message)){\n        cout << \"Invalid!\" << endl;\n    } else {\n        cout << vowel_count(message) << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746157627509",
+      "timestamp": "Fri, 02 May 2025 03:47:09 GMT",
+      "version": 27
+    },
+    {
+      "__v": 0,
+      "_id": "6814404a362a31d46b05b817",
+      "code": "#include <iostream>\n#include <string>\n#include <cctype>\nusing namespace std;\n\nbool if_uppercase(const string& msg){\n    for (size_t i = 0; msg[i] <= msm.length(); ++i ){\n        if(!isupper(msg[i])){\n            return true;\n        }\n    }\n    return false;\n}\n\nint vowel_count(const string& M){\n    int count = 0;\n    for(size_t i=0; M[i] <=M.length(); ++i){\n         char lower_char = tolower(M[i]);\n        if (lower_char =='a' || lower_char == 'e' || lower_char == 'i' || lower_char == 'o' || lower_char == 'u') {\n            count++;\n        }\n    }\n    return count;\n}\n\nint main() {\n    string message;\n    getline(cin, message);\n\n    if(if_upper(message)){\n        cout << \"Invalid!\" << endl;\n    } else {\n        cout << vowel_count(message) << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746157640122",
+      "timestamp": "Fri, 02 May 2025 03:47:22 GMT",
+      "version": 28
+    },
+    {
+      "__v": 0,
+      "_id": "68144061362a31d46b05b81d",
+      "code": "#include <iostream>\n#include <string>\n#include <cctype>\nusing namespace std;\n\nbool if_uppercase(const string& msg){\n    for (size_t i = 0; msg[i]<= msm.length(); ++i ){\n        if(!isupper(msg[i])){\n            return true;\n        }\n    }\n    return false;\n}\n\nint vowel_count(const string& M){\n    int count = 0;\n    for(size_t i=0; M[i] <=M.length(); ++i){\n         char lower_char = tolower(M[i]);\n        if (lower_char =='a' || lower_char == 'e'|| lower_char == 'i' || lower_char == 'o' || lower_char == 'u') {\n            count++;\n        }\n    }\n    return count;\n}\n\nint main() {\n    string message;\n    getline(cin, message);\n\n    if(if_upper(message)){\n        cout << \"Invalid!\" << endl;\n    } else {\n        cout << vowel_count(message) << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746157663111",
+      "timestamp": "Fri, 02 May 2025 03:47:45 GMT",
+      "version": 29
+    },
+    {
+      "__v": 0,
+      "_id": "68143f21362a31d46b05b7dd",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nbool if_uppercase(const string msg){\n    for (size_t i = 0; msg[i] <= msm.length(); ++i ){\n        if(!isupper(msg[i])){\n            return false;\n        }\n    }\n    return true;\n}\n\nint vowel_count(const string M){\n    int count = 0;\n    for(size_t i=0; M[i] <=M.length(); ++i){\n        if (M[i] = {'a', 'e', 'i', 'o', 'u'}){\n                count++;\n        }\n    }\n    return count;\n}\n\nint main() {\n    string message;\n    getline(cin, message);\n\n    if(if_upper(message)){\n        cout << \"Invalid!\" << endl;\n    } else {(vowel_count(message))\n\n\n    }\n\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746157340915",
+      "timestamp": "Fri, 02 May 2025 03:42:25 GMT",
+      "version": 20
+    },
+    {
+      "__v": 0,
+      "_id": "681440de226d8383ccf80018",
+      "code": "#include <iostream>\n#include <string>\n#include <cctype>\nusing namespace std;\n\nbool if_uppercase(const string& msg){\n    for (size_t i = 0; i < msg.length(); ++i ){\n        if(!isupper(msg[i])){\n            return true;\n        }\n    }\n    return false;\n}\n\nint vowel_count(const string& M){\n    int count = 0;\n    for(size_t i=0; i < M.length(); ++i){\n         char lower_char = tolower(M[i]);\n        if (lower_char =='a' || lower_char == 'e'|| lower_char == 'i' || lower_char == 'o' || lower_char == 'u') {\n            count++;\n        }\n    }\n    return count;\n}\n\nint main() {\n    string message;\n    getline(cin, message);\n\n    if(if_uppercase(message)){\n        cout << \"Invalid!\" << endl;\n    } else {\n        cout << vowel_count(message) << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746157783942",
+      "timestamp": "Fri, 02 May 2025 03:49:50 GMT",
+      "version": 31
+    },
+    {
+      "__v": 0,
+      "_id": "681441b7d2464a9090df9df1",
+      "code": "#include <iostream>\n#include <string>\n#include <cctype>\nusing namespace std;\n\nbool if_uppercase(const string& msg){\n    for (size_t i = 0; i < msg.length(); ++i ){\n        if(!isupper(msg[i])){\n            return false;\n        }\n    }\n    return true;\n}\n\nint vowel_count(const string& M){\n    int count = 0;\n    for(size_t i=0; i < M.length(); ++i){\n         char lower_char = tolower(M[i]);\n        if (lower_char =='a' || lower_char == 'e'|| lower_char == 'i' || lower_char == 'o' || lower_char == 'u') {\n            count++;\n        }\n    }\n    return count;\n}\n\nint main() {\n    string message;\n    getline(cin, message);\n\n    if(if_uppercase(message)){\n        cout << \"Invalid!\" << endl;\n    } else {\n        cout << vowel_count(message) << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746158005489",
+      "timestamp": "Fri, 02 May 2025 03:53:27 GMT",
+      "version": 32
+    },
+    {
+      "__v": 0,
+      "_id": "68146ef94998726cbd288cd1",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746169592241",
+      "timestamp": "Fri, 02 May 2025 07:06:33 GMT",
+      "version": 33
+    },
+    {
+      "__v": 0,
+      "_id": "68146f6f4998726cbd288cd5",
+      "code": "#include <iostream>\n#include <string>\n#include <cctype>\nusing namespace std;\n\nbool if_uppercase(const string& msg){\n    for (size_t i = 0; i < msg.length(); ++i ){\n        if(!isupper(msg[i])){\n            return false;\n        }\n    }\n    return true;\n}\n\nint vowel_count(const string& M){\n    int count = 0;\n    for(size_t i=0; i < M.length(); ++i){\n         char lower_char = tolower(M[i]);\n        if (lower_char =='a' || lower_char == 'e'|| lower_char == 'i' || lower_char == 'o' || lower_char == 'u') {\n            count++;\n        }\n    }\n    return count;\n}\n\nint main() {\n    string message;\n    getline(cin, message);\n\n    if(if_uppercase(message)){\n        cout << \"Invalid!\" << endl;\n    } else {\n        cout << vowel_count(message) << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746169710002",
+      "timestamp": "Fri, 02 May 2025 07:08:31 GMT",
+      "version": 34
+    },
+    {
+      "__v": 0,
+      "_id": "68146ffa4998726cbd288cda",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746169848470",
+      "timestamp": "Fri, 02 May 2025 07:10:50 GMT",
+      "version": 35
+    },
+    {
+      "__v": 0,
+      "_id": "68146ffd4998726cbd288cdd",
+      "code": "#include <iostream>\n#include <string>\n#include <cctype>\nusing namespace std;\n\nbool if_uppercase(const string& msg){\n    for (size_t i = 0; i < msg.length(); ++i ){\n        if(!isupper(msg[i])){\n            return false;\n        }\n    }\n    return true;\n}\n\nint vowel_count(const string& M){\n    int count = 0;\n    for(size_t i=0; i < M.length(); ++i){\n         char lower_char = tolower(M[i]);\n        if (lower_char =='a' || lower_char == 'e'|| lower_char == 'i' || lower_char == 'o' || lower_char == 'u') {\n            count++;\n        }\n    }\n    return count;\n}\n\nint main() {\n    string message;\n    getline(cin, message);\n\n    if(if_uppercase(message)){\n        cout << \"Invalid!\" << endl;\n    } else {\n        cout << vowel_count(message) << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746169851772",
+      "timestamp": "Fri, 02 May 2025 07:10:53 GMT",
+      "version": 36
+    },
+    {
+      "__v": 0,
+      "_id": "681688fa09438c944b7b67ed",
+      "code": "#include <iostream>\n#include <string>\n#include <cctype>\nusing namespace std;\n\nbool if_uppercase(const string& msg){\n    for (size_t i = 0; i< msg.length(); ++i ){\n        if(!isupper(msg[i])){\n            return false;\n        }\n    }\n    return true;\n}\n\nint vowel_count(const string& M){\n    int count = 0;\n    for(size_t i=0; i< M.length(); ++i){\n         char lower_char = tolower(M[i]);\n        if (lower_char =='a' || lower_char == 'e'|| lower_char == 'i' || lower_char == 'o' || lower_char == 'u') {\n            count++;\n        }\n    }\n    return count;\n}\n\nint main() {\n    string message;\n    getline(cin, message);\n\n    if(if_uppercase(message)){\n        cout << \"Invalid!\" << endl;\n    } else {\n        cout <<vowel_count(message) << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746307318981",
+      "timestamp": "Sat, 03 May 2025 21:22:02 GMT",
+      "version": 37
+    },
+    {
+      "__v": 0,
+      "_id": "681688fa398380765396b292",
+      "code": "#include <iostream>\n#include <string>\n#include <cctype>\nusing namespace std;\n\nbool if_uppercase(const string& msg){\n    for (size_t i = 0; i< msg.length(); ++i ){\n        if(!isupper(msg[i])){\n            return false;\n        }\n    }\n    return true;\n}\n\nint vowel_count(const string& M){\n    int count = 0;\n    for(size_t i=0; i< M.length(); ++i){\n         char lower_char = tolower(M[i]);\n        if (lower_char =='a' || lower_char == 'e'|| lower_char == 'i' || lower_char == 'o' || lower_char == 'u') {\n            count++;\n        }\n    }\n    return count;\n}\n\nint main() {\n    string message;\n    getline(cin, message);\n\n    if(if_uppercase(message)){\n        cout << \"Invalid!\" << endl;\n    } else {\n        cout <<vowel_count(message) << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746307319338",
+      "timestamp": "Sat, 03 May 2025 21:22:02 GMT",
+      "version": 37
+    },
+    {
+      "__v": 0,
+      "_id": "6816890e398380765396b295",
+      "code": "#include <iostream>\n#include <string>\n#include <cctype>\nusing namespace std;\n\nbool if_uppercase(const string& msg){\n    for (size_t i = 0; i< msg.length(); ++i ){\n        if(!isupper(msg[i])){\n            return false;\n        }\n    }\n    return true;\n}\n\nint vowel_count(const string& M){\n    int count = 0;\n    for(size_t i=0; i< M.length(); ++i){\n         char lower_char = tolower(M[i]);\n        if (lower_char =='a' || lower_char == 'e'||lower_char == 'i' || lower_char == 'o' || lower_char == 'u') {\n            count++;\n        }\n    }\n    return count;\n}\n\nint main() {\n    string message;\n    getline(cin, message);\n\n    if(if_uppercase(message)){\n        cout << \"Invalid!\" << endl;\n    } else {\n        cout <<vowel_count(message) << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746307339461",
+      "timestamp": "Sat, 03 May 2025 21:22:22 GMT",
+      "version": 38
+    },
+    {
+      "__v": 0,
+      "_id": "68143b9f014541a7ad61d074",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nbool if_uppercase(const string msg){\n    for (int i = 0; msg[i] <= msm.length(); ++i ){\n        if \n    }\n}\nint main() {\n    string message;\n    cin >> message;\n\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746156445158",
+      "timestamp": "Fri, 02 May 2025 03:27:27 GMT",
+      "version": 11
+    },
+    {
+      "__v": 0,
+      "_id": "68143794a572b159570be5d8",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    \n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746155410214",
+      "timestamp": "Fri, 02 May 2025 03:10:12 GMT",
+      "version": 2
+    },
+    {
+      "__v": 0,
+      "_id": "681437d8a572b159570be5e1",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    string \n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746155478174",
+      "timestamp": "Fri, 02 May 2025 03:11:20 GMT",
+      "version": 3
+    },
+    {
+      "__v": 0,
+      "_id": "681437f5a572b159570be5e4",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    string message;\n\n    \n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746155507040",
+      "timestamp": "Fri, 02 May 2025 03:11:49 GMT",
+      "version": 4
+    },
+    {
+      "__v": 0,
+      "_id": "6814380aa572b159570be5e7",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    string message;\n    cin >> message;\n\n    \n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746155528321",
+      "timestamp": "Fri, 02 May 2025 03:12:10 GMT",
+      "version": 5
+    },
+    {
+      "__v": 0,
+      "_id": "681439eb014541a7ad61d044",
+      "code": "#include <iostream>\nusing namespace std;\n\nbool \nint main() {\n    string message;\n    cin >> message;\n\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746156009383",
+      "timestamp": "Fri, 02 May 2025 03:20:11 GMT",
+      "version": 6
+    },
+    {
+      "__v": 0,
+      "_id": "681439fe014541a7ad61d047",
+      "code": "#include <iostream>\nusing namespace std;\n\nbool if_uppercase()\nint main() {\n    string message;\n    cin >> message;\n\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746156028022",
+      "timestamp": "Fri, 02 May 2025 03:20:30 GMT",
+      "version": 7
+    },
+    {
+      "__v": 0,
+      "_id": "68143ac3014541a7ad61d05e",
+      "code": "#include <iostream>\nusing namespace std;\n\nbool if_uppercase(const string msg){\n    for (int i = 0; )\n}\nint main() {\n    string message;\n    cin >> message;\n\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746156225324",
+      "timestamp": "Fri, 02 May 2025 03:23:47 GMT",
+      "version": 8
+    },
+    {
+      "__v": 0,
+      "_id": "68143add014541a7ad61d061",
+      "code": "#include <iostream>\nusing namespace std;\n\nbool if_uppercase(const string msg){\n    for (int i = 0; str[1] != '0')\n}\nint main() {\n    string message;\n    cin >> message;\n\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746156251940",
+      "timestamp": "Fri, 02 May 2025 03:24:13 GMT",
+      "version": 9
+    },
+    {
+      "__v": 0,
+      "_id": "68143af3014541a7ad61d064",
+      "code": "#include <iostream>\nusing namespace std;\n\nbool if_uppercase(const string msg){\n    for (int i = 0; str[i] != )\n}\nint main() {\n    string message;\n    cin >> message;\n\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746156273584",
+      "timestamp": "Fri, 02 May 2025 03:24:35 GMT",
+      "version": 10
+    },
+    {
+      "__v": 0,
+      "_id": "68143741014541a7ad61d02b",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746155325091",
+      "timestamp": "Fri, 02 May 2025 03:08:49 GMT",
+      "version": 1
+    },
+    {
+      "__v": 0,
+      "_id": "68143c1d014541a7ad61d07e",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nbool if_uppercase(const string msg){\n    for (size_t i = 0; msg[i] <= msm.length(); ++i ){\n        if(!msg[i])\n    }\n}\nint main() {\n    string message;\n    cin >> message;\n\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746156571910",
+      "timestamp": "Fri, 02 May 2025 03:29:33 GMT",
+      "version": 12
+    },
+    {
+      "__v": 0,
+      "_id": "68143c69014541a7ad61d081",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nbool if_uppercase(const string msg){\n    for (size_t i = 0; msg[i] <= msm.length(); ++i ){\n        if(!isupper(msg[i])){\n            return false;\n        }\n    }\n    return true;\n}\nint main() {\n    string message;\n    cin >> message;\n\n    \n\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746156646909",
+      "timestamp": "Fri, 02 May 2025 03:30:49 GMT",
+      "version": 13
+    },
+    {
+      "__v": 0,
+      "_id": "68143cc3014541a7ad61d085",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nbool if_uppercase(const string msg){\n    for (size_t i = 0; msg[i] <= msm.length(); ++i ){\n        if(!isupper(msg[i])){\n            return false;\n        }\n    }\n    return true;\n}\nint main() {\n    string message;\n    cin >> message;\n\n    if(if_upper(message)){\n        cout << \"Invalid!\" << endl;\n    } else{\n        \n    }\n\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746156737536",
+      "timestamp": "Fri, 02 May 2025 03:32:19 GMT",
+      "version": 14
+    },
+    {
+      "__v": 0,
+      "_id": "68143d0ac2f7265096707842",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nbool if_uppercase(const string msg){\n    for (size_t i = 0; msg[i] <= msm.length(); ++i ){\n        if(!isupper(msg[i])){\n            return false;\n        }\n    }\n    return true;\n}\n\nint vowel_count(const string M){\n    \n}\nint main() {\n    string message;\n    cin >> message;\n\n    if(if_upper(message)){\n        cout << \"Invalid!\" << endl;\n    } else{\n\n    }\n\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746156808295",
+      "timestamp": "Fri, 02 May 2025 03:33:30 GMT",
+      "version": 15
+    },
+    {
+      "__v": 0,
+      "_id": "68143d9ec2f7265096707855",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nbool if_uppercase(const string msg){\n    for (size_t i = 0; msg[i] <= msm.length(); ++i ){\n        if(!isupper(msg[i])){\n            return false;\n        }\n    }\n    return true;\n}\n\nint vowel_count(const string M){\n\n}\nint main() {\n    string message;\n    getline(cin, message);\n\n    if(if_upper(message)){\n        cout << \"Invalid!\" << endl;\n    } else{\n\n    }\n\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746156956430",
+      "timestamp": "Fri, 02 May 2025 03:35:58 GMT",
+      "version": 16
+    },
+    {
+      "__v": 0,
+      "_id": "68143dabc2f7265096707858",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nbool if_uppercase(const string msg){\n    for (size_t i = 0; msg[i] <= msm.length(); ++i ){\n        if(!isupper(msg[i])){\n            return false;\n        }\n    }\n    return true;\n}\n\nint vowel_count(const string M){\n    \n}\nint main() {\n    string message;\n    getline(cin, message);\n\n    if(if_upper(message)){\n        cout << \"Invalid!\" << endl;\n    } else{\n\n    }\n\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746156969522",
+      "timestamp": "Fri, 02 May 2025 03:36:11 GMT",
+      "version": 17
+    },
+    {
+      "__v": 0,
+      "_id": "68143e02c2f726509670785f",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nbool if_uppercase(const string msg){\n    for (size_t i = 0; msg[i] <= msm.length(); ++i ){\n        if(!isupper(msg[i])){\n            return false;\n        }\n    }\n    return true;\n}\n\nint vowel_count(const string M){\n    for(size_t i=0; M[i] <=M.length(); ++i){\n        if (M[i] == 'a', ')\n    }\n}\nint main() {\n    string message;\n    getline(cin, message);\n\n    if(if_upper(message)){\n        cout << \"Invalid!\" << endl;\n    } else{\n\n    }\n\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746157056866",
+      "timestamp": "Fri, 02 May 2025 03:37:38 GMT",
+      "version": 18
+    },
+    {
+      "__v": 0,
+      "_id": "68143e991d0d27b4ad35700f",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nbool if_uppercase(const string msg){\n    for (size_t i = 0; msg[i] <= msm.length(); ++i ){\n        if(!isupper(msg[i])){\n            return false;\n        }\n    }\n    return true;\n}\n\nint vowel_count(const string M){\n    for(size_t i=0; M[i] <=M.length(); ++i){\n        if (M[i] = {'a', 'e', 'i', 'o', 'u'}){\n            \n        }\n    }\n}\nint main() {\n    string message;\n    getline(cin, message);\n\n    if(if_upper(message)){\n        cout << \"Invalid!\" << endl;\n    } else{\n\n    }\n\n\n    return 0;\n}",
+      "learner_id": "681435ed8d5dd1a5048896ca",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746157207351",
+      "timestamp": "Fri, 02 May 2025 03:40:09 GMT",
+      "version": 19
+    }
+  ],
+  "success": true
+}

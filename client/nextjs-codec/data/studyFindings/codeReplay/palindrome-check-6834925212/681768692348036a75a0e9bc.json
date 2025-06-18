@@ -1,0 +1,50 @@
+{
+  "formatted_snapshots": [
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "681768692348036a75a0e9bc",
+      "submission_id": "68176f59e7010ff37c986b96",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    getline(cin, s); \n\n    string reversed = \"\";\n\n    for (int i = s.length() - 1; i >= 0; i--) {\n        reversed += s[i];\n    }\n\n    if (s == reversed) {\n        cout << \"Palindrome\" << endl;\n    } else {\n        cout << \"Not a palindrome\" << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681768692348036a75a0e9bc",
+      "submission_id": "68177126e7010ff37c986bad",
+      "timestamp": ""
+    }
+  ],
+  "sequentialSimilarities": [
+    {
+      "codebert_score": 38,
+      "from_index": 0,
+      "learner_id": "681768692348036a75a0e9bc",
+      "similarity": 38,
+      "to_index": 1
+    }
+  ],
+  "snapshots": [
+    {
+      "__v": 0,
+      "_id": "68176f59e7010ff37c986b96",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "681768692348036a75a0e9bc",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746366294963",
+      "timestamp": "Sun, 04 May 2025 13:44:57 GMT",
+      "version": 1
+    },
+    {
+      "__v": 0,
+      "_id": "68177126e7010ff37c986bad",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    getline(cin, s); \n\n    string reversed = \"\";\n\n    for (int i = s.length() - 1; i >= 0; i--) {\n        reversed += s[i];\n    }\n\n    if (s == reversed) {\n        cout << \"Palindrome\" << endl;\n    } else {\n        cout << \"Not a palindrome\" << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "681768692348036a75a0e9bc",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746366756769",
+      "timestamp": "Sun, 04 May 2025 13:52:38 GMT",
+      "version": 2
+    }
+  ],
+  "success": true
+}

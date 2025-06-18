@@ -1,0 +1,602 @@
+{
+  "formatted_snapshots": [
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    int vowel=0;\n    getline (cin, s);\n\n    for (char i: s) {\n        if (i>='a' && i<='z') {\n            if (i=='a' ||i=='e' ||i=='i' ||i=='o' ||i=='u') {\n                vowel++;\n            }\n        }\n        else {\n            cout << \"Invalid!\";\n        }\n    }\n\n    cout << vowel;\n\n    /* \n    1. prompt user to insert string\n    2. take string\n    3. scan if there is lowercase letters and constraint\n    4. scan if vowel, add to counter if yes\n    5. output\n    */\n    return 0;\n}",
+      "learner_id": "6811b20988362505107a60be",
+      "submission_id": "68143981a572b159570be5fe",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    int vowel=0;\n    getline (cin, s);\n\n    for (char i: s) {\n        if (i>='a' && i<='z') {\n            if (i=='a' ||i=='e' ||i=='i' ||i=='o' ||i=='u') {\n                vowel++;\n            }\n        }\n        else {\n            cout << \"Invalid!\";\n            return 0;\n\n        }\n    }\n\n    cout << vowel;\n\n    /* \n    1. prompt user to insert string\n    2. take string\n    3. scan if there is lowercase letters and constraint\n    4. scan if vowel, add to counter if yes\n    5. output\n    */\n    return 0;\n}",
+      "learner_id": "6811b20988362505107a60be",
+      "submission_id": "68183cabb578ef7fb8722d3c",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "6811b20988362505107a60be",
+      "submission_id": "68183a89b578ef7fb8722d07",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    int vowel=0;\n    getline (cin, s);\n\n    for (char i: s) {\n        if (i>='a' && i<='z') {\n            if (i=='a' ||i=='e' ||i=='i' ||i=='o' ||i=='u') {\n                vowel++;\n            }\n        }\n        else {\n            cout << \"Invalid!\";\n            return 0;\n\n        }\n    }\n\n    cout << vowel;\n\n    /* \n    1. prompt user to insert string\n    2. take string\n    3. scan if there is lowercase letters and constraint\n    4. scan if vowel, add to counter if yes\n    5. output\n    */\n    return 0;\n}",
+      "learner_id": "6811b20988362505107a60be",
+      "submission_id": "6814d3bd56c3a8f3394c9792",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "6811b20988362505107a60be",
+      "submission_id": "6814d2b656c3a8f3394c9781",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    int vowel=0;\n    getline (cin, s);\n\n    for (char i: s) {\n        if (i>='a' && i<='z') {\n            if (i=='a' ||i=='e' ||i=='i' ||i=='o' ||i=='u') {\n                vowel++;\n            }\n        }\n        else {\n            cout << \"Invalid!\";\n            return 0;\n\n        }\n    }\n\n    cout << vowel;\n\n    /* \n    1. prompt user to insert string\n    2. take string\n    3. scan if there is lowercase letters and constraint\n    4. scan if vowel, add to counter if yes\n    5. output\n    */\n    return 0;\n}",
+      "learner_id": "6811b20988362505107a60be",
+      "submission_id": "68143d85c2f7265096707851",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    int vowel=0;\n    cin >> s;\n\n    for (char i: s) {\n        if (i>='a' && i<='z') {\n            if (i=='a' ||i=='e' ||i=='i' ||i=='o' ||i=='u') {\n                vowel++;\n            }\n        }\n        else {\n            cout << \"Invalid!\";\n            return 0;\n\n        }\n    }\n\n    cout << vowel;\n\n    /* \n    1. prompt user to insert string\n    2. take string\n    3. scan if there is lowercase letters and constraint\n    4. scan if vowel, add to counter if yes\n    5. output\n    */\n    return 0;\n}",
+      "learner_id": "6811b20988362505107a60be",
+      "submission_id": "68143d70c2f726509670784e",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    int vowel=0;\n    getline (cin, s);\n\n    for (char i: s) {\n        if (i>='a' && i<='z') {\n            if (i=='a' ||i=='e' ||i=='i' ||i=='o' ||i=='u') {\n                vowel++;\n            }\n        }\n        else {\n            cout << \"Invalid!\";\n            return 0;\n\n        }\n    }\n\n    cout << vowel;\n\n    /* \n    1. prompt user to insert string\n    2. take string\n    3. scan if there is lowercase letters and constraint\n    4. scan if vowel, add to counter if yes\n    5. output\n    */\n    return 0;\n}",
+      "learner_id": "6811b20988362505107a60be",
+      "submission_id": "68143b71014541a7ad61d071",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    int vowel = 0;\n\n    getline(cin, s);\n\n    for (char i : s) {\n        if (i >= 'a' && i <= 'z') {\n            if (i == 'a' || i == 'e' || i == 'i' || i == 'o' || i == 'u') {\n                vowel++;\n            }\n        }\n        else {\n            cout << \"Invalid\" << endl;  // No extra formatting\n            return 0;\n        }\n    }\n\n    cout << vowel << endl;\n    return 0;\n}\n",
+      "learner_id": "6811b20988362505107a60be",
+      "submission_id": "68143b5e014541a7ad61d06c",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    int vowel=0;\n    getline (cin, s);\n\n    for (char i: s) {\n        if (i>='a' && i<='z') {\n            if (i=='a' ||i=='e' ||i=='i' ||i=='o' ||i=='u') {\n                vowel++;\n            }\n        }\n        else {\n            cout << \"Invalid!\";\n            return 0;\n\n        }\n    }\n\n    cout << vowel;\n\n    /* \n    1. prompt user to insert string\n    2. take string\n    3. scan if there is lowercase letters and constraint\n    4. scan if vowel, add to counter if yes\n    5. output\n    */\n    return 0;\n}",
+      "learner_id": "6811b20988362505107a60be",
+      "submission_id": "68143aa1014541a7ad61d05b",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    int vowel=0;\n    getline (cin, s);\n\n    for (char i: s) {\n        if (i>='a' && i<='z') {\n            if (i=='a' ||i=='e' ||i=='i' ||i=='o' ||i=='u') {\n                vowel++;\n            }\n        }\n        else {\n            cout << \"Invalid!\";\n            return 1;\n\n        }\n    }\n\n    cout << vowel;\n\n    /* \n    1. prompt user to insert string\n    2. take string\n    3. scan if there is lowercase letters and constraint\n    4. scan if vowel, add to counter if yes\n    5. output\n    */\n    return 0;\n}",
+      "learner_id": "6811b20988362505107a60be",
+      "submission_id": "68143a4e014541a7ad61d056",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    int vowel=0;\n    getline (cin, s);\n\n    for (char i: s) {\n        if (i>='a' && i<='z') {\n            if (i=='a' ||i=='e' ||i=='i' ||i=='o' ||i=='u') {\n                vowel++;\n            }\n        }\n        else {\n            cout << \"Invalid!\";\n        }\n    }\n\n    cout << vowel;\n\n    /* \n    1. prompt user to insert string\n    2. take string\n    3. scan if there is lowercase letters and constraint\n    4. scan if vowel, add to counter if yes\n    5. output\n    */\n    return 0;\n}",
+      "learner_id": "6811b20988362505107a60be",
+      "submission_id": "68143a28014541a7ad61d050",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    int vowel=0;\n    getline (cin, s);\n\n    for (char i: s) {\n        if (i>='a' && i<='z') {\n            if (i=='a' ||i=='e' ||i=='i' ||i=='o' ||i=='u') {\n                vowel++;\n            }\n        }\n        else {\n            cout << \"Invalid!\";\n            return 1;\n        }\n    }\n\n    cout << vowel;\n\n    /* \n    1. prompt user to insert string\n    2. take string\n    3. scan if there is lowercase letters and constraint\n    4. scan if vowel, add to counter if yes\n    5. output\n    */\n    return 0;\n}",
+      "learner_id": "6811b20988362505107a60be",
+      "submission_id": "681439bda572b159570be602",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "6811b20988362505107a60be",
+      "submission_id": "681436a2014541a7ad61d021",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    int vowel=0;\n    getline (cin, s);\n\n    for (char i: s) {\n        if (i>='a' && i<='z') {\n            if (i=='a' ||i=='e' ||i=='i' ||i=='o' ||i=='u') {\n                int vowel++;\n            }\n        }\n        else {\n            cout << \"Invalid!\";\n        }\n    }\n\n    cout << vowel;\n\n    /* \n    1. prompt user to insert string\n    2. take string\n    3. scan if there is lowercase letters and constraint\n    4. scan if vowel, add to counter if yes\n    5. output\n    */\n    return 0;\n}",
+      "learner_id": "6811b20988362505107a60be",
+      "submission_id": "6814394ea572b159570be5fa",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    int vowel=0;\n    getline (cin, s);\n\n    for (char i: s) {\n        if (s>='a' && s<='z') {\n            if (s=='a' ||s=='e' ||s=='i' ||s=='o' ||s=='u') {\n                int vowel++;\n            }\n        }\n        else {\n            cout << \"Invalid!\";\n        }\n    }\n\n    cout << vowel;\n\n    /* \n    1. prompt user to insert string\n    2. take string\n    3. scan if there is lowercase letters and constraint\n    4. scan if vowel, add to counter if yes\n    5. output\n    */\n    return 0;\n}",
+      "learner_id": "6811b20988362505107a60be",
+      "submission_id": "681438e4a572b159570be5f5",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    getline (cin, s);\n\n    for (char i: s) {\n        if (s>)\n\n    }\n\n    /* \n    1. prompt user to insert string\n    2. take string\n    3. scan if there is lowercase letters and constraint\n    4. scan if vowel, add to counter if yes\n    5. output\n    */\n    return 0;\n}",
+      "learner_id": "6811b20988362505107a60be",
+      "submission_id": "68143855a572b159570be5ee",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    getline (cin, s);\n\n    for (int i =0; i<s.length(); i++) {\n        if ()\n\n    }\n\n    /* \n    1. prompt user to insert string\n    2. take string\n    3. scan if there is lowercase letters and constraint\n    4. scan if vowel, add to counter if yes\n    5. output\n    */\n    return 0;\n}",
+      "learner_id": "6811b20988362505107a60be",
+      "submission_id": "681437a5a572b159570be5dd",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    getline (cin, s);\n\n    for (int i =0; i<s.length(); i++) {\n\n        \n    }\n\n    /* \n    1. prompt user to insert string\n    2. take string\n    3. scan if there is lowercase letters and constraint\n    4. scan if vowel, add to counter if yes\n    5. output\n    */\n    return 0;\n}",
+      "learner_id": "6811b20988362505107a60be",
+      "submission_id": "68143792a572b159570be5d5",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    getline (cin, s);\n\n    for (int i =0; i<)\n\n    /* \n    1. prompt user to insert string\n    2. take string\n    3. scan if there is lowercase letters and constraint\n    4. scan if vowel, add to counter if yes\n    5. output\n    */\n    return 0;\n}",
+      "learner_id": "6811b20988362505107a60be",
+      "submission_id": "68143780014541a7ad61d03d",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    getline (cin, s);\n\n    for (int i =0; i>=)\n\n    /* \n    1. prompt user to insert string\n    2. take string\n    3. scan if there is lowercase letters and constraint\n    4. scan if vowel, add to counter if yes\n    5. output\n    */\n    return 0;\n}",
+      "learner_id": "6811b20988362505107a60be",
+      "submission_id": "68143778014541a7ad61d036",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    \n\n    /* \n    1. prompt user to insert string\n    2. take string\n    3. scan if there is lowercase letters and constraint\n    4. scan if vowel, add to counter if yes\n    5. output\n    */\n    return 0;\n}",
+      "learner_id": "6811b20988362505107a60be",
+      "submission_id": "6814373b014541a7ad61d028",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    /* \n    1. prompt user to insert string\n    2. take string\n    3. scan if there is lowercase letters and constraint\n    4. scan if vowel, add to counter if yes\n    5. \n    */\n    return 0;\n}",
+      "learner_id": "6811b20988362505107a60be",
+      "submission_id": "68143711a572b159570be5d1",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    /* \n    1. prompt user to insert string\n    2. take string\n    3. scan if there is lowercase letters and constraint\n    4. scan if vowel, add to counter if yes\n    5. \n    */\n    return 0;\n}",
+      "learner_id": "6811b20988362505107a60be",
+      "submission_id": "68143711a572b159570be5ce",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    /* \n    1. prompt user to insert string\n    2. take string\n    3. scan if there is lowercase letters and constraint\n    4. \n    */\n    return 0;\n}",
+      "learner_id": "6811b20988362505107a60be",
+      "submission_id": "681436fca572b159570be5ca",
+      "timestamp": ""
+    }
+  ],
+  "sequentialSimilarities": [
+    {
+      "codebert_score": 90,
+      "from_index": 0,
+      "learner_id": "6811b20988362505107a60be",
+      "similarity": 90,
+      "to_index": 1
+    },
+    {
+      "codebert_score": 38,
+      "from_index": 1,
+      "learner_id": "6811b20988362505107a60be",
+      "similarity": 38,
+      "to_index": 2
+    },
+    {
+      "codebert_score": 38,
+      "from_index": 2,
+      "learner_id": "6811b20988362505107a60be",
+      "similarity": 38,
+      "to_index": 3
+    },
+    {
+      "codebert_score": 38,
+      "from_index": 3,
+      "learner_id": "6811b20988362505107a60be",
+      "similarity": 38,
+      "to_index": 4
+    },
+    {
+      "codebert_score": 38,
+      "from_index": 4,
+      "learner_id": "6811b20988362505107a60be",
+      "similarity": 38,
+      "to_index": 5
+    },
+    {
+      "codebert_score": 87,
+      "from_index": 5,
+      "learner_id": "6811b20988362505107a60be",
+      "similarity": 87,
+      "to_index": 6
+    },
+    {
+      "codebert_score": 87,
+      "from_index": 6,
+      "learner_id": "6811b20988362505107a60be",
+      "similarity": 87,
+      "to_index": 7
+    },
+    {
+      "codebert_score": 75,
+      "from_index": 7,
+      "learner_id": "6811b20988362505107a60be",
+      "similarity": 75,
+      "to_index": 8
+    },
+    {
+      "codebert_score": 75,
+      "from_index": 8,
+      "learner_id": "6811b20988362505107a60be",
+      "similarity": 75,
+      "to_index": 9
+    },
+    {
+      "codebert_score": 96,
+      "from_index": 9,
+      "learner_id": "6811b20988362505107a60be",
+      "similarity": 96,
+      "to_index": 10
+    },
+    {
+      "codebert_score": 90,
+      "from_index": 10,
+      "learner_id": "6811b20988362505107a60be",
+      "similarity": 90,
+      "to_index": 11
+    },
+    {
+      "codebert_score": 90,
+      "from_index": 11,
+      "learner_id": "6811b20988362505107a60be",
+      "similarity": 90,
+      "to_index": 12
+    },
+    {
+      "codebert_score": 38,
+      "from_index": 12,
+      "learner_id": "6811b20988362505107a60be",
+      "similarity": 38,
+      "to_index": 13
+    },
+    {
+      "codebert_score": 39,
+      "from_index": 13,
+      "learner_id": "6811b20988362505107a60be",
+      "similarity": 39,
+      "to_index": 14
+    },
+    {
+      "codebert_score": 86,
+      "from_index": 14,
+      "learner_id": "6811b20988362505107a60be",
+      "similarity": 86,
+      "to_index": 15
+    },
+    {
+      "codebert_score": 57,
+      "from_index": 15,
+      "learner_id": "6811b20988362505107a60be",
+      "similarity": 57,
+      "to_index": 16
+    },
+    {
+      "codebert_score": 80,
+      "from_index": 16,
+      "learner_id": "6811b20988362505107a60be",
+      "similarity": 80,
+      "to_index": 17
+    },
+    {
+      "codebert_score": 84,
+      "from_index": 17,
+      "learner_id": "6811b20988362505107a60be",
+      "similarity": 84,
+      "to_index": 18
+    },
+    {
+      "codebert_score": 76,
+      "from_index": 18,
+      "learner_id": "6811b20988362505107a60be",
+      "similarity": 76,
+      "to_index": 19
+    },
+    {
+      "codebert_score": 88,
+      "from_index": 19,
+      "learner_id": "6811b20988362505107a60be",
+      "similarity": 88,
+      "to_index": 20
+    },
+    {
+      "codebert_score": 75,
+      "from_index": 20,
+      "learner_id": "6811b20988362505107a60be",
+      "similarity": 75,
+      "to_index": 21
+    },
+    {
+      "codebert_score": 84,
+      "from_index": 21,
+      "learner_id": "6811b20988362505107a60be",
+      "similarity": 84,
+      "to_index": 22
+    },
+    {
+      "codebert_score": 100,
+      "from_index": 22,
+      "learner_id": "6811b20988362505107a60be",
+      "similarity": 100,
+      "to_index": 23
+    },
+    {
+      "codebert_score": 77,
+      "from_index": 23,
+      "learner_id": "6811b20988362505107a60be",
+      "similarity": 77,
+      "to_index": 24
+    }
+  ],
+  "snapshots": [
+    {
+      "__v": 0,
+      "_id": "68143981a572b159570be5fe",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    int vowel=0;\n    getline (cin, s);\n\n    for (char i: s) {\n        if (i>='a' && i<='z') {\n            if (i=='a' ||i=='e' ||i=='i' ||i=='o' ||i=='u') {\n                vowel++;\n            }\n        }\n        else {\n            cout << \"Invalid!\";\n        }\n    }\n\n    cout << vowel;\n\n    /* \n    1. prompt user to insert string\n    2. take string\n    3. scan if there is lowercase letters and constraint\n    4. scan if vowel, add to counter if yes\n    5. output\n    */\n    return 0;\n}",
+      "learner_id": "6811b20988362505107a60be",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746155905567",
+      "timestamp": "Fri, 02 May 2025 03:18:25 GMT",
+      "version": 12
+    },
+    {
+      "__v": 0,
+      "_id": "68183cabb578ef7fb8722d3c",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    int vowel=0;\n    getline (cin, s);\n\n    for (char i: s) {\n        if (i>='a' && i<='z') {\n            if (i=='a' ||i=='e' ||i=='i' ||i=='o' ||i=='u') {\n                vowel++;\n            }\n        }\n        else {\n            cout << \"Invalid!\";\n            return 0;\n\n        }\n    }\n\n    cout << vowel;\n\n    /* \n    1. prompt user to insert string\n    2. take string\n    3. scan if there is lowercase letters and constraint\n    4. scan if vowel, add to counter if yes\n    5. output\n    */\n    return 0;\n}",
+      "learner_id": "6811b20988362505107a60be",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746418707398",
+      "timestamp": "Mon, 05 May 2025 04:20:59 GMT",
+      "version": 24
+    },
+    {
+      "__v": 0,
+      "_id": "68183a89b578ef7fb8722d07",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "6811b20988362505107a60be",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746418161963",
+      "timestamp": "Mon, 05 May 2025 04:11:53 GMT",
+      "version": 23
+    },
+    {
+      "__v": 0,
+      "_id": "6814d3bd56c3a8f3394c9792",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    int vowel=0;\n    getline (cin, s);\n\n    for (char i: s) {\n        if (i>='a' && i<='z') {\n            if (i=='a' ||i=='e' ||i=='i' ||i=='o' ||i=='u') {\n                vowel++;\n            }\n        }\n        else {\n            cout << \"Invalid!\";\n            return 0;\n\n        }\n    }\n\n    cout << vowel;\n\n    /* \n    1. prompt user to insert string\n    2. take string\n    3. scan if there is lowercase letters and constraint\n    4. scan if vowel, add to counter if yes\n    5. output\n    */\n    return 0;\n}",
+      "learner_id": "6811b20988362505107a60be",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746195389746",
+      "timestamp": "Fri, 02 May 2025 14:16:29 GMT",
+      "version": 22
+    },
+    {
+      "__v": 0,
+      "_id": "6814d2b656c3a8f3394c9781",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "6811b20988362505107a60be",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746195126464",
+      "timestamp": "Fri, 02 May 2025 14:12:06 GMT",
+      "version": 21
+    },
+    {
+      "__v": 0,
+      "_id": "68143d85c2f7265096707851",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    int vowel=0;\n    getline (cin, s);\n\n    for (char i: s) {\n        if (i>='a' && i<='z') {\n            if (i=='a' ||i=='e' ||i=='i' ||i=='o' ||i=='u') {\n                vowel++;\n            }\n        }\n        else {\n            cout << \"Invalid!\";\n            return 0;\n\n        }\n    }\n\n    cout << vowel;\n\n    /* \n    1. prompt user to insert string\n    2. take string\n    3. scan if there is lowercase letters and constraint\n    4. scan if vowel, add to counter if yes\n    5. output\n    */\n    return 0;\n}",
+      "learner_id": "6811b20988362505107a60be",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746156933377",
+      "timestamp": "Fri, 02 May 2025 03:35:33 GMT",
+      "version": 20
+    },
+    {
+      "__v": 0,
+      "_id": "68143d70c2f726509670784e",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    int vowel=0;\n    cin >> s;\n\n    for (char i: s) {\n        if (i>='a' && i<='z') {\n            if (i=='a' ||i=='e' ||i=='i' ||i=='o' ||i=='u') {\n                vowel++;\n            }\n        }\n        else {\n            cout << \"Invalid!\";\n            return 0;\n\n        }\n    }\n\n    cout << vowel;\n\n    /* \n    1. prompt user to insert string\n    2. take string\n    3. scan if there is lowercase letters and constraint\n    4. scan if vowel, add to counter if yes\n    5. output\n    */\n    return 0;\n}",
+      "learner_id": "6811b20988362505107a60be",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746156912791",
+      "timestamp": "Fri, 02 May 2025 03:35:12 GMT",
+      "version": 19
+    },
+    {
+      "__v": 0,
+      "_id": "68143b71014541a7ad61d071",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    int vowel=0;\n    getline (cin, s);\n\n    for (char i: s) {\n        if (i>='a' && i<='z') {\n            if (i=='a' ||i=='e' ||i=='i' ||i=='o' ||i=='u') {\n                vowel++;\n            }\n        }\n        else {\n            cout << \"Invalid!\";\n            return 0;\n\n        }\n    }\n\n    cout << vowel;\n\n    /* \n    1. prompt user to insert string\n    2. take string\n    3. scan if there is lowercase letters and constraint\n    4. scan if vowel, add to counter if yes\n    5. output\n    */\n    return 0;\n}",
+      "learner_id": "6811b20988362505107a60be",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746156401728",
+      "timestamp": "Fri, 02 May 2025 03:26:41 GMT",
+      "version": 18
+    },
+    {
+      "__v": 0,
+      "_id": "68143b5e014541a7ad61d06c",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    int vowel = 0;\n\n    getline(cin, s);\n\n    for (char i : s) {\n        if (i >= 'a' && i <= 'z') {\n            if (i == 'a' || i == 'e' || i == 'i' || i == 'o' || i == 'u') {\n                vowel++;\n            }\n        }\n        else {\n            cout << \"Invalid\" << endl;  // No extra formatting\n            return 0;\n        }\n    }\n\n    cout << vowel << endl;\n    return 0;\n}\n",
+      "learner_id": "6811b20988362505107a60be",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746156382120",
+      "timestamp": "Fri, 02 May 2025 03:26:22 GMT",
+      "version": 17
+    },
+    {
+      "__v": 0,
+      "_id": "68143aa1014541a7ad61d05b",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    int vowel=0;\n    getline (cin, s);\n\n    for (char i: s) {\n        if (i>='a' && i<='z') {\n            if (i=='a' ||i=='e' ||i=='i' ||i=='o' ||i=='u') {\n                vowel++;\n            }\n        }\n        else {\n            cout << \"Invalid!\";\n            return 0;\n\n        }\n    }\n\n    cout << vowel;\n\n    /* \n    1. prompt user to insert string\n    2. take string\n    3. scan if there is lowercase letters and constraint\n    4. scan if vowel, add to counter if yes\n    5. output\n    */\n    return 0;\n}",
+      "learner_id": "6811b20988362505107a60be",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746156193437",
+      "timestamp": "Fri, 02 May 2025 03:23:13 GMT",
+      "version": 16
+    },
+    {
+      "__v": 0,
+      "_id": "68143a4e014541a7ad61d056",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    int vowel=0;\n    getline (cin, s);\n\n    for (char i: s) {\n        if (i>='a' && i<='z') {\n            if (i=='a' ||i=='e' ||i=='i' ||i=='o' ||i=='u') {\n                vowel++;\n            }\n        }\n        else {\n            cout << \"Invalid!\";\n            return 1;\n\n        }\n    }\n\n    cout << vowel;\n\n    /* \n    1. prompt user to insert string\n    2. take string\n    3. scan if there is lowercase letters and constraint\n    4. scan if vowel, add to counter if yes\n    5. output\n    */\n    return 0;\n}",
+      "learner_id": "6811b20988362505107a60be",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746156110732",
+      "timestamp": "Fri, 02 May 2025 03:21:50 GMT",
+      "version": 15
+    },
+    {
+      "__v": 0,
+      "_id": "68143a28014541a7ad61d050",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    int vowel=0;\n    getline (cin, s);\n\n    for (char i: s) {\n        if (i>='a' && i<='z') {\n            if (i=='a' ||i=='e' ||i=='i' ||i=='o' ||i=='u') {\n                vowel++;\n            }\n        }\n        else {\n            cout << \"Invalid!\";\n        }\n    }\n\n    cout << vowel;\n\n    /* \n    1. prompt user to insert string\n    2. take string\n    3. scan if there is lowercase letters and constraint\n    4. scan if vowel, add to counter if yes\n    5. output\n    */\n    return 0;\n}",
+      "learner_id": "6811b20988362505107a60be",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746156072773",
+      "timestamp": "Fri, 02 May 2025 03:21:12 GMT",
+      "version": 14
+    },
+    {
+      "__v": 0,
+      "_id": "681439bda572b159570be602",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    int vowel=0;\n    getline (cin, s);\n\n    for (char i: s) {\n        if (i>='a' && i<='z') {\n            if (i=='a' ||i=='e' ||i=='i' ||i=='o' ||i=='u') {\n                vowel++;\n            }\n        }\n        else {\n            cout << \"Invalid!\";\n            return 1;\n        }\n    }\n\n    cout << vowel;\n\n    /* \n    1. prompt user to insert string\n    2. take string\n    3. scan if there is lowercase letters and constraint\n    4. scan if vowel, add to counter if yes\n    5. output\n    */\n    return 0;\n}",
+      "learner_id": "6811b20988362505107a60be",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746155965224",
+      "timestamp": "Fri, 02 May 2025 03:19:25 GMT",
+      "version": 13
+    },
+    {
+      "__v": 0,
+      "_id": "681436a2014541a7ad61d021",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "6811b20988362505107a60be",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746155170653",
+      "timestamp": "Fri, 02 May 2025 03:06:10 GMT",
+      "version": 1
+    },
+    {
+      "__v": 0,
+      "_id": "6814394ea572b159570be5fa",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    int vowel=0;\n    getline (cin, s);\n\n    for (char i: s) {\n        if (i>='a' && i<='z') {\n            if (i=='a' ||i=='e' ||i=='i' ||i=='o' ||i=='u') {\n                int vowel++;\n            }\n        }\n        else {\n            cout << \"Invalid!\";\n        }\n    }\n\n    cout << vowel;\n\n    /* \n    1. prompt user to insert string\n    2. take string\n    3. scan if there is lowercase letters and constraint\n    4. scan if vowel, add to counter if yes\n    5. output\n    */\n    return 0;\n}",
+      "learner_id": "6811b20988362505107a60be",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746155854707",
+      "timestamp": "Fri, 02 May 2025 03:17:34 GMT",
+      "version": 11
+    },
+    {
+      "__v": 0,
+      "_id": "681438e4a572b159570be5f5",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    int vowel=0;\n    getline (cin, s);\n\n    for (char i: s) {\n        if (s>='a' && s<='z') {\n            if (s=='a' ||s=='e' ||s=='i' ||s=='o' ||s=='u') {\n                int vowel++;\n            }\n        }\n        else {\n            cout << \"Invalid!\";\n        }\n    }\n\n    cout << vowel;\n\n    /* \n    1. prompt user to insert string\n    2. take string\n    3. scan if there is lowercase letters and constraint\n    4. scan if vowel, add to counter if yes\n    5. output\n    */\n    return 0;\n}",
+      "learner_id": "6811b20988362505107a60be",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746155747983",
+      "timestamp": "Fri, 02 May 2025 03:15:48 GMT",
+      "version": 10
+    },
+    {
+      "__v": 0,
+      "_id": "68143855a572b159570be5ee",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    getline (cin, s);\n\n    for (char i: s) {\n        if (s>)\n\n    }\n\n    /* \n    1. prompt user to insert string\n    2. take string\n    3. scan if there is lowercase letters and constraint\n    4. scan if vowel, add to counter if yes\n    5. output\n    */\n    return 0;\n}",
+      "learner_id": "6811b20988362505107a60be",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746155605178",
+      "timestamp": "Fri, 02 May 2025 03:13:25 GMT",
+      "version": 9
+    },
+    {
+      "__v": 0,
+      "_id": "681437a5a572b159570be5dd",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    getline (cin, s);\n\n    for (int i =0; i<s.length(); i++) {\n        if ()\n\n    }\n\n    /* \n    1. prompt user to insert string\n    2. take string\n    3. scan if there is lowercase letters and constraint\n    4. scan if vowel, add to counter if yes\n    5. output\n    */\n    return 0;\n}",
+      "learner_id": "6811b20988362505107a60be",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746155429376",
+      "timestamp": "Fri, 02 May 2025 03:10:29 GMT",
+      "version": 8
+    },
+    {
+      "__v": 0,
+      "_id": "68143792a572b159570be5d5",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    getline (cin, s);\n\n    for (int i =0; i<s.length(); i++) {\n\n        \n    }\n\n    /* \n    1. prompt user to insert string\n    2. take string\n    3. scan if there is lowercase letters and constraint\n    4. scan if vowel, add to counter if yes\n    5. output\n    */\n    return 0;\n}",
+      "learner_id": "6811b20988362505107a60be",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746155410621",
+      "timestamp": "Fri, 02 May 2025 03:10:10 GMT",
+      "version": 7
+    },
+    {
+      "__v": 0,
+      "_id": "68143780014541a7ad61d03d",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    getline (cin, s);\n\n    for (int i =0; i<)\n\n    /* \n    1. prompt user to insert string\n    2. take string\n    3. scan if there is lowercase letters and constraint\n    4. scan if vowel, add to counter if yes\n    5. output\n    */\n    return 0;\n}",
+      "learner_id": "6811b20988362505107a60be",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746155392644",
+      "timestamp": "Fri, 02 May 2025 03:09:52 GMT",
+      "version": 6
+    },
+    {
+      "__v": 0,
+      "_id": "68143778014541a7ad61d036",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    getline (cin, s);\n\n    for (int i =0; i>=)\n\n    /* \n    1. prompt user to insert string\n    2. take string\n    3. scan if there is lowercase letters and constraint\n    4. scan if vowel, add to counter if yes\n    5. output\n    */\n    return 0;\n}",
+      "learner_id": "6811b20988362505107a60be",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746155384471",
+      "timestamp": "Fri, 02 May 2025 03:09:44 GMT",
+      "version": 5
+    },
+    {
+      "__v": 0,
+      "_id": "6814373b014541a7ad61d028",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    \n\n    /* \n    1. prompt user to insert string\n    2. take string\n    3. scan if there is lowercase letters and constraint\n    4. scan if vowel, add to counter if yes\n    5. output\n    */\n    return 0;\n}",
+      "learner_id": "6811b20988362505107a60be",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746155323005",
+      "timestamp": "Fri, 02 May 2025 03:08:43 GMT",
+      "version": 4
+    },
+    {
+      "__v": 0,
+      "_id": "68143711a572b159570be5d1",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    /* \n    1. prompt user to insert string\n    2. take string\n    3. scan if there is lowercase letters and constraint\n    4. scan if vowel, add to counter if yes\n    5. \n    */\n    return 0;\n}",
+      "learner_id": "6811b20988362505107a60be",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746155281497",
+      "timestamp": "Fri, 02 May 2025 03:08:01 GMT",
+      "version": 3
+    },
+    {
+      "__v": 0,
+      "_id": "68143711a572b159570be5ce",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    /* \n    1. prompt user to insert string\n    2. take string\n    3. scan if there is lowercase letters and constraint\n    4. scan if vowel, add to counter if yes\n    5. \n    */\n    return 0;\n}",
+      "learner_id": "6811b20988362505107a60be",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746155280906",
+      "timestamp": "Fri, 02 May 2025 03:08:01 GMT",
+      "version": 3
+    },
+    {
+      "__v": 0,
+      "_id": "681436fca572b159570be5ca",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    /* \n    1. prompt user to insert string\n    2. take string\n    3. scan if there is lowercase letters and constraint\n    4. \n    */\n    return 0;\n}",
+      "learner_id": "6811b20988362505107a60be",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746155259883",
+      "timestamp": "Fri, 02 May 2025 03:07:40 GMT",
+      "version": 2
+    }
+  ],
+  "success": true
+}

@@ -1,0 +1,530 @@
+{
+  "formatted_snapshots": [
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    int n;\n    string s[n];\n    \n\n    for (int i=0; i<n; i++) {//cin each letter\n    cin << s[i];\n    }\n\n    string backwards;\n    for (int i=n; i=0; i--) {//cin each letter\n    cin << s[i];\n    s[i] = backwards;\n    cout << backwards;\n\n    }\n\n\n\n    int list[N]; \n        for (int i = 0; i<N; i++) { //loop through the list until N\n            cin >> list[i];\n        }  \n    \nstrcmp  | if (strcmp (c_str1, c_str2))\n\n\n\n\n    string back;\n        for (int i = N-1; i>=0; i--) { //iterate backwards until 0 ^ print if even \n            if (back == N) {\n            cout << \"Palindrome\" << endl;\n            } else {\n                cout << \"Not a palindrome\";\n            }\n        }\n    } \n    return 0;\n}\n",
+      "learner_id": "6811b22588362505107a610e",
+      "submission_id": "6814dcff56c3a8f3394c98ee",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    cin >> s;\n    int N = s.length();//length of s\n    string back = \"\"; //initialize\n\n    for (int i=s.length()-1; i>=0; i--) {//get each letter backwards\n    back += s[i];\n    }\n    \n    //to check\n    if (s == back) {\n        cout << \"Palindrome\" << endl;\n    } else {\n        cout << \"Not a palindrome\" << endl;\n    }\n\n    return 0;\n}\n",
+      "learner_id": "6811b22588362505107a610e",
+      "submission_id": "6814e1f79c29c776bbea8fd6",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    cin >> s;\n    int N = s.length();//length of s\n    string back = \"\"; //initialize\n\n    for (int i=s.length(); i>=0; i--) {//get each letter backwards\n    back += s[i];\n    }\n    \n    //to check\n    if (s == back) {\n        cout << \"Palindrome\" << endl;\n    } else{\n        cout << \"Not a palindrome\" << endl;\n    }\n\n    return 0;\n}\n",
+      "learner_id": "6811b22588362505107a610e",
+      "submission_id": "6814e1a49c29c776bbea8fcb",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    cin >> s;\n    int N = s.length();//length of s\n    string back = \"\"; //initialize\n\n    for (int i=s.length(); i>=0; i--) {//get each letter backwards\n    back += s[i];\n    }\n    \n    //to check\n    if (s == back) {\n        cout << \"Palindrome\" << endl;\n    } else if (s != back) {\n        cout << \"Not a palindrome\" << endl;\n    }\n\n    return 0;\n}\n",
+      "learner_id": "6811b22588362505107a610e",
+      "submission_id": "6814e1919c29c776bbea8fc6",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    cin >> s;\n    int N = s.length();//length of s\n    string back = \"\"; //initialize\n\n    for (int i=s.length(); i>=0; i--) {//get each letter backwards\n    back += s[i];\n    }\n    \n    //to check\n    if (s == back) {\n        cout << \"Palindrome\" << endl;\n    } else {\n        cout << \"Not a palindrome\" << endl;\n    }\n\n    return 0;\n}\n",
+      "learner_id": "6811b22588362505107a610e",
+      "submission_id": "6814e16c9c29c776bbea8fbe",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    cin >> s;\n    int N = s.length();//length of s\n    string back = \"\"; //initialize\n\n    for (int i=s.length(); i>=0; i--) {//cin each letter\n    back += s[i];\n    }\n    \n    if (s == back) {\n        cout << \"Palindrome\" << endl;\n    } else {\n        cout << \"Not a palindrome\" << endl;\n    }\n\n    return 0;\n}\n",
+      "learner_id": "6811b22588362505107a610e",
+      "submission_id": "6814e15f56c3a8f3394c9946",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    int N = strlen(s);\n   \n    for (int i=n-1; i>=0; i--) {//cin each letter\n    cout << s[i];\n    }\n    \n    if (s == back) {\n        cout << \"Palindrome\" << endl;\n    } else {\n        cout << \"Not a palindrome\" << endl;\n    }\n    \n\n    return 0;\n}\n",
+      "learner_id": "6811b22588362505107a610e",
+      "submission_id": "6814e06556c3a8f3394c9939",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    int N = strlen(s);\n   \n    for (int i=n-1; i>=0; i--) {//cin each letter\n    cout << s[i];\n    }\n    return 0;\n}\n",
+      "learner_id": "6811b22588362505107a610e",
+      "submission_id": "6814dddd0302cb3e870c04c6",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    int N = strlen(s);\n   \n    for (int i=n-1; i>=0; i--) {//cin each letter\n    cout << s[i];\n    }\n\n    strcmp \n    return 0;\n}\n",
+      "learner_id": "6811b22588362505107a610e",
+      "submission_id": "6814ddce0302cb3e870c04c0",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    int N = strlen(s);\n    \n\n  \n\n    string backwards;\n    for (int i=n; i=0; i--) {//cin each letter\n    cin << s[i];\n    s[i] = backwards;\n    cout << backwards;\n\n    }\n\n\n\n    int list[N]; \n        for (int i = 0; i<N; i++) { //loop through the list until N\n            cin >> list[i];\n        }  \n    \nstrcmp  | if (strcmp (c_str1, c_str2))\n\n\n\n\n    string back;\n        for (int i = N-1; i>=0; i--) { //iterate backwards until 0 ^ print if even \n            if (back == N) {\n            cout << \"Palindrome\" << endl;\n            } else {\n                cout << \"Not a palindrome\";\n            }\n        }\n    } \n    return 0;\n}\n",
+      "learner_id": "6811b22588362505107a610e",
+      "submission_id": "6814dd8656c3a8f3394c98fd",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    int N = strlen(s);\n    \n\n    for (int i=0; i<n; i++) {//cin each letter\n    cin << s[i];\n    }\n\n    string backwards;\n    for (int i=n; i=0; i--) {//cin each letter\n    cin << s[i];\n    s[i] = backwards;\n    cout << backwards;\n\n    }\n\n\n\n    int list[N]; \n        for (int i = 0; i<N; i++) { //loop through the list until N\n            cin >> list[i];\n        }  \n    \nstrcmp  | if (strcmp (c_str1, c_str2))\n\n\n\n\n    string back;\n        for (int i = N-1; i>=0; i--) { //iterate backwards until 0 ^ print if even \n            if (back == N) {\n            cout << \"Palindrome\" << endl;\n            } else {\n                cout << \"Not a palindrome\";\n            }\n        }\n    } \n    return 0;\n}\n",
+      "learner_id": "6811b22588362505107a610e",
+      "submission_id": "6814dd7656c3a8f3394c98f7",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "6811b22588362505107a610e",
+      "submission_id": "6814d98f56c3a8f3394c9849",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    int n;\n    string s[n];\n    \n\n    for (int i=0; i<n; i++) {//cin each letter\n    cin << s[i];\n    }\n\n    string backwards;\n    for (int i=n; i=0; i--) {//cin each letter\n    cin << s[i];\n    }\n    \n    int list[N]; \n        for (int i = 0; i<N; i++) { //loop through the list until N\n            cin >> list[i];\n        }  \n    \nstrcmp  | if (strcmp (c_str1, c_str2))\n\n\n\n\n    string back;\n        for (int i = N-1; i>=0; i--) { //iterate backwards until 0 ^ print if even \n            if (back == N) {\n            cout << \"Palindrome\" << endl;\n            } else {\n                cout << \"Not a palindrome\";\n            }\n        }\n    } \n    return 0;\n}\n",
+      "learner_id": "6811b22588362505107a610e",
+      "submission_id": "6814dcc156c3a8f3394c98ea",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    int n;\n    string s[n];\n    \n\n    for (int i=0; i<n; i++) {//cin each letter\n    cin << s[i];\n    }\n\n    string backwards;\n\n    int list[N]; \n        for (int i = 0; i<N; i++) { //loop through the list until N\n            cin >> list[i];\n        }  \n    \nstrcmp  | if (strcmp (c_str1, c_str2))\n\n\n\n\n    string back;\n        for (int i = N-1; i>=0; i--) { //iterate backwards until 0 ^ print if even \n            if (back == N) {\n            cout << \"Palindrome\" << endl;\n            } else {\n                cout << \"Not a palindrome\";\n            }\n        }\n    } \n    return 0;\n}\n",
+      "learner_id": "6811b22588362505107a610e",
+      "submission_id": "6814dc9656c3a8f3394c98e6",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    int n;\n    string N[n];\n    \n\n    for (int i=0; i<n; i++) {//cin each letter\n    cin << N[i];\n    }\n\n    \n\n    int list[N]; \n        for (int i = 0; i<N; i++) { //loop through the list until N\n            cin >> list[i];\n        }  \n    \nstrcmp  | if (strcmp (c_str1, c_str2))\n\n\n\n\n    string back;\n        for (int i = N-1; i>=0; i--) { //iterate backwards until 0 ^ print if even \n            if (back == N) {\n            cout << \"Palindrome\" << endl;\n            } else {\n                cout << \"Not a palindrome\";\n            }\n        }\n    } \n    return 0;\n}\n",
+      "learner_id": "6811b22588362505107a610e",
+      "submission_id": "6814dc7056c3a8f3394c98e0",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string N;\n    cin >> N;\n\n    int list[N]; \n        for (int i = 0; i<N; i++) { //loop through the list until N\n            cin >> list[i];\n        }  \n    \nstrcmp  | if (strcmp (c_str1, c_str2))\n\n\n\n\n    string back;\n        for (int i = N-1; i>=0; i--) { //iterate backwards until 0 ^ print if even \n            if (back == N) {\n            cout << \"Palindrome\" << endl;\n            } else {\n                cout << \"Not a palindrome\";\n            }\n        }\n    } \n    return 0;\n}\n",
+      "learner_id": "6811b22588362505107a610e",
+      "submission_id": "6814dc2356c3a8f3394c98cf",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string N;\n    cin >> N;\n\n    int list[N]; \n        for (int i = 0; i<N; i++) { //loop through the list until N\n            cin >> list[i];\n        }  \n    \n    string back;\n        for (int i = N-1; i>=0; i--) { //iterate backwards until 0 ^ print if even \n            if (back == N) {\n            cout << \"Palindrome\" << endl;\n            } else {\n                cout << \"Not a palindrome\";\n            }\n        }\n    } \n    return 0;\n}\n",
+      "learner_id": "6811b22588362505107a610e",
+      "submission_id": "6814db5056c3a8f3394c98a0",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string N;\n    cin >> N;\n\n    int list[N]; \n        for (int i = 0; i<N; i++) { //loop through the list until N\n            cin >> list[i];\n        }  \n        \n        for (int i = N-1; i>=0; i--) { //iterate backwards until 0 ^ print if even \n            if (list[i]%2 == 0) {\n            cout << list [i] << \" \";\n            }\n        }\n    } \n    return 0;\n}\n",
+      "learner_id": "6811b22588362505107a610e",
+      "submission_id": "6814db110302cb3e870c04aa",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int N;\n    cin >> N;\n\n        int list[N]; \n        for (int i = 0; i<N; i++) { //loop through the list until N\n            cin >> list[i];\n        }  \n        \n        for (int i = N-1; i>=0; i--) { //iterate backwards until 0 ^ print if even \n            if (list[i]%2 == 0) {\n            cout << list [i] << \" \";\n            }\n        }\n    } \n    return 0;\n}\n",
+      "learner_id": "6811b22588362505107a610e",
+      "submission_id": "6814dad756c3a8f3394c9889",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int N;\n    cin >> N;\n\n    if (N>=2 && N<=100) { //constraint\n        int list[N]; \n        for (int i = 0; i<N; i++) { //loop through the list until N\n            cin >> list[i];\n        }  \n        \n        for (int i = N-1; i>=0; i--) { //iterate backwards until 0 ^ print if even \n            if (list[i]%2 == 0) {\n            cout << list [i] << \" \";\n            }\n        }\n    } \n    return 0;\n}\n",
+      "learner_id": "6811b22588362505107a610e",
+      "submission_id": "6814dab156c3a8f3394c9884",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    \n\n\n    return 0;\n}\n\nint main() {\n    int N;\n    cin >> N;\n\n    if (N>=2 && N<=100) { //constraint\n        int list[N]; \n        for (int i = 0; i<N; i++) { //loop through the list until N\n            cin >> list[i];\n        }  \n        \n        for (int i = N-1; i>=0; i--) { //iterate backwards until 0 ^ print if even \n            if (list[i]%2 == 0) {\n            cout << list [i] << \" \";\n            }\n        }\n    } \n    return 0;\n}\n",
+      "learner_id": "6811b22588362505107a610e",
+      "submission_id": "6814daa356c3a8f3394c9881",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    \n    \n\n    return 0;\n}",
+      "learner_id": "6811b22588362505107a610e",
+      "submission_id": "6814d9a556c3a8f3394c9850",
+      "timestamp": ""
+    }
+  ],
+  "sequentialSimilarities": [
+    {
+      "codebert_score": 58,
+      "from_index": 0,
+      "learner_id": "6811b22588362505107a610e",
+      "similarity": 58,
+      "to_index": 1
+    },
+    {
+      "codebert_score": 85,
+      "from_index": 1,
+      "learner_id": "6811b22588362505107a610e",
+      "similarity": 85,
+      "to_index": 2
+    },
+    {
+      "codebert_score": 89,
+      "from_index": 2,
+      "learner_id": "6811b22588362505107a610e",
+      "similarity": 89,
+      "to_index": 3
+    },
+    {
+      "codebert_score": 89,
+      "from_index": 3,
+      "learner_id": "6811b22588362505107a610e",
+      "similarity": 89,
+      "to_index": 4
+    },
+    {
+      "codebert_score": 90,
+      "from_index": 4,
+      "learner_id": "6811b22588362505107a610e",
+      "similarity": 90,
+      "to_index": 5
+    },
+    {
+      "codebert_score": 78,
+      "from_index": 5,
+      "learner_id": "6811b22588362505107a610e",
+      "similarity": 78,
+      "to_index": 6
+    },
+    {
+      "codebert_score": 72,
+      "from_index": 6,
+      "learner_id": "6811b22588362505107a610e",
+      "similarity": 72,
+      "to_index": 7
+    },
+    {
+      "codebert_score": 83,
+      "from_index": 7,
+      "learner_id": "6811b22588362505107a610e",
+      "similarity": 83,
+      "to_index": 8
+    },
+    {
+      "codebert_score": 56,
+      "from_index": 8,
+      "learner_id": "6811b22588362505107a610e",
+      "similarity": 56,
+      "to_index": 9
+    },
+    {
+      "codebert_score": 78,
+      "from_index": 9,
+      "learner_id": "6811b22588362505107a610e",
+      "similarity": 78,
+      "to_index": 10
+    },
+    {
+      "codebert_score": 36,
+      "from_index": 10,
+      "learner_id": "6811b22588362505107a610e",
+      "similarity": 36,
+      "to_index": 11
+    },
+    {
+      "codebert_score": 36,
+      "from_index": 11,
+      "learner_id": "6811b22588362505107a610e",
+      "similarity": 36,
+      "to_index": 12
+    },
+    {
+      "codebert_score": 76,
+      "from_index": 12,
+      "learner_id": "6811b22588362505107a610e",
+      "similarity": 76,
+      "to_index": 13
+    },
+    {
+      "codebert_score": 89,
+      "from_index": 13,
+      "learner_id": "6811b22588362505107a610e",
+      "similarity": 89,
+      "to_index": 14
+    },
+    {
+      "codebert_score": 79,
+      "from_index": 14,
+      "learner_id": "6811b22588362505107a610e",
+      "similarity": 79,
+      "to_index": 15
+    },
+    {
+      "codebert_score": 79,
+      "from_index": 15,
+      "learner_id": "6811b22588362505107a610e",
+      "similarity": 79,
+      "to_index": 16
+    },
+    {
+      "codebert_score": 79,
+      "from_index": 16,
+      "learner_id": "6811b22588362505107a610e",
+      "similarity": 79,
+      "to_index": 17
+    },
+    {
+      "codebert_score": 86,
+      "from_index": 17,
+      "learner_id": "6811b22588362505107a610e",
+      "similarity": 86,
+      "to_index": 18
+    },
+    {
+      "codebert_score": 79,
+      "from_index": 18,
+      "learner_id": "6811b22588362505107a610e",
+      "similarity": 79,
+      "to_index": 19
+    },
+    {
+      "codebert_score": 85,
+      "from_index": 19,
+      "learner_id": "6811b22588362505107a610e",
+      "similarity": 85,
+      "to_index": 20
+    },
+    {
+      "codebert_score": 45,
+      "from_index": 20,
+      "learner_id": "6811b22588362505107a610e",
+      "similarity": 45,
+      "to_index": 21
+    }
+  ],
+  "snapshots": [
+    {
+      "__v": 0,
+      "_id": "6814dcff56c3a8f3394c98ee",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    int n;\n    string s[n];\n    \n\n    for (int i=0; i<n; i++) {//cin each letter\n    cin << s[i];\n    }\n\n    string backwards;\n    for (int i=n; i=0; i--) {//cin each letter\n    cin << s[i];\n    s[i] = backwards;\n    cout << backwards;\n\n    }\n\n\n\n    int list[N]; \n        for (int i = 0; i<N; i++) { //loop through the list until N\n            cin >> list[i];\n        }  \n    \nstrcmp  | if (strcmp (c_str1, c_str2))\n\n\n\n\n    string back;\n        for (int i = N-1; i>=0; i--) { //iterate backwards until 0 ^ print if even \n            if (back == N) {\n            cout << \"Palindrome\" << endl;\n            } else {\n                cout << \"Not a palindrome\";\n            }\n        }\n    } \n    return 0;\n}\n",
+      "learner_id": "6811b22588362505107a610e",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746197758590",
+      "timestamp": "Fri, 02 May 2025 14:55:59 GMT",
+      "version": 12
+    },
+    {
+      "__v": 0,
+      "_id": "6814e1f79c29c776bbea8fd6",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    cin >> s;\n    int N = s.length();//length of s\n    string back = \"\"; //initialize\n\n    for (int i=s.length()-1; i>=0; i--) {//get each letter backwards\n    back += s[i];\n    }\n    \n    //to check\n    if (s == back) {\n        cout << \"Palindrome\" << endl;\n    } else {\n        cout << \"Not a palindrome\" << endl;\n    }\n\n    return 0;\n}\n",
+      "learner_id": "6811b22588362505107a610e",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746199029837",
+      "timestamp": "Fri, 02 May 2025 15:17:11 GMT",
+      "version": 22
+    },
+    {
+      "__v": 0,
+      "_id": "6814e1a49c29c776bbea8fcb",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    cin >> s;\n    int N = s.length();//length of s\n    string back = \"\"; //initialize\n\n    for (int i=s.length(); i>=0; i--) {//get each letter backwards\n    back += s[i];\n    }\n    \n    //to check\n    if (s == back) {\n        cout << \"Palindrome\" << endl;\n    } else{\n        cout << \"Not a palindrome\" << endl;\n    }\n\n    return 0;\n}\n",
+      "learner_id": "6811b22588362505107a610e",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746198946925",
+      "timestamp": "Fri, 02 May 2025 15:15:48 GMT",
+      "version": 21
+    },
+    {
+      "__v": 0,
+      "_id": "6814e1919c29c776bbea8fc6",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    cin >> s;\n    int N = s.length();//length of s\n    string back = \"\"; //initialize\n\n    for (int i=s.length(); i>=0; i--) {//get each letter backwards\n    back += s[i];\n    }\n    \n    //to check\n    if (s == back) {\n        cout << \"Palindrome\" << endl;\n    } else if (s != back) {\n        cout << \"Not a palindrome\" << endl;\n    }\n\n    return 0;\n}\n",
+      "learner_id": "6811b22588362505107a610e",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746198928250",
+      "timestamp": "Fri, 02 May 2025 15:15:29 GMT",
+      "version": 20
+    },
+    {
+      "__v": 0,
+      "_id": "6814e16c9c29c776bbea8fbe",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    cin >> s;\n    int N = s.length();//length of s\n    string back = \"\"; //initialize\n\n    for (int i=s.length(); i>=0; i--) {//get each letter backwards\n    back += s[i];\n    }\n    \n    //to check\n    if (s == back) {\n        cout << \"Palindrome\" << endl;\n    } else {\n        cout << \"Not a palindrome\" << endl;\n    }\n\n    return 0;\n}\n",
+      "learner_id": "6811b22588362505107a610e",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746198891370",
+      "timestamp": "Fri, 02 May 2025 15:14:52 GMT",
+      "version": 19
+    },
+    {
+      "__v": 0,
+      "_id": "6814e15f56c3a8f3394c9946",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    cin >> s;\n    int N = s.length();//length of s\n    string back = \"\"; //initialize\n\n    for (int i=s.length(); i>=0; i--) {//cin each letter\n    back += s[i];\n    }\n    \n    if (s == back) {\n        cout << \"Palindrome\" << endl;\n    } else {\n        cout << \"Not a palindrome\" << endl;\n    }\n\n    return 0;\n}\n",
+      "learner_id": "6811b22588362505107a610e",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746198878186",
+      "timestamp": "Fri, 02 May 2025 15:14:39 GMT",
+      "version": 18
+    },
+    {
+      "__v": 0,
+      "_id": "6814e06556c3a8f3394c9939",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    int N = strlen(s);\n   \n    for (int i=n-1; i>=0; i--) {//cin each letter\n    cout << s[i];\n    }\n    \n    if (s == back) {\n        cout << \"Palindrome\" << endl;\n    } else {\n        cout << \"Not a palindrome\" << endl;\n    }\n    \n\n    return 0;\n}\n",
+      "learner_id": "6811b22588362505107a610e",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746198628486",
+      "timestamp": "Fri, 02 May 2025 15:10:29 GMT",
+      "version": 17
+    },
+    {
+      "__v": 0,
+      "_id": "6814dddd0302cb3e870c04c6",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    int N = strlen(s);\n   \n    for (int i=n-1; i>=0; i--) {//cin each letter\n    cout << s[i];\n    }\n    return 0;\n}\n",
+      "learner_id": "6811b22588362505107a610e",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746197980516",
+      "timestamp": "Fri, 02 May 2025 14:59:41 GMT",
+      "version": 16
+    },
+    {
+      "__v": 0,
+      "_id": "6814ddce0302cb3e870c04c0",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    int N = strlen(s);\n   \n    for (int i=n-1; i>=0; i--) {//cin each letter\n    cout << s[i];\n    }\n\n    strcmp \n    return 0;\n}\n",
+      "learner_id": "6811b22588362505107a610e",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746197965141",
+      "timestamp": "Fri, 02 May 2025 14:59:26 GMT",
+      "version": 15
+    },
+    {
+      "__v": 0,
+      "_id": "6814dd8656c3a8f3394c98fd",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    int N = strlen(s);\n    \n\n  \n\n    string backwards;\n    for (int i=n; i=0; i--) {//cin each letter\n    cin << s[i];\n    s[i] = backwards;\n    cout << backwards;\n\n    }\n\n\n\n    int list[N]; \n        for (int i = 0; i<N; i++) { //loop through the list until N\n            cin >> list[i];\n        }  \n    \nstrcmp  | if (strcmp (c_str1, c_str2))\n\n\n\n\n    string back;\n        for (int i = N-1; i>=0; i--) { //iterate backwards until 0 ^ print if even \n            if (back == N) {\n            cout << \"Palindrome\" << endl;\n            } else {\n                cout << \"Not a palindrome\";\n            }\n        }\n    } \n    return 0;\n}\n",
+      "learner_id": "6811b22588362505107a610e",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746197893518",
+      "timestamp": "Fri, 02 May 2025 14:58:14 GMT",
+      "version": 14
+    },
+    {
+      "__v": 0,
+      "_id": "6814dd7656c3a8f3394c98f7",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s;\n    int N = strlen(s);\n    \n\n    for (int i=0; i<n; i++) {//cin each letter\n    cin << s[i];\n    }\n\n    string backwards;\n    for (int i=n; i=0; i--) {//cin each letter\n    cin << s[i];\n    s[i] = backwards;\n    cout << backwards;\n\n    }\n\n\n\n    int list[N]; \n        for (int i = 0; i<N; i++) { //loop through the list until N\n            cin >> list[i];\n        }  \n    \nstrcmp  | if (strcmp (c_str1, c_str2))\n\n\n\n\n    string back;\n        for (int i = N-1; i>=0; i--) { //iterate backwards until 0 ^ print if even \n            if (back == N) {\n            cout << \"Palindrome\" << endl;\n            } else {\n                cout << \"Not a palindrome\";\n            }\n        }\n    } \n    return 0;\n}\n",
+      "learner_id": "6811b22588362505107a610e",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746197877249",
+      "timestamp": "Fri, 02 May 2025 14:57:58 GMT",
+      "version": 13
+    },
+    {
+      "__v": 0,
+      "_id": "6814d98f56c3a8f3394c9849",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "6811b22588362505107a610e",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746196877696",
+      "timestamp": "Fri, 02 May 2025 14:41:19 GMT",
+      "version": 1
+    },
+    {
+      "__v": 0,
+      "_id": "6814dcc156c3a8f3394c98ea",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    int n;\n    string s[n];\n    \n\n    for (int i=0; i<n; i++) {//cin each letter\n    cin << s[i];\n    }\n\n    string backwards;\n    for (int i=n; i=0; i--) {//cin each letter\n    cin << s[i];\n    }\n    \n    int list[N]; \n        for (int i = 0; i<N; i++) { //loop through the list until N\n            cin >> list[i];\n        }  \n    \nstrcmp  | if (strcmp (c_str1, c_str2))\n\n\n\n\n    string back;\n        for (int i = N-1; i>=0; i--) { //iterate backwards until 0 ^ print if even \n            if (back == N) {\n            cout << \"Palindrome\" << endl;\n            } else {\n                cout << \"Not a palindrome\";\n            }\n        }\n    } \n    return 0;\n}\n",
+      "learner_id": "6811b22588362505107a610e",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746197695761",
+      "timestamp": "Fri, 02 May 2025 14:54:57 GMT",
+      "version": 11
+    },
+    {
+      "__v": 0,
+      "_id": "6814dc9656c3a8f3394c98e6",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    int n;\n    string s[n];\n    \n\n    for (int i=0; i<n; i++) {//cin each letter\n    cin << s[i];\n    }\n\n    string backwards;\n\n    int list[N]; \n        for (int i = 0; i<N; i++) { //loop through the list until N\n            cin >> list[i];\n        }  \n    \nstrcmp  | if (strcmp (c_str1, c_str2))\n\n\n\n\n    string back;\n        for (int i = N-1; i>=0; i--) { //iterate backwards until 0 ^ print if even \n            if (back == N) {\n            cout << \"Palindrome\" << endl;\n            } else {\n                cout << \"Not a palindrome\";\n            }\n        }\n    } \n    return 0;\n}\n",
+      "learner_id": "6811b22588362505107a610e",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746197652795",
+      "timestamp": "Fri, 02 May 2025 14:54:14 GMT",
+      "version": 10
+    },
+    {
+      "__v": 0,
+      "_id": "6814dc7056c3a8f3394c98e0",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    int n;\n    string N[n];\n    \n\n    for (int i=0; i<n; i++) {//cin each letter\n    cin << N[i];\n    }\n\n    \n\n    int list[N]; \n        for (int i = 0; i<N; i++) { //loop through the list until N\n            cin >> list[i];\n        }  \n    \nstrcmp  | if (strcmp (c_str1, c_str2))\n\n\n\n\n    string back;\n        for (int i = N-1; i>=0; i--) { //iterate backwards until 0 ^ print if even \n            if (back == N) {\n            cout << \"Palindrome\" << endl;\n            } else {\n                cout << \"Not a palindrome\";\n            }\n        }\n    } \n    return 0;\n}\n",
+      "learner_id": "6811b22588362505107a610e",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746197615290",
+      "timestamp": "Fri, 02 May 2025 14:53:36 GMT",
+      "version": 9
+    },
+    {
+      "__v": 0,
+      "_id": "6814dc2356c3a8f3394c98cf",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string N;\n    cin >> N;\n\n    int list[N]; \n        for (int i = 0; i<N; i++) { //loop through the list until N\n            cin >> list[i];\n        }  \n    \nstrcmp  | if (strcmp (c_str1, c_str2))\n\n\n\n\n    string back;\n        for (int i = N-1; i>=0; i--) { //iterate backwards until 0 ^ print if even \n            if (back == N) {\n            cout << \"Palindrome\" << endl;\n            } else {\n                cout << \"Not a palindrome\";\n            }\n        }\n    } \n    return 0;\n}\n",
+      "learner_id": "6811b22588362505107a610e",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746197538049",
+      "timestamp": "Fri, 02 May 2025 14:52:19 GMT",
+      "version": 8
+    },
+    {
+      "__v": 0,
+      "_id": "6814db5056c3a8f3394c98a0",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string N;\n    cin >> N;\n\n    int list[N]; \n        for (int i = 0; i<N; i++) { //loop through the list until N\n            cin >> list[i];\n        }  \n    \n    string back;\n        for (int i = N-1; i>=0; i--) { //iterate backwards until 0 ^ print if even \n            if (back == N) {\n            cout << \"Palindrome\" << endl;\n            } else {\n                cout << \"Not a palindrome\";\n            }\n        }\n    } \n    return 0;\n}\n",
+      "learner_id": "6811b22588362505107a610e",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746197326929",
+      "timestamp": "Fri, 02 May 2025 14:48:48 GMT",
+      "version": 7
+    },
+    {
+      "__v": 0,
+      "_id": "6814db110302cb3e870c04aa",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string N;\n    cin >> N;\n\n    int list[N]; \n        for (int i = 0; i<N; i++) { //loop through the list until N\n            cin >> list[i];\n        }  \n        \n        for (int i = N-1; i>=0; i--) { //iterate backwards until 0 ^ print if even \n            if (list[i]%2 == 0) {\n            cout << list [i] << \" \";\n            }\n        }\n    } \n    return 0;\n}\n",
+      "learner_id": "6811b22588362505107a610e",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746197263841",
+      "timestamp": "Fri, 02 May 2025 14:47:45 GMT",
+      "version": 6
+    },
+    {
+      "__v": 0,
+      "_id": "6814dad756c3a8f3394c9889",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int N;\n    cin >> N;\n\n        int list[N]; \n        for (int i = 0; i<N; i++) { //loop through the list until N\n            cin >> list[i];\n        }  \n        \n        for (int i = N-1; i>=0; i--) { //iterate backwards until 0 ^ print if even \n            if (list[i]%2 == 0) {\n            cout << list [i] << \" \";\n            }\n        }\n    } \n    return 0;\n}\n",
+      "learner_id": "6811b22588362505107a610e",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746197206402",
+      "timestamp": "Fri, 02 May 2025 14:46:47 GMT",
+      "version": 5
+    },
+    {
+      "__v": 0,
+      "_id": "6814dab156c3a8f3394c9884",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int N;\n    cin >> N;\n\n    if (N>=2 && N<=100) { //constraint\n        int list[N]; \n        for (int i = 0; i<N; i++) { //loop through the list until N\n            cin >> list[i];\n        }  \n        \n        for (int i = N-1; i>=0; i--) { //iterate backwards until 0 ^ print if even \n            if (list[i]%2 == 0) {\n            cout << list [i] << \" \";\n            }\n        }\n    } \n    return 0;\n}\n",
+      "learner_id": "6811b22588362505107a610e",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746197168119",
+      "timestamp": "Fri, 02 May 2025 14:46:09 GMT",
+      "version": 4
+    },
+    {
+      "__v": 0,
+      "_id": "6814daa356c3a8f3394c9881",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    \n\n\n    return 0;\n}\n\nint main() {\n    int N;\n    cin >> N;\n\n    if (N>=2 && N<=100) { //constraint\n        int list[N]; \n        for (int i = 0; i<N; i++) { //loop through the list until N\n            cin >> list[i];\n        }  \n        \n        for (int i = N-1; i>=0; i--) { //iterate backwards until 0 ^ print if even \n            if (list[i]%2 == 0) {\n            cout << list [i] << \" \";\n            }\n        }\n    } \n    return 0;\n}\n",
+      "learner_id": "6811b22588362505107a610e",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746197154465",
+      "timestamp": "Fri, 02 May 2025 14:45:55 GMT",
+      "version": 3
+    },
+    {
+      "__v": 0,
+      "_id": "6814d9a556c3a8f3394c9850",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    \n    \n\n    return 0;\n}",
+      "learner_id": "6811b22588362505107a610e",
+      "problemId": "palindrome-check-6834925212",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746196899820",
+      "timestamp": "Fri, 02 May 2025 14:41:41 GMT",
+      "version": 2
+    }
+  ],
+  "success": true
+}

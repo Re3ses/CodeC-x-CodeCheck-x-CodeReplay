@@ -29,54 +29,30 @@ if (!process.env.SERVER_URL || !process.env.API_PORT) {
 // }
 
 export async function middleware(request: NextRequest) {
-  // await testHealthEndpoint();
   try {
-
     let session;
     let user;
 
-    // // For debugging only - remove in production
-    // console.log('Environment check:', {
-    //   serverUrl: process.env.SERVER_URL,
-    //   apiPort: process.env.API_PORT
-    // });
+    // Public paths that don't require authentication
+    const publicPaths = ['/login', '/study-results'];
+    const isPublicPath = publicPaths.some(path =>
+      request.nextUrl.pathname === path || request.nextUrl.pathname.startsWith(`${path}/`)
+    );
 
-    if (
-      request.nextUrl.pathname !== '/' &&
-      request.nextUrl.pathname !== '/login'
-    ) {
+    // Skip authentication checks for public paths
+    if (!isPublicPath && request.nextUrl.pathname !== '/') {
       session = await getSession();
-      console.log("Session in middleware.ts:", session);
       user = await getUser();
+
+      // Redirect to login if no session and not on public path
+      if (!session) {
+        return NextResponse.redirect(new URL('/login', request.url));
+      }
     }
 
-
-    // // DEBUG LOGS
-    // const accessToken = request.cookies.get('access_token')?.value;
-    // const refreshToken = request.cookies.get('refresh_token')?.value;
-
-    // if (!refreshToken) {
-    //   throw new Error("No refresh token found in middleware.ts .");
-    // }
-    // if (!accessToken) {
-    //   throw new Error("No refresh token found in middleware.ts .");
-    // }
-
-    // if (accessToken && refreshToken) {
-    //   console.log("Access token found in middleware.ts: ", accessToken);
-    //   console.log("Refresh token found in middleware.ts: ", refreshToken);
-    // }
-
-    // // END DEBUG LOGS
-
-    // Prevent infinite redirect loop
-    if (!session && request.nextUrl.pathname !== '/login') {
-      // console.log("No session found, redirecting to /login", session);
-      return NextResponse.redirect(new URL('/login', request.url));
-    }
-
+    // Allow access to root path without redirection
     if (request.nextUrl.pathname === '/') {
-      return NextResponse.redirect(new URL('/login', request.url));
+      return NextResponse.next();
     }
 
     if (request.nextUrl.pathname === '/login') {
@@ -85,38 +61,33 @@ export async function middleware(request: NextRequest) {
       if (referer && !referer.includes('/login')) {
         await deleteCookies();
       }
-      // Always allow access to login page without further checks
       return NextResponse.next();
     }
 
-    if (request.nextUrl.pathname === '/') {
-      return NextResponse.redirect(new URL('/login', request.url));
-    }
-
+    // Role-based access checks (only run if we have a session)
     if (session) {
+      // Easter egg
       if (request.nextUrl.pathname.startsWith('/pogi/secret/marco/handshake')) {
         return NextResponse.redirect(
           'https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley'
         );
       }
 
-      if (request.nextUrl.pathname.startsWith('/mentor')) {
-        if (user.type !== 'Mentor') {
-          return NextResponse.redirect(new URL('/dashboard', request.url));
-        }
+      // Role protection for mentor routes
+      if (request.nextUrl.pathname.startsWith('/mentor') && user.type !== 'Mentor') {
+        return NextResponse.redirect(new URL('/dashboard', request.url));
       }
 
-      if (request.nextUrl.pathname.startsWith('/learner')) {
-        if (user.type !== 'Learner') {
-          return NextResponse.redirect(new URL('/dashboard', request.url));
-        }
+      // Role protection for learner routes
+      if (request.nextUrl.pathname.startsWith('/learner') && user.type !== 'Learner') {
+        return NextResponse.redirect(new URL('/dashboard', request.url));
       }
     }
 
     return NextResponse.next();
   } catch (error) {
-    console.error("Middleware Error:", error); // Log the error
-    // return NextResponse.json({ error: "Middleware failed" }, { status: 500 }); // Return a 500 response
+    console.error("Middleware Error:", error);
+    return NextResponse.next();
   }
 }
 

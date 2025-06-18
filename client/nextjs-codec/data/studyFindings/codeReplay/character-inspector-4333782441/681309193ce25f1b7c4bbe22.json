@@ -1,0 +1,242 @@
+{
+  "formatted_snapshots": [
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "681309193ce25f1b7c4bbe22",
+      "submission_id": "6814dd9d0302cb3e870c04bc",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <cctype>\n\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "681309193ce25f1b7c4bbe22",
+      "submission_id": "6814dddb0302cb3e870c04c3",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "681309193ce25f1b7c4bbe22",
+      "submission_id": "6814de000302cb3e870c04ca",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string input;\n    getline(cin, input);\n\n    for(char sd : input){\n        if(isalpha(sd)){\n            cout << sd << \"is a letter!\" << endl;\n        }\n    }\n    return 0;\n}",
+      "learner_id": "681309193ce25f1b7c4bbe22",
+      "submission_id": "6814dec056c3a8f3394c990b",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string input;\n    getline(cin, input);\n\n    for(char sd : input){\n        if(isalpha(sd)){\n            cout << sd << \"is a letter!\" << endl;\n        }\n        else if(ispunct (sd)){\n            cout << sd << \"is a punctuation\" << endl\n        }\n        else \n    }\n    return 0;\n}",
+      "learner_id": "681309193ce25f1b7c4bbe22",
+      "submission_id": "6814df1956c3a8f3394c9912",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string input;\n    getline(cin, input);\n\n    for(char sd : input){\n        if(isalpha(sd)){\n            cout << sd << \"is a letter!\" << endl;\n        }\n        else if(ispunct (sd)){\n            cout << sd << \"is a punctuation\" << endl\n        }\n        else if(isdigit (sd)){\\}\n    }\n    return 0;\n}",
+      "learner_id": "681309193ce25f1b7c4bbe22",
+      "submission_id": "6814df5456c3a8f3394c991c",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string input;\n    getline(cin, input);\n\n    for(char sd : input){\n        if(isalpha(sd)){\n            cout << sd << \"is a letter!\" << endl;\n        }\n        else if(ispunct (sd)){\n            cout << sd << \"is a punctuation!\" << endl\n        }\n        else if(isdigit (sd)){\n            cout << sd << \"is a digit!\" << endl;\n        }\n    }\n    return 0;\n}",
+      "learner_id": "681309193ce25f1b7c4bbe22",
+      "submission_id": "6814df9256c3a8f3394c991f",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string input;\n    getline(cin, input);\n\n    for(char sd : input){\n        if(isalpha(sd)){\n            cout << sd << \"is a letter!\" << endl;\n        }\n        else if(ispunct (sd)){\n            cout << sd << \"is a punctuation!\" << endl;\n        }\n        else if(isdigit (sd)){\n            cout << sd << \"is a digit!\" << endl;\n        }\n    }\n    return 0;\n}",
+      "learner_id": "681309193ce25f1b7c4bbe22",
+      "submission_id": "6814dfdd56c3a8f3394c9926",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string input;\n    getline(cin, input);\n\n    for(char sd : input){\n        if(isalpha(sd)){\n            cout << sd << \" is a letter!\" << endl;\n        }\n        else if(ispunct (sd)){\n            cout << sd << \" is a punctuation!\" << endl;\n        }\n        else if(isdigit (sd)){\n            cout << sd << \" is a digit!\" << endl;\n        }\n    }\n    return 0;\n}",
+      "learner_id": "681309193ce25f1b7c4bbe22",
+      "submission_id": "6814e00c56c3a8f3394c992b",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string input;\n    getline(cin, input);\n\n    for(char sd : input){\n        if(isalpha(sd)){\n            cout << sd << \" is a letter!\" << endl;\n        }\n        else if(ispunct (sd)){\n            cout << sd << \" is a punctuation character!\" << endl;\n        }\n        else if(isdigit (sd)){\n            cout << sd << \" is a digit!\" << endl;\n        }\n    }\n    return 0;\n}",
+      "learner_id": "681309193ce25f1b7c4bbe22",
+      "submission_id": "6814e0d856c3a8f3394c993e",
+      "timestamp": ""
+    }
+  ],
+  "sequentialSimilarities": [
+    {
+      "codebert_score": 72,
+      "from_index": 0,
+      "learner_id": "681309193ce25f1b7c4bbe22",
+      "similarity": 72,
+      "to_index": 1
+    },
+    {
+      "codebert_score": 100,
+      "from_index": 1,
+      "learner_id": "681309193ce25f1b7c4bbe22",
+      "similarity": 100,
+      "to_index": 2
+    },
+    {
+      "codebert_score": 60,
+      "from_index": 2,
+      "learner_id": "681309193ce25f1b7c4bbe22",
+      "similarity": 60,
+      "to_index": 3
+    },
+    {
+      "codebert_score": 73,
+      "from_index": 3,
+      "learner_id": "681309193ce25f1b7c4bbe22",
+      "similarity": 73,
+      "to_index": 4
+    },
+    {
+      "codebert_score": 85,
+      "from_index": 4,
+      "learner_id": "681309193ce25f1b7c4bbe22",
+      "similarity": 85,
+      "to_index": 5
+    },
+    {
+      "codebert_score": 73,
+      "from_index": 5,
+      "learner_id": "681309193ce25f1b7c4bbe22",
+      "similarity": 73,
+      "to_index": 6
+    },
+    {
+      "codebert_score": 83,
+      "from_index": 6,
+      "learner_id": "681309193ce25f1b7c4bbe22",
+      "similarity": 83,
+      "to_index": 7
+    },
+    {
+      "codebert_score": 94,
+      "from_index": 7,
+      "learner_id": "681309193ce25f1b7c4bbe22",
+      "similarity": 94,
+      "to_index": 8
+    },
+    {
+      "codebert_score": 94,
+      "from_index": 8,
+      "learner_id": "681309193ce25f1b7c4bbe22",
+      "similarity": 94,
+      "to_index": 9
+    }
+  ],
+  "snapshots": [
+    {
+      "__v": 0,
+      "_id": "6814dd9d0302cb3e870c04bc",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "681309193ce25f1b7c4bbe22",
+      "problemId": "character-inspector-4333782441",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746197918456",
+      "timestamp": "Fri, 02 May 2025 14:58:37 GMT",
+      "version": 1
+    },
+    {
+      "__v": 0,
+      "_id": "6814dddb0302cb3e870c04c3",
+      "code": "#include <iostream>\n#include <cctype>\n\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "681309193ce25f1b7c4bbe22",
+      "problemId": "character-inspector-4333782441",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746197980432",
+      "timestamp": "Fri, 02 May 2025 14:59:39 GMT",
+      "version": 2
+    },
+    {
+      "__v": 0,
+      "_id": "6814de000302cb3e870c04ca",
+      "code": "#include <iostream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "681309193ce25f1b7c4bbe22",
+      "problemId": "character-inspector-4333782441",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746198017434",
+      "timestamp": "Fri, 02 May 2025 15:00:16 GMT",
+      "version": 3
+    },
+    {
+      "__v": 0,
+      "_id": "6814dec056c3a8f3394c990b",
+      "code": "#include <iostream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string input;\n    getline(cin, input);\n\n    for(char sd : input){\n        if(isalpha(sd)){\n            cout << sd << \"is a letter!\" << endl;\n        }\n    }\n    return 0;\n}",
+      "learner_id": "681309193ce25f1b7c4bbe22",
+      "problemId": "character-inspector-4333782441",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746198209133",
+      "timestamp": "Fri, 02 May 2025 15:03:28 GMT",
+      "version": 4
+    },
+    {
+      "__v": 0,
+      "_id": "6814df1956c3a8f3394c9912",
+      "code": "#include <iostream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string input;\n    getline(cin, input);\n\n    for(char sd : input){\n        if(isalpha(sd)){\n            cout << sd << \"is a letter!\" << endl;\n        }\n        else if(ispunct (sd)){\n            cout << sd << \"is a punctuation\" << endl\n        }\n        else \n    }\n    return 0;\n}",
+      "learner_id": "681309193ce25f1b7c4bbe22",
+      "problemId": "character-inspector-4333782441",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746198298284",
+      "timestamp": "Fri, 02 May 2025 15:04:57 GMT",
+      "version": 5
+    },
+    {
+      "__v": 0,
+      "_id": "6814df5456c3a8f3394c991c",
+      "code": "#include <iostream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string input;\n    getline(cin, input);\n\n    for(char sd : input){\n        if(isalpha(sd)){\n            cout << sd << \"is a letter!\" << endl;\n        }\n        else if(ispunct (sd)){\n            cout << sd << \"is a punctuation\" << endl\n        }\n        else if(isdigit (sd)){\\}\n    }\n    return 0;\n}",
+      "learner_id": "681309193ce25f1b7c4bbe22",
+      "problemId": "character-inspector-4333782441",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746198357036",
+      "timestamp": "Fri, 02 May 2025 15:05:56 GMT",
+      "version": 6
+    },
+    {
+      "__v": 0,
+      "_id": "6814df9256c3a8f3394c991f",
+      "code": "#include <iostream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string input;\n    getline(cin, input);\n\n    for(char sd : input){\n        if(isalpha(sd)){\n            cout << sd << \"is a letter!\" << endl;\n        }\n        else if(ispunct (sd)){\n            cout << sd << \"is a punctuation!\" << endl\n        }\n        else if(isdigit (sd)){\n            cout << sd << \"is a digit!\" << endl;\n        }\n    }\n    return 0;\n}",
+      "learner_id": "681309193ce25f1b7c4bbe22",
+      "problemId": "character-inspector-4333782441",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746198419503",
+      "timestamp": "Fri, 02 May 2025 15:06:58 GMT",
+      "version": 7
+    },
+    {
+      "__v": 0,
+      "_id": "6814dfdd56c3a8f3394c9926",
+      "code": "#include <iostream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string input;\n    getline(cin, input);\n\n    for(char sd : input){\n        if(isalpha(sd)){\n            cout << sd << \"is a letter!\" << endl;\n        }\n        else if(ispunct (sd)){\n            cout << sd << \"is a punctuation!\" << endl;\n        }\n        else if(isdigit (sd)){\n            cout << sd << \"is a digit!\" << endl;\n        }\n    }\n    return 0;\n}",
+      "learner_id": "681309193ce25f1b7c4bbe22",
+      "problemId": "character-inspector-4333782441",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746198493799",
+      "timestamp": "Fri, 02 May 2025 15:08:13 GMT",
+      "version": 8
+    },
+    {
+      "__v": 0,
+      "_id": "6814e00c56c3a8f3394c992b",
+      "code": "#include <iostream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string input;\n    getline(cin, input);\n\n    for(char sd : input){\n        if(isalpha(sd)){\n            cout << sd << \" is a letter!\" << endl;\n        }\n        else if(ispunct (sd)){\n            cout << sd << \" is a punctuation!\" << endl;\n        }\n        else if(isdigit (sd)){\n            cout << sd << \" is a digit!\" << endl;\n        }\n    }\n    return 0;\n}",
+      "learner_id": "681309193ce25f1b7c4bbe22",
+      "problemId": "character-inspector-4333782441",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746198540911",
+      "timestamp": "Fri, 02 May 2025 15:09:00 GMT",
+      "version": 9
+    },
+    {
+      "__v": 0,
+      "_id": "6814e0d856c3a8f3394c993e",
+      "code": "#include <iostream>\n#include <cctype>\nusing namespace std;\n\nint main() {\n    string input;\n    getline(cin, input);\n\n    for(char sd : input){\n        if(isalpha(sd)){\n            cout << sd << \" is a letter!\" << endl;\n        }\n        else if(ispunct (sd)){\n            cout << sd << \" is a punctuation character!\" << endl;\n        }\n        else if(isdigit (sd)){\n            cout << sd << \" is a digit!\" << endl;\n        }\n    }\n    return 0;\n}",
+      "learner_id": "681309193ce25f1b7c4bbe22",
+      "problemId": "character-inspector-4333782441",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746198745356",
+      "timestamp": "Fri, 02 May 2025 15:12:24 GMT",
+      "version": 10
+    }
+  ],
+  "success": true
+}

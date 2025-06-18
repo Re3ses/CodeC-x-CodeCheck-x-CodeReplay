@@ -55,12 +55,26 @@ interface SequentialSimilarityVisualizationProps {
   snapshots: CodeSnapshot[];
   pastedSnippets: EnhancedPasteInfo[];
   learnerId?: string;
+  anonymize?: boolean;
+  problemId?: string;
 }
+
+const studyProblems = [
+  "box-formatter-4312784064",
+  "fahrenheit-to-celsius-converter-8133077604",
+  "count-vowels-in-a-string-7746433050",
+  "palindrome-check-6834925212",
+  "character-inspector-4333782441",
+  "perfectly-rooted-5136456806",
+  "linear-search-for-odd-numbers-4386603267"
+]
 
 const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizationProps> = ({
   snapshots,
   pastedSnippets,
   learnerId,
+  anonymize = false,
+  problemId
 }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentSnapshotIndex, setCurrentSnapshotIndex] = useState(0);
@@ -69,7 +83,7 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
   const [pasteCount, setPasteCount] = useState(0);
   const [bigPasteCount, setBigPasteCount] = useState(0);
   const [chartData, setChartData] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const notEnoughSnapshots = snapshots.length <= 2;
 
@@ -84,41 +98,58 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
       setLoading(true);
       try {
         const learner_id = learnerId ? learnerId : snapshotsToCompare[0].learner_id;
-        const problemId = snapshotsToCompare[0].problemId;
-        const roomId = snapshotsToCompare[0].roomId;
 
-        const API_URL = process.env.NEXT_PUBLIC_FLASK_API_URL || 'https://codecflaskapi.duckdns.org';
-        // const API_URL = process.env.NEXT_PUBLIC_FLASK_API_URL || 'http://localhost:5000';
-        const response = await fetch(`${API_URL}/api/similarity/sequential?learner_id=${learner_id}&problemId=${problemId}&roomId=${roomId}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            snapshots
-          })
-        });
-
-        const data = await response.json();
-        // console.log("Sequential Similarities Response:", data);
-        if (response.ok) {
-          // console.log("Response OK");
-          setSequentialSimilarities(data.sequentialSimilarities);
+        // Check if this is a study problem and we should use local data
+        if (problemId && studyProblems.includes(problemId)) {
+          console.log(`Loading local sequential similarity data for: ${problemId}, learner: ${learner_id}`);
+          try {
+            // Import data from local JSON file
+            const data = await import(`@/data/studyFindings/codeReplay/${problemId}/${learner_id}.json`);
+            if (data) {
+              setSequentialSimilarities(data.sequentialSimilarities);
+              console.log("Loaded local sequential similarities:", data.sequentialSimilarities);
+            }
+          } catch (error) {
+            console.error('Error loading local sequential data:', error);
+            // Fall back to API if local data failed to load
+            await fetchSequentialSimilaritiesFromAPI(learner_id, snapshotsToCompare);
+          }
+        } else {
+          // Use API for non-study problems
+          await fetchSequentialSimilaritiesFromAPI(learner_id, snapshotsToCompare);
         }
-        // console.log("Sequential Similarities:", sequentialSimilarities);
       } catch (error) {
         console.error('Sequential similarity calculation error:', error);
+      } finally {
+        setLoading(false);
       }
     };
-    setLoading(false);
+
     calculateSequentialSimilarities(snapshots);
-  }, [snapshots, notEnoughSnapshots, learnerId]);
+  }, [snapshots, notEnoughSnapshots, learnerId, problemId]);
 
-  // useEffect(() => {
-  //   console.log("Sequential similarities updated:", sequentialSimilarities);
-  // }, [sequentialSimilarities]);
+  const fetchSequentialSimilaritiesFromAPI = async (learner_id: string, snapshotsToCompare: CodeSnapshot[]) => {
+    try {
+      const problemId = snapshotsToCompare[0].problemId;
+      const roomId = snapshotsToCompare[0].roomId;
 
-  // useEffect(() => {
-  //   console.log("Received Snapshots:", snapshots);
-  // }, [snapshots]);
+      const API_URL = process.env.NEXT_PUBLIC_FLASK_API_URL || 'https://codecflaskapi.duckdns.org';
+      const response = await fetch(`${API_URL}/api/similarity/sequential?learner_id=${learner_id}&problemId=${problemId}&roomId=${roomId}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          snapshots
+        })
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        setSequentialSimilarities(data.sequentialSimilarities);
+      }
+    } catch (error) {
+      console.error('API fetch error:', error);
+    }
+  };
 
   const toggleCard = (index: number) => {
     setExpandedCards(prev =>
@@ -145,12 +176,11 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
 
   // Add useEffect to log and set local state for snippets
   useEffect(() => {
-    // console.log('Received Paste Snippets:', pastedSnippets);
     if (pastedSnippets && pastedSnippets.length > 0) {
       setPasteCount(pastedSnippets.length);
-      let count = 0; // Initialize count here
+      let count = 0;
       for (let i = 0; i < pastedSnippets.length; i++) {
-        if (pastedSnippets[i].text.length > 200) { // Access .text for UIRework compatibility
+        if (pastedSnippets[i].text.length > 200) {
           count++;
         }
       }
@@ -169,7 +199,7 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
     // Max Change
     const changes = cssValues.slice(1).map((val, i) => Math.abs(val - cssValues[i]));
     const maxChange = Math.max(...changes);
-    const maxChangePct = (maxChange / Math.max(...cssValues)) * 100; // Keep maxChangePct
+    const maxChangePct = (maxChange / Math.max(...cssValues)) * 100;
 
     // Average Similarity
     const averageSimilarity = cssValues.reduce((a, b) => a + b, 0) / cssValues.length;
@@ -179,7 +209,7 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
 
     // Variance Calculation
     const mean = averageSimilarity;
-    const variance = cssValues.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / cssValues.length; // Corrected variance calculation
+    const variance = cssValues.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / cssValues.length;
     const normalizedVariance = (variance / 2500) * 100;
     const weightedScore =
       (maxChange) * 0.05 +
@@ -189,14 +219,14 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
 
     return {
       maxChange: Math.round(maxChange),
-      maxChangePct: Math.round(maxChangePct), // Keep maxChangePct
+      maxChangePct: Math.round(maxChangePct),
       averageSimilarity: Math.round(averageSimilarity),
       minSimilarity: Math.round(minSimilarity),
-      variance: Math.round(variance), // Keep variance
+      variance: Math.round(variance),
       normalizedVariance: Math.round(normalizedVariance),
       weightedPlagiarismScore: Math.round(weightedScore),
-      pasteCount, // Keep pasteCount
-      bigPasteCount // Keep bigPasteCount
+      pasteCount,
+      bigPasteCount
     };
   }, [sequentialSimilarities, pasteCount, bigPasteCount, notEnoughSnapshots]);
 
@@ -208,9 +238,6 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
       similarity: similarity.similarity,
       codebertScore: similarity.codebertScore
     })));
-    // console.log("Chart Data:", chartData);
-    // console.log("chartData length:", chartData.length);
-    // console.log("Sequential Similarities:", sequentialSimilarities);
   }, [sequentialSimilarities]);
 
 
@@ -226,7 +253,7 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
           }
           return prev + 1;
         });
-      }, 500); // Change snapshot every 2 seconds
+      }, 500); // Change snapshot every 500ms
     }
     return () => clearInterval(interval);
   }, [isPlaying, currentSnapshotIndex, snapshots.length]);
@@ -253,12 +280,9 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
             className="relative flex w-full touch-none select-none items-center py-4"
             {...props}
           >
-            {/* Background track */}
             <SliderPrimitive.Track className="relative h-2 w-full grow rounded-full bg-gray-600">
-              {/* Blue progress bar */}
               <SliderPrimitive.Range className="absolute h-full rounded-full bg-blue-500" />
             </SliderPrimitive.Track>
-            {/* Thumb/Handle */}
             <SliderPrimitive.Thumb className="block h-4 w-4 rounded-full border-2 border-blue-500 bg-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50" />
           </SliderPrimitive.Root>
         </TooltipTrigger>
@@ -319,15 +343,17 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
 
   return (
     <div className="bg-gray-800 rounded-lg p-4 space-y-6">
-      {loading ? (
-        <>
-          {notEnoughSnapshots && (
-            <div className="bg-blue-900/30 border border-blue-700 text-blue-300 rounded-lg p-4 text-center">
-              <h4 className="text-md font-semibold">Not Enough Snapshots Detected</h4>
-              <p>Similarity analysis statistics requires multiple code snapshots. Only Code Replay is available.</p>
-            </div>
-          )}
+      {notEnoughSnapshots && (
+        <div className="bg-blue-900/30 border border-blue-700 text-blue-300 rounded-lg p-4 text-center">
+          <h4 className="text-md font-semibold">Not Enough Snapshots Detected</h4>
+          <p>Similarity analysis statistics requires multiple code snapshots. Only Code Replay is available.</p>
+        </div>
+      )}
 
+      {loading ? (
+        <Loading message="Loading Similarity Data..." />
+      ) : (
+        <>
           {advancedMetrics && !notEnoughSnapshots && (
             <div className="bg-gray-700 rounded-lg p-4">
               <h4 className="text-md font-semibold mb-4">Advanced Similarity Metrics</h4>
@@ -337,8 +363,8 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
                   const plagiarismRisk = getPlagiarismRiskDetails(advancedMetrics.weightedPlagiarismScore);
                   return (
                     <div className={`
-                  col-span-2 p-4 rounded-lg text-center 
-                  ${advancedMetrics.weightedPlagiarismScore > 80 ? 'bg-red-600' :
+                    col-span-2 p-4 rounded-lg text-center 
+                    ${advancedMetrics.weightedPlagiarismScore > 80 ? 'bg-red-600' :
                         advancedMetrics.weightedPlagiarismScore > 60 ? 'bg-orange-600' :
                           advancedMetrics.weightedPlagiarismScore > 40 ? 'bg-yellow-600' :
                             'bg-green-600'} text-white`}
@@ -465,7 +491,7 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
             </div>
           )}
 
-          {<div className="grid grid-cols-4 gap-6">
+          <div className="grid grid-cols-4 gap-6">
             {!notEnoughSnapshots ? (
               <div className="bg-gray-700 rounded-lg p-4 col-span-2">
                 <h4 className="text-md font-semibold mb-4">Similarity Trends</h4>
@@ -570,18 +596,15 @@ const SequentialSimilarityVisualization: React.FC<SequentialSimilarityVisualizat
               </div>
             </div>
           </div>
-          }
-
-
-          <ReactTooltip id="maxChangeTooltip" place="top" />
-          <ReactTooltip id="averageSimilarityTooltip" place="top" />
-          <ReactTooltip id="minSimilarityTooltip" place="top" />
-          <ReactTooltip id="varianceTooltip" place="top" />
-          <ReactTooltip id="pastesTooltip" place="top" />
-          <ReactTooltip id="bigPastesTooltip" place="top" />
         </>
-      ) : (<Loading message="Loading Similarity Data..." />)}
+      )}
 
+      <ReactTooltip id="maxChangeTooltip" place="top" />
+      <ReactTooltip id="averageSimilarityTooltip" place="top" />
+      <ReactTooltip id="minSimilarityTooltip" place="top" />
+      <ReactTooltip id="varianceTooltip" place="top" />
+      <ReactTooltip id="pastesTooltip" place="top" />
+      <ReactTooltip id="bigPastesTooltip" place="top" />
     </div>
   );
 };

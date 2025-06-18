@@ -1,0 +1,98 @@
+{
+  "formatted_snapshots": [
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "6818c355052c349288b6589f",
+      "submission_id": "6818c619a83593cdade29e3c",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nbool isLowercaseOnly(const string& s) {\n    for (char c : s) {\n        if (c < 'a' || c > 'z') {\n            return false;\n        }\n    }\n    return true;\n}\n\nint countVowels(const string& s) {\n    int count = 0;\n    for (char c : s) {\n        if (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u') {\n            count++;\n        }\n    }\n    return count;\n}\n\nint main() {\n    string s;\n    cin >> s;\n\n    if (!isLowercaseOnly(s)) {\n        cout << \"Invalid!\" << endl;\n    } else {\n        cout << countVowels(s) << endl;\n    }\n\n    return 0;\n}\n",
+      "learner_id": "6818c355052c349288b6589f",
+      "submission_id": "6818c697a83593cdade29e45",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nbool isLowercaseOnly(const string& s) {\n    for (char d : a) {\n        if (d < 'a' || d > 'z') {\n            return false;\n        }\n    }\n    return true;\n}\n\nint countVowels(const string& s) {\n    int count = 0;\n    for (char d : a) {\n        if (d == 'a' || d == 'e' || d == 'i' || d == 'o' || d == 'u') {\n            count++;\n        }\n    }\n    return count;\n}\n\nint main() {\n    string a;\n    cin >> a;\n\n    if (!isLowercaseOnly(a)) {\n        cout << \"Invalid!\" << endl;\n    } else {\n        cout << countVowels(a) << endl;\n    }\n\n    return 0;\n}\n",
+      "learner_id": "6818c355052c349288b6589f",
+      "submission_id": "6818c6daa83593cdade29e49",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nbool isLowercaseOnly(const string& s) {\n    for (char c : s) {\n        if (c < 'a' || c > 'z') {\n            return false;\n        }\n    }\n    return true;\n}\n\nint countVowels(const string& s) {\n    int count = 0;\n    for (char c : s) {\n        if (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u') {\n            count++;\n        }\n    }\n    return count;\n}\n\nint main() {\n    string s;\n    cin >> s;\n\n    if (!isLowercaseOnly(s)) {\n        cout << \"Invalid!\" << endl;\n    } else {\n        cout << countVowels(s) << endl;\n    }\n\n    return 0;\n}\n",
+      "learner_id": "6818c355052c349288b6589f",
+      "submission_id": "6818c7412b22c22c3d4eb308",
+      "timestamp": ""
+    }
+  ],
+  "sequentialSimilarities": [
+    {
+      "codebert_score": 32,
+      "from_index": 0,
+      "learner_id": "6818c355052c349288b6589f",
+      "similarity": 32,
+      "to_index": 1
+    },
+    {
+      "codebert_score": 85,
+      "from_index": 1,
+      "learner_id": "6818c355052c349288b6589f",
+      "similarity": 85,
+      "to_index": 2
+    },
+    {
+      "codebert_score": 85,
+      "from_index": 2,
+      "learner_id": "6818c355052c349288b6589f",
+      "similarity": 85,
+      "to_index": 3
+    }
+  ],
+  "snapshots": [
+    {
+      "__v": 0,
+      "_id": "6818c619a83593cdade29e3c",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "6818c355052c349288b6589f",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746454040510",
+      "timestamp": "Mon, 05 May 2025 14:07:21 GMT",
+      "version": 1
+    },
+    {
+      "__v": 0,
+      "_id": "6818c697a83593cdade29e45",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nbool isLowercaseOnly(const string& s) {\n    for (char c : s) {\n        if (c < 'a' || c > 'z') {\n            return false;\n        }\n    }\n    return true;\n}\n\nint countVowels(const string& s) {\n    int count = 0;\n    for (char c : s) {\n        if (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u') {\n            count++;\n        }\n    }\n    return count;\n}\n\nint main() {\n    string s;\n    cin >> s;\n\n    if (!isLowercaseOnly(s)) {\n        cout << \"Invalid!\" << endl;\n    } else {\n        cout << countVowels(s) << endl;\n    }\n\n    return 0;\n}\n",
+      "learner_id": "6818c355052c349288b6589f",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746454165617",
+      "timestamp": "Mon, 05 May 2025 14:09:27 GMT",
+      "version": 2
+    },
+    {
+      "__v": 0,
+      "_id": "6818c6daa83593cdade29e49",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nbool isLowercaseOnly(const string& s) {\n    for (char d : a) {\n        if (d < 'a' || d > 'z') {\n            return false;\n        }\n    }\n    return true;\n}\n\nint countVowels(const string& s) {\n    int count = 0;\n    for (char d : a) {\n        if (d == 'a' || d == 'e' || d == 'i' || d == 'o' || d == 'u') {\n            count++;\n        }\n    }\n    return count;\n}\n\nint main() {\n    string a;\n    cin >> a;\n\n    if (!isLowercaseOnly(a)) {\n        cout << \"Invalid!\" << endl;\n    } else {\n        cout << countVowels(a) << endl;\n    }\n\n    return 0;\n}\n",
+      "learner_id": "6818c355052c349288b6589f",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746454233177",
+      "timestamp": "Mon, 05 May 2025 14:10:34 GMT",
+      "version": 3
+    },
+    {
+      "__v": 0,
+      "_id": "6818c7412b22c22c3d4eb308",
+      "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nbool isLowercaseOnly(const string& s) {\n    for (char c : s) {\n        if (c < 'a' || c > 'z') {\n            return false;\n        }\n    }\n    return true;\n}\n\nint countVowels(const string& s) {\n    int count = 0;\n    for (char c : s) {\n        if (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u') {\n            count++;\n        }\n    }\n    return count;\n}\n\nint main() {\n    string s;\n    cin >> s;\n\n    if (!isLowercaseOnly(s)) {\n        cout << \"Invalid!\" << endl;\n    } else {\n        cout << countVowels(s) << endl;\n    }\n\n    return 0;\n}\n",
+      "learner_id": "6818c355052c349288b6589f",
+      "problemId": "count-vowels-in-a-string-7746433050",
+      "roomId": "comp-SmV70Mr-9X",
+      "submissionId": "submission-1746454336206",
+      "timestamp": "Mon, 05 May 2025 14:12:17 GMT",
+      "version": 4
+    }
+  ],
+  "success": true
+}

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Inter, Poppins } from 'next/font/google';
+import { Poppins } from 'next/font/google';
 import './globals.css';
 import ReactQueryProvider from '@/components/providers/ReactQueryProvider';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
@@ -7,11 +7,11 @@ import { Toaster } from '@/components/ui/toaster';
 import { cn } from '@/lib/utils';
 import { ThemeProvider } from '@/components/providers/ThemeProvider';
 
-const inter = Inter({ subsets: ['latin'] });
 const poppins = Poppins({
   weight: ['400', '500', '600', '700'],
   subsets: ['latin'],
   display: 'swap',
+  variable: '--font-poppins',
 });
 
 export const metadata: Metadata = {
@@ -30,19 +30,17 @@ export const metadata: Metadata = {
   },
 };
 
-
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className={poppins.variable}>
       <ReactQueryProvider>
         <body
           className={cn(
-            'min-h-screen bg-background font-sans antialiased',
-            poppins.className
+            'min-h-screen bg-background font-sans antialiased'
           )}
         >
           <ThemeProvider
@@ -55,7 +53,6 @@ export default function RootLayout({
             <Toaster />
           </ThemeProvider>
         </body>
-        {/* react query devtools causes error in the client side causing force client rendering */}
         <ReactQueryDevtools initialIsOpen={false} />
       </ReactQueryProvider>
     </html>

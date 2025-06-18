@@ -1,0 +1,50 @@
+{
+  "formatted_snapshots": [
+    {
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "6814f0d30ea6b2d92afface5",
+      "submission_id": "6814f5e5c6980029280e85d2",
+      "timestamp": ""
+    },
+    {
+      "code": "#include <iostream>\n#include<iomanip>\nusing namespace std;\n\nint main() {\n    char c;\n    int w, h;\n\n    cin >> c >> w >> h;\n\n    if (w <1 || w > 30 || h <1 || h > 20)\n    {\n        cout << \"Width must be between 1 and 30, and height must be between 1 and 20.\" << endl;\n    }\n\n    for (int i=0; i< h; i++)\n    {\n        cout << setfill(c) << setw(w) << c << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6814f0d30ea6b2d92afface5",
+      "submission_id": "6814f6e551209d82da0b2394",
+      "timestamp": ""
+    }
+  ],
+  "sequentialSimilarities": [
+    {
+      "codebert_score": 42,
+      "from_index": 0,
+      "learner_id": "6814f0d30ea6b2d92afface5",
+      "similarity": 42,
+      "to_index": 1
+    }
+  ],
+  "snapshots": [
+    {
+      "__v": 0,
+      "_id": "6814f5e5c6980029280e85d2",
+      "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your code here\n    return 0;\n}",
+      "learner_id": "6814f0d30ea6b2d92afface5",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746204131844",
+      "timestamp": "Fri, 02 May 2025 16:42:13 GMT",
+      "version": 1
+    },
+    {
+      "__v": 0,
+      "_id": "6814f6e551209d82da0b2394",
+      "code": "#include <iostream>\n#include<iomanip>\nusing namespace std;\n\nint main() {\n    char c;\n    int w, h;\n\n    cin >> c >> w >> h;\n\n    if (w <1 || w > 30 || h <1 || h > 20)\n    {\n        cout << \"Width must be between 1 and 30, and height must be between 1 and 20.\" << endl;\n    }\n\n    for (int i=0; i< h; i++)\n    {\n        cout << setfill(c) << setw(w) << c << endl;\n    }\n\n    return 0;\n}",
+      "learner_id": "6814f0d30ea6b2d92afface5",
+      "problemId": "box-formatter-4312784064",
+      "roomId": "comp-Dx7fgmm4GB",
+      "submissionId": "submission-1746204387973",
+      "timestamp": "Fri, 02 May 2025 16:46:29 GMT",
+      "version": 2
+    }
+  ],
+  "success": true
+}
