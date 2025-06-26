@@ -1,4 +1,4 @@
-*The current version of this repo is modified to fit a specific need, mainly display the study results. Final project is found at commit 141cf7431fd731f623aaf5e2528705c3729db555*
+*The current version of this repo is modified to fit a specific need, mainly display the study results. Final project is found at commit **141cf7431fd731f623aaf5e2528705c3729db555**.*
 ## CodeC Getting Started Guide
 
 CodeC currently uses multiple Node.js versions, so having `nvm` installed is essential. You'll need Node version 16.20.2 for the backend API and Node version 21.7.1 for the client-side which utilizes Next.js as the framework.
