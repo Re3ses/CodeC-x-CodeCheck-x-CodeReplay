@@ -36,7 +36,7 @@ export default function Nav(props: { variant?: string; name?: string; type?: str
     // { id: 'codebox', label: 'Code Box', href: `/codebox`, icon: Box },
     // { id: 'leaderboards', label: 'Leaderboards', href: '/leaderboards?page=1&perPage=10', icon: Trophy },
     { id: 'ir-plag', label: 'IR-Plag', href: `/ir-plag`, icon: Database },
-    { id: 'visualizer', label: 'Visualizer', href: `/visualizer`, icon: Network },
+    // { id: 'visualizer', label: 'Visualizer', href: `/visualizer`, icon: Network },
     { id: 'agreement', label: 'Agreement Analysis', href: `/agreement`, icon: BarChart2 },
   ];
 
