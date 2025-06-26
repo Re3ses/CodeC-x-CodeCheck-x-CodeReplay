@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
 
-
-interface UserSubmissions extends mongoose.Document {
+export interface UserSubmissions extends mongoose.Document {
   language_used: string;
   code: string;
   score: number;
@@ -90,4 +89,7 @@ const UserSubmissionsSchema = new mongoose.Schema({
   }
 });
 
-module.exports = mongoose.models.UserSubmission || mongoose.model<UserSubmissions>('UserSubmission', UserSubmissionsSchema);
+const UserSubmissionModel = mongoose.models.UserSubmission ||
+  mongoose.model<UserSubmissions>('UserSubmission', UserSubmissionsSchema);
+
+export default UserSubmissionModel;
