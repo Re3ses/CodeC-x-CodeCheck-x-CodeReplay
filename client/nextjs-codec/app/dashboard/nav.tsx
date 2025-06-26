@@ -11,7 +11,7 @@ import {
   Shield,
   Database,  // for IR-Plag (represents dataset)
   Network,  // for Visualizer (represents visualization)
-  BarChart2,  // Add this import for the new icon
+  BarChart2,  // for Agreement Analysis
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
@@ -21,25 +21,32 @@ export default function Nav(props: { variant?: string; name?: string; type?: str
   const path = props.type?.toLowerCase();
   const [canGoBack, setCanGoBack] = useState(false);
 
+  // Update the interface to include the disabled property
+  interface NavLink {
+    id: string;
+    label: string;
+    href: string;
+    icon: React.ComponentType<any>;
+    disabled?: boolean;
+  }
+
   // Navigation links; Code Room should be disabled when active (i.e. already on that route)
-  const navLinks = [
+  const navLinks: NavLink[] = [
     { id: 'coderoom', label: 'Code Room', href: `/${path}/coderoom`, icon: Code2 },
     // { id: 'codebox', label: 'Code Box', href: `/codebox`, icon: Box },
     // { id: 'leaderboards', label: 'Leaderboards', href: '/leaderboards?page=1&perPage=10', icon: Trophy },
     { id: 'ir-plag', label: 'IR-Plag', href: `/ir-plag`, icon: Database },
     { id: 'visualizer', label: 'Visualizer', href: `/visualizer`, icon: Network },
-    { id: 'agreement', label: 'Agreement Analysis', href: `/agreement`, icon: BarChart2 }, // Add this line
+    { id: 'agreement', label: 'Agreement Analysis', href: `/agreement`, icon: BarChart2 },
   ];
 
   const handleNavigation = (href: string) => {
     router.push(href);
   };
 
-
   useEffect(() => {
     setCanGoBack(window.history.length > 1);
   }, [])
-
 
   return (
     <nav className="flex items-center justify-between px-6 py-3 bg-card text-white bg-gray-900 border-b border-white/10">
@@ -54,7 +61,7 @@ export default function Nav(props: { variant?: string; name?: string; type?: str
 
         {/* Navigation Links */}
         <div className="flex gap-6">
-          {path && (navLinks.map(({ label, href, id, icon: Icon, disabled }) => (
+          {path && navLinks.map(({ label, href, id, icon: Icon, disabled }) => (
             <AnimatePresence key={id}>
               <motion.button
                 initial={{ opacity: 0, height: 0 }}
@@ -75,7 +82,7 @@ export default function Nav(props: { variant?: string; name?: string; type?: str
                 )}
               </motion.button>
             </AnimatePresence>
-          )))}
+          ))}
         </div>
       </div>
 
@@ -86,8 +93,7 @@ export default function Nav(props: { variant?: string; name?: string; type?: str
             className="h-9 rounded-md pl-2 pr-4 border border-input bg-background text-white/40 hover:bg-violet-600/30 hover:text-accent-foreground inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50">
             <ChevronLeft /> Back
           </button>
-        )
-        }
+        )}
         <Link href="/dashboard/profile" className="flex items-center gap-2">
           <Avatar className="h-8 w-8">
             <AvatarImage src="" alt={props.name} />
@@ -96,7 +102,7 @@ export default function Nav(props: { variant?: string; name?: string; type?: str
             </AvatarFallback>
           </Avatar>
         </Link>
-      </div >
-    </nav >
+      </div>
+    </nav>
   );
 }
