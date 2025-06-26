@@ -39,6 +39,7 @@
         "@tanstack/react-query-devtools": "^5.12.2",
         "aws4": "^1.13.2",
         "axios": "^1.6.2",
+        "chart.js": "^4.5.0",
         "class-variance-authority": "^0.7.0",
         "clsx": "^2.0.0",
         "d3": "^7.9.0",
